@@ -3,10 +3,9 @@ import React from 'react';
 import { Platform } from 'react-native';
 
 import { HapticTab } from '@/components/HapticTab';
-import { IconSymbol } from '@/components/ui/IconSymbol';
 import TabBarBackground from '@/components/ui/TabBarBackground';
-import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { Icon } from '@/components/ui/Icon';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -14,30 +13,53 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarActiveTintColor: "#F50537",
         headerShown: false,
         tabBarButton: HapticTab,
         tabBarBackground: TabBarBackground,
         tabBarStyle: Platform.select({
           ios: {
-            // Use a transparent background on iOS to show the blur effect
             position: 'absolute',
           },
-          default: {},
+          android: {
+            height: 55
+          },
+          default: {
+            background: colorScheme === 'dark' ? '#222' : '#fff',
+          },
         }),
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontWeight: 'bold',
+        },
+        tabBarInactiveTintColor: colorScheme === 'dark' ? '#666' : '#bbb',
       }}>
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          title: 'Domů',
+          tabBarIcon: ({ color }) => <Icon name="home" color={color} style={{width: 24, height: 24 }} />,
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="tank"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          title: 'Tankování',
+          tabBarIcon: ({ color }) => <Icon name="tank" color={color} style={{width: 24, height: 24 }} />,
+        }}
+      />
+      <Tabs.Screen
+        name="service"
+        options={{
+          title: 'Servis',
+          tabBarIcon: ({ color }) => <Icon name="car_repair" color={color} style={{width: 24, height: 24 }} />,
+        }}
+      />
+      <Tabs.Screen
+        name="station"
+        options={{
+          title: 'Stanice',
+          tabBarIcon: ({ color }) => <Icon name="map_pin" color={color} style={{width: 24, height: 24 }} />,
         }}
       />
     </Tabs>
