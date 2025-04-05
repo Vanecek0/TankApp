@@ -1,8 +1,8 @@
 import { ImageStyle, OpaqueColorValue, StyleProp, View } from 'react-native';
-import CarRepair from "../../assets/images/car_repair.jsx";
-import Home from "../../assets/images/home.jsx";
-import MapPin from "../../assets/images/map_pin.jsx";
-import Tank from "../../assets/images/tank.jsx";
+import CarRepair from "@/assets/images/car_repair.jsx";
+import Home from "@/assets/images/home.jsx";
+import MapPin from "@/assets/images/map_pin.jsx";
+import Tank from "@/assets/images/tank.jsx";
 
 const MAPPING = {
     car_repair: CarRepair,
@@ -13,7 +13,7 @@ const MAPPING = {
 
 export type IconSrc = keyof typeof MAPPING;
 
-export function Icon({
+export default function Icon({
     name,
     className,
     color,
