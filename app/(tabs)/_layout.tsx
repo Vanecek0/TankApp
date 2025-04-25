@@ -21,7 +21,7 @@ export default function TabLayout() {
             height: 55
           },
           default: {
-            background: colorScheme === 'dark' ? '#222' : '#fff',
+            background: colorScheme === 'light' ? '#222' : '#fff',
             height: 60
           },
         }),
