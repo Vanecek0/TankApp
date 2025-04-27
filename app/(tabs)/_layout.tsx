@@ -1,27 +1,32 @@
-import { Tabs } from 'expo-router';
+import { Tabs, usePathname } from 'expo-router';
 import React from 'react';
-import { Platform, useColorScheme } from 'react-native';
-
+import { Platform } from 'react-native';
 import "@/app/globals.css"
 import Icon from '../components/ui/Icon';
+import { useTheme } from '@/theme/ThemeProvider';
+import Dashboard from '../components/ui/dashboard'; 
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  const { isDark } = useTheme();
+  const pathname = usePathname();
 
   return (
+    <>
+    <Dashboard routePathName={pathname} />
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: "#F50537",
         headerShown: false,
         tabBarStyle: Platform.select({
           ios: {
-            position: 'absolute',
-          },
-          android: {
             height: 55
           },
+          android: {
+            backgroundColor: isDark ? '#121212' : '#fff',
+            height: 56
+          },
           default: {
-            background: colorScheme === 'light' ? '#222' : '#fff',
+            backgroundColor: isDark ? '#121212' : '#fff',
             height: 60
           },
         }),
@@ -29,7 +34,7 @@ export default function TabLayout() {
           fontSize: 12,
           fontWeight: 'bold',
         },
-        tabBarInactiveTintColor: colorScheme === 'dark' ? '#666' : '#bbb',
+        tabBarInactiveTintColor: '#999'
       }}>
       <Tabs.Screen
         name="index"
@@ -60,5 +65,6 @@ export default function TabLayout() {
         }}
       />
     </Tabs>
+    </>
   );
 }

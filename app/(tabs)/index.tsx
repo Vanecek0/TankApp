@@ -1,38 +1,24 @@
-import { useColorScheme, Appearance, Text, View, Switch } from 'react-native';
+import { Text, View, TouchableOpacity } from 'react-native';
+import React from 'react';
 
-import { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Icon from '../components/ui/Icon';
 import Dashboard from '../components/ui/dashboard';
+import { useTheme } from '@/theme/ThemeProvider';
 
 export default function HomeScreen() {
-  const currentScheme = useColorScheme();
-  const [colorScheme, setColorScheme] = useState(currentScheme);
-
-  useEffect(() => {
-    const subscription = Appearance.addChangeListener(({ colorScheme }) => {
-      setColorScheme(colorScheme);
-    });
-
-    return () => {
-      subscription.remove();
-    };
-  }, []);
-
-  const toggleSwitch = () => {
-    const newScheme = colorScheme === 'light' ? 'light' : 'dark';
-    setColorScheme(newScheme);
-    Appearance.setColorScheme(newScheme);
-  };
+  const { toggleColorScheme, isDark } = useTheme();
 
   return (
-    <SafeAreaView>
+    <SafeAreaView className=''>
       <View>
-        <Dashboard />
-        <Switch
-          value={colorScheme === 'dark'}
-          onValueChange={toggleSwitch} />
-          <Icon name="car" color={"white"} style={{width: 24, height: 24 }} />
+        <TouchableOpacity
+          className="bg-blue-500 dark:bg-blue-700 p-3 rounded-lg"
+          onPress={toggleColorScheme}
+        >
+          <Text className="text-white text-center font-medium">
+            Přepnout na {isDark ? 'světlý' : 'tmavý'} režim
+          </Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );

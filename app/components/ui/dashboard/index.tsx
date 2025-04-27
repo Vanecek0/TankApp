@@ -1,27 +1,27 @@
 import { Text, View } from "react-native";
+import Graph from "../graph/Graph";
 
-export default function Dashboard({ screen, className }: {
-    screen?: Screen;
+export default function Dashboard({ data, routePathName, className }: {
+    data?: JSON;
+    routePathName?: string;
     className?: string;
 }) {
     return (
-        <View className={`${className} flex-col bg-primary`}>
-            <Text className="text-center">Leden 2025 - Únor 2025</Text>
-            <View className="flex-row justify-center gap-6">
-                <View className="">
-                    <Text>1546.80 Kč</Text>
-                    <Text>Výdaje za palivo</Text>
+        <View className={`${className} flex-col bg-primary m-5 p-5 rounded-xl`}>
+            <Text className="text-center text-white font-bold">Leden 2025 – Únor 2025</Text>
+            <View className="flex-row justify-between my-3">
+                <View className="items-center">
+                    <Text className="text-white font-bold mb-1 text-3xl">1546.80 Kč</Text>
+                    <Text className="text-primary_hidden font-bold">Výdaje za palivo</Text>
                 </View>
-                <View>
-                    <Text>389 km</Text>
-                    <Text>Vzdálenost</Text>
+                <View className="items-center">
+                    <Text className="text-white font-bold mb-1 text-3xl">389 km</Text>
+                    <Text className="text-primary_hidden font-bold">Vzdálenost</Text>
                 </View>
             </View>
+            <Graph routePathName={routePathName} />
             <View>
-                <Text>Graf</Text>
-            </View>
-            <View>
-                <Text>Audi TT</Text>
+                <Text className="text-white font-bold text-center">Audi TT</Text>
             </View>
         </View>
     )
