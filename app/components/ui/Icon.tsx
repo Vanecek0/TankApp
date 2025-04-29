@@ -4,6 +4,8 @@ import Home from "@/assets/images/home.jsx";
 import MapPin from "@/assets/images/map_pin.jsx";
 import Tank from "@/assets/images/tank.jsx";
 import Car from "@/assets/images/car.jsx";
+import Bell from "@/assets/images/bell.jsx";
+import Settings from "@/assets/images/settings.jsx";
 
 const MAPPING = {
     car_repair: CarRepair,
@@ -11,6 +13,8 @@ const MAPPING = {
     map_pin: MapPin,
     tank: Tank,
     car: Car,
+    bell: Bell,
+    settings: Settings
 } as const;
 
 export type IconSrc = keyof typeof MAPPING;

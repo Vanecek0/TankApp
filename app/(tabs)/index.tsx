@@ -8,7 +8,7 @@ export default function HomeScreen() {
   const { toggleColorScheme, isDark } = useTheme();
 
   return (
-    <SafeAreaView className='m-5'>
+    <SafeAreaView>
       <View>
         <TouchableOpacity
           className="bg-blue-500 dark:bg-blue-700 p-3 rounded-lg"

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { View } from "react-native";
 import { CurveType, LineChart } from "react-native-gifted-charts";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient, Stop } from "react-native-svg";
 
 export default function DefaultGraph({ className }: {
@@ -15,15 +16,13 @@ export default function DefaultGraph({ className }: {
     };
 
     return (
-        <View onLayout={onLayout} className={`${className}`}>
+        <SafeAreaView onLayout={onLayout} className={`flex-1 items-center justify-center ${className}`}>
             <LineChart
                 data={[{ value: 15, label: 'Led' }, { value: 30, label: 'Únr' }, { value: 26, label: 'Bře' }, { value: 40, label: 'Dub' }]}
-                initialSpacing={15}
-                spacing={95}
-                adjustToWidth
                 hideDataPoints
+                adjustToWidth
+                initialSpacing={5}
                 hideRules
-                lineGradient
                 yAxisLabelContainerStyle={{ color: "#fff" }}
                 yAxisTextStyle={{
                     color: "#fff"
@@ -31,23 +30,23 @@ export default function DefaultGraph({ className }: {
                 xAxisLabelTextStyle={{
                     color: "#fff"
                 }}
-                lineGradientId="ggrd"
-                lineGradientComponent={() => {
+                areaChart
+                areaGradientId="ggrd"
+                areaGradientComponent={() => {
                     return (
                         <LinearGradient id="ggrd" x1="0" y1="0" x2="0" y2="1">
-                            <Stop offset="0" stopColor={'#bbb'} />
-                            <Stop offset="1" stopColor={'#fff'} />
+                            <Stop offset="0" stopColor={'#d70537ff'} />
+                            <Stop offset="1" stopColor={'#F50537'} />
                         </LinearGradient>
                     );
                 }}
                 yAxisColor="#fff"
-                showVerticalLines
                 verticalLinesColor="#fff"
                 xAxisColor="#fff"
                 curveType={CurveType.QUADRATIC}
                 curvature={1}
                 color="#fff"
             />
-        </View>
+        </SafeAreaView>
     )
 }

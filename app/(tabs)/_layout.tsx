@@ -13,8 +13,8 @@ export default function TabLayout() {
 
   return (
     <>
-      <SettingsBar className='m-5' />
-      <Dashboard className='m-5' routePathName={pathname} />
+      <SettingsBar />
+      <Dashboard routePathName={pathname} />
       <Tabs
         screenOptions={{
           tabBarActiveTintColor: "#F50537",
