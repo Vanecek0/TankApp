@@ -7,7 +7,7 @@ export default function Dashboard({ data, routePathName, className }: {
     className?: string;
 }) {
     return (
-        <View className={`${className} flex-col bg-primary p-5 rounded-xl`}>
+        <View className={`${className} flex-col bg-primary rounded-xl`}>
             <Text className="text-center text-white font-bold">Leden 2025 – Únor 2025</Text>
             <View className="flex-row justify-between mt-3 mb-5">
                 <View className="items-center">

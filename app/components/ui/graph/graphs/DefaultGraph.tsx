@@ -16,19 +16,24 @@ export default function DefaultGraph({ className }: {
     };
 
     return (
-        <SafeAreaView onLayout={onLayout} className={`flex-1 items-center justify-center ${className}`}>
+        <SafeAreaView onLayout={onLayout} className={`flex-1 m-0 items-center justify-center ${className}`}>
             <LineChart
                 data={[{ value: 15, label: 'Led' }, { value: 30, label: 'Únr' }, { value: 26, label: 'Bře' }, { value: 40, label: 'Dub' }]}
                 hideDataPoints
-                adjustToWidth
                 initialSpacing={5}
+                parentWidth={parentWidth}
+                width={parentWidth}
                 hideRules
+                hideYAxisText
+                endSpacing={0}
                 yAxisLabelContainerStyle={{ color: "#fff" }}
                 yAxisTextStyle={{
                     color: "#fff"
                 }}
                 xAxisLabelTextStyle={{
-                    color: "#fff"
+                    color: "#fff",
+                    innerWidth: 0,
+                    outerWidth: 0
                 }}
                 areaChart
                 areaGradientId="ggrd"
