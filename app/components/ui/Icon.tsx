@@ -6,6 +6,7 @@ import Tank from "@/assets/images/tank.jsx";
 import Car from "@/assets/images/car.jsx";
 import Bell from "@/assets/images/bell.jsx";
 import Settings from "@/assets/images/settings.jsx";
+import ChevronLeft from "@/assets/images/chevron_left.jsx";
 
 const MAPPING = {
     car_repair: CarRepair,
@@ -14,7 +15,8 @@ const MAPPING = {
     tank: Tank,
     car: Car,
     bell: Bell,
-    settings: Settings
+    settings: Settings,
+    chevron_left: ChevronLeft
 } as const;
 
 export type IconSrc = keyof typeof MAPPING;

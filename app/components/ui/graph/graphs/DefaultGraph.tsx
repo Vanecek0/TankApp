@@ -22,7 +22,8 @@ export default function DefaultGraph({ className }: {
                 hideDataPoints
                 initialSpacing={5}
                 parentWidth={parentWidth}
-                width={parentWidth}
+                adjustToWidth
+                width={parentWidth-20}
                 hideRules
                 hideYAxisText
                 endSpacing={0}
