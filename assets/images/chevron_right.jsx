@@ -13,10 +13,10 @@ function SvgComponent(props) {
       strokeWidth={2}
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="feather feather-chevron-left"
+      className="feather feather-chevron-right"
       {...props}
     >
-      <Path d="M15 18L9 12 15 6" />
+      <Path d="M9 18L15 12 9 6" />
     </Svg>
   )
 }

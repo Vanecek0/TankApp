@@ -1,4 +1,5 @@
 import { ImageStyle, OpaqueColorValue, StyleProp, View } from 'react-native';
+import { Theme} from '@/constants/Colors';
 import CarRepair from "@/assets/images/car_repair.jsx";
 import Home from "@/assets/images/home.jsx";
 import MapPin from "@/assets/images/map_pin.jsx";
@@ -7,6 +8,7 @@ import Car from "@/assets/images/car.jsx";
 import Bell from "@/assets/images/bell.jsx";
 import Settings from "@/assets/images/settings.jsx";
 import ChevronLeft from "@/assets/images/chevron_left.jsx";
+import ChevronRight from "@/assets/images/chevron_right";
 
 const MAPPING = {
     car_repair: CarRepair,
@@ -16,7 +18,8 @@ const MAPPING = {
     car: Car,
     bell: Bell,
     settings: Settings,
-    chevron_left: ChevronLeft
+    chevron_left: ChevronLeft,
+    chevron_right: ChevronRight
 } as const;
 
 export type IconSrc = keyof typeof MAPPING;
@@ -29,7 +32,7 @@ export default function Icon({
 }: {
     name: IconSrc;
     size?: number;
-    color?: string | OpaqueColorValue;
+    color?: string | OpaqueColorValue | Theme;
     style?: StyleProp<ImageStyle>;
     className?: string;
 }) {

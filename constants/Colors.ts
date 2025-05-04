@@ -1,17 +1,19 @@
 export const Colors = {
     primary: "#F50537",
     white: "#fff",
+    inactive_icon: "#999",
   
     dark: {
-      background: "#140f0a",
+      background: "#0D0D0D",
       text: "#EDEDED",
-      card: "#fff",
+      secondary_light: "#303030",
+      secondary: "#232323"
     },
   
     light: {
-      background: "#fff",
+      background: "#f2f2f2",
       text: "#171717",
-      card: "#000",
+      secondary: "#fff"
     },
     
     get: (scheme: 'light' | 'dark' | null | undefined) => {

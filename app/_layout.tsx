@@ -1,16 +1,18 @@
 import { SplashScreen, Stack } from "expo-router";
 import { StatusBar } from 'expo-status-bar';
 import { ThemeProvider, useTheme } from "@/theme/ThemeProvider";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ScrollView, useColorScheme } from "react-native";
+import { Colors } from "@/constants/Colors";
 
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [isReady, setIsReady] = useState(false);
-  
-    
+
+
   useEffect(() => {
     async function prepare() {
       try {
@@ -37,7 +39,7 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider>
-      <AppContent/>
+      <AppContent />
     </ThemeProvider>
   );
 
@@ -45,14 +47,16 @@ export default function RootLayout() {
 
 function AppContent() {
   const { isDark } = useTheme();
-  
+
   return (
-    <SafeAreaView className={`flex-1 ${isDark ? 'dark' : ''}`}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar backgroundColor={isDark ? "#140f0a" : "#EBF0F5"} style={isDark ? "light" : "dark"} />
-    </SafeAreaView>
+    <SafeAreaProvider>
+      <SafeAreaView style={{backgroundColor: isDark ? Colors.dark.background : Colors.light.background}} className={`flex-1 ${isDark ? 'dark' : ''}`}>
+        <Stack>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="+not-found" />
+        </Stack>
+        <StatusBar style={isDark ? "light" : "dark"} />
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }

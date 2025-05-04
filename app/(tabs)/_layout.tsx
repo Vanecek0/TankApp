@@ -1,42 +1,51 @@
-import { Tabs, usePathname } from 'expo-router';
+import { Tabs } from 'expo-router';
 import React from 'react';
 import { Platform, View } from 'react-native';
 import "@/app/globals.css"
 import Icon from '../components/ui/Icon';
 import { useTheme } from '@/theme/ThemeProvider';
-import Dashboard from '../components/ui/dashboard';
 import SettingsBar from '../components/ui/settingsBar';
+import { Colors } from '@/constants/Colors';
 
 export default function TabLayout() {
   const { isDark } = useTheme();
-  const pathname = usePathname();
 
   return (
     <>
       <SettingsBar />
-      <Dashboard routePathName={pathname} />
       <Tabs
         screenOptions={{
           tabBarActiveTintColor: "#F50537",
           headerShown: false,
+
           tabBarStyle: Platform.select({
             ios: {
-              height: 55
+              backgroundColor: isDark ? Colors.dark.secondary : Colors.light.secondary,
+              height: 55,
+              borderTopWidth: 0,
+              paddingBottom: 0
             },
             android: {
-              backgroundColor: isDark ? '#121212' : '#fff',
-              height: 56
+              backgroundColor: isDark ? Colors.dark.secondary : Colors.light.secondary,
+              height: 70,
+              borderTopWidth: 0,
+              paddingTop: 5,
+              paddingBottom: 8
             },
             default: {
-              backgroundColor: isDark ? '#121212' : '#fff',
-              height: 60
+              backgroundColor: isDark ? Colors.dark.secondary : Colors.light.secondary,
+              height: 75,
+              borderTopWidth: 0,
+              paddingTop: 5,
+              paddingBottom: 8
             },
           }),
           tabBarLabelStyle: {
             fontSize: 12,
             fontWeight: 'bold',
           },
-          tabBarInactiveTintColor: '#999'
+          tabBarShowLabel: true,
+          tabBarInactiveTintColor: '#999',
         }}>
         <Tabs.Screen
           name="index"
