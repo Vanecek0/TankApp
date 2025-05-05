@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { View } from "react-native";
 import { CurveType, LineChart } from "react-native-gifted-charts";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient, Stop } from "react-native-svg";
@@ -25,6 +24,7 @@ export default function DefaultGraph({ className }: {
                 adjustToWidth
                 width={parentWidth-20}
                 hideRules
+                height={parentWidth/2}
                 hideYAxisText
                 endSpacing={0}
                 yAxisLabelContainerStyle={{ color: "#fff" }}
@@ -49,8 +49,6 @@ export default function DefaultGraph({ className }: {
                 yAxisColor="#fff"
                 verticalLinesColor="#fff"
                 xAxisColor="#fff"
-                curveType={CurveType.QUADRATIC}
-                curvature={1}
                 color="#fff"
             />
         </SafeAreaView>

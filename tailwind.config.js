@@ -22,7 +22,7 @@ module.exports = {
     },
     fontSize: {
       xs: [
-        `${(16 * 0.75) / baseFontSize}rem`, /* 12px */
+        `${(16 * 0.75) / baseFontSize}rem`, /* 12px (16 * 0.75) / baseFontSize */
         {
           lineHeight: `${(16 * 1) / baseFontSize}rem` /* 16px */,
         },
