@@ -1,30 +1,30 @@
-import { Text, View, TouchableOpacity, ScrollView } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import React from 'react';
 
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '@/theme/ThemeProvider';
 import Tabs from '../components/ui/tabs';
 import Dashboard from '../components/ui/dashboard';
-import { usePathname } from 'expo-router';
+import { Link, usePathname } from 'expo-router';
 import { Colors } from '@/constants/Colors';
 import ScaledText from '../components/other/scaledText';
+import Icon from '../components/ui/Icon';
 
 export default function HomeScreen() {
-  const { toggleColorScheme, isDark } = useTheme();
+  const { isDark } = useTheme();
   const pathname = usePathname();
 
   return (
     <ScrollView style={{ backgroundColor: isDark ? Colors.dark.background : Colors.light.background }} className='py-2'>
       <Dashboard routePathName={pathname} />
-      <TouchableOpacity
-        className="bg-blue-500 dark:bg-blue-700 p-3 rounded-lg"
-        onPress={toggleColorScheme}
-      >
-        <Text className="text-white text-center font-medium">
-          Přepnout na {isDark ? 'světlý' : 'tmavý'} režim
-        </Text>
-      </TouchableOpacity>
-      <Tabs>
+      
+      <View className='flex-row mx-5 my-5 justify-between'>
+        <ScaledText size='lg' className='font-bold' isThemed={true}>Poslední záznamy</ScaledText>
+        <View className='flex-row'>
+          <ScaledText size='base' className='font-bold' isThemed={true}>Nejnovější</ScaledText>
+          <Link className="flex" href={"/tank"}><Icon name="chevron_down" color={isDark ? Colors.dark.text : Colors.light.text} style={{width: 28, height: 28 }} /></Link>
+        </View>
+      </View>
+      <Tabs className='mx-5'>
         <View className='flex-row items-center gap-3 w-full'>
           <ScaledText className='p-4 rounded-full' style={{ backgroundColor: "lightgray", fontWeight: "bold" }} size='base'>SH</ScaledText>
           <View className='flex-row justify-between flex-1'>

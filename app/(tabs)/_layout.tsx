@@ -15,7 +15,7 @@ export default function TabLayout() {
       <SettingsBar />
       <Tabs
         screenOptions={{
-          tabBarActiveTintColor: "#F50537",
+          tabBarActiveTintColor: Colors.primary,
           headerShown: false,
 
           tabBarStyle: Platform.select({

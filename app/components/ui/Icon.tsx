@@ -9,6 +9,9 @@ import Bell from "@/assets/images/bell.jsx";
 import Settings from "@/assets/images/settings.jsx";
 import ChevronLeft from "@/assets/images/chevron_left.jsx";
 import ChevronRight from "@/assets/images/chevron_right";
+import ChevronDown from "@/assets/images/chevron_down";
+import Moon from "@/assets/images/moon";
+import Sun from "@/assets/images/sun";
 
 const MAPPING = {
     car_repair: CarRepair,
@@ -19,7 +22,10 @@ const MAPPING = {
     bell: Bell,
     settings: Settings,
     chevron_left: ChevronLeft,
-    chevron_right: ChevronRight
+    chevron_right: ChevronRight,
+    chevron_down: ChevronDown,
+    moon: Moon,
+    sun: Sun
 } as const;
 
 export type IconSrc = keyof typeof MAPPING;

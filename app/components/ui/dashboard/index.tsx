@@ -24,11 +24,11 @@ export default function Dashboard({ data, routePathName, className }: {
                 </View>
             </View>
             <Graph routePathName={routePathName} />
-            <View className="flex flex-row justify-center mt-2 items-center">
+            {/*<View className="flex-row justify-center mt-2 items-center">
                 <Link className="flex" href={"/tank"}><Icon name="chevron_left" color={Colors.white} style={{width: 28, height: 28 }} /></Link>
                 <ScaledText size="lg" className="text-white flex font-bold text-center mt-0.5">Audi TT</ScaledText>
                 <Link className="flex" href={"/tank"}><Icon name="chevron_right" color={Colors.white} style={{width: 28, height: 28 }} /></Link>
-            </View>
+            </View>*/}
         </View>
     )
 }
