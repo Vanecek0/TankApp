@@ -8,7 +8,7 @@ import { Link, usePathname } from 'expo-router';
 import { Colors } from '@/constants/Colors';
 import ScaledText from '../components/other/scaledText';
 import Icon from '../components/ui/Icon';
-import FloatingButton from '../components/ui/floatingButton';
+import CustomButton from '../components/other/customButton';
 
 export default function HomeScreen() {
   const { isDark } = useTheme();
@@ -94,7 +94,7 @@ export default function HomeScreen() {
         </View>
       </Tabs>
     </ScrollView>
-    <FloatingButton><Text className='text-white' style={{padding:0, margin:0}}>+</Text></FloatingButton>
+    <CustomButton className={`absolute p-6 m-6 bottom-0 right-0 flex justify-center items-center aspect-square`} label='+' labelSize='3xl' roundedRadius={90} labelColor={Colors.white} backgroundColor={Colors.primary} />
     </>
   );
 }

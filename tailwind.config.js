@@ -15,7 +15,7 @@ module.exports = {
         primary: "#B80019",
         secondary: "#EDEDED",
         secondary_dark: "#121212",
-        primary_hidden: "#FF9BB0",
+        hidden_text: "#FF9BB0",
         background: "#f2f2f2",
         background_dark: "#0D0D0D"
       }

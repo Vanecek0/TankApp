@@ -2,6 +2,7 @@ export const Colors = {
     primary: "#B80019",
     white: "#fff",
     inactive_icon: "#999",
+    hidden_text: "#FF9BB0",
   
     dark: {
       background: "#0D0D0D",
@@ -23,3 +24,4 @@ export const Colors = {
   };
   
   export type Theme = typeof Colors.light;
+  export type ColorsKey = keyof typeof Colors;
