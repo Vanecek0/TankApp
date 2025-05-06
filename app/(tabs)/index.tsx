@@ -1,4 +1,4 @@
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView, Text } from 'react-native';
 import React from 'react';
 
 import { useTheme } from '@/theme/ThemeProvider';
@@ -8,12 +8,14 @@ import { Link, usePathname } from 'expo-router';
 import { Colors } from '@/constants/Colors';
 import ScaledText from '../components/other/scaledText';
 import Icon from '../components/ui/Icon';
+import FloatingButton from '../components/ui/floatingButton';
 
 export default function HomeScreen() {
   const { isDark } = useTheme();
   const pathname = usePathname();
 
   return (
+    <>
     <ScrollView style={{ backgroundColor: isDark ? Colors.dark.background : Colors.light.background }} className='py-2'>
       <Dashboard routePathName={pathname} />
       
@@ -64,7 +66,35 @@ export default function HomeScreen() {
             </View>
           </View>
         </View>
+        <View className='flex-row items-center gap-3 w-full'>
+          <ScaledText className='p-4 rounded-full' style={{ backgroundColor: "lightgray", fontWeight: "bold" }} size='base'>SH</ScaledText>
+          <View className='flex-row justify-between flex-1'>
+            <View className='flex gap-1 items-start'>
+              <ScaledText isThemed={true} size="lg" className='font-bold'>Shell</ScaledText>
+              <ScaledText isThemed={true} size="sm">Koterovská 156, Plzeň</ScaledText>
+            </View>
+            <View className='flex gap-1 items-end'>
+              <ScaledText isThemed={true} size="lg" className='font-bold'>1200 Kč</ScaledText>
+              <ScaledText isThemed={true} size="sm" className='text-xs'>30.5l</ScaledText>
+            </View>
+          </View>
+        </View>
+        <View className='flex-row items-center gap-3 w-full'>
+          <ScaledText className='p-4 rounded-full' style={{ backgroundColor: "lightgray", fontWeight: "bold" }} size='base'>SH</ScaledText>
+          <View className='flex-row justify-between flex-1'>
+            <View className='flex gap-1 items-start'>
+              <ScaledText isThemed={true} size="lg" className='font-bold'>Shell</ScaledText>
+              <ScaledText isThemed={true} size="sm">Koterovská 156, Plzeň</ScaledText>
+            </View>
+            <View className='flex gap-1 items-end'>
+              <ScaledText isThemed={true} size="lg" className='font-bold'>1200 Kč</ScaledText>
+              <ScaledText isThemed={true} size="sm" className='text-xs'>30.5l</ScaledText>
+            </View>
+          </View>
+        </View>
       </Tabs>
     </ScrollView>
+    <FloatingButton><Text className='text-white' style={{padding:0, margin:0}}>+</Text></FloatingButton>
+    </>
   );
 }
