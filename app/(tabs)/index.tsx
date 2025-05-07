@@ -26,7 +26,7 @@ export default function HomeScreen() {
           <Link className="flex" href={"/tank"}><Icon name="chevron_down" color={isDark ? Colors.dark.text : Colors.light.text} style={{width: 28, height: 28 }} /></Link>
         </View>
       </View>
-      <Tabs className='mx-5'>
+      <Tabs className='mx-5 mb-28'>
         <View className='flex-row items-center gap-3 w-full'>
           <ScaledText className='p-4 rounded-full' style={{ backgroundColor: "lightgray", fontWeight: "bold" }} size='base'>SH</ScaledText>
           <View className='flex-row justify-between flex-1'>
@@ -94,7 +94,7 @@ export default function HomeScreen() {
         </View>
       </Tabs>
     </ScrollView>
-    <CustomButton className={`absolute p-6 m-6 bottom-0 right-0 flex justify-center items-center aspect-square`} label='+' labelSize='3xl' roundedRadius={90} labelColor={Colors.white} backgroundColor={Colors.primary} />
+    <CustomButton className={`absolute p-6 m-3 bottom-0 right-0 flex justify-center items-center aspect-square`} label='+' labelSize='xl' roundedRadius={90} labelColor={Colors.white} backgroundColor={Colors.primary} />
     </>
   );
 }
