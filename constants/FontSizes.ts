@@ -1,4 +1,4 @@
-import { getFontSize } from "@/app/utils/fontScaling";
+import { getFontSize } from "@/utils/fontScaling";
 
 export const FontSizes = {
     xs: {

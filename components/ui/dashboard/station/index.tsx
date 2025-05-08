@@ -1,8 +1,8 @@
 import { View } from "react-native";
-import Graph from "../graph/Graph";
-import ScaledText from "../../other/scaledText";
+import Graph from "../../graph/Graph";
+import ScaledText from "@/components/other/scaledText";
 
-export default function Dashboard({ data, routePathName, className }: {
+export default function StationDashboard({ data, routePathName, className }: {
     data?: JSON;
     routePathName?: string;
     className?: string;

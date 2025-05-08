@@ -4,8 +4,9 @@ import { BarChart, CurveType, LineChart } from "react-native-gifted-charts";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient, Stop } from "react-native-svg";
 
-export default function DefaultGraph({ className }: {
+export default function TankGraph({ className }: {
     className?: string;
+    data?: JSON;
 }) {
 
     const [parentWidth, setParentWidth] = useState(0);

@@ -1,7 +1,4 @@
-import { Text, View } from "react-native";
-import Graph from "../graph/Graph";
-import Icon from "../Icon";
-import { Link } from "expo-router";
+import { View } from "react-native";
 import { Colors } from "@/constants/Colors";
 import React, { cloneElement, isValidElement, ReactElement, ReactNode } from "react";
 import { useTheme } from "@/theme/ThemeProvider";

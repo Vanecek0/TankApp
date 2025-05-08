@@ -1,7 +1,7 @@
 import {TouchableHighlight, TouchableOpacityProps} from 'react-native';
 import ScaledText from '../scaledText';
 import type { FontSizeKey } from '../scaledText';
-import darkenHexColor from '@/app/utils/colorDarken';
+import darkenHexColor from '@/utils/colorDarken';
 
 export type CustomButtonProps = TouchableOpacityProps & {
     label: string;
