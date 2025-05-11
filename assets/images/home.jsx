@@ -4,8 +4,7 @@ const SvgComponent = (props) => (
   <Svg
     xmlns="http://www.w3.org/2000/svg"
     xmlSpace="preserve"
-    width={24}
-    height={24}
+    viewBox="0 0 24 24"
     fill={props.color}
     stroke="currentColor"
     strokeLinecap="round"

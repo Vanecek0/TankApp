@@ -17,8 +17,8 @@ export default function SettingsBar({ className }: {
                 <ScaledText size="base" className="font-bold" isThemed={true}>Audi TT</ScaledText>
             </View>
             <View className="flex-row gap-2">
-                <Link href={"/(tank)"} className="flex items-center"><Icon name="bell" color={Colors.inactive_icon} style={{ width: 28, height: 28 }} /></Link>
-                <Link href={"/(tank)"} className="flex items-center"><Icon name="settings" color={Colors.inactive_icon} style={{ width: 28, height: 28 }} /></Link>
+                <Link href={"/(tank)"} className="flex items-center"><Icon name="bell" color={Colors.inactive_icon} style={{ width: 30, height: 30 }} /></Link>
+                <Link href={"/(tank)"} className="flex items-center"><Icon name="settings" color={Colors.inactive_icon} style={{ width: 30, height: 30 }} /></Link>
                 <TouchableOpacity
                     onPress={toggleColorScheme}
                 >

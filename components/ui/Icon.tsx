@@ -37,7 +37,6 @@ export default function Icon({
     style,
 }: {
     name: IconSrc;
-    size?: number;
     color?: string | OpaqueColorValue | Theme;
     style?: StyleProp<ImageStyle>;
     className?: string;
@@ -46,7 +45,7 @@ export default function Icon({
 
     return (
         <View>
-            <SvgIcon color={color} style={style} className={className} />
+            <SvgIcon color={color} style={style} className={className}  />
         </View>
     );
 }

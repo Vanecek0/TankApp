@@ -23,7 +23,7 @@ export default function Tabs({ className, children }: {
     });
 
     return (
-        <View className={`${className} flex-col gap-3 rounded-xl`}>
+        <View className={`${className} gap-3 rounded-xl`}>
             {styledTabs}
         </View>
     )
