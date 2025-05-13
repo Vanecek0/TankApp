@@ -16,11 +16,13 @@ export const Colors = {
       text: "#171717",
       secondary: "#fff"
     },
-    
-    get: (scheme: 'light' | 'dark' | null | undefined) => {
-      if (scheme === 'dark') return Colors.dark;
-      return Colors.light;
+
+    badge: {
+      orange: "#F54505",
+      red: "#B80019",
+      green: "#198754",
     }
+    
   };
   
   export type Theme = typeof Colors.light;

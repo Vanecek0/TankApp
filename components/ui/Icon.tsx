@@ -12,6 +12,12 @@ import ChevronRight from "@/assets/images/chevron_right";
 import ChevronDown from "@/assets/images/chevron_down";
 import Moon from "@/assets/images/moon";
 import Sun from "@/assets/images/sun";
+import Calendar from "@/assets/images/calendar";
+import Clock from "@/assets/images/clock";
+import Bars from "@/assets/images/bars";
+import Trending from "@/assets/images/trending";
+import Average from "@/assets/images/average";
+import Droplet from "@/assets/images/droplet";
 
 const MAPPING = {
     car_repair: CarRepair,
@@ -20,6 +26,12 @@ const MAPPING = {
     tank: Tank,
     car: Car,
     bell: Bell,
+    calendar: Calendar,
+    clock: Clock,
+    bars: Bars,
+    trending: Trending,
+    average: Average,
+    droplet: Droplet,
     settings: Settings,
     chevron_left: ChevronLeft,
     chevron_right: ChevronRight,

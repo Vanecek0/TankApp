@@ -101,7 +101,7 @@ function AppContent() {
                 }}
               />
               <Tabs.Screen
-                name="(tank)/index"
+                name="tank/index"
                 options={{
                   title: 'Tankování',
                   tabBarIcon: ({ color }: { color: string }) => <Icon name="tank" color={color} style={{ width: 24, height: 24 }} />,

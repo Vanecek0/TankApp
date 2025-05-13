@@ -20,7 +20,7 @@ export default function TankDashboard({ data, routePathName, className }: {
                     <ScaledText size="lg" className="text-hidden_text font-bold">Vzdálenost</ScaledText>
                 </View>
             </View>
-            <Graph routePathName={routePathName} />
+            {<Graph routePathName={routePathName} />}
         </View>
     )
 }

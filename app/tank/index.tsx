@@ -19,17 +19,10 @@ export default function TankScreen() {
     <>
       <ScrollView style={{ backgroundColor: isDark ? Colors.dark.background : Colors.light.background }} className='py-2'>
         <Dashboard routePathName={pathname} />
-        <View className='flex-row mx-5 my-5 justify-between'>
-          <ScaledText size='lg' className='font-bold' isThemed={true}>Historie tankování</ScaledText>
-          <View className='flex-row'>
-            <ScaledText size='base' className='font-bold' isThemed={true}>Nejnovější</ScaledText>
-            <Link className="flex" href={"/(tank)"}><Icon name="chevron_down" color={isDark ? Colors.dark.text : Colors.light.text} style={{ width: 28, height: 28 }} /></Link>
-          </View>
-        </View>
         <TabView
-          className='mx-5'
-          tabStyle={{ marginRight: 5, paddingVertical: 10, marginBottom: 5}}
-          activeTabStyle={{borderBottomWidth: 3, borderRadius: 8, borderBottomColor: Colors.hidden_text, backgroundColor: isDark ? Colors.dark.secondary_light : Colors.white}}
+          className='m-5'
+          tabStyle={{paddingVertical: 10, marginBottom: 5}}
+          activeTabStyle={{borderBottomWidth: 3, borderBottomColor: Colors.hidden_text, backgroundColor: isDark ? Colors.dark.secondary_light : Colors.white}}
           activeTabTextStyle={{color: isDark ? Colors.dark.text : Colors.light.text}}
           tabTextStyle={{ textAlign: "center", color: Colors.inactive_icon }}
           tabs={[
