@@ -1,6 +1,6 @@
 import { Text, View } from "react-native";
 import TankGraph from "./graphs/TankGraph";
-import LineGraph from "./graphs/LineGraph";
+import TankLineGraph from "./graphs/TankLineGraph";
 
 export default function Graph({ routePathName, data, className }: {
   routePathName?: string;
@@ -14,7 +14,7 @@ export default function Graph({ routePathName, data, className }: {
       case "/tank":
         return <TankGraph data={data} />;
       case "/tank/statistics":
-        return <LineGraph data={data} />
+        return <TankLineGraph data={data} />
       case "/servis":
         return <TankGraph data={data} />;
       case "/station":

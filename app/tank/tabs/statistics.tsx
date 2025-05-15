@@ -13,7 +13,7 @@ export function TankStatistics() {
   const pathname = usePathname();
 
   return (
-    <>
+    <View className='flex gap-3'>
       <View className='flex-row flex-wrap justify-between mt-4'>
         <View style={{ backgroundColor: isDark ? Colors.dark.secondary_light : Colors.white }} className={`p-5 basis-[48.5%] mb-3 rounded-lg`}>
           <View className='flex-row items-center gap-1'>
@@ -35,7 +35,7 @@ export function TankStatistics() {
             <ScaledText size='xs' color={Colors.hidden_text}>-240 od min. měs.</ScaledText>
           </View>
         </View>
-        <View style={{ backgroundColor: isDark ? Colors.dark.secondary_light : Colors.white }} className={`p-5 basis-[48.5%] mb-3 rounded-lg`}>
+        <View style={{ backgroundColor: isDark ? Colors.dark.secondary_light : Colors.white }} className={`p-5 basis-[48.5%] rounded-lg`}>
           <View className='flex-row items-center gap-1'>
             <Icon name="average" color={isDark ? Colors.dark.text : Colors.light.text} style={{ width: 15, height: 15 }} />
             <ScaledText size='xs' className='font-bold' isThemed={true}>Průměrná spotřeba</ScaledText>
@@ -45,7 +45,7 @@ export function TankStatistics() {
             <ScaledText size='xs' color={Colors.hidden_text}>-0.1 od min. měs.</ScaledText>
           </View>
         </View>
-        <View style={{ backgroundColor: isDark ? Colors.dark.secondary_light : Colors.white }} className={`p-5 basis-[48.5%] mb-3 rounded-lg`}>
+        <View style={{ backgroundColor: isDark ? Colors.dark.secondary_light : Colors.white }} className={`p-5 basis-[48.5%] rounded-lg`}>
           <View className='flex-row items-center gap-1'>
             <Icon name="droplet" color={isDark ? Colors.dark.text : Colors.light.text} style={{ width: 15, height: 15 }} />
             <ScaledText size='xs' className='font-bold' isThemed={true}>Celkem natankováno</ScaledText>
@@ -56,11 +56,11 @@ export function TankStatistics() {
           </View>
         </View>
       </View>
-      <View style={{ backgroundColor: isDark ? Colors.dark.secondary_light : Colors.white }} className={`p-5 basis-[48.5%] mb-3 rounded-lg`}>
-      <ScaledText size='lg' className='font-bold mb-3' isThemed={true}>Vývoj ceny paliva</ScaledText>
+      <View style={{ backgroundColor: isDark ? Colors.dark.secondary_light : Colors.white }} className={`p-5 basis-[48.5%] rounded-lg`}>
+      <ScaledText size='lg' className='font-bold mb-8' isThemed={true}>Vývoj ceny paliva</ScaledText>
         <Graph routePathName={pathname + "/statistics"}></Graph>
       </View>
-      <View style={{ backgroundColor: isDark ? Colors.dark.secondary_light : Colors.white }} className={`p-5 basis-[48.5%] mb-3 rounded-lg`}>
+      <View style={{ backgroundColor: isDark ? Colors.dark.secondary_light : Colors.white }} className={`p-5 basis-[48.5%] rounded-lg`}>
         <ScaledText size='lg' className='font-bold mb-3' isThemed={true}>Nejčastější čerpací stanice</ScaledText>
         <View className='my-2'>
           <View className='flex-row items-center justify-between gap-3 w-full'>
@@ -99,6 +99,6 @@ export function TankStatistics() {
           </View>
         </View>
       </View>
-    </>
+    </View>
   );
 }

@@ -26,7 +26,8 @@ export default function TankGraph({ className }: {
         {
             originalValue: 4523,
             value: 4523 * fuelWeight,
-            label: 'Jan',
+            label: 'Led',
+            labelFull: 'Leden',
             spacing: 2,
             frontColor: '#FF4D00',
             textColor: '#fff',
@@ -42,7 +43,8 @@ export default function TankGraph({ className }: {
         {
             originalValue: 4123,
             value: 4123 * fuelWeight,
-            label: 'Feb',
+            label: 'Únr',
+            labelFull: 'Únor',
             spacing: 2,
             frontColor: '#FF4D00',
             textColor: '#fff',
@@ -58,7 +60,8 @@ export default function TankGraph({ className }: {
         {
             originalValue: 4951,
             value: 4951 * fuelWeight,
-            label: 'Mar',
+            label: 'Bře',
+            labelFull: 'Březen',
             spacing: 2,
             frontColor: '#FF4D00',
             textColor: '#fff',
@@ -74,7 +77,8 @@ export default function TankGraph({ className }: {
         {
             originalValue: 6025,
             value: 6025 * fuelWeight,
-            label: 'Apr',
+            label: 'Dub',
+            labelFull: 'Duben',
             spacing: 2,
             frontColor: '#FF4D00',
             textColor: '#fff',
@@ -90,7 +94,8 @@ export default function TankGraph({ className }: {
         {
             originalValue: 3087,
             value: 3087 * fuelWeight,
-            label: 'May',
+            label: 'Kvě',
+            labelFull: 'Květen',
             spacing: 2,
             frontColor: '#FF4D00',
             textColor: '#fff',
@@ -106,7 +111,8 @@ export default function TankGraph({ className }: {
         {
             originalValue: 4396,
             value: 4396 * fuelWeight,
-            label: 'Jun',
+            label: 'Čer',
+            labelFull: 'Červen',
             spacing: 2,
             frontColor: '#FF4D00',
             textColor: '#fff',
@@ -120,6 +126,108 @@ export default function TankGraph({ className }: {
             textColor: '#000',
             groupIndex: 5,
         },
+        {
+            originalValue: 5120,
+            value: 5120 * fuelWeight,
+            label: 'Čvc',
+            labelFull: 'Červenec',
+            spacing: 2,
+            frontColor: '#FF4D00',
+            textColor: '#fff',
+            groupIndex: 6,
+        },
+        {
+            originalValue: 1105,
+            value: 1105 * distanceWeight,
+            frontColor: '#ffffff',
+            textColor: '#000',
+            groupIndex: 6,
+        },
+        {
+            originalValue: 4783,
+            value: 4783 * fuelWeight,
+            label: 'Srp',
+            labelFull: 'Srpen',
+            spacing: 2,
+            frontColor: '#FF4D00',
+            textColor: '#fff',
+            groupIndex: 7,
+        },
+        {
+            originalValue: 973,
+            value: 973 * distanceWeight,
+            frontColor: '#ffffff',
+            textColor: '#000',
+            groupIndex: 7,
+        },
+        {
+            originalValue: 3902,
+            value: 3902 * fuelWeight,
+            label: 'Zář',
+            labelFull: 'Září',
+            spacing: 2,
+            frontColor: '#FF4D00',
+            textColor: '#fff',
+            groupIndex: 8,
+        },
+        {
+            originalValue: 852,
+            value: 852 * distanceWeight,
+            frontColor: '#ffffff',
+            textColor: '#000',
+            groupIndex: 8,
+        },
+        {
+            originalValue: 4308,
+            value: 4308 * fuelWeight,
+            label: 'Říj',
+            labelFull: 'Říjen',
+            spacing: 2,
+            frontColor: '#FF4D00',
+            textColor: '#fff',
+            groupIndex: 9,
+        },
+        {
+            originalValue: 790,
+            value: 790 * distanceWeight,
+            frontColor: '#ffffff',
+            textColor: '#000',
+            groupIndex: 9,
+        },
+        {
+            originalValue: 4021,
+            value: 4021 * fuelWeight,
+            label: 'Lis',
+            labelFull: 'Listopad',
+            spacing: 2,
+            frontColor: '#FF4D00',
+            textColor: '#fff',
+            groupIndex: 10,
+        },
+        {
+            originalValue: 865,
+            value: 865 * distanceWeight,
+            frontColor: '#ffffff',
+            textColor: '#000',
+            groupIndex: 10,
+        },
+        {
+            originalValue: 3897,
+            value: 3897 * fuelWeight,
+            label: 'Pro',
+            labelFull: 'Prosinec',
+            spacing: 2,
+            frontColor: '#FF4D00',
+            textColor: '#fff',
+            groupIndex: 11,
+        },
+        {
+            originalValue: 743,
+            value: 743 * distanceWeight,
+            frontColor: '#ffffff',
+            textColor: '#000',
+            groupIndex: 11,
+        }
     ];
 
 
@@ -127,7 +235,7 @@ export default function TankGraph({ className }: {
         barData.reduce((sum, item) => sum + item.value, 0) / barData.length;
 
     return (
-        <SafeAreaView onLayout={onLayout} style={{ maxHeight: parentWidth / 3, marginVertical: 15}} className={`items-center justify-center ${className}`}>
+        <SafeAreaView onLayout={onLayout} style={{ maxHeight: parentWidth / 3, marginVertical: 15 }} className={`items-center justify-center ${className}`}>
             <BarChart
                 data={barData.map(item => ({
                     ...item,

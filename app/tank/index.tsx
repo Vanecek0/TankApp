@@ -20,7 +20,7 @@ export default function TankScreen() {
       <ScrollView style={{ backgroundColor: isDark ? Colors.dark.background : Colors.light.background }} className='py-2'>
         <Dashboard routePathName={pathname} />
         <TabView
-          className='m-5'
+          className='m-5 mb-28'
           tabStyle={{paddingVertical: 10, marginBottom: 5}}
           activeTabStyle={{borderBottomWidth: 3, borderBottomColor: Colors.hidden_text, backgroundColor: isDark ? Colors.dark.secondary_light : Colors.white}}
           activeTabTextStyle={{color: isDark ? Colors.dark.text : Colors.light.text}}

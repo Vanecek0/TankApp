@@ -32,8 +32,8 @@ export default function HomeScreen() {
               <View className='flex-row justify-between flex-1'>
                 <View className='flex gap-1 items-start'>
                   <ScaledText isThemed={true} size="lg" className='font-bold'>Shell</ScaledText>
-                  <View className='flex-row justify-center items-start gap-0.5'>
-                    <Icon name="map_pin" color={isDark ? Colors.dark.text : Colors.light.text} style={{ width: 18, height: 18 }} />
+                  <View className='flex-row justify-center items-center gap-0.5'>
+                    <Icon name="map_pin" color={isDark ? Colors.dark.text : Colors.light.text} style={{ width: 15, height: 15 }} />
                     <ScaledText isThemed={true} size="sm">Koterovská 156, Plzeň</ScaledText>
                   </View>
                 </View>
@@ -63,8 +63,8 @@ export default function HomeScreen() {
               <View className='flex-row justify-between flex-1'>
                 <View className='flex gap-1 items-start'>
                   <ScaledText isThemed={true} size="lg" className='font-bold'>Shell</ScaledText>
-                  <View className='flex-row justify-center items-start gap-0.5'>
-                    <Icon name="map_pin" color={isDark ? Colors.dark.text : Colors.light.text} style={{ width: 18, height: 18 }} />
+                  <View className='flex-row justify-center items-center gap-0.5'>
+                    <Icon name="map_pin" color={isDark ? Colors.dark.text : Colors.light.text} style={{ width: 15, height: 15 }} />
                     <ScaledText isThemed={true} size="sm">Koterovská 156, Plzeň</ScaledText>
                   </View>
                 </View>
@@ -94,8 +94,8 @@ export default function HomeScreen() {
               <View className='flex-row justify-between flex-1'>
                 <View className='flex gap-1 items-start'>
                   <ScaledText isThemed={true} size="lg" className='font-bold'>Shell</ScaledText>
-                  <View className='flex-row justify-center items-start gap-0.5'>
-                    <Icon name="map_pin" color={isDark ? Colors.dark.text : Colors.light.text} style={{ width: 18, height: 18 }} />
+                  <View className='flex-row justify-center items-center gap-0.5'>
+                    <Icon name="map_pin" color={isDark ? Colors.dark.text : Colors.light.text} style={{ width: 15, height: 15 }} />
                     <ScaledText isThemed={true} size="sm">Koterovská 156, Plzeň</ScaledText>
                   </View>
                 </View>
@@ -125,8 +125,8 @@ export default function HomeScreen() {
               <View className='flex-row justify-between flex-1'>
                 <View className='flex gap-1 items-start'>
                   <ScaledText isThemed={true} size="lg" className='font-bold'>Shell</ScaledText>
-                  <View className='flex-row justify-center items-start gap-0.5'>
-                    <Icon name="map_pin" color={isDark ? Colors.dark.text : Colors.light.text} style={{ width: 18, height: 18 }} />
+                  <View className='flex-row justify-center items-center gap-0.5'>
+                    <Icon name="map_pin" color={isDark ? Colors.dark.text : Colors.light.text} style={{ width: 15, height: 15 }} />
                     <ScaledText isThemed={true} size="sm">Koterovská 156, Plzeň</ScaledText>
                   </View>
                 </View>
@@ -156,8 +156,8 @@ export default function HomeScreen() {
               <View className='flex-row justify-between flex-1'>
                 <View className='flex gap-1 items-start'>
                   <ScaledText isThemed={true} size="lg" className='font-bold'>Shell</ScaledText>
-                  <View className='flex-row justify-center items-start gap-0.5'>
-                    <Icon name="map_pin" color={isDark ? Colors.dark.text : Colors.light.text} style={{ width: 18, height: 18 }} />
+                  <View className='flex-row justify-center items-center gap-0.5'>
+                    <Icon name="map_pin" color={isDark ? Colors.dark.text : Colors.light.text} style={{ width: 15, height: 15 }} />
                     <ScaledText isThemed={true} size="sm">Koterovská 156, Plzeň</ScaledText>
                   </View>
                 </View>

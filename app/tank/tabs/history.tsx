@@ -21,7 +21,7 @@ export function TankHistory() {
           <Link className="flex" href={"/tank"}><Icon name="chevron_down" color={isDark ? Colors.dark.text : Colors.light.text} style={{ width: 28, height: 28 }} /></Link>
         </View>
       </View>
-      <Tabs className='mb-28'>
+      <Tabs>
         <View className='gap-5'>
           <View className='flex-row items-center gap-3 w-full'>
             <ScaledText className='p-4 rounded-full' style={{ backgroundColor: "lightgray", fontWeight: "bold" }} size='base'>SH</ScaledText>
@@ -216,7 +216,7 @@ export function TankHistory() {
               </View>
             </View>
           </View>
-          <Badge badgeColor={Colors.primary} textColor={Colors.white} size='xs' value='Plná nádrž' />
+          <Badge badgeColor={Colors.badge.red} textColor={Colors.white} size='xs' value='Plná nádrž' />
         </View>
         <View className='gap-5'>
           <View className='flex-row items-center gap-3 w-full'>
@@ -265,7 +265,7 @@ export function TankHistory() {
               </View>
             </View>
           </View>
-          <Badge badgeColor={Colors.primary} textColor={Colors.white} size='xs' value='Plná nádrž' />
+          <Badge badgeColor={Colors.badge.red} textColor={Colors.white} size='xs' value='Plná nádrž' />
         </View>
       </Tabs>
     </>
