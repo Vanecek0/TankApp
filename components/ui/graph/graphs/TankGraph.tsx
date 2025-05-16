@@ -1,3 +1,5 @@
+import { Colors } from "@/constants/Colors";
+import darkenHexColor from "@/utils/colorDarken";
 import { useState } from "react";
 import { Text, View } from "react-native";
 import { BarChart, CurveType, LineChart } from "react-native-gifted-charts";
@@ -29,7 +31,7 @@ export default function TankGraph({ className }: {
             label: 'Led',
             labelFull: 'Leden',
             spacing: 2,
-            frontColor: '#FF4D00',
+            frontColor: '',
             textColor: '#fff',
             groupIndex: 0,
         },
@@ -46,7 +48,7 @@ export default function TankGraph({ className }: {
             label: 'Únr',
             labelFull: 'Únor',
             spacing: 2,
-            frontColor: '#FF4D00',
+            frontColor: '',
             textColor: '#fff',
             groupIndex: 1,
         },
@@ -63,7 +65,7 @@ export default function TankGraph({ className }: {
             label: 'Bře',
             labelFull: 'Březen',
             spacing: 2,
-            frontColor: '#FF4D00',
+            frontColor: '',
             textColor: '#fff',
             groupIndex: 2,
         },
@@ -80,7 +82,7 @@ export default function TankGraph({ className }: {
             label: 'Dub',
             labelFull: 'Duben',
             spacing: 2,
-            frontColor: '#FF4D00',
+            frontColor: '',
             textColor: '#fff',
             groupIndex: 3,
         },
@@ -97,7 +99,7 @@ export default function TankGraph({ className }: {
             label: 'Kvě',
             labelFull: 'Květen',
             spacing: 2,
-            frontColor: '#FF4D00',
+            frontColor: '',
             textColor: '#fff',
             groupIndex: 4,
         },
@@ -114,7 +116,7 @@ export default function TankGraph({ className }: {
             label: 'Čer',
             labelFull: 'Červen',
             spacing: 2,
-            frontColor: '#FF4D00',
+            frontColor: '',
             textColor: '#fff',
             groupIndex: 5,
         },
@@ -132,7 +134,7 @@ export default function TankGraph({ className }: {
             label: 'Čvc',
             labelFull: 'Červenec',
             spacing: 2,
-            frontColor: '#FF4D00',
+            frontColor: '',
             textColor: '#fff',
             groupIndex: 6,
         },
@@ -149,7 +151,7 @@ export default function TankGraph({ className }: {
             label: 'Srp',
             labelFull: 'Srpen',
             spacing: 2,
-            frontColor: '#FF4D00',
+            frontColor: '',
             textColor: '#fff',
             groupIndex: 7,
         },
@@ -166,7 +168,7 @@ export default function TankGraph({ className }: {
             label: 'Zář',
             labelFull: 'Září',
             spacing: 2,
-            frontColor: '#FF4D00',
+            frontColor: '',
             textColor: '#fff',
             groupIndex: 8,
         },
@@ -183,7 +185,7 @@ export default function TankGraph({ className }: {
             label: 'Říj',
             labelFull: 'Říjen',
             spacing: 2,
-            frontColor: '#FF4D00',
+            frontColor: '',
             textColor: '#fff',
             groupIndex: 9,
         },
@@ -200,7 +202,7 @@ export default function TankGraph({ className }: {
             label: 'Lis',
             labelFull: 'Listopad',
             spacing: 2,
-            frontColor: '#FF4D00',
+            frontColor: '',
             textColor: '#fff',
             groupIndex: 10,
         },
@@ -217,7 +219,7 @@ export default function TankGraph({ className }: {
             label: 'Pro',
             labelFull: 'Prosinec',
             spacing: 2,
-            frontColor: '#FF4D00',
+            frontColor: '',
             textColor: '#fff',
             groupIndex: 11,
         },
@@ -239,10 +241,7 @@ export default function TankGraph({ className }: {
             <BarChart
                 data={barData.map(item => ({
                     ...item,
-                    frontColor: highlightedGroupIndex === null ? `${item.frontColor}6F` : item.groupIndex === highlightedGroupIndex ? `${item.frontColor}` : `${item.frontColor}6F`,
-                    gradientColor: highlightedGroupIndex === null ? "#ffffff6F" : item.groupIndex === highlightedGroupIndex
-                        ? "#ffffff9D"
-                        : "#ffffff6F"
+                    frontColor: highlightedGroupIndex === null ? item.frontColor == '' ? `${darkenHexColor(Colors.primary, -50)}` : `${item.frontColor}` : item.groupIndex === highlightedGroupIndex ? item.frontColor == '' ? `${darkenHexColor(Colors.primary, -50)}` : `${item.frontColor}` : item.frontColor == '' ? `${darkenHexColor(Colors.primary, -50)}` : `${item.frontColor}`,
                 }))}
                 overflowTop={1}
                 initialSpacing={10}
@@ -258,7 +257,7 @@ export default function TankGraph({ className }: {
                 endSpacing={0}
                 cappedBars
                 capColor={'#fff'}
-                capThickness={4}
+                capThickness={3}
                 barBorderRadius={0}
                 barBorderWidth={0}
                 xAxisLabelTextStyle={{
@@ -281,9 +280,8 @@ export default function TankGraph({ className }: {
                     dashWidth: 2,
                     dashGap: 3,
                 }}
-                showGradient={true}
                 autoCenterTooltip={true}
-                focusBarOnPress={true}
+                focusBarOnPress={false}
                 showScrollIndicator={false}
                 indicatorColor={"white"}
                 onPress={(item: any, index: number) => {

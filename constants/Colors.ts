@@ -1,8 +1,8 @@
 export const Colors = {
-    primary: "#B80019",
+    primary: "#B80019", //F54505 B80019 198754
     white: "#fff",
     inactive_icon: "#999",
-    hidden_text: "#FF9BB0",
+    hidden_text: "#aaa",
   
     dark: {
       background: "#0D0D0D",
