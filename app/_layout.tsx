@@ -114,13 +114,13 @@ function AppContent() {
                   tabBarIcon: ({ color }: { color: string }) => <Icon name="car_repair" color={color} style={{ width: 24, height: 24 }} />,
                 }}
               />
-              <Tabs.Screen
+              {/*<Tabs.Screen
                 name="station/index"
                 options={{
                   title: 'Stanice',
                   tabBarIcon: ({ color }: { color: string }) => <Icon name="map_pin" color={color} style={{ width: 24, height: 24 }} />,
                 }}
-              />
+              />*/}
             </Tabs>
             <StatusBar style={isDark ? "light" : "dark"} />
           </SafeAreaView>

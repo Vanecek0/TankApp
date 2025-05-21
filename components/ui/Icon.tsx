@@ -18,6 +18,8 @@ import Bars from "@/assets/images/bars";
 import Trending from "@/assets/images/trending";
 import Average from "@/assets/images/average";
 import Droplet from "@/assets/images/droplet";
+import Speedometer from "@/assets/images/speedometer";
+import Dollar from "@/assets/images/dollar";
 
 const MAPPING = {
     car_repair: CarRepair,
@@ -37,7 +39,9 @@ const MAPPING = {
     chevron_right: ChevronRight,
     chevron_down: ChevronDown,
     moon: Moon,
-    sun: Sun
+    sun: Sun,
+    speedometer: Speedometer,
+    dollar: Dollar
 } as const;
 
 export type IconSrc = keyof typeof MAPPING;
