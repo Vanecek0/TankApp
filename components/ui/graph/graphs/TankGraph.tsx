@@ -1,5 +1,8 @@
+import ScaledText from "@/components/other/scaledText";
 import { Colors } from "@/constants/Colors";
+import { FontSizes } from "@/constants/FontSizes";
 import darkenHexColor from "@/utils/colorDarken";
+import getScaleFactor, { spacing } from "@/utils/SizeScaling";
 import { useState } from "react";
 import { Text, View } from "react-native";
 import { BarChart, CurveType, LineChart } from "react-native-gifted-charts";
@@ -237,27 +240,27 @@ export default function TankGraph({ className }: {
         barData.reduce((sum, item) => sum + item.value, 0) / barData.length;
 
     return (
-        <SafeAreaView onLayout={onLayout} style={{ maxHeight: parentWidth / 3, marginVertical: 15 }} className={`items-center justify-center ${className}`}>
+        <SafeAreaView onLayout={onLayout} style={{ maxHeight: parentWidth / 3, ...spacing.my(15)}} className={`items-center justify-center ${className}`}>
             <BarChart
                 data={barData.map(item => ({
                     ...item,
                     frontColor: highlightedGroupIndex === null ? item.frontColor == '' ? `${darkenHexColor(Colors.primary, -50)}` : `${item.frontColor}` : item.groupIndex === highlightedGroupIndex ? item.frontColor == '' ? `${darkenHexColor(Colors.primary, -50)}` : `${item.frontColor}` : item.frontColor == '' ? `${darkenHexColor(Colors.primary, -50)}` : `${item.frontColor}`,
                 }))}
                 overflowTop={1}
-                initialSpacing={10}
+                initialSpacing={10*getScaleFactor()}
                 parentWidth={parentWidth}
                 adjustToWidth
-                width={parentWidth - 20}
+                width={parentWidth - (20*getScaleFactor())}
                 height={parentWidth / 3}
-                spacing={22}
-                barWidth={24}
-                labelWidth={24 * 2}
+                spacing={22*getScaleFactor()}
+                barWidth={24*getScaleFactor()}
+                labelWidth={(24 * 2)*getScaleFactor()}
                 hideRules
                 noOfSections={1}
                 endSpacing={0}
                 cappedBars
                 capColor={'#fff'}
-                capThickness={3}
+                capThickness={3*getScaleFactor()}
                 barBorderRadius={0}
                 barBorderWidth={0}
                 xAxisLabelTextStyle={{
@@ -268,6 +271,8 @@ export default function TankGraph({ className }: {
                     marginBottom: 0,
                     paddingTop: 0,
                     paddingBottom: 0,
+                    fontSize: FontSizes["sm"].size,
+                    ...spacing.height(25)
                 }}
                 hideYAxisText={true}
                 trimYAxisAtTop
@@ -277,8 +282,8 @@ export default function TankGraph({ className }: {
                 referenceLine1Position={average}
                 referenceLine1Config={{
                     color: '#fff',
-                    dashWidth: 2,
-                    dashGap: 3,
+                    dashWidth: 2*getScaleFactor(),
+                    dashGap: 3*getScaleFactor(),
                 }}
                 autoCenterTooltip={true}
                 focusBarOnPress={false}
@@ -293,11 +298,11 @@ export default function TankGraph({ className }: {
                             style={{
                                 marginBottom: 0,
                                 backgroundColor: item.frontColor,
-                                paddingHorizontal: 6,
-                                paddingVertical: 4,
-                                borderRadius: 4
+                                ...spacing.px(6),
+                                ...spacing.py(4),
+                                ...spacing.borderRadius(4)
                             }} key={index}>
-                            <Text style={{ color: item.textColor }}>{item.originalValue}</Text>
+                            <ScaledText size="sm" style={{ color: item.textColor }}>{item.originalValue}</ScaledText>
                         </View>
                     );
                 }}

@@ -51,17 +51,19 @@ export default function Icon({
     className,
     color,
     style,
+    size
 }: {
     name: IconSrc;
     color?: string | OpaqueColorValue | Theme;
     style?: StyleProp<ImageStyle>;
     className?: string;
+    size?: number;
 }) {
     const SvgIcon = MAPPING[name];
 
     return (
         <View>
-            <SvgIcon color={color} style={style} className={className}  />
+            <SvgIcon color={color} style={[{width: size, height: size}, style]} className={className}  />
         </View>
     );
 }

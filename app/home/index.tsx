@@ -9,6 +9,8 @@ import ScaledText from '@/components/other/scaledText';
 import Icon from '@/components/ui/Icon';
 import Tabs from '@/components/ui/tabs';
 import CustomButton from '@/components/other/customButton';
+import getScaleFactor, { scaled } from '@/utils/SizeScaling';
+import { spacing } from '@/utils/SizeScaling';
 
 export default function HomeScreen() {
   const { isDark } = useTheme();
@@ -16,165 +18,165 @@ export default function HomeScreen() {
 
   return (
     <>
-      <ScrollView style={{ backgroundColor: isDark ? Colors.dark.background : Colors.light.background }} className='py-2'>
+      <ScrollView style={{ backgroundColor: isDark ? Colors.dark.background : Colors.light.background, ...spacing.py(8) }}>
         <Dashboard routePathName={pathname} />
-        <View className='flex-row mx-5 my-5 justify-between'>
+        <View style={{...spacing.my(20), ...spacing.mx(20)}} className='flex-row justify-between'>
           <ScaledText size='lg' className='font-bold' isThemed={true}>Poslední záznamy</ScaledText>
-          <View className='flex-row'>
+          <View className='flex-row items-center'>
             <ScaledText size='base' className='font-bold' isThemed={true}>Nejnovější</ScaledText>
-            <Link className="flex" href={'/tank'}><Icon name="chevron_down" color={isDark ? Colors.dark.text : Colors.light.text} style={{ width: 28, height: 28 }} /></Link>
+            <Link className="flex" href={'/tank'}><Icon name="chevron_down" color={isDark ? Colors.dark.text : Colors.light.text} style={{ ...spacing.width(18), ...spacing.height(18) }} /></Link>
           </View>
         </View>
-        <Tabs className='mx-5'>
-          <View className='flex gap-3'>
-            <View className='flex-row items-center gap-3 w-full'>
-              <ScaledText className='p-4 rounded-full' style={{ backgroundColor: "lightgray", fontWeight: "bold" }} size='base'>SH</ScaledText>
+        <Tabs style={{...spacing.mx(20)}}>
+          <View style={{...spacing.gap(12)}} className='flex'>
+            <View style={{...spacing.gap(12)}} className='flex-row items-center w-full'>
+              <ScaledText className='rounded-full' style={{ backgroundColor: "lightgray", fontWeight: "bold", ...spacing.p(16) }} size='base'>SH</ScaledText>
               <View className='flex-row justify-between flex-1'>
-                <View className='flex gap-1 items-start'>
+                <View style={{...spacing.gap(4)}} className='flex items-start'>
                   <ScaledText isThemed={true} size="lg" className='font-bold'>Shell</ScaledText>
-                  <View className='flex-row justify-center items-center gap-0.5'>
-                    <Icon name="map_pin" color={isDark ? Colors.dark.text : Colors.light.text} style={{ width: 15, height: 15 }} />
+                  <View style={{...spacing.gap(2)}} className='flex-row justify-center items-center'>
+                    <Icon name="map_pin" color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor()*15} />
                     <ScaledText isThemed={true} size="sm">Koterovská 156, Plzeň</ScaledText>
                   </View>
                 </View>
-                <View className='flex gap-1 items-end'>
+                <View style={{...spacing.gap(4)}} className='flex items-end'>
                   <ScaledText isThemed={true} size="lg" className='font-bold'>1200 Kč</ScaledText>
                   <ScaledText isThemed={true} size="sm">30.5l</ScaledText>
                 </View>
               </View>
             </View>
             <View className='flex-row justify-between'>
-              <View className='flex-row gap-3'>
-                <View className='flex-row items-center gap-0.5'>
-                  <Icon name="calendar" color={isDark ? Colors.dark.text : Colors.light.text} style={{ width: 15, height: 15 }} />
+              <View style={{...spacing.gap(12)}} className='flex-row'>
+                <View style={{...spacing.gap(2)}} className='flex-row items-center'>
+                  <Icon name="calendar" color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor()*15} />
                   <ScaledText isThemed={true} size="sm">10.04.2025</ScaledText>
                 </View>
-                <View className='flex-row items-center gap-0.5'>
-                  <Icon name="clock" color={isDark ? Colors.dark.text : Colors.light.text} style={{ width: 15, height: 15 }} />
+                <View style={{...spacing.gap(2)}} className='flex-row items-center'>
+                  <Icon name="clock" color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor()*15} />
                   <ScaledText isThemed={true} size="sm">17:49</ScaledText>
                 </View>
               </View>
               <ScaledText isThemed={true} size="sm">78 450 km</ScaledText>
             </View>
           </View>
-          <View className='flex gap-3'>
-            <View className='flex-row items-center gap-3 w-full'>
-              <ScaledText className='p-4 rounded-full' style={{ backgroundColor: "lightgray", fontWeight: "bold" }} size='base'>SH</ScaledText>
+          <View style={{...spacing.gap(12)}} className='flex'>
+            <View style={{...spacing.gap(12)}} className='flex-row items-center w-full'>
+              <ScaledText className='rounded-full' style={{ backgroundColor: "lightgray", fontWeight: "bold", ...spacing.p(16) }} size='base'>SH</ScaledText>
               <View className='flex-row justify-between flex-1'>
-                <View className='flex gap-1 items-start'>
+                <View style={{...spacing.gap(4)}} className='flex items-start'>
                   <ScaledText isThemed={true} size="lg" className='font-bold'>Shell</ScaledText>
-                  <View className='flex-row justify-center items-center gap-0.5'>
-                    <Icon name="map_pin" color={isDark ? Colors.dark.text : Colors.light.text} style={{ width: 15, height: 15 }} />
+                  <View style={{...spacing.gap(2)}} className='flex-row justify-center items-center'>
+                    <Icon name="map_pin" color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor()*15} />
                     <ScaledText isThemed={true} size="sm">Koterovská 156, Plzeň</ScaledText>
                   </View>
                 </View>
-                <View className='flex gap-1 items-end'>
+                <View style={{...spacing.gap(4)}} className='flex items-end'>
                   <ScaledText isThemed={true} size="lg" className='font-bold'>1200 Kč</ScaledText>
                   <ScaledText isThemed={true} size="sm">30.5l</ScaledText>
                 </View>
               </View>
             </View>
             <View className='flex-row justify-between'>
-              <View className='flex-row gap-3'>
-                <View className='flex-row items-center gap-0.5'>
-                  <Icon name="calendar" color={isDark ? Colors.dark.text : Colors.light.text} style={{ width: 15, height: 15 }} />
+              <View style={{...spacing.gap(12)}} className='flex-row'>
+                <View style={{...spacing.gap(2)}} className='flex-row items-center'>
+                  <Icon name="calendar" color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor()*15} />
                   <ScaledText isThemed={true} size="sm">10.04.2025</ScaledText>
                 </View>
-                <View className='flex-row items-center gap-0.5'>
-                  <Icon name="clock" color={isDark ? Colors.dark.text : Colors.light.text} style={{ width: 15, height: 15 }} />
+                <View style={{...spacing.gap(2)}} className='flex-row items-center'>
+                  <Icon name="clock" color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor()*15} />
                   <ScaledText isThemed={true} size="sm">17:49</ScaledText>
                 </View>
               </View>
               <ScaledText isThemed={true} size="sm">78 450 km</ScaledText>
             </View>
           </View>
-          <View className='flex gap-3'>
-            <View className='flex-row items-center gap-3 w-full'>
-              <ScaledText className='p-4 rounded-full' style={{ backgroundColor: "lightgray", fontWeight: "bold" }} size='base'>SH</ScaledText>
+          <View style={{...spacing.gap(12)}} className='flex'>
+            <View style={{...spacing.gap(12)}} className='flex-row items-center w-full'>
+              <ScaledText className='rounded-full' style={{ backgroundColor: "lightgray", fontWeight: "bold", ...spacing.p(16) }} size='base'>SH</ScaledText>
               <View className='flex-row justify-between flex-1'>
-                <View className='flex gap-1 items-start'>
+                <View style={{...spacing.gap(4)}} className='flex items-start'>
                   <ScaledText isThemed={true} size="lg" className='font-bold'>Shell</ScaledText>
-                  <View className='flex-row justify-center items-center gap-0.5'>
-                    <Icon name="map_pin" color={isDark ? Colors.dark.text : Colors.light.text} style={{ width: 15, height: 15 }} />
+                  <View style={{...spacing.gap(2)}} className='flex-row justify-center items-center'>
+                    <Icon name="map_pin" color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor()*15} />
                     <ScaledText isThemed={true} size="sm">Koterovská 156, Plzeň</ScaledText>
                   </View>
                 </View>
-                <View className='flex gap-1 items-end'>
+                <View style={{...spacing.gap(4)}} className='flex items-end'>
                   <ScaledText isThemed={true} size="lg" className='font-bold'>1200 Kč</ScaledText>
                   <ScaledText isThemed={true} size="sm">30.5l</ScaledText>
                 </View>
               </View>
             </View>
             <View className='flex-row justify-between'>
-              <View className='flex-row gap-3'>
-                <View className='flex-row items-center gap-0.5'>
-                  <Icon name="calendar" color={isDark ? Colors.dark.text : Colors.light.text} style={{ width: 15, height: 15 }} />
+              <View style={{...spacing.gap(12)}} className='flex-row'>
+                <View style={{...spacing.gap(2)}} className='flex-row items-center'>
+                  <Icon name="calendar" color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor()*15} />
                   <ScaledText isThemed={true} size="sm">10.04.2025</ScaledText>
                 </View>
-                <View className='flex-row items-center gap-0.5'>
-                  <Icon name="clock" color={isDark ? Colors.dark.text : Colors.light.text} style={{ width: 15, height: 15 }} />
+                <View style={{...spacing.gap(2)}} className='flex-row items-center'>
+                  <Icon name="clock" color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor()*15} />
                   <ScaledText isThemed={true} size="sm">17:49</ScaledText>
                 </View>
               </View>
               <ScaledText isThemed={true} size="sm">78 450 km</ScaledText>
             </View>
           </View>
-          <View className='flex gap-3'>
-            <View className='flex-row items-center gap-3 w-full'>
-              <ScaledText className='p-4 rounded-full' style={{ backgroundColor: "lightgray", fontWeight: "bold" }} size='base'>SH</ScaledText>
+          <View style={{...spacing.gap(12)}} className='flex'>
+            <View style={{...spacing.gap(12)}} className='flex-row items-center w-full'>
+              <ScaledText className='rounded-full' style={{ backgroundColor: "lightgray", fontWeight: "bold", ...spacing.p(16) }} size='base'>SH</ScaledText>
               <View className='flex-row justify-between flex-1'>
-                <View className='flex gap-1 items-start'>
+                <View style={{...spacing.gap(4)}} className='flex items-start'>
                   <ScaledText isThemed={true} size="lg" className='font-bold'>Shell</ScaledText>
-                  <View className='flex-row justify-center items-center gap-0.5'>
-                    <Icon name="map_pin" color={isDark ? Colors.dark.text : Colors.light.text} style={{ width: 15, height: 15 }} />
+                  <View style={{...spacing.gap(2)}} className='flex-row justify-center items-center'>
+                    <Icon name="map_pin" color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor()*15} />
                     <ScaledText isThemed={true} size="sm">Koterovská 156, Plzeň</ScaledText>
                   </View>
                 </View>
-                <View className='flex gap-1 items-end'>
+                <View style={{...spacing.gap(4)}} className='flex items-end'>
                   <ScaledText isThemed={true} size="lg" className='font-bold'>1200 Kč</ScaledText>
                   <ScaledText isThemed={true} size="sm">30.5l</ScaledText>
                 </View>
               </View>
             </View>
             <View className='flex-row justify-between'>
-              <View className='flex-row gap-3'>
-                <View className='flex-row items-center gap-0.5'>
-                  <Icon name="calendar" color={isDark ? Colors.dark.text : Colors.light.text} style={{ width: 15, height: 15 }} />
+              <View style={{...spacing.gap(12)}} className='flex-row'>
+                <View style={{...spacing.gap(2)}} className='flex-row items-center'>
+                  <Icon name="calendar" color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor()*15} />
                   <ScaledText isThemed={true} size="sm">10.04.2025</ScaledText>
                 </View>
-                <View className='flex-row items-center gap-0.5'>
-                  <Icon name="clock" color={isDark ? Colors.dark.text : Colors.light.text} style={{ width: 15, height: 15 }} />
+                <View style={{...spacing.gap(2)}} className='flex-row items-center'>
+                  <Icon name="clock" color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor()*15} />
                   <ScaledText isThemed={true} size="sm">17:49</ScaledText>
                 </View>
               </View>
               <ScaledText isThemed={true} size="sm">78 450 km</ScaledText>
             </View>
           </View>
-          <View className='flex gap-3'>
-            <View className='flex-row items-center gap-3 w-full'>
-              <ScaledText className='p-4 rounded-full' style={{ backgroundColor: "lightgray", fontWeight: "bold" }} size='base'>SH</ScaledText>
+          <View style={{...spacing.gap(12)}} className='flex'>
+            <View style={{...spacing.gap(12)}} className='flex-row items-center w-full'>
+              <ScaledText className='rounded-full' style={{ backgroundColor: "lightgray", fontWeight: "bold", ...spacing.p(16) }} size='base'>SH</ScaledText>
               <View className='flex-row justify-between flex-1'>
-                <View className='flex gap-1 items-start'>
+                <View style={{...spacing.gap(4)}} className='flex items-start'>
                   <ScaledText isThemed={true} size="lg" className='font-bold'>Shell</ScaledText>
-                  <View className='flex-row justify-center items-center gap-0.5'>
-                    <Icon name="map_pin" color={isDark ? Colors.dark.text : Colors.light.text} style={{ width: 15, height: 15 }} />
+                  <View style={{...spacing.gap(2)}} className='flex-row justify-center items-center'>
+                    <Icon name="map_pin" color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor()*15} />
                     <ScaledText isThemed={true} size="sm">Koterovská 156, Plzeň</ScaledText>
                   </View>
                 </View>
-                <View className='flex gap-1 items-end'>
+                <View style={{...spacing.gap(4)}} className='flex items-end'>
                   <ScaledText isThemed={true} size="lg" className='font-bold'>1200 Kč</ScaledText>
                   <ScaledText isThemed={true} size="sm">30.5l</ScaledText>
                 </View>
               </View>
             </View>
             <View className='flex-row justify-between'>
-              <View className='flex-row gap-3'>
-                <View className='flex-row items-center gap-0.5'>
-                  <Icon name="calendar" color={isDark ? Colors.dark.text : Colors.light.text} style={{ width: 15, height: 15 }} />
+              <View style={{...spacing.gap(12)}} className='flex-row'>
+                <View style={{...spacing.gap(2)}} className='flex-row items-center'>
+                  <Icon name="calendar" color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor()*15} />
                   <ScaledText isThemed={true} size="sm">10.04.2025</ScaledText>
                 </View>
-                <View className='flex-row items-center gap-0.5'>
-                  <Icon name="clock" color={isDark ? Colors.dark.text : Colors.light.text} style={{ width: 15, height: 15 }} />
+                <View style={{...spacing.gap(2)}} className='flex-row items-center'>
+                  <Icon name="clock" color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor()*15} />
                   <ScaledText isThemed={true} size="sm">17:49</ScaledText>
                 </View>
               </View>
@@ -182,9 +184,9 @@ export default function HomeScreen() {
             </View>
           </View>
         </Tabs>
-        <Link className='py-8 my-2 flex justify-center' href={'/tank'}><ScaledText className="text-center font-bold" color={Colors.inactive_icon} size="base">Zobrazit vše</ScaledText></Link>
+        <Link style={{...spacing.py(32), ...spacing.my(8)}} className='flex justify-center' href={'/tank'}><ScaledText className="text-center font-bold" color={Colors.inactive_icon} size="base">Zobrazit vše</ScaledText></Link>
       </ScrollView>
-      <CustomButton className={`absolute p-6 my-3 bottom-0 right-5 flex justify-center items-center aspect-square`} label='+' labelSize='xl' roundedRadius={90} labelColor={Colors.white} backgroundColor={Colors.primary} />
+      <CustomButton style={{...spacing.p(24), ...spacing.my(12), ...spacing.right(20), ...spacing.borderRadius(90)}} className={`absolute bottom-0 flex justify-center items-center aspect-square`} label='+' labelSize='xl' labelColor={Colors.white} backgroundColor={Colors.primary} />
     </>
   );
 }

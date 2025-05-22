@@ -1,6 +1,7 @@
 import { View } from "react-native";
 import Graph from "../../graph/Graph";
 import ScaledText from "@/components/other/scaledText";
+import { spacing } from "@/utils/SizeScaling";
 
 export default function ServisDashboard({ data, routePathName, className }: {
     data?: JSON;
@@ -8,15 +9,15 @@ export default function ServisDashboard({ data, routePathName, className }: {
     className?: string;
 }) {
     return (
-        <View className={`${className} flex-col mx-5 p-5 bg-primary rounded-xl`}>
+        <View style={{ ...spacing.mx(20), ...spacing.p(20), ...spacing.borderRadius(12) }} className={`${className} flex-col bg-primary`}>
             <ScaledText size="lg" className="text-center text-white font-bold">Leden 2025 – Únor 2025</ScaledText>
-            <View className="flex-row justify-between mt-3 mb-3">
+            <View style={{ ...spacing.my(12) }} className="flex-row justify-between">
                 <View className="items-center">
-                    <ScaledText size="3xl" className="text-white font-bold mb-1">1546.80 Kč</ScaledText>
+                    <ScaledText style={{ ...spacing.mb(4) }} size="3xl" className="text-white font-bold">1546.80 Kč</ScaledText>
                     <ScaledText size="lg" className="text-hidden_text font-bold">Výdaje za palivo</ScaledText>
                 </View>
                 <View className="items-center">
-                    <ScaledText size="3xl" className="text-white font-bold mb-1">389 km</ScaledText>
+                    <ScaledText style={{ ...spacing.mb(4) }} size="3xl" className="text-white font-bold">389 km</ScaledText>
                     <ScaledText size="lg" className="text-hidden_text font-bold">Vzdálenost</ScaledText>
                 </View>
             </View>

@@ -1,5 +1,8 @@
+import ScaledText from "@/components/other/scaledText";
 import { Colors } from "@/constants/Colors";
+import { FontSizes } from "@/constants/FontSizes";
 import { useTheme } from "@/theme/ThemeProvider";
+import getScaleFactor, { spacing } from "@/utils/SizeScaling";
 import { useState } from "react";
 import { Text, View } from "react-native";
 import { BarChart, CurveType, LineChart } from "react-native-gifted-charts";
@@ -109,17 +112,17 @@ export default function TankLineGraph({ className }: {
 
     ];
     return (
-        <SafeAreaView onLayout={onLayout} style={{ maxHeight: parentWidth / 3, marginVertical: 15 }} className={`items-center justify-center ${className}`}>
+        <SafeAreaView onLayout={onLayout} style={{ maxHeight: parentWidth / 3, ...spacing.my(15) }} className={`items-center justify-center ${className}`}>
 
             <LineChart
                 overflowBottom={1}
                 overflowTop={1}
                 noOfSections={3}
-                initialSpacing={15}
-                endSpacing={5}
-                spacing={40}
+                initialSpacing={15 * getScaleFactor()}
+                endSpacing={5 * getScaleFactor()}
+                spacing={40 * getScaleFactor()}
                 data={data}
-                thickness={4}
+                thickness={4 * getScaleFactor()}
                 dataPointsColor={Colors.primary}
                 startFillColor1={Colors.primary}
                 endFillColor1={Colors.primary}
@@ -134,6 +137,8 @@ export default function TankLineGraph({ className }: {
                     marginBottom: 0,
                     paddingTop: 0,
                     paddingBottom: 0,
+                    fontSize: FontSizes["sm"].size,
+                    ...spacing.height(25)
                 }}
                 yAxisTextStyle={{
                     color: isDark ? Colors.white : Colors.dark.secondary,
@@ -143,6 +148,7 @@ export default function TankLineGraph({ className }: {
                     marginBottom: 0,
                     paddingTop: 0,
                     paddingBottom: 0,
+                    fontSize: FontSizes["sm"].size,
                 }}
                 rulesColor={Colors.inactive_icon}
                 adjustToWidth
@@ -156,22 +162,26 @@ export default function TankLineGraph({ className }: {
                 pointerConfig={{
                     pointerStripUptoDataPoint: true,
                     pointerStripColor: isDark ? Colors.dark.text : Colors.light.text,
-                    pointerStripWidth: 2,
+                    pointerStripWidth: 2 * getScaleFactor(),
                     strokeDashArray: [2, 5],
                     pointerColor: isDark ? Colors.dark.text : Colors.light.text,
-                    radius: 4,
-                    pointerLabelWidth: 80,
-                    pointerLabelHeight: 64,
+                    radius: 4 * getScaleFactor(),
+                    pointerLabelWidth: 80 * getScaleFactor(),
+                    pointerLabelHeight: 64 * getScaleFactor(),
                     activatePointersOnLongPress: true,
                     autoAdjustPointerLabelPosition: true,
                     pointerLabelComponent: (items: any) => {
                         return (
-                            <View className="flex justify-center w-20 h-16 text-center rounded-lg p-3"
+                            <View className="flex justify-center text-center"
                                 style={{
                                     backgroundColor: Colors.primary,
+                                    ...spacing.width(80),
+                                    ...spacing.height(64),
+                                    ...spacing.p(12),
+                                    ...spacing.borderRadius(8)
                                 }}>
-                                <Text style={{ color: Colors.white, fontSize: 12 }}>{items[0].label}</Text>
-                                <Text style={{ color: Colors.white, fontWeight: 'bold' }}>{items[0].value}</Text>
+                                <ScaledText size="sm" style={{ color: Colors.white }}>{items[0].label}</ScaledText>
+                                <ScaledText size="sm" style={{ color: Colors.white, fontWeight: 'bold' }}>{items[0].value}</ScaledText>
                             </View>
                         );
                     },

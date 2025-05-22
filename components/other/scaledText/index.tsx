@@ -1,6 +1,7 @@
 import { Colors } from '@/constants/Colors';
 import { FontSizes } from '@/constants/FontSizes';
 import { useTheme } from '@/theme/ThemeProvider';
+import getScaleFactor from '@/utils/SizeScaling';
 import { Text, TextProps } from 'react-native';
 
 export type FontSizeKey = keyof typeof FontSizes;
@@ -20,7 +21,7 @@ export default function ScaledText({ size, isThemed = false, color, style, child
 
   return (
     <Text
-      style={[{ fontSize: fontStyle.size, lineHeight: fontStyle.lineHeight }, themedColor, style]}
+      style={[{ fontSize: fontStyle.size, lineHeight: fontStyle.lineHeight*getScaleFactor() }, themedColor, style]}
       {...props}
     >
       {children}

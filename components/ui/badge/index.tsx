@@ -1,6 +1,7 @@
 import { View } from "react-native";
 import ScaledText from "../../other/scaledText";
 import type { FontSizeKey } from "../../other/scaledText";
+import { spacing } from "@/utils/SizeScaling";
 
 export default function Badge({ className, textClassName, size = "base", value, badgeColor, textColor }: {
     className?: string;
@@ -13,7 +14,7 @@ export default function Badge({ className, textClassName, size = "base", value, 
 
     return (
         <View className={`${className} items-baseline`}>
-            <ScaledText className={`${textClassName} px-2 py-1 rounded-full`} style={[{backgroundColor: badgeColor, color: textColor}]} size={size}>{value}</ScaledText>
+            <ScaledText className={`${textClassName} rounded-full`} style={[{backgroundColor: badgeColor, color: textColor, ...spacing.px(8), ...spacing.py(4)}]} size={size}>{value}</ScaledText>
         </View>
     )
 }

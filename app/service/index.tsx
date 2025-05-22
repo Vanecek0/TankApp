@@ -3,6 +3,7 @@ import Badge from '@/components/ui/badge';
 import Icon from '@/components/ui/Icon';
 import { Colors } from '@/constants/Colors';
 import { useTheme } from '@/theme/ThemeProvider';
+import getScaleFactor, { spacing } from '@/utils/SizeScaling';
 import { usePathname } from 'expo-router';
 import { useState } from 'react';
 import { Image, StyleSheet, Platform, View, ScrollView } from 'react-native';
@@ -13,14 +14,14 @@ export default function HomeScreen() {
 
   return (
     <ScrollView style={{ backgroundColor: isDark ? Colors.dark.background : Colors.light.background }}>
-      <View className='mx-5 mb-5 mt-3'>
-        <View style={{ backgroundColor: isDark ? Colors.dark.secondary_light : Colors.white }} className={`p-5 mb-3 rounded-lg`}>
-          <View className='flex-row justify-between mb-2'>
+      <View style={{...spacing.mx(20), ...spacing.mb(20), ...spacing.mt(12)}}>
+        <View style={{ backgroundColor: isDark ? Colors.dark.secondary_light : Colors.white, ...spacing.p(20), ...spacing.mb(12), ...spacing.borderRadius(8)}}>
+          <View style={{...spacing.mb(8)}} className='flex-row justify-between'>
             <View>
               <ScaledText size='lg' className='font-bold' isThemed={true}>Audi TT</ScaledText>
               <ScaledText size='base' isThemed={true}>2.0 TFSI Coupe</ScaledText>
             </View>
-            <View className='p-3 rounded-full aspect-square flex justify-center items-center' style={{ borderColor: "lightgray", borderWidth: 5 }}>
+            <View className='rounded-full aspect-square flex justify-center items-center' style={{ borderColor: "lightgray", ...spacing.borderWidth(5), ...spacing.p(12) }}>
               <ScaledText size='base' style={{ fontWeight: "bold", color: isDark ? Colors.dark.text : Colors.light.text }}>BA</ScaledText>
               <ScaledText size='xs' style={{ color: isDark ? Colors.dark.text : Colors.light.text }}>E10</ScaledText>
             </View>
@@ -30,7 +31,7 @@ export default function HomeScreen() {
             setContainerWidth(width);
           }}>
             <Image
-              style={{ width: containerWidth, height: containerWidth * 9 / 16, borderRadius: 8}}
+              style={{ width: containerWidth, height: containerWidth * 9 / 16, ...spacing.borderRadius(8)}}
               resizeMode='cover'
               source={require('@/assets/images/car_image.png')}>
             </Image>
@@ -38,49 +39,49 @@ export default function HomeScreen() {
 
         </View>
 
-        <View className='flex-row flex-wrap justify-between mb-3'>
-          <View style={{ backgroundColor: isDark ? Colors.dark.secondary_light : Colors.white }} className={`p-5 basis-[48.5%] mb-3 rounded-lg`}>
-            <View className='flex-row items-center gap-1'>
-              <Icon name="speedometer" color={isDark ? Colors.dark.text : Colors.light.text} style={{ width: 15, height: 15 }} />
+        <View className='flex-row flex-wrap justify-between'>
+          <View style={{ backgroundColor: isDark ? Colors.dark.secondary_light : Colors.white, ...spacing.p(20), ...spacing.mb(12), ...spacing.borderRadius(8)}} className={`basis-[48.5%]`}>
+            <View style={{...spacing.gap(4)}} className='flex-row items-center'>
+              <Icon name="speedometer" color={isDark ? Colors.dark.text : Colors.light.text} style={{ ...spacing.width(15), ...spacing.height(15) }} />
               <ScaledText size='xs' className='font-bold' isThemed={true}>Stav tachometru</ScaledText>
             </View>
-            <View className='flex justify-between gap-3 mt-4'>
+            <View style={{...spacing.gap(12), ...spacing.mt(16)}} className='flex justify-between'>
               <ScaledText size='lg' className='font-bold' isThemed={true}>135 000 km</ScaledText>
             </View>
           </View>
-          <View style={{ backgroundColor: isDark ? Colors.dark.secondary_light : Colors.white }} className={`p-5 basis-[48.5%] mb-3 rounded-lg`}>
-            <View className='flex-row items-center gap-1'>
-              <Icon name="calendar" color={isDark ? Colors.dark.text : Colors.light.text} style={{ width: 15, height: 15 }} />
+          <View style={{ backgroundColor: isDark ? Colors.dark.secondary_light : Colors.white, ...spacing.p(20), ...spacing.mb(12), ...spacing.borderRadius(8) }} className={`basis-[48.5%] `}>
+            <View style={{...spacing.gap(4)}} className='flex-row items-center'>
+              <Icon name="calendar" color={isDark ? Colors.dark.text : Colors.light.text} style={{ ...spacing.width(15), ...spacing.height(15) }} />
               <ScaledText size='xs' className='font-bold' isThemed={true}>Příští STK</ScaledText>
             </View>
-            <View className='flex justify-between gap-3 mt-4'>
+            <View style={{...spacing.gap(12), ...spacing.mt(16)}} className='flex justify-between'>
               <ScaledText size='lg' className='font-bold' isThemed={true}>01.02.2027</ScaledText>
             </View>
           </View>
-          <View style={{ backgroundColor: isDark ? Colors.dark.secondary_light : Colors.white }} className={`p-5 basis-[48.5%] rounded-lg`}>
-            <View className='flex-row items-center gap-1'>
-              <Icon name="average" color={isDark ? Colors.dark.text : Colors.light.text} style={{ width: 15, height: 15 }} />
+          <View style={{ backgroundColor: isDark ? Colors.dark.secondary_light : Colors.white, ...spacing.p(20), ...spacing.mb(12), ...spacing.borderRadius(8) }} className={`basis-[48.5%]`}>
+            <View style={{...spacing.gap(4)}} className='flex-row items-center'>
+              <Icon name="average" color={isDark ? Colors.dark.text : Colors.light.text} style={{ ...spacing.width(15), ...spacing.height(15) }} />
               <ScaledText size='xs' className='font-bold' isThemed={true}>Průměrné roční náklady</ScaledText>
             </View>
-            <View className='flex justify-between gap-3 mt-4'>
+            <View style={{...spacing.gap(12), ...spacing.mt(16)}} className='flex justify-between'>
               <ScaledText size='lg' className='font-bold' isThemed={true}>30 500 Kč</ScaledText>
             </View>
           </View>
-          <View style={{ backgroundColor: isDark ? Colors.dark.secondary_light : Colors.white }} className={`p-5 basis-[48.5%] rounded-lg`}>
-            <View className='flex-row items-center gap-1'>
-              <Icon name="dollar" color={isDark ? Colors.dark.text : Colors.light.text} style={{ width: 15, height: 15 }} />
+          <View style={{ backgroundColor: isDark ? Colors.dark.secondary_light : Colors.white, ...spacing.p(20), ...spacing.mb(12), ...spacing.borderRadius(8) }} className={`basis-[48.5%]`}>
+            <View style={{...spacing.gap(4)}} className='flex-row items-center'>
+              <Icon name="dollar" color={isDark ? Colors.dark.text : Colors.light.text} style={{ ...spacing.width(15), ...spacing.height(15) }} />
               <ScaledText size='xs' className='font-bold' isThemed={true}>Celkové náklady</ScaledText>
             </View>
-            <View className='flex justify-between gap-3 mt-4'>
+            <View style={{...spacing.gap(12), ...spacing.mt(16)}} className='flex justify-between'>
               <ScaledText size='lg' className='font-bold' isThemed={true}>320 340 Kč</ScaledText>
             </View>
           </View>
         </View>
-        <View style={{ backgroundColor: isDark ? Colors.dark.secondary_light : Colors.white }} className={`p-5 mb-3 basis-[48.5%] rounded-lg`}>
-          <ScaledText size='lg' className='font-bold mb-3' isThemed={true}>Servisní záznam</ScaledText>
-          <View className='my-2 flex-row items-center border-b-[0.5px]' style={{ borderBottomColor: Colors.hidden_text }}>
-            <View className='flex-row items-center justify-between gap-3 mb-3 w-full'>
-              <View className='flex gap-3'>
+        <View style={{ backgroundColor: isDark ? Colors.dark.secondary_light : Colors.white, ...spacing.p(20), ...spacing.mb(12), ...spacing.borderRadius(8) }} className={`basis-[48.5%]`}>
+          <ScaledText style={{...spacing.mb(12)}} size='lg' className='font-bold' isThemed={true}>Servisní záznam</ScaledText>
+          <View className='flex-row items-center' style={{ borderBottomColor: Colors.hidden_text, ...spacing.my(8), ...spacing.borderBottomWidth(0.5) }}>
+            <View style={{...spacing.gap(12), ...spacing.mb(12)}} className='flex-row items-center justify-between w-full'>
+              <View style={{...spacing.gap(12)}} className='flex'>
                 <Badge size='sm' textClassName='font-bold' value='01.05.2025' badgeColor='#ddd'></Badge>
                 <ScaledText size='sm' className='font-bold' isThemed={true}>Výměna oleje + výměna brzdových kotoučů</ScaledText>
                 <View className='flex-row'>
@@ -90,12 +91,12 @@ export default function HomeScreen() {
               </View>
             </View>
             <View className='-mx-3'>
-              <Icon name="chevron_right" color={isDark ? Colors.dark.text : Colors.light.text} style={{ width: 18, height: 18 }} />
+              <Icon name="chevron_right" color={isDark ? Colors.dark.text : Colors.light.text} style={{ ...spacing.width(18), ...spacing.height(18) }} />
             </View>
           </View>
-          <View className='my-2 flex-row items-center border-b-[0.5px]' style={{ borderBottomColor: Colors.hidden_text }}>
-            <View className='flex-row items-center justify-between gap-3 mb-3 w-full'>
-              <View className='flex gap-3'>
+          <View className='flex-row items-center' style={{ borderBottomColor: Colors.hidden_text, ...spacing.my(8), ...spacing.borderBottomWidth(0.5) }}>
+            <View style={{...spacing.gap(12), ...spacing.mb(12)}} className='flex-row items-center justify-between w-full'>
+              <View style={{...spacing.gap(12)}} className='flex'>
                 <Badge size='sm' textClassName='font-bold' value='18.02.2025' badgeColor={'#eee'}></Badge>
                 <ScaledText size='sm' className='font-bold' isThemed={true}>Výměna vzduchového filtru</ScaledText>
                 <View className='flex-row'>
@@ -105,12 +106,12 @@ export default function HomeScreen() {
               </View>
             </View>
             <View className='-mx-3'>
-              <Icon name="chevron_right" color={isDark ? Colors.dark.text : Colors.light.text} style={{ width: 18, height: 18 }} />
+              <Icon name="chevron_right" color={isDark ? Colors.dark.text : Colors.light.text} style={{ ...spacing.width(18), ...spacing.height(18) }} />
             </View>
           </View>
-          <View className='my-2 flex-row items-center'>
-            <View className='flex-row items-center justify-between gap-3 w-full'>
-              <View className='flex gap-3'>
+          <View style={{...spacing.my(8)}} className='flex-row items-center'>
+            <View style={{...spacing.gap(12)}} className='flex-row items-center justify-between w-full'>
+              <View style={{...spacing.gap(12)}} className='flex'>
                 <Badge size='sm' textClassName='font-bold' value='10.11.2024' badgeColor='#ddd'></Badge>
                 <ScaledText size='sm' className='font-bold' isThemed={true}>Zimní pneumatiky, kontrola brzd</ScaledText>
                 <View className='flex-row'>
@@ -120,7 +121,7 @@ export default function HomeScreen() {
               </View>
             </View>
             <View className='-mx-3'>
-              <Icon name="chevron_right" color={isDark ? Colors.dark.text : Colors.light.text} style={{ width: 18, height: 18 }} />
+              <Icon name="chevron_right" color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor()*18} />
             </View>
           </View>
         </View>

@@ -10,6 +10,7 @@ import CustomButton from '@/components/other/customButton';
 import TabView from '@/components/other/tabView';
 import { TankHistory } from './tabs/history';
 import { TankStatistics } from './tabs/statistics';
+import { spacing } from '@/utils/SizeScaling';
 
 export default function TankScreen() {
   const { isDark } = useTheme();
@@ -17,11 +18,11 @@ export default function TankScreen() {
 
   return (
     <>
-      <ScrollView style={{ backgroundColor: isDark ? Colors.dark.background : Colors.light.background }} className='py-2'>
+      <ScrollView style={{ backgroundColor: isDark ? Colors.dark.background : Colors.light.background, ...spacing.py(8) }}>
         <Dashboard routePathName={pathname} />
         <TabView
-          className='m-5 mb-28'
-          tabStyle={{paddingVertical: 10, marginBottom: 5}}
+          containerStyle={{...spacing.m(20), ...spacing.mb(112)}}
+          tabStyle={{...spacing.py(10), ...spacing.mb(5)}}
           activeTabStyle={{borderBottomWidth: 3, borderBottomColor: Colors.hidden_text, backgroundColor: isDark ? Colors.dark.secondary_light : Colors.white}}
           activeTabTextStyle={{color: isDark ? Colors.dark.text : Colors.light.text}}
           tabTextStyle={{ textAlign: "center", color: Colors.inactive_icon }}
@@ -31,7 +32,7 @@ export default function TankScreen() {
           ]}
         />
       </ScrollView>
-      <CustomButton className={`absolute p-6 my-3 bottom-0 right-5 flex justify-center items-center aspect-square`} label='+' labelSize='xl' roundedRadius={90} labelColor={Colors.white} backgroundColor={Colors.primary} />
+      <CustomButton style={{...spacing.borderRadius(90), ...spacing.p(24), ...spacing.my(12), ...spacing.right(20)}} className={`absolute bottom-0  flex justify-center items-center aspect-square`} label='+' labelSize='xl' labelColor={Colors.white} backgroundColor={Colors.primary} />
     </>
   );
 }
