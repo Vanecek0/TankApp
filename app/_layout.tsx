@@ -15,6 +15,8 @@ import { Colors } from '@/constants/Colors';
 import getFontSize from "@/utils/fontScaling";
 import { FontSizes } from "@/constants/FontSizes";
 import getScaleFactor, { spacing } from "@/utils/SizeScaling";
+import { Database } from "@/database/database";
+import { SQLiteProvider } from "expo-sqlite";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -22,6 +24,7 @@ export type FontSizeKey = keyof typeof FontSizes;
 
 export default function RootLayout() {
   const [isReady, setIsReady] = useState(false);
+  const [dbReady, setDbReady] = useState(false);
 
 
   useEffect(() => {
@@ -34,6 +37,22 @@ export default function RootLayout() {
         setIsReady(true);
       }
     }
+
+    const resetDb = async () => {
+      await Database.resetDatabase();
+    };
+    //resetDb();
+
+    const initDb = async () => {
+      await Database.init();
+    };
+    initDb();
+
+     const seedDb = async () => {
+      await Database.seedData();
+    };
+    //seedDb();
+
 
     prepare();
   }, []);
@@ -49,9 +68,11 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider>
-      <AppContent />
-    </ThemeProvider>
+    <SQLiteProvider databaseName="database.db">
+      <ThemeProvider>
+        <AppContent />
+      </ThemeProvider>
+    </SQLiteProvider>
   );
 }
 
@@ -84,11 +105,11 @@ function AppContent() {
                   backgroundColor: isDark ? Colors.dark.secondary : Colors.light.secondary,
                   ...spacing.height(75),
                   borderTopWidth: 0,
-                  paddingBottom: 0*getScaleFactor()
+                  paddingBottom: 0 * getScaleFactor()
                 },
               }),
               tabBarLabelStyle: {
-                fontSize: 12*getScaleFactor(),
+                fontSize: 12 * getScaleFactor(),
                 fontWeight: 'bold',
               },
               tabBarShowLabel: true,
