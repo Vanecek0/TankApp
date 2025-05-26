@@ -19,14 +19,30 @@ export default function HomeScreen() {
   const pathname = usePathname();
 
   const [tankingRecords, setTankingRecords] = useState<(Tanking & { station: Station })[]>([]);
+  const [tankingActiveRecords, setTankingActiveRecords] = useState(2);
+  const [tankingRecordsCount, setTankingRecordsCount] = useState(0);
+
+
+  const loadMore = () => {
+    setTankingActiveRecords(tankingActiveRecords + 3)
+  }
+
+  useEffect(() => {
+    const getTankingCount = async () => {
+      const count = await TankingModel.count();
+      setTankingRecordsCount(count)
+    };
+
+    getTankingCount();
+  }, [])
 
   useEffect(() => {
     const load = async () => {
-      const data = await TankingModel.getAllTankingsWithStation(5);
+      const data = await TankingModel.getAllTankingsWithStation(tankingActiveRecords);
       setTankingRecords(data);
     };
     load();
-  }, []);
+  }, [tankingActiveRecords]);
 
   return (
     <>
@@ -40,11 +56,11 @@ export default function HomeScreen() {
             <Link className="flex" href={'/tank'}><Icon name="chevron_down" color={isDark ? Colors.dark.text : Colors.light.text} style={{ ...spacing.width(18), ...spacing.height(18) }} /></Link>
           </View>
         </View>
-        <Tabs style={{ ...spacing.mx(20) }}>
+        <Tabs className='mb-' style={{ ...spacing.mx(20) }}>
           {tankingRecords.map((tanking) => (
             <View key={tanking.id} style={{ ...spacing.gap(12) }} className='flex'>
               <View style={{ ...spacing.gap(12) }} className='flex-row items-center w-full'>
-                <ScaledText className='rounded-full' style={{ backgroundColor: "lightgray", fontWeight: "bold", ...spacing.p(16) }} size='base'>{tanking.station.provider.slice(0,2).toUpperCase()}</ScaledText>
+                <ScaledText className='rounded-full' style={{ backgroundColor: "lightgray", fontWeight: "bold", ...spacing.p(16) }} size='base'>{tanking.station.provider.slice(0, 2).toUpperCase()}</ScaledText>
                 <View className='flex-row justify-between flex-1'>
                   <View style={{ ...spacing.gap(4) }} className='flex items-start'>
                     <ScaledText isThemed={true} size="lg" className='font-bold'>{tanking.station.name}</ScaledText>
@@ -75,7 +91,13 @@ export default function HomeScreen() {
             </View>
           ))}
         </Tabs>
-        <Link style={{ ...spacing.py(32), ...spacing.my(8) }} className='flex justify-center' href={'/tank'}><ScaledText className="text-center font-bold" color={Colors.inactive_icon} size="base">Zobrazit vše</ScaledText></Link>
+        <View style={{ ...spacing.my(42) }} className='flex'>
+          <ScaledText onPress={() => loadMore()} className="text-center font-bold" color={Colors.inactive_icon} size="base">
+            {
+              tankingActiveRecords < tankingRecordsCount ? 'Zobrazit další' : 'Žádné další záznamy'
+            }
+          </ScaledText>
+        </View>
       </ScrollView>
       <CustomButton style={{ ...spacing.p(24), ...spacing.my(12), ...spacing.right(20), ...spacing.borderRadius(90) }} className={`absolute bottom-0 flex justify-center items-center aspect-square`} label='+' labelSize='xl' labelColor={Colors.white} backgroundColor={Colors.primary} />
     </>
