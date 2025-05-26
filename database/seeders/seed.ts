@@ -1,5 +1,5 @@
-import { getStationSeeds } from "./data/demo_station_seeds"
-import { getTankingSeeds } from "./data/demo_tanking_seeds"
+import { getStationSeeds } from "./factories/stationFactory"
+import { getTankingSeeds } from "./factories/tankingFactory"
 import type * as SQLite from "expo-sqlite"
 
 export async function seed(db: SQLite.SQLiteDatabase) {

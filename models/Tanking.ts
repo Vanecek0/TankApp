@@ -1,6 +1,8 @@
 import { Database } from "@/database/database";
 import { Station } from "./Station";
 
+
+
 export type Tanking = {
   id?: number;
   tachometer: number;
@@ -13,6 +15,8 @@ export type Tanking = {
 };
 
 export class TankingModel {
+
+
   static async create(tanking: Tanking) {
     const result = await Database.executeSql(
       'INSERT INTO tanking (tachometer, fuel_type, price, price_per_unit, amount, mileage, created_at) VALUES (?)',
@@ -27,9 +31,22 @@ export class TankingModel {
     return rows;
   }
 
+  static async count(): Promise<any> {
+    const db = await Database.getConnection();
+    const promiseThen = new Promise((resolve, reject) => {
+      const count = db.getAllAsync('SELECT COUNT(*) FROM tanking')
+      resolve(count);
+    });
+
+    return promiseThen
+      .then((val: any) => {
+        return val[0]["COUNT(*)"];
+      })
+      .catch((err) => console.log(err));
+  }
+
   static async getAllTankingsWithStation(limit?: number): Promise<(Tanking & { station: Station })[]> {
     const db = await Database.getConnection();
-
     const rows = await db.getAllAsync(
       `SELECT 
          t.*,
