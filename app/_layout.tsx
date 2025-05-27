@@ -18,7 +18,7 @@ import getScaleFactor, { spacing } from "@/utils/SizeScaling";
 import { Database } from "@/database/database";
 import { SQLiteProvider } from "expo-sqlite";
 import { Provider } from 'react-redux'
-import store from "../store";
+import store from "../redux/store";
 
 SplashScreen.preventAutoHideAsync();
 

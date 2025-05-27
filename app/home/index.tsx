@@ -1,5 +1,5 @@
 import { View, ScrollView, Text } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 
 import { useTheme } from '@/theme/ThemeProvider';
 import { Link, usePathname } from 'expo-router';
@@ -13,19 +13,17 @@ import getScaleFactor, { scaled } from '@/utils/SizeScaling';
 import { spacing } from '@/utils/SizeScaling';
 import { Tanking, TankingModel } from '@/models/Tanking';
 import { Station } from '@/models/Station';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../store';
-import { increment } from '@/redux/counter/counterSlice';
+import counterReducer, { initialState } from '@/redux/reducers/counterReducer';
 
 export default function HomeScreen() {
   const { isDark } = useTheme();
   const pathname = usePathname();
+  const initialTankingRecordsCount = 2;
+
+  const [state, dispatch] = useReducer(counterReducer, initialState)
 
   const [tankingRecords, setTankingRecords] = useState<(Tanking & { station: Station })[]>([]);
   const [tankingRecordsCount, setTankingRecordsCount] = useState(0);
-
-  const tankingActiveCount = useSelector((state: RootState) => state.counter.value)
-  const dispatch = useDispatch()
 
   useEffect(() => {
     const getTankingCount = async () => {
@@ -37,12 +35,18 @@ export default function HomeScreen() {
   }, [])
 
   useEffect(() => {
-    const load = async () => {
-      const data = await TankingModel.getAllTankingsWithStation(tankingActiveCount);
-      setTankingRecords(data);
+    const loadMore = async () => {
+      if (state.value === 0) {
+        const data = await TankingModel.getNextTankingsWithStation(0, initialTankingRecordsCount);
+        setTankingRecords(prev => [...prev, ...data]);
+      } else {
+        const data = await TankingModel.getNextTankingsWithStation(state.value, initialTankingRecordsCount);
+        setTankingRecords(prev => [...prev, ...data]);
+      }
     };
-    load();
-  }, [tankingActiveCount]);
+    loadMore();
+
+  }, [state.value]);
 
   return (
     <>
@@ -91,9 +95,9 @@ export default function HomeScreen() {
           ))}
         </Tabs>
         <View style={{ ...spacing.my(42) }} className='flex'>
-          <ScaledText onPress={() => dispatch(increment())} className="text-center font-bold" color={Colors.inactive_icon} size="base">
+          <ScaledText onPress={() => state.value + initialTankingRecordsCount < tankingRecordsCount ? dispatch({ type: 'ADD_NEXT_STEP_ACTION' }) : null} className="text-center font-bold" color={Colors.inactive_icon} size="base">
             {
-              tankingActiveCount < tankingRecordsCount ? 'Zobrazit další' : 'Žádné další záznamy'
+              state.value + initialTankingRecordsCount < tankingRecordsCount ? 'Zobrazit další' : 'Žádné další záznamy'
             }
           </ScaledText>
         </View>
