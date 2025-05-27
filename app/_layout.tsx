@@ -17,6 +17,8 @@ import { FontSizes } from "@/constants/FontSizes";
 import getScaleFactor, { spacing } from "@/utils/SizeScaling";
 import { Database } from "@/database/database";
 import { SQLiteProvider } from "expo-sqlite";
+import { Provider } from 'react-redux'
+import store from "../store";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -48,7 +50,7 @@ export default function RootLayout() {
     };
     initDb();
 
-     const seedDb = async () => {
+    const seedDb = async () => {
       await Database.seedData();
     };
     //seedDb();
@@ -69,9 +71,11 @@ export default function RootLayout() {
 
   return (
     <SQLiteProvider databaseName="database.db">
-      <ThemeProvider>
-        <AppContent />
-      </ThemeProvider>
+      <Provider store={store}>
+        <ThemeProvider>
+          <AppContent />
+        </ThemeProvider>
+      </Provider>
     </SQLiteProvider>
   );
 }

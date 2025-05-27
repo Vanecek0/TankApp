@@ -13,19 +13,19 @@ import getScaleFactor, { scaled } from '@/utils/SizeScaling';
 import { spacing } from '@/utils/SizeScaling';
 import { Tanking, TankingModel } from '@/models/Tanking';
 import { Station } from '@/models/Station';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../store';
+import { increment } from '@/redux/counter/counterSlice';
 
 export default function HomeScreen() {
   const { isDark } = useTheme();
   const pathname = usePathname();
 
   const [tankingRecords, setTankingRecords] = useState<(Tanking & { station: Station })[]>([]);
-  const [tankingActiveRecords, setTankingActiveRecords] = useState(2);
   const [tankingRecordsCount, setTankingRecordsCount] = useState(0);
 
-
-  const loadMore = () => {
-    setTankingActiveRecords(tankingActiveRecords + 3)
-  }
+  const tankingActiveCount = useSelector((state: RootState) => state.counter.value)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     const getTankingCount = async () => {
@@ -38,11 +38,11 @@ export default function HomeScreen() {
 
   useEffect(() => {
     const load = async () => {
-      const data = await TankingModel.getAllTankingsWithStation(tankingActiveRecords);
+      const data = await TankingModel.getAllTankingsWithStation(tankingActiveCount);
       setTankingRecords(data);
     };
     load();
-  }, [tankingActiveRecords]);
+  }, [tankingActiveCount]);
 
   return (
     <>
@@ -50,7 +50,6 @@ export default function HomeScreen() {
         <Dashboard routePathName={pathname} />
         <View style={{ ...spacing.my(20), ...spacing.mx(20) }} className='flex-row justify-between'>
           <ScaledText size='lg' className='font-bold' isThemed={true}>Poslední záznamy</ScaledText>
-
           <View className='flex-row items-center'>
             <ScaledText size='base' className='font-bold' isThemed={true}>Nejnovější</ScaledText>
             <Link className="flex" href={'/tank'}><Icon name="chevron_down" color={isDark ? Colors.dark.text : Colors.light.text} style={{ ...spacing.width(18), ...spacing.height(18) }} /></Link>
@@ -92,9 +91,9 @@ export default function HomeScreen() {
           ))}
         </Tabs>
         <View style={{ ...spacing.my(42) }} className='flex'>
-          <ScaledText onPress={() => loadMore()} className="text-center font-bold" color={Colors.inactive_icon} size="base">
+          <ScaledText onPress={() => dispatch(increment())} className="text-center font-bold" color={Colors.inactive_icon} size="base">
             {
-              tankingActiveRecords < tankingRecordsCount ? 'Zobrazit další' : 'Žádné další záznamy'
+              tankingActiveCount < tankingRecordsCount ? 'Zobrazit další' : 'Žádné další záznamy'
             }
           </ScaledText>
         </View>

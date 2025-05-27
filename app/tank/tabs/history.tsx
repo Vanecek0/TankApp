@@ -9,14 +9,20 @@ import Tabs from '@/components/ui/tabs';
 import Icon from '@/components/ui/Icon';
 import Badge from '@/components/ui/badge';
 import { spacing } from '@/utils/SizeScaling';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@/store';
 
 export function TankHistory() {
   const { isDark } = useTheme();
+
+  const tankingActiveCount = useSelector((state: RootState) => state.counter.value)
+  const dispatch = useDispatch()
 
   return (
     <>
       <View style={{...spacing.mb(20), ...spacing.mt(12)}} className='flex-row justify-between'>
         <ScaledText size='lg' className='font-bold' isThemed={true}>Historie tankování</ScaledText>
+        <Text>{tankingActiveCount}</Text>
         <View className='flex-row items-center'>
           <ScaledText size='base' className='font-bold' isThemed={true}>Nejnovější</ScaledText>
           <Link className="flex" href={"/tank"}><Icon name="chevron_down" color={isDark ? Colors.dark.text : Colors.light.text} style={{ ...spacing.width(18), ...spacing.height(18) }} /></Link>
