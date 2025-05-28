@@ -21,7 +21,7 @@ export default function TankScreen() {
       <ScrollView style={{ backgroundColor: isDark ? Colors.dark.background : Colors.light.background, ...spacing.py(8) }}>
         <Dashboard routePathName={pathname} />
         <TabView
-          containerStyle={{...spacing.m(20), ...spacing.mb(112)}}
+          containerStyle={{...spacing.mx(20), ...spacing.mt(20)}}
           tabStyle={{...spacing.py(10), ...spacing.mb(5)}}
           activeTabStyle={{borderBottomWidth: 3, borderBottomColor: Colors.hidden_text, backgroundColor: isDark ? Colors.dark.secondary_light : Colors.white}}
           activeTabTextStyle={{color: isDark ? Colors.dark.text : Colors.light.text}}
