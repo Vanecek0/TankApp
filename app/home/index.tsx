@@ -1,6 +1,5 @@
 import { View, ScrollView, Text } from 'react-native';
 import React, { useEffect, useReducer, useState } from 'react';
-
 import { useTheme } from '@/theme/ThemeProvider';
 import { Link, usePathname } from 'expo-router';
 import { Colors } from '@/constants/Colors';
@@ -13,44 +12,45 @@ import getScaleFactor, { scaled } from '@/utils/SizeScaling';
 import { spacing } from '@/utils/SizeScaling';
 import { Tanking, TankingModel } from '@/models/Tanking';
 import { Station } from '@/models/Station';
-import counterReducer, { initialState } from '@/redux/reducers/counterReducer';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useDatabase } from '@/database/databaseContext';
 
 export default function HomeScreen() {
   const { isDark } = useTheme();
   const pathname = usePathname();
 
-  const [state, dispatch] = useReducer(counterReducer, initialState)
+  const [initCount, setInitCount] = useState(1000);
+  const [count, setCount] = useState(initCount);
+  const [step, setStep] = useState(3);
+  const { tankings, isLoading } = useDatabase();
 
   const [tankingRecords, setTankingRecords] = useState<(Tanking & { station: Station })[]>([]);
-  const [tankingRecordsCount, setTankingRecordsCount] = useState(0);
 
   useEffect(() => {
-    const getTankingCount = async () => {
-      const photoStorage = await AsyncStorage.getItem('TankingRecordsCount').then((value) => {
-        return value
-      })
 
-      if (photoStorage) {
-        console.log(photoStorage);
-        //setTankingRecordsCount(photoStorage)
+     const loadAllMore = () => {
+      if (count == initCount) {
+        const data = tankings.slice(0, initCount);
+        setTankingRecords(prev => [...prev, ...data]);
       } else {
-        const count = await TankingModel.count();
-        setTankingRecordsCount(count)
-        return await AsyncStorage.setItem('TankingRecordsCount', count);
+        const data = tankings.slice((count - step), step);
+        setTankingRecords(prev => [...prev, ...data])
+      }
+      console.log(count);
+    };
+    //loadAllMore();
+
+    const loadMore = async () => {
+      if (count == initCount) {
+        const data = await TankingModel.getNextTankingsWithStation(0, initCount);
+        setTankingRecords(prev => [...prev, ...data]);
+      } else {
+        const data = await TankingModel.getNextTankingsWithStation((count - step), step);
+        setTankingRecords(prev => [...prev, ...data])
       }
     };
-    getTankingCount();
-  }, [])
+    //loadMore();
 
-  useEffect(() => {
-    const loadMore = async () => {
-      const data = await TankingModel.getNextTankingsWithStation(state.value, state.stepSize);
-      setTankingRecords(prev => [...prev, ...data]);
-    };
-    loadMore();
-
-  }, [state.value]);
+  }, [count]);
 
   return (
     <>
@@ -64,13 +64,13 @@ export default function HomeScreen() {
           </View>
         </View>
         <Tabs style={{ ...spacing.mx(20) }}>
-          {tankingRecords.map((tanking) => (
+          {tankings.slice(0,count).map((tanking) => (
             <View key={tanking.id} style={{ ...spacing.gap(12) }} className='flex'>
               <View style={{ ...spacing.gap(12) }} className='flex-row items-center w-full'>
                 <ScaledText className='rounded-full' style={{ backgroundColor: "lightgray", fontWeight: "bold", ...spacing.p(16) }} size='base'>{tanking.station.provider.slice(0, 2).toUpperCase()}</ScaledText>
                 <View className='flex-row justify-between flex-1'>
                   <View style={{ ...spacing.gap(4) }} className='flex items-start w-2/3'>
-                    <ScaledText isThemed={true} size="lg" className='font-bold'>{tanking.station.name}</ScaledText>
+                    <ScaledText isThemed={true} size="lg" className='font-bold'>{tanking.id} {tanking.station.name}</ScaledText>
                     <View style={{ ...spacing.gap(2) }} className='flex-row items-center justify-start'>
                       <Icon name="map_pin" color={Colors.hidden_text} size={getScaleFactor() * 15} />
                       <ScaledText numberOfLines={1} ellipsizeMode="tail" className='text-ellipsis overflow-visible' isThemed={true} size="sm">{tanking.station.address}</ScaledText>
@@ -92,10 +92,10 @@ export default function HomeScreen() {
             </View>
           ))}
         </Tabs>
-        <View style={{ ...spacing.my(42) }} className='flex'>
-          <ScaledText onPress={() => tankingRecords.length < tankingRecordsCount ? dispatch({ type: 'ADD_NEXT_STEP_ACTION' }) : null} className="text-center font-bold" color={Colors.inactive_icon} size="base">
+        <View className='flex'>
+          <ScaledText style={{...spacing.p(42)}} onPress={() => /*tankingRecords.length <*/ tankings.length ? setCount(count + step) : null} className="text-center font-bold" color={Colors.inactive_icon} size="base">
             {
-              tankingRecords.length < tankingRecordsCount ? 'Zobrazit další' : 'Žádné další záznamy'
+              /*tankingRecords.length <*/ tankings.length ? 'Zobrazit další' : 'Žádné další záznamy'
             }
           </ScaledText>
         </View>

@@ -1,8 +1,7 @@
-import { View, ScrollView, Text } from 'react-native';
-import React, { useEffect, useReducer, useState } from 'react';
-
+import { View } from 'react-native';
+import React, { useEffect } from 'react';
 import { useTheme } from '@/theme/ThemeProvider';
-import { Link, usePathname } from 'expo-router';
+import { Link } from 'expo-router';
 import { Colors } from '@/constants/Colors';
 import ScaledText from '@/components/other/scaledText';
 import Tabs from '@/components/ui/tabs';
@@ -10,34 +9,22 @@ import Icon from '@/components/ui/Icon';
 import Badge from '@/components/ui/badge';
 import getScaleFactor, { spacing } from '@/utils/SizeScaling';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
-import counterReducer, { initialState } from '@/redux/reducers/counterReducer';
-import { Tanking, TankingModel } from '@/models/Tanking';
-import { Station } from '@/models/Station';
+import { AppDispatch, RootState } from '@/redux/store';
+import { useDatabase } from '@/database/databaseContext';
+import { loadMoreTankings } from '@/redux/actions/tankingAction';
 
 export function TankHistory() {
   const { isDark } = useTheme();
 
-  const [state, dispatch] = useReducer(counterReducer, initialState)
+  const dispatch = useDispatch<AppDispatch>();
 
-  const [tankingRecords, setTankingRecords] = useState<(Tanking & { station: Station })[]>([]);
-  const [tankingRecordsCount, setTankingRecordsCount] = useState(0);
-
-  const getTankingCount = async () => {
-    const count = await TankingModel.count();
-    setTankingRecordsCount(count)
-  };
-  getTankingCount();
+  const tankingState = useSelector((state: RootState) => state.tanking.records);
+  const counterState = useSelector((state: RootState) => state.count);
+  const { tankings, isLoading } = useDatabase();
 
   useEffect(() => {
-    const loadMore = async () => {
-      const data = await TankingModel.getNextTankingsWithStation(state.value, state.stepSize);
-      setTankingRecords(prev => [...prev, ...data]);
-    };
-    loadMore();
-
-  }, [state.value]);
-
+    dispatch(loadMoreTankings());
+  }, [counterState.value]);
 
   return (
     <>
@@ -49,7 +36,7 @@ export function TankHistory() {
         </View>
       </View>
       <Tabs>
-        {tankingRecords.map((tanking) => (
+        {tankingState.map((tanking) => (
           <View key={tanking.id} style={{ ...spacing.gap(20) }}>
             <View style={{ ...spacing.gap(12) }} className='flex-row items-center w-full'>
               <ScaledText className='rounded-full' style={{ backgroundColor: "lightgray", fontWeight: "bold", ...spacing.p(16) }} size='base'>{tanking.station.provider.slice(0, 2).toUpperCase()}</ScaledText>
@@ -103,9 +90,9 @@ export function TankHistory() {
         )}
       </Tabs>
       <View style={{ ...spacing.my(42) }} className='flex'>
-        <ScaledText onPress={() => tankingRecords.length < tankingRecordsCount ? dispatch({ type: 'ADD_NEXT_STEP_ACTION' }) : null} className="text-center font-bold" color={Colors.inactive_icon} size="base">
+        <ScaledText onPress={() => tankingState.length < tankings.length ? dispatch({ type: 'ADD_NEXT_STEP_ACTION' }) : null} className="text-center font-bold" color={Colors.inactive_icon} size="base">
           {
-            tankingRecords.length < tankingRecordsCount ? 'Zobrazit další' : 'Žádné další záznamy'
+            tankingState.length < tankings.length ? 'Zobrazit další' : 'Žádné další záznamy'
           }
         </ScaledText>
       </View>

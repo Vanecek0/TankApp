@@ -1,22 +1,28 @@
-import { Action, ActionCreator, AnyAction, UnknownAction } from "redux";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface CounterState {
-    stepSize: number
-    value: number
+interface CountState {
+  value: number;
+  stepSize: number;
 }
 
-export const initialState = {
-    stepSize: 3,
-    value: 0,
-}
+export const initialState: CountState = {
+  value: 0,
+  stepSize: 1,
+};
 
-export default (state: CounterState = initialState, { type, payload }: any): CounterState => {
-    switch (type) {
-        case 'CHANGE_COUNTER_STEP_SIZE_ACTION':
-            return { ...state, stepSize: payload };
-        case 'ADD_NEXT_STEP_ACTION':
-            return { ...state, value: state.value + state.stepSize };
-        default:
-            return state
+const countSlice = createSlice({
+  name: 'count',
+  initialState,
+  reducers: {
+    changeStepSize(state, action: PayloadAction<number>) {
+      state.stepSize = action.payload;
+    },
+    addNextStep(state) {
+      state.value += state.stepSize;
     }
-} 
+  }
+});
+
+export const { changeStepSize, addNextStep } = countSlice.actions;
+
+export default countSlice.reducer;
