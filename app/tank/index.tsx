@@ -1,11 +1,9 @@
-import { View, ScrollView, Text, useWindowDimensions } from 'react-native';
-import React, { useState } from 'react';
+import { ScrollView } from 'react-native';
+import React from 'react';
 import { useTheme } from '@/theme/ThemeProvider';
-import { Link, usePathname } from 'expo-router';
+import { usePathname } from 'expo-router';
 import { Colors } from '@/constants/Colors';
 import Dashboard from '@/components/ui/dashboard';
-import ScaledText from '@/components/other/scaledText';
-import Icon from '@/components/ui/Icon';
 import CustomButton from '@/components/other/customButton';
 import TabView from '@/components/other/tabView';
 import { TankHistory } from './tabs/history';

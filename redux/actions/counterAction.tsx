@@ -1,18 +1,10 @@
-import { RootState } from '../store'
+import type { AppDispatch, RootState } from '../store';
+import { addNextStep, changeStepSize } from '../reducers/counterReducer'
 
-export const changeCounterStepSizeAction = (stepSize: number) => {
-    return {
-        type: "CHANGE_COUNTER_STEP_SIZE_ACTION",
-        payload: stepSize
-    }
-}
+export const changeCounterStepSizeAction = (stepSize: number) => (dispatch: AppDispatch) => {
+  dispatch(changeStepSize(stepSize));
+};
 
-export const addNextStepAction = () => {
-    return (dispatch: any, getState: () => RootState) => {
-        const { stepSize } = getState().count
-        dispatch({
-            type: 'ADD_NEXT_STEP_ACTION',
-            payload: stepSize
-        })
-    }
-}
+export const addNextStepAction = () => (dispatch: AppDispatch, getState: () => RootState) => {
+  dispatch(addNextStep());
+};
