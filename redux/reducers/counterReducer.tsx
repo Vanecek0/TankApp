@@ -6,7 +6,7 @@ interface CounterState {
 }
 
 export const initialState = {
-    stepSize: 2,
+    stepSize: 3,
     value: 0,
 }
 

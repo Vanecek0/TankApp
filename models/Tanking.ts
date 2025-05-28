@@ -60,7 +60,7 @@ export class TankingModel {
          s.provider AS station_provider
        FROM tanking t
        LEFT JOIN station s ON t.station_id = s.id
-       ORDER BY t.created_at DESC LIMIT ? OFFSET ?`,
+       ORDER BY t.id DESC LIMIT ? OFFSET ?`,
         [count, actualIndex],
       )
 
@@ -102,7 +102,7 @@ export class TankingModel {
          s.last_visit AS station_last_visit,
          s.provider AS station_provider
        FROM tanking t
-       LEFT JOIN station s ON t.station_id = s.id
+       INNER JOIN station s ON t.station_id = s.id
        ORDER BY t.created_at DESC 
     ${limit != null ? 'LIMIT ?' : ''}`,
       [limit!],

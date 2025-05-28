@@ -14,11 +14,11 @@ import { spacing } from '@/utils/SizeScaling';
 import { Tanking, TankingModel } from '@/models/Tanking';
 import { Station } from '@/models/Station';
 import counterReducer, { initialState } from '@/redux/reducers/counterReducer';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function HomeScreen() {
   const { isDark } = useTheme();
   const pathname = usePathname();
-  const initialTankingRecordsCount = 2;
 
   const [state, dispatch] = useReducer(counterReducer, initialState)
 
@@ -27,22 +27,26 @@ export default function HomeScreen() {
 
   useEffect(() => {
     const getTankingCount = async () => {
-      const count = await TankingModel.count();
-      setTankingRecordsCount(count)
-    };
+      const photoStorage = await AsyncStorage.getItem('TankingRecordsCount').then((value) => {
+        return value
+      })
 
+      if (photoStorage) {
+        console.log(photoStorage);
+        //setTankingRecordsCount(photoStorage)
+      } else {
+        const count = await TankingModel.count();
+        setTankingRecordsCount(count)
+        return await AsyncStorage.setItem('TankingRecordsCount', count);
+      }
+    };
     getTankingCount();
   }, [])
 
   useEffect(() => {
     const loadMore = async () => {
-      if (state.value === 0) {
-        const data = await TankingModel.getNextTankingsWithStation(0, initialTankingRecordsCount);
-        setTankingRecords(prev => [...prev, ...data]);
-      } else {
-        const data = await TankingModel.getNextTankingsWithStation(state.value, initialTankingRecordsCount);
-        setTankingRecords(prev => [...prev, ...data]);
-      }
+      const data = await TankingModel.getNextTankingsWithStation(state.value, state.stepSize);
+      setTankingRecords(prev => [...prev, ...data]);
     };
     loadMore();
 
@@ -59,45 +63,39 @@ export default function HomeScreen() {
             <Link className="flex" href={'/tank'}><Icon name="chevron_down" color={isDark ? Colors.dark.text : Colors.light.text} style={{ ...spacing.width(18), ...spacing.height(18) }} /></Link>
           </View>
         </View>
-        <Tabs className='mb-' style={{ ...spacing.mx(20) }}>
+        <Tabs style={{ ...spacing.mx(20) }}>
           {tankingRecords.map((tanking) => (
             <View key={tanking.id} style={{ ...spacing.gap(12) }} className='flex'>
               <View style={{ ...spacing.gap(12) }} className='flex-row items-center w-full'>
                 <ScaledText className='rounded-full' style={{ backgroundColor: "lightgray", fontWeight: "bold", ...spacing.p(16) }} size='base'>{tanking.station.provider.slice(0, 2).toUpperCase()}</ScaledText>
                 <View className='flex-row justify-between flex-1'>
-                  <View style={{ ...spacing.gap(4) }} className='flex items-start'>
+                  <View style={{ ...spacing.gap(4) }} className='flex items-start w-2/3'>
                     <ScaledText isThemed={true} size="lg" className='font-bold'>{tanking.station.name}</ScaledText>
-                    <View style={{ ...spacing.gap(2) }} className='flex-row justify-center items-center'>
-                      <Icon name="map_pin" color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor() * 15} />
-                      <ScaledText numberOfLines={1} ellipsizeMode="tail" className='text-ellipsis overflow-visible w-3/4' isThemed={true} size="sm">{tanking.station.address}</ScaledText>
+                    <View style={{ ...spacing.gap(2) }} className='flex-row items-center justify-start'>
+                      <Icon name="map_pin" color={Colors.hidden_text} size={getScaleFactor() * 15} />
+                      <ScaledText numberOfLines={1} ellipsizeMode="tail" className='text-ellipsis overflow-visible' isThemed={true} size="sm">{tanking.station.address}</ScaledText>
+                    </View>
+                    <View style={{ ...spacing.gap(12) }} className='flex-col'>
+                      <View style={{ ...spacing.gap(2) }} className='flex-row items-center justify-start'>
+                        <Icon name="calendar" color={Colors.hidden_text} size={getScaleFactor() * 15} />
+                        <ScaledText isThemed={true} size="sm">{new Date(tanking.created_at).toLocaleDateString("cs-CZ")}, {new Date(tanking.created_at).toLocaleTimeString("cs-CZ", { hour: "2-digit", minute: "2-digit" })}</ScaledText>
+                      </View>
                     </View>
                   </View>
                   <View style={{ ...spacing.gap(4) }} className='flex items-end'>
                     <ScaledText isThemed={true} size="lg" className='font-bold'>{tanking.price} Kč</ScaledText>
                     <ScaledText isThemed={true} size="sm">{tanking.amount}l</ScaledText>
+                    <ScaledText isThemed={true} size="sm">{tanking.tachometer} km</ScaledText>
                   </View>
                 </View>
-              </View>
-              <View className='flex-row justify-between'>
-                <View style={{ ...spacing.gap(12) }} className='flex-row'>
-                  <View style={{ ...spacing.gap(2) }} className='flex-row items-center'>
-                    <Icon name="calendar" color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor() * 15} />
-                    <ScaledText isThemed={true} size="sm">{new Date(tanking.created_at).toLocaleDateString("cs-CZ")}</ScaledText>
-                  </View>
-                  <View style={{ ...spacing.gap(2) }} className='flex-row items-center'>
-                    <Icon name="clock" color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor() * 15} />
-                    <ScaledText isThemed={true} size="sm">{new Date(tanking.created_at).toLocaleTimeString("cs-CZ", { hour: "2-digit", minute: "2-digit" })}</ScaledText>
-                  </View>
-                </View>
-                <ScaledText isThemed={true} size="sm">{tanking.tachometer} km</ScaledText>
               </View>
             </View>
           ))}
         </Tabs>
         <View style={{ ...spacing.my(42) }} className='flex'>
-          <ScaledText onPress={() => state.value + initialTankingRecordsCount < tankingRecordsCount ? dispatch({ type: 'ADD_NEXT_STEP_ACTION' }) : null} className="text-center font-bold" color={Colors.inactive_icon} size="base">
+          <ScaledText onPress={() => tankingRecords.length < tankingRecordsCount ? dispatch({ type: 'ADD_NEXT_STEP_ACTION' }) : null} className="text-center font-bold" color={Colors.inactive_icon} size="base">
             {
-              state.value + initialTankingRecordsCount < tankingRecordsCount ? 'Zobrazit další' : 'Žádné další záznamy'
+              tankingRecords.length < tankingRecordsCount ? 'Zobrazit další' : 'Žádné další záznamy'
             }
           </ScaledText>
         </View>

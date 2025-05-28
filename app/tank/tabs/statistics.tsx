@@ -14,7 +14,7 @@ export function TankStatistics() {
   const pathname = usePathname();
 
   return (
-    <View style={{ ...spacing.gap(12) }} className='flex'>
+    <View style={{ ...spacing.gap(12), ...spacing.mb(112) }} className='flex mb-'>
       <View style={{ ...spacing.mt(16) }} className='flex-row flex-wrap justify-between'>
         <View style={{ backgroundColor: isDark ? Colors.dark.secondary_light : Colors.white, ...spacing.p(20), ...spacing.mb(12), ...spacing.borderRadius(8) }} className={`basis-[48.5%]`}>
           <View style={{ ...spacing.gap(4) }} className='flex-row items-center'>
@@ -36,7 +36,7 @@ export function TankStatistics() {
             <ScaledText size='xs' color={Colors.hidden_text}>-240 od min. měs.</ScaledText>
           </View>
         </View>
-        <View style={{ backgroundColor: isDark ? Colors.dark.secondary_light : Colors.white, ...spacing.p(20), ...spacing.mb(12), ...spacing.borderRadius(8) }} className={`basis-[48.5%]`}>
+        <View style={{ backgroundColor: isDark ? Colors.dark.secondary_light : Colors.white, ...spacing.p(20), ...spacing.borderRadius(8) }} className={`basis-[48.5%]`}>
           <View style={{ ...spacing.gap(4) }} className='flex-row items-center'>
             <Icon name="average" color={isDark ? Colors.dark.text : Colors.light.text} style={{ ...spacing.width(15), ...spacing.height(15) }} />
             <ScaledText size='xs' className='font-bold' isThemed={true}>Průměrná spotřeba</ScaledText>
@@ -46,7 +46,7 @@ export function TankStatistics() {
             <ScaledText size='xs' color={Colors.hidden_text}>-0.1 od min. měs.</ScaledText>
           </View>
         </View>
-        <View style={{ backgroundColor: isDark ? Colors.dark.secondary_light : Colors.white, ...spacing.p(20), ...spacing.mb(12), ...spacing.borderRadius(8) }} className={`basis-[48.5%]`}>
+        <View style={{ backgroundColor: isDark ? Colors.dark.secondary_light : Colors.white, ...spacing.p(20), ...spacing.borderRadius(8) }} className={`basis-[48.5%]`}>
           <View style={{ ...spacing.gap(4) }} className='flex-row items-center'>
             <Icon name="droplet" color={isDark ? Colors.dark.text : Colors.light.text} style={{ ...spacing.width(15), ...spacing.height(15) }} />
             <ScaledText size='xs' className='font-bold' isThemed={true}>Celkem natankováno</ScaledText>
