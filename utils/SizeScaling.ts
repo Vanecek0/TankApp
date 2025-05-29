@@ -72,6 +72,12 @@ export const spacing = {
     paddingTop: scaled(v),
     paddingBottom: scaled(v),
   }),
+  pb: (v: number) => ({
+    paddingBottom: scaled(v),
+  }),
+  pt: (v: number) => ({
+    paddingTop: scaled(v),
+  }),
   gap: (v: number) => ({
     gap: scaled(v),
   }),
