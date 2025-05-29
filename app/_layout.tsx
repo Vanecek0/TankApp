@@ -73,11 +73,11 @@ export default function RootLayout() {
   return (
     <DatabaseProvider>
       <SQLiteProvider databaseName="database.db">
-        <Provider store={store}>
+        {/*<Provider store={store}>*/}
           <ThemeProvider>
             <AppContent />
           </ThemeProvider>
-        </Provider>
+        {/*</Provider>*/}
       </SQLiteProvider>
     </DatabaseProvider>
 
@@ -96,7 +96,6 @@ function AppContent() {
             screenOptions={{
               tabBarActiveTintColor: Colors.primary,
               headerShown: false,
-
               tabBarStyle: Platform.select({
                 ios: {
                   backgroundColor: isDark ? Colors.dark.secondary : Colors.light.secondary,

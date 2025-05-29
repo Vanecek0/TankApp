@@ -2,7 +2,7 @@ import { Station } from '@/models/Station';
 import { Tanking, TankingModel } from '@/models/Tanking';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
-type modelTypes = {
+export type modelTypes = {
   tankings: (Tanking & { station: Station })[];
   isLoading: boolean;
   initTankings: () => Promise<void>;

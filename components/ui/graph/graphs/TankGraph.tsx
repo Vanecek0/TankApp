@@ -240,7 +240,7 @@ export default function TankGraph({ className }: {
         barData.reduce((sum, item) => sum + item.value, 0) / barData.length;
 
     return (
-        <SafeAreaView onLayout={onLayout} style={{ maxHeight: parentWidth / 3, ...spacing.my(15)}} className={`items-center justify-center ${className}`}>
+        <SafeAreaView onLayout={onLayout} style={{maxHeight: parentWidth / 3, ...spacing.my(15), ...spacing.height(120)}} className={`items-center h- justify-center ${className}`}>
             <BarChart
                 data={barData.map(item => ({
                     ...item,

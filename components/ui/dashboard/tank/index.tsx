@@ -11,7 +11,7 @@ export default function TankDashboard({ data, routePathName, className }: {
     className?: string;
 }) {
     return (
-        <View style={{ ...spacing.mx(20), ...spacing.p(20), ...spacing.borderRadius(12) }} className={`${className} flex-col bg-primary`}>
+        <View style={{ ...spacing.p(20), ...spacing.borderRadius(12) }} className={`${className} flex-col bg-primary`}>
             <ScaledText size="lg" className="text-center text-white font-bold">Leden 2025 – Únor 2025</ScaledText>
             <View style={{ ...spacing.my(12) }} className="flex-row justify-between">
                 <View className="items-center">

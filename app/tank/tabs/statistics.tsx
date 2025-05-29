@@ -14,8 +14,8 @@ export function TankStatistics() {
   const pathname = usePathname();
 
   return (
-    <View style={{ ...spacing.gap(12), ...spacing.mb(112) }} className='flex mb-'>
-      <View style={{ ...spacing.mt(16) }} className='flex-row flex-wrap justify-between'>
+    <View style={{ ...spacing.gap(12), ...spacing.mb(112) }} className='flex'>
+      <View style={{ ...spacing.mt(8) }} className='flex-row flex-wrap justify-between'>
         <View style={{ backgroundColor: isDark ? Colors.dark.secondary_light : Colors.white, ...spacing.p(20), ...spacing.mb(12), ...spacing.borderRadius(8) }} className={`basis-[48.5%]`}>
           <View style={{ ...spacing.gap(4) }} className='flex-row items-center'>
             <Icon name="bars" color={isDark ? Colors.dark.text : Colors.light.text} style={{ ...spacing.width(15), ...spacing.height(15) }} />
