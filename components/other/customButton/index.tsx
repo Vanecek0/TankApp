@@ -2,9 +2,10 @@ import {TouchableHighlight, TouchableOpacityProps, View, ViewStyle} from 'react-
 import ScaledText from '../scaledText';
 import type { FontSizeKey } from '../scaledText';
 import darkenHexColor from '@/utils/colorDarken';
+import { ReactNode } from 'react';
 
 export type CustomButtonProps = TouchableOpacityProps & {
-    label: string;
+    label: string | ReactNode;
     labelSize: FontSizeKey;
     labelColor?: string;
     backgroundColor?: string;
