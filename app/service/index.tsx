@@ -1,4 +1,5 @@
 import ScaledText from '@/components/other/scaledText';
+import ActionButton from '@/components/ui/actionButton';
 import Badge from '@/components/ui/badge';
 import Icon from '@/components/ui/Icon';
 import { Colors } from '@/constants/Colors';
@@ -13,8 +14,9 @@ export default function HomeScreen() {
   const [containerWidth, setContainerWidth] = useState(0);
 
   return (
+    <>
     <ScrollView style={{ backgroundColor: isDark ? Colors.dark.background : Colors.light.background }}>
-      <View style={{...spacing.mx(20), ...spacing.mb(20), ...spacing.mt(12)}}>
+      <View style={{...spacing.mx(20), ...spacing.mb(96), ...spacing.mt(12)}}>
         <View style={{ backgroundColor: isDark ? Colors.dark.secondary_light : Colors.white, ...spacing.p(20), ...spacing.mb(12), ...spacing.borderRadius(8)}}>
           <View style={{...spacing.mb(8)}} className='flex-row justify-between'>
             <View>
@@ -127,5 +129,7 @@ export default function HomeScreen() {
         </View>
       </View>
     </ScrollView>
+    <ActionButton />
+    </>
   );
 }

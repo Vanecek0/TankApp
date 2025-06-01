@@ -7,6 +7,7 @@ import { Colors } from '@/constants/Colors';
 import { useState } from 'react';
 import { useTheme } from '@/theme/ThemeProvider';
 import ScaledText from '@/components/other/scaledText';
+import Icon from '../Icon';
 
 export type CustomButtonProps = TouchableOpacityProps & {
     label?: string;
@@ -30,14 +31,14 @@ export default function ActionButton({ label, ...props }: CustomButtonProps) {
                 {isOpen ? (
                     <>
                         <View onTouchEnd={() => setIsOpen(!isOpen)} style={{ backgroundColor: '#000000bf' }} className='flex absolute bottom-0 left-0 right-0 top-0'></View>
-                        <View style={{ ...spacing.right(20), ...spacing.my(12) }} className='flex-col items-center gap-3 absolute right-0'>
-                            <View style={{...spacing.right(10)}} className='flex-row items-center w-full gap-6'>
+                        <View style={{ ...spacing.right(20), ...spacing.my(12) }} className='flex-col gap-3 items-end absolute right-0'>
+                            <View style={{...spacing.right(10)}} className='flex-row items-center gap-3'>
                                 <ScaledText size={'base'} color={Colors.white}>Přidat tankování</ScaledText>
-                                <CustomButton style={{ ...spacing.borderRadius(90), ...spacing.p(16), ...spacing.width(60) }} className={`flex justify-center items-center aspect-square`} label='+' labelSize='xl' labelColor={isDark ? Colors.white : ''} backgroundColor={isDark ? Colors.dark.secondary_light : Colors.light.secondary} />
+                                <CustomButton style={{ ...spacing.borderRadius(90), ...spacing.p(16), ...spacing.width(60) }} className={`flex justify-center items-center aspect-square`} label={<Icon name="tank" color={Colors.primary} style={{ ...spacing.width(20), ...spacing.height(20) }} />} labelSize='xl' labelColor={isDark ? Colors.white : ''} backgroundColor={isDark ? Colors.dark.secondary_light : Colors.light.secondary} />
                             </View>
-                            <View style={{...spacing.right(10)}} className='flex-row items-center gap-6'>
-                                <ScaledText size={'base'} color={Colors.white}>Přidat tankování</ScaledText>
-                                <CustomButton style={{ ...spacing.borderRadius(90), ...spacing.p(16), ...spacing.width(60) }} className={`flex justify-center items-center aspect-square`} label='+' labelSize='xl' labelColor={isDark ? Colors.white : ''} backgroundColor={isDark ? Colors.dark.secondary_light : Colors.light.secondary} />
+                            <View style={{...spacing.right(10)}} className='flex-row items-center gap-3'>
+                                <ScaledText size={'base'} color={Colors.white}>Přidat stanici</ScaledText>
+                                <CustomButton style={{ ...spacing.borderRadius(90), ...spacing.p(16), ...spacing.width(60) }} className={`flex justify-center items-center aspect-square`} label={<Icon name="map_pin" color={Colors.primary} style={{ ...spacing.width(20), ...spacing.height(20) }} />} labelSize='xl' labelColor={isDark ? Colors.white : ''} backgroundColor={isDark ? Colors.dark.secondary_light : Colors.light.secondary} />
                             </View>
                             <View style={{ ...spacing.p(24), ...spacing.width(80), ...spacing.height(80) }}></View>
                         </View>
