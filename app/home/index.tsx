@@ -1,12 +1,11 @@
 import { View, VirtualizedList } from 'react-native';
-import React, { useCallback, useEffect, useReducer, useState } from 'react';
+import React, { useCallback } from 'react';
 import { useTheme } from '@/theme/ThemeProvider';
 import { Link, usePathname } from 'expo-router';
 import { Colors } from '@/constants/Colors';
 import Dashboard from '@/components/ui/dashboard';
 import ScaledText from '@/components/other/scaledText';
 import Icon from '@/components/ui/Icon';
-import CustomButton from '@/components/other/customButton';
 import getScaleFactor, { scaled } from '@/utils/SizeScaling';
 import { spacing } from '@/utils/SizeScaling';
 import { Tanking } from '@/models/Tanking';

@@ -1,7 +1,4 @@
 /** @type {import('tailwindcss').Config} */
-
-var baseFontSize = 14;
-
 module.exports = {
   content: [
     "./app/**/*.{js,jsx,ts,tsx}",

@@ -20,6 +20,7 @@ import { SQLiteProvider } from "expo-sqlite";
 import { Provider } from 'react-redux'
 import store from "../redux/store";
 import { DatabaseProvider } from "@/database/databaseContext";
+import { ModalProvider } from "@/providers/modalProvider";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -54,7 +55,7 @@ export default function RootLayout() {
     const seedDb = async () => {
       await Database.seedData();
     };
-   //seedDb();
+    //seedDb();
 
 
     prepare();
@@ -74,9 +75,11 @@ export default function RootLayout() {
     <DatabaseProvider>
       <SQLiteProvider databaseName="database.db">
         {/*<Provider store={store}>*/}
-          <ThemeProvider>
+        <ThemeProvider>
+          <ModalProvider>
             <AppContent />
-          </ThemeProvider>
+          </ModalProvider>
+        </ThemeProvider>
         {/*</Provider>*/}
       </SQLiteProvider>
     </DatabaseProvider>
