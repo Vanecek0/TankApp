@@ -45,6 +45,9 @@ export default function AddTankRecordModal({ onSubmit }: any) {
       <ScaledText size='base'>Stav tachometru:</ScaledText>
       <Input name="tachometer" control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></Input>
 
+      <ScaledText size='base'>Stanice ID:</ScaledText>
+      <Input name="station_id" control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></Input>
+
       <ScaledText size='base'>Palivo:</ScaledText>
       <Input name="fuel_type" control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></Input>
 
