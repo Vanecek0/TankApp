@@ -4,6 +4,7 @@ import { Station } from "./Station";
 export type Tanking = {
   id?: number;
   tachometer: number;
+  station_id: number;
   fuel_type: string;
   price: number;
   price_per_unit: number;
@@ -17,15 +18,11 @@ export class TankingModel {
   static async create(tanking: Tanking) {
     try {
       const result = await Database.executeSql(
-        'INSERT INTO tanking (tachometer, fuel_type, price, price_per_unit, amount, mileage) VALUES (?, ?, ?, ?, ?, ?)',
-        [tanking.tachometer, tanking.fuel_type, tanking.price, tanking.price_per_unit, tanking.amount, tanking.mileage]
+        'INSERT INTO tanking (tachometer, station_id, fuel_type, price, price_per_unit, amount, mileage) VALUES (?, ?, ?, ?, ?, ?, ?)',
+        [tanking.tachometer, tanking.station_id, tanking.fuel_type, tanking.price, 50, tanking.amount, tanking.mileage]
       );
 
-      if (result && 'rowsAffected' in result && result.rowsAffected > 0) {
-        return result;
-      } else {
-        throw new Error('Vložení se nezdařilo – nebyl ovlivněn žádný řádek.');
-      }
+      return result;
     }
     catch (error) {
       console.error('Chyba při vkládání tankování:', error);
@@ -36,6 +33,7 @@ export class TankingModel {
   static async all(): Promise<Tanking[]> {
     const db = await Database.getConnection();
     const rows = await db.getAllAsync<Tanking>('SELECT * FROM tanking');
+    console.log(rows);
     return rows;
   }
 

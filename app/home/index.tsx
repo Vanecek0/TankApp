@@ -15,7 +15,7 @@ import ActionButton from '@/components/ui/actionButton';
 export default function HomeScreen() {
   const { isDark } = useTheme();
   const pathname = usePathname();
-  const { tankings, isLoading } = useDatabase();
+  const { tankings, allTankings, isLoading } = useDatabase();
 
   const TankingItem = React.memo(({ item }: any) => {
     return (
@@ -57,6 +57,10 @@ export default function HomeScreen() {
   return (
     <>
       <View className='flex-1' style={{ backgroundColor: isDark ? Colors.dark.background : Colors.light.background }}>
+        {/*allTankings.map((item) => (
+          <ScaledText size='base'>{item.id}</ScaledText>
+        ))*/}
+        
         <VirtualizedList
           ListHeaderComponent={
             <>
