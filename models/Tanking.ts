@@ -18,8 +18,8 @@ export class TankingModel {
   static async create(tanking: Tanking) {
     try {
       const result = await Database.executeSql(
-        'INSERT INTO tanking (tachometer, station_id, fuel_type, price, price_per_unit, amount, mileage) VALUES (?, ?, ?, ?, ?, ?, ?)',
-        [tanking.tachometer, tanking.station_id, tanking.fuel_type, tanking.price, 50, tanking.amount, tanking.mileage]
+        'INSERT INTO tanking (tachometer, station_id, fuel_type, price, price_per_unit, amount, mileage, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+        [tanking.tachometer, tanking.station_id, tanking.fuel_type, tanking.price, 50, tanking.amount, tanking.mileage, Date.now()]
       );
 
       return result;
