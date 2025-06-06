@@ -9,6 +9,7 @@ import { useForm, Controller, useController } from 'react-hook-form';
 import ScaledText from '@/components/other/scaledText';
 import { DTO } from '@/DTO/mapper';
 import { Tanking, TankingModel } from '@/models/Tanking';
+import { useDatabase } from '@/database/databaseContext';
 
 const Input = ({ name, control }: any) => {
   const { field } = useController({
@@ -24,7 +25,7 @@ const Input = ({ name, control }: any) => {
 export default function AddTankRecordModal({ onSubmit }: any) {
   const { hideModal } = useModal();
   const { isDark } = useTheme();
-
+  const {initTankings} = useDatabase();
   const { control, handleSubmit, formState: { errors } } = useForm();
 
   const onFormSubmit = async (data: any) => {
@@ -32,6 +33,7 @@ export default function AddTankRecordModal({ onSubmit }: any) {
       const myModel = DTO<Tanking, typeof data>(data);
       const result = await TankingModel.create(myModel);
       console.log('Záznam úspěšně uložen:', result);
+      await initTankings();
       return result;
     } catch (error) {
       console.error('Chyba při ukládání záznamu:', error);

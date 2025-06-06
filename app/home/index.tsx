@@ -1,5 +1,5 @@
-import { View, VirtualizedList } from 'react-native';
-import React, { useCallback } from 'react';
+import { RefreshControl, View, VirtualizedList } from 'react-native';
+import React, { useCallback, useState } from 'react';
 import { useTheme } from '@/theme/ThemeProvider';
 import { Link, usePathname } from 'expo-router';
 import { Colors } from '@/constants/Colors';
@@ -8,14 +8,21 @@ import ScaledText from '@/components/other/scaledText';
 import Icon from '@/components/ui/Icon';
 import getScaleFactor, { scaled } from '@/utils/SizeScaling';
 import { spacing } from '@/utils/SizeScaling';
-import { Tanking } from '@/models/Tanking';
+import { Tanking, TankingModel } from '@/models/Tanking';
 import { useDatabase } from '@/database/databaseContext';
 import ActionButton from '@/components/ui/actionButton';
+import { Database } from '@/database/database';
+import { Station } from '@/models/Station';
 
 export default function HomeScreen() {
   const { isDark } = useTheme();
   const pathname = usePathname();
-  const { tankings, allTankings, isLoading } = useDatabase();
+  const { tankings, initTankings, isLoading } = useDatabase();
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(async () => {
+    await initTankings();
+  }, []);
 
   const TankingItem = React.memo(({ item }: any) => {
     return (
@@ -73,6 +80,9 @@ export default function HomeScreen() {
                 </View>
               </View>
             </>
+          }
+          refreshControl={
+            <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
           }
           initialNumToRender={5}
           maxToRenderPerBatch={3}
