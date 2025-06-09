@@ -44,7 +44,7 @@ export default function HomeScreen() {
         <View className='flex-row flex-wrap justify-between'>
           <View style={{ backgroundColor: isDark ? Colors.dark.secondary_light : Colors.white, ...spacing.p(20), ...spacing.mb(12), ...spacing.borderRadius(8)}} className={`basis-[48.5%]`}>
             <View style={{...spacing.gap(4)}} className='flex-row items-center'>
-              <Icon name="speedometer" color={isDark ? Colors.dark.text : Colors.light.text} style={{ ...spacing.width(15), ...spacing.height(15) }} />
+              <Icon name="speedometer" color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor() * 15} />
               <ScaledText size='xs' className='font-bold' isThemed={true}>Stav tachometru</ScaledText>
             </View>
             <View style={{...spacing.gap(12), ...spacing.mt(16)}} className='flex justify-between'>
