@@ -32,7 +32,7 @@ export const ModalProvider = ({ children }: any) => {
         <Modal className='flex-1 justify-center items-center' animationType="fade" transparent={true} onRequestClose={hideModal}>
           <View onTouchEnd={hideModal} className='absolute top-0 bottom-0 left-0 right-0 flex justify-center items-center' style={{ backgroundColor: isDark ? '#000000bf' : "#ffffffbf" }}></View>
           <View className='flex-1 justify-center items-center relative'>
-            <View style={{width: '85%' , backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.secondary, ...spacing.p(20), ...spacing.borderRadius(12) }}>
+            <View style={{width: '85%' , backgroundColor: isDark ? Colors.dark.secondary : Colors.light.secondary, ...spacing.borderRadius(12) }}>
               {modalContent}
             </View>
           </View>
