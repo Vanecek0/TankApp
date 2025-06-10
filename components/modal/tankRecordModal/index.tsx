@@ -3,9 +3,9 @@ import { Colors } from '@/constants/Colors';
 import { useModal } from '@/providers/modalProvider';
 import { useTheme } from '@/theme/ThemeProvider';
 import getScaleFactor, { spacing } from '@/utils/SizeScaling';
-import React, { useState } from 'react';
-import { View, TextInput, Button, Text } from 'react-native';
-import { useForm, Controller, useController } from 'react-hook-form';
+import React, { useEffect, useState } from 'react';
+import { View, TextInput, Button, Text, ScrollView } from 'react-native';
+import { useForm, Controller, useController, useWatch, useFormState } from 'react-hook-form';
 import ScaledText from '@/components/other/scaledText';
 import { DTO } from '@/DTO/mapper';
 import { Tanking, TankingModel } from '@/models/Tanking';
@@ -13,7 +13,7 @@ import { useDatabase } from '@/database/databaseContext';
 import Dropdown from '@/components/other/dropdown';
 import Icon from '@/components/ui/Icon';
 
-const Input = ({ name, control }: any) => {
+const Input = ({ name, control, placeholder }: any) => {
   const { isDark } = useTheme();
 
   const { field } = useController({
@@ -21,8 +21,35 @@ const Input = ({ name, control }: any) => {
     defaultValue: '',
     name,
   })
+
   return (
-    <TextInput placeholder='Test' placeholderTextColor={isDark ? Colors.dark.secondary_lighter : Colors.light.text} style={{ ...spacing.borderRadius(12), ...spacing.borderWidth(0.5), ...spacing.px(12), ...spacing.py(12), borderColor: isDark ? Colors.dark.secondary_lighter : Colors.light.secondary, backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.secondary, color: isDark ? Colors.dark.text : Colors.light.text }} value={field.value} onChangeText={field.onChange} />
+    <TextInput placeholder={placeholder} placeholderTextColor={isDark ? Colors.dark.secondary_lighter : Colors.light.text} style={{ ...spacing.borderRadius(12), ...spacing.borderWidth(0.5), ...spacing.px(12), ...spacing.py(12), borderColor: isDark ? Colors.dark.secondary_lighter : Colors.light.secondary, backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.secondary, color: isDark ? Colors.dark.text : Colors.light.text }} value={field.value} onChangeText={field.onChange} />
+  )
+}
+
+const NumberInput = ({ name, control, placeholder, defaultValue, onBlur }: any) => {
+  const { isDark } = useTheme();
+
+  const { field } = useController({
+    control,
+    defaultValue: '',
+    name,
+  })
+
+  const handleChange = (text: string) => {
+    let cleaned = text.replace(',', '.');
+
+    if (/^\d*\.?\d*$/.test(cleaned)) {
+      field.onChange(cleaned);
+    }
+  };
+
+  return (
+    <TextInput keyboardType="decimal-pad" placeholder={placeholder} placeholderTextColor={isDark ? Colors.dark.secondary_lighter : Colors.light.text} style={{ ...spacing.borderRadius(12), ...spacing.borderWidth(0.5), ...spacing.px(12), ...spacing.py(12), borderColor: isDark ? Colors.dark.secondary_lighter : Colors.light.secondary, backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.secondary, color: isDark ? Colors.dark.text : Colors.light.text }} value={field.value}
+      onBlur={() => {
+        field.onBlur();
+        if (onBlur) onBlur();
+      }} onChangeText={handleChange} />
   )
 }
 
@@ -30,7 +57,33 @@ export default function AddTankRecordModal({ onSubmit }: any) {
   const { hideModal } = useModal();
   const { isDark } = useTheme();
   const { initTankings } = useDatabase();
-  const { control, handleSubmit, formState: { errors } } = useForm();
+  const { control, handleSubmit, setValue, getValues, formState: { errors } } = useForm();
+  const { touchedFields } = useFormState({ control });
+
+  const price = useWatch({ control, name: 'price' });
+  const amount = useWatch({ control, name: 'amount' });
+  const pricePerLtr = useWatch({ control, name: 'price_per_litre' });
+
+  /*useEffect(() => {
+    const p = parseFloat(price);
+    const ppl = parseFloat(pricePerLtr);
+
+    if (!isNaN(p) && !isNaN(ppl) && ppl !== 0 && amount === '') {
+      setValue('amount', (p / ppl).toString());
+    }
+  }, [price, pricePerLtr, amount, setValue]);*/
+
+
+  useEffect(() => {
+    const ppl = parseFloat(pricePerLtr);
+    const p = parseFloat(price);
+    if (!isNaN(ppl) && !isNaN(p)) {
+      setValue('amount', (price / pricePerLtr).toFixed(3).toString());
+    } else {
+      setValue('amount', '');
+    }
+  }, [pricePerLtr, price, setValue]);
+
 
   const onFormSubmit = async (data: any) => {
     try {
@@ -45,9 +98,10 @@ export default function AddTankRecordModal({ onSubmit }: any) {
     }
   };
 
+
   return (
-    <View>
-      <View className='flex-row items-center' style={{ ...spacing.mb(12), ...spacing.px(20), ...spacing.py(10), ...spacing.gap(8), ...spacing.borderTopRadius(12), backgroundColor: Colors.primary }}>
+    <ScrollView style={{ ...spacing.borderBottomRadius(12) }}>
+      <View className='flex-row items-center' style={{ ...spacing.mb(12), ...spacing.px(20), ...spacing.py(16), ...spacing.gap(8), ...spacing.borderTopRadius(12), backgroundColor: Colors.primary }}>
         <Icon name='tank' color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor() * 20} />
         <ScaledText size='lg' style={{ color: isDark ? Colors.white : '' }}>Nové tankování</ScaledText>
       </View>
@@ -59,7 +113,7 @@ export default function AddTankRecordModal({ onSubmit }: any) {
             <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Stav tachometru</ScaledText>
           </View>
 
-          <Input name="tachometer" control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></Input>
+          <NumberInput name="tachometer" control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></NumberInput>
         </View>
 
         <View>
@@ -70,7 +124,24 @@ export default function AddTankRecordModal({ onSubmit }: any) {
 
           <Dropdown
             placeholder='Vyberte stanici'
-            data={[{ value: 'test', label: 'test' }]}
+            data={[
+              { value: 'test1', label: 'test' },
+              { value: 'test2', label: 'test' },
+              { value: 'test3', label: 'test' },
+              { value: 'test4', label: 'test' },
+              { value: 'test5', label: 'test' },
+              { value: 'test6', label: 'test' },
+              { value: 'test7', label: 'test' },
+              { value: 'test8', label: 'test' },
+              { value: 'test9', label: 'test' },
+              { value: 'test10', label: 'test' },
+              { value: 'test11', label: 'test' },
+              { value: 'test12', label: 'test' },
+              { value: 'test13', label: 'test' },
+              { value: 'test14', label: 'test' },
+              { value: 'test15', label: 'test' },
+              { value: 'test16', label: 'test' },
+            ]}
             onChange={console.log}
             dropdownStyle={{ ...spacing.borderRadius(12), ...spacing.borderWidth(0.5), ...spacing.px(12), borderColor: isDark ? Colors.dark.secondary_lighter : Colors.light.secondary, backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.secondary }}
           ></Dropdown>
@@ -84,26 +155,49 @@ export default function AddTankRecordModal({ onSubmit }: any) {
               <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Palivo</ScaledText>
             </View>
 
-            <Input name="fuel_type" control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></Input>
+            <Dropdown
+              placeholder='Typ paliva'
+              name='fuel_type'
+              data={[
+                { value: 'test1', label: 'test' },
+                { value: 'test2', label: 'test' },
+                { value: 'test3', label: 'test' },
+                { value: 'test4', label: 'test' },
+                { value: 'test5', label: 'test' },
+                { value: 'test6', label: 'test' },
+                { value: 'test7', label: 'test' },
+                { value: 'test8', label: 'test' },
+                { value: 'test9', label: 'test' },
+                { value: 'test10', label: 'test' },
+                { value: 'test11', label: 'test' },
+                { value: 'test12', label: 'test' },
+                { value: 'test13', label: 'test' },
+                { value: 'test14', label: 'test' },
+                { value: 'test15', label: 'test' },
+                { value: 'test16', label: 'test' },
+              ]}
+              onChange={console.log}
+              dropdownStyle={{ ...spacing.borderRadius(12), ...spacing.borderWidth(0.5), ...spacing.px(12), borderColor: isDark ? Colors.dark.secondary_lighter : Colors.light.secondary, backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.secondary }}
+            ></Dropdown>
           </View>
 
           <View className='w-[48%]'>
             <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
-              <Icon name='dollar' color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor() * 16} />
+              <Icon name='calc' color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor() * 16} />
               <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Cena za jednotku</ScaledText>
             </View>
 
-            <Input name="price_per_litre" control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></Input>
+            <NumberInput name="price_per_litre" control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></NumberInput>
           </View>
         </View>
 
         <View>
           <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
             <Icon name='dollar' color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor() * 16} />
-            <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Cena</ScaledText>
+            <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Cena (bez slev)</ScaledText>
           </View>
 
-          <Input name="price" control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></Input>
+          <NumberInput name="price" control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></NumberInput>
         </View>
 
         <View>
@@ -111,15 +205,7 @@ export default function AddTankRecordModal({ onSubmit }: any) {
             <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Počet litrů</ScaledText>
           </View>
 
-          <Input name="amount" control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></Input>
-        </View>
-
-        <View>
-          <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
-            <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Ujetá vzdálenost</ScaledText>
-          </View>
-
-          <Input name="mileage" control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></Input>
+          <NumberInput name="amount" control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></NumberInput>
         </View>
 
       </View>
@@ -128,6 +214,6 @@ export default function AddTankRecordModal({ onSubmit }: any) {
         <CustomButton className='w-[48%]' onPress={() => hideModal()} label="Zrušit" labelSize='base' labelClassName='text-center' labelColor={isDark ? Colors.white : ''} style={{ ...spacing.p(12), ...spacing.borderWidth(0.5), borderColor: isDark ? Colors.dark.secondary_lighter : Colors.light.secondary, ...spacing.borderRadius(12) }} backgroundColor={isDark ? Colors.dark.secondary_light : Colors.light.secondary} />
         <CustomButton className='w-[48%]' onPress={handleSubmit((data) => { onFormSubmit(data); hideModal() })} label="Přidat záznam" labelSize='base' labelClassName='text-center' labelColor={isDark ? Colors.white : ''} style={{ ...spacing.p(12), ...spacing.borderRadius(12) }} backgroundColor={Colors.primary} />
       </View>
-    </View>
+    </ScrollView>
   );
 }

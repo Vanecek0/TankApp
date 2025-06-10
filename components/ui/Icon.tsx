@@ -5,6 +5,7 @@ import Home from "@/assets/images/home.jsx";
 import MapPin from "@/assets/images/map_pin.jsx";
 import Tank from "@/assets/images/tank.jsx";
 import Car from "@/assets/images/car.jsx";
+import Calc from "@/assets/images/calc.jsx";
 import Bell from "@/assets/images/bell.jsx";
 import Settings from "@/assets/images/settings.jsx";
 import ChevronLeft from "@/assets/images/chevron_left.jsx";
@@ -27,6 +28,7 @@ const MAPPING = {
     map_pin: MapPin,
     tank: Tank,
     car: Car,
+    calc: Calc,
     bell: Bell,
     calendar: Calendar,
     clock: Clock,
