@@ -109,6 +109,10 @@ export const spacing = {
     borderTopLeftRadius: scaled(v),
     borderTopRightRadius: scaled(v),
   }),
+  borderBottomRadius: (v: number) => ({
+    borderBottomLeftRadius: scaled(v),
+    borderBottomRightRadius: scaled(v),
+  }),
   borderWidth: (v: number) => ({
     borderWidth: scaled(v),
   }),
