@@ -1,15 +1,6 @@
-type TankingSeed = {
-    tachometer: number;
-    station_id: number;
-    fuel_type: string;
-    price: number;
-    price_per_unit: number;
-    amount: number;
-    mileage: number;
-    created_at: number;
-};
+import { Tanking } from "@/models/Tanking";
 
-export function createTankingSeed(overrides: Partial<TankingSeed> = {}): TankingSeed {
+export function createTankingSeed(overrides: Partial<Tanking> = {}): Tanking {
     return {
         tachometer: 0,
         station_id: 1,
@@ -19,13 +10,14 @@ export function createTankingSeed(overrides: Partial<TankingSeed> = {}): Tanking
         amount: 0,
         mileage: 0,
         created_at: Date.now(),
+        updated_at: Date.now(),
         ...overrides,
     };
 }
 
 export async function getTankingSeeds() {
     return [
-        createTankingSeed({ created_at: 1704067200000, tachometer: 14326, station_id: 2, price: 1368.31, price_per_unit: 38.36, amount: 35.67, mileage: 326 }),
+        createTankingSeed({ created_at: 1704067200000, updated_at: 1704067200000, tachometer: 14326, station_id: 2, price: 1368.31, price_per_unit: 38.36, amount: 35.67, mileage: 326 }),
         createTankingSeed({ created_at: 1704326400000, tachometer: 14645, station_id: 1, price: 1457.67, price_per_unit: 41.1, amount: 35.47, mileage: 319 }),
         createTankingSeed({ created_at: 1704844800000, tachometer: 14976, station_id: 2, price: 1245.7, price_per_unit: 40.18, amount: 31.00, mileage: 331 }),
         createTankingSeed({ created_at: 1705104000000, tachometer: 15287, station_id: 2, price: 1281.27, price_per_unit: 39.96, amount: 32.06, mileage: 311 }),
