@@ -1,0 +1,92 @@
+Table station {
+  id             integer [primary key, increment]
+  name           text
+  address        text
+  fuel_id        integer
+  price_per_unit numeric
+  last_visit     timestamp
+  provider       text
+  created_at     timestamp
+  updated_at     timestamp
+}
+
+Table part {
+  id            integer [primary key, increment]
+  profile_id    integer
+  name          text
+  manufacturer  text
+  oem_code      text
+  description   text
+  price         integer
+  unit          text
+  created_at    timestamp
+  updated_at    timestamp
+}
+
+Table fuel {
+  id         integer [primary key, increment]
+  name       text
+  code       text
+  trademark  text
+  unit       text
+}
+
+Table service {
+  id      integer [primary key, increment]
+  name    text
+  address text
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table car {
+  id                integer [primary key, increment]
+  manufacturer      text
+  model             text
+  manufacture_year  numeric
+  registration_date timestamp
+  fuel_id           integer
+}
+
+Table profile {
+  id            integer [primary key, increment]
+  car_id        integer
+  car_nickname  text
+  tachometer    integer
+}
+
+Table tanking {
+  id          integer [primary key, increment]
+  profile_id integer
+  station_id  integer
+  price       numeric
+  amount      numeric
+  mileage     numeric
+  created_at  timestamp
+  updated_at timestamp
+}
+
+Table service_history {
+  id           integer [primary key, increment]
+  profile_id   integer
+  name         text
+  description  text
+  service_id   integer
+  parts_ids    text
+  service_date timestamp
+  created_at timestamp
+  updated_at timestamp
+}
+
+Ref: station.fuel_id > fuel.id
+
+Ref: car.fuel_id > fuel.id
+
+Ref: profile.car_id > car.id
+Ref: part.profile_id > profile.id
+
+Ref: tanking.station_id > station.id
+Ref: tanking.profile_id > profile.id
+
+Ref: service_history.service_id > service.id
+Ref: service_history.profile_id > profile.id

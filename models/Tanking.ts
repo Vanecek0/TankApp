@@ -3,14 +3,13 @@ import { Station } from "./Station";
 
 export type Tanking = {
   id?: number;
-  tachometer: number;
+  profile_id: number;
   station_id: number;
-  fuel_type: string;
   price: number;
-  price_per_unit: number;
   amount: number;
   mileage: number;
   created_at: number;
+  updated_at: number;
 };
 
 export class TankingModel {
@@ -18,8 +17,8 @@ export class TankingModel {
   static async create(tanking: Tanking) {
     try {
       const result = await Database.executeSql(
-        'INSERT INTO tanking (tachometer, station_id, fuel_type, price, price_per_unit, amount, mileage, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-        [tanking.tachometer, tanking.station_id, tanking.fuel_type, tanking.price, 50, tanking.amount, tanking.mileage, Date.now()]
+        'INSERT INTO tanking (profile_id, station_id, price, amount, mileage, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)',
+        [tanking.profile_id, tanking.station_id, tanking.price, tanking.amount, tanking.mileage, Date.now(), Date.now()]
       );
 
       return result;
@@ -51,51 +50,6 @@ export class TankingModel {
       .catch((err) => console.log(err));
   }
 
-  static async getNextTankingsWithStation(actualIndex: number, count: number): Promise<(Tanking & { station: Station })[]> {
-    const db = await Database.getConnection();
-
-    try {
-      const rows = await db.getAllAsync(
-        `SELECT 
-         t.*,
-         s.id AS station_id,
-         s.name AS station_name,
-         s.address AS station_address,
-         s.price_per_unit AS station_price_per_unit,
-         s.last_visit AS station_last_visit,
-         s.provider AS station_provider
-       FROM tanking t
-       INNER JOIN station s ON t.station_id = s.id
-       ORDER BY t.id DESC LIMIT ? OFFSET ?`,
-        [count, actualIndex],
-      )
-
-      return rows.map((row: any) => ({
-        id: row.id,
-        tachometer: row.tachometer,
-        fuel_type: row.fuel_type,
-        price: row.price,
-        price_per_unit: row.price_per_unit,
-        amount: row.amount,
-        mileage: row.mileage,
-        created_at: row.created_at,
-        station_id: row.station_id,
-        station: {
-          id: row.station_id,
-          name: row.station_name,
-          address: row.station_address,
-          price_per_unit: row.station_price_per_unit,
-          last_visit: row.station_last_visit,
-          provider: row.station_provider,
-        },
-      }))
-    } catch (error) {
-      console.error(error)
-      throw error
-    }
-
-  }
-
   static async getAllTankingsWithStation(limit?: number): Promise<(Tanking & { station: Station })[]> {
     const db = await Database.getConnection();
     const rows = await db.getAllAsync(
@@ -104,9 +58,12 @@ export class TankingModel {
          s.id AS station_id,
          s.name AS station_name,
          s.address AS station_address,
+         s.fuel_id AS station_fuel_id,
          s.price_per_unit AS station_price_per_unit,
          s.last_visit AS station_last_visit,
-         s.provider AS station_provider
+         s.provider AS station_provider,
+         s.created_at AS station_created_at,
+         s.updated_at AS station_updated_at
        FROM tanking t
        INNER JOIN station s ON t.station_id = s.id
        ORDER BY t.created_at DESC 
@@ -116,21 +73,23 @@ export class TankingModel {
 
     return rows.map((row: any) => ({
       id: row.id,
-      tachometer: row.tachometer,
-      fuel_type: row.fuel_type,
+      profile_id: row.profile_id,
+      station_id: row.station_id,
       price: row.price,
-      price_per_unit: row.price_per_unit,
       amount: row.amount,
       mileage: row.mileage,
       created_at: row.created_at,
-      station_id: row.station_id,
+      updated_at: row.updated_at,
       station: {
         id: row.station_id,
         name: row.station_name,
         address: row.station_address,
+        fuel_id: row.station_fuel_id,
         price_per_unit: row.station_price_per_unit,
         last_visit: row.station_last_visit,
         provider: row.station_provider,
+        created_at: row.station_created_at,
+        updated_at: row.station_updated_at
       },
     }))
   }
