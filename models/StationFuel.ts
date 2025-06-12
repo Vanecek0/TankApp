@@ -1,9 +1,10 @@
 import { Database } from "@/database/database";
 
 export type StationFuel = {
-  id_station: number;
-  id_fuel: number;
-  price_per_unit: number;
+    id?: number;
+    id_station: number;
+    id_fuel: number;
+    price_per_unit: number;
 };
 
 
@@ -12,13 +13,13 @@ export class StationFuelModel {
     static async create(station_fuel: StationFuel) {
         try {
             const result = await Database.executeSql(
-                'INSERT INTO station_fuel (id_station, id_fuel, price_per_unit) VALUES (?, ?, ?)',
+                'INSERT OR REPLACE INTO station_fuel (id_station, id_fuel, price_per_unit) VALUES (?, ?, ?)',
                 [station_fuel.id_station, station_fuel.id_fuel, station_fuel.price_per_unit]
             );
             return result;
         }
         catch (error) {
-            console.error('Chyba při vkládání:', error);
+            console.error('Chyba při vkládání o:', error);
             throw new Error('Nepodařilo se vytvořit nový záznam.');
         }
     }

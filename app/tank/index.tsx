@@ -51,13 +51,13 @@ export default function TankScreen() {
               </View>
               <View className='basis-1/3'>
                 <ScaledText isThemed={true} size="sm" className='font-bold'>Typ paliva</ScaledText>
-                <ScaledText isThemed={true} size="xs" >{item.fuel_type}</ScaledText>
+                <ScaledText isThemed={true} size="xs" >{item.fuel.trademark}</ScaledText>
               </View>
             </View>
             <View style={{ ...spacing.gap(12) }} className='flex-row'>
               <View className='basis-1/3'>
                 <ScaledText isThemed={true} size="sm" className='font-bold'>Cena za jednotku</ScaledText>
-                <ScaledText isThemed={true} size="xs" >{item.price_per_unit} Kč/l</ScaledText>
+                <ScaledText isThemed={true} size="xs" >{item.fuel.price_per_unit} Kč/l</ScaledText>
               </View>
               <View className='basis-1/3'>
                 <ScaledText isThemed={true} size="sm" className='font-bold'>Ujeto od posl.</ScaledText>
