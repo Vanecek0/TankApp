@@ -1,24 +1,21 @@
 import { Database } from "@/database/database";
 
-export type Station = {
+export type Profile = {
   id?: number;
   name: string;
-  address: string;
-  last_visit: number;
-  provider: string;
+  avatar_url: string;
   created_at: number;
   updated_at: number;
 };
 
-export class StationModel {
+export class ProfileModel {
 
-    static async create(station: Station) {
+    static async create(profile: Profile) {
         try {
             const result = await Database.executeSql(
-                'INSERT INTO station (name, address, last_visit, provider, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)',
-                [station.name, station.address, station.last_visit, station.provider, station.created_at, station.updated_at]
+                'INSERT INTO profile (name, avatar_url, created_at, updated_at) VALUES (?)',
+                [profile.name, profile.avatar_url, profile.created_at, profile.updated_at]
             );
-
             return result;
         }
         catch (error) {
@@ -27,16 +24,16 @@ export class StationModel {
         }
     }
 
-    static async all(): Promise<Station[]> {
+    static async all(): Promise<Profile[]> {
         const db = await Database.getConnection();
-        const rows = await db.getAllAsync<Station>('SELECT * FROM station');
+        const rows = await db.getAllAsync<Profile>('SELECT * FROM profile');
         return rows;
     }
 
     static async count(): Promise<any> {
         const db = await Database.getConnection();
         const promiseThen = new Promise((resolve, reject) => {
-            const count = db.getAllAsync('SELECT COUNT(*) FROM station')
+            const count = db.getAllAsync('SELECT COUNT(*) FROM profile')
             resolve(count);
         });
 
@@ -47,14 +44,13 @@ export class StationModel {
             .catch((err) => console.log(err));
     }
 
-    static async findById(id: number): Promise<Station | null> {
+    static async findById(id: number): Promise<Profile | null> {
         const db = await Database.getConnection();
-        const row = await db.getFirstAsync<Station>('SELECT * FROM station WHERE id = ?', [id]);
+        const row = await db.getFirstAsync<Profile>('SELECT * FROM profile WHERE id = ?', [id]);
         return row;
     }
 
     static async delete(id: number) {
-        await Database.executeSql('DELETE FROM station WHERE id = ?', [id]);
+        await Database.executeSql('DELETE FROM profile WHERE id = ?', [id]);
     }
-
 }

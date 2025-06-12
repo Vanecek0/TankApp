@@ -1,22 +1,20 @@
 import { Database } from "@/database/database";
 
-export type Station = {
+export type Autoservice = {
   id?: number;
   name: string;
   address: string;
-  last_visit: number;
-  provider: string;
   created_at: number;
   updated_at: number;
 };
 
-export class StationModel {
+export class AutoserviceModel {
 
-    static async create(station: Station) {
+    static async create(autoservice: Autoservice) {
         try {
             const result = await Database.executeSql(
-                'INSERT INTO station (name, address, last_visit, provider, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)',
-                [station.name, station.address, station.last_visit, station.provider, station.created_at, station.updated_at]
+                'INSERT INTO autoservice (name, address, created_at, updated_at) VALUES (?, ?, ?, ?)',
+                [autoservice.name, autoservice.address, autoservice.created_at, autoservice.updated_at]
             );
 
             return result;
@@ -27,16 +25,16 @@ export class StationModel {
         }
     }
 
-    static async all(): Promise<Station[]> {
+    static async all(): Promise<Autoservice[]> {
         const db = await Database.getConnection();
-        const rows = await db.getAllAsync<Station>('SELECT * FROM station');
+        const rows = await db.getAllAsync<Autoservice>('SELECT * FROM autoservice');
         return rows;
     }
 
     static async count(): Promise<any> {
         const db = await Database.getConnection();
         const promiseThen = new Promise((resolve, reject) => {
-            const count = db.getAllAsync('SELECT COUNT(*) FROM station')
+            const count = db.getAllAsync('SELECT COUNT(*) FROM autoservice')
             resolve(count);
         });
 
@@ -47,14 +45,14 @@ export class StationModel {
             .catch((err) => console.log(err));
     }
 
-    static async findById(id: number): Promise<Station | null> {
+    static async findById(id: number): Promise<Autoservice | null> {
         const db = await Database.getConnection();
-        const row = await db.getFirstAsync<Station>('SELECT * FROM station WHERE id = ?', [id]);
+        const row = await db.getFirstAsync<Autoservice>('SELECT * FROM autoservice WHERE id = ?', [id]);
         return row;
     }
 
     static async delete(id: number) {
-        await Database.executeSql('DELETE FROM station WHERE id = ?', [id]);
+        await Database.executeSql('DELETE FROM autoservice WHERE id = ?', [id]);
     }
 
 }

@@ -8,12 +8,9 @@ import ScaledText from '@/components/other/scaledText';
 import Icon from '@/components/ui/Icon';
 import getScaleFactor, { scaled } from '@/utils/SizeScaling';
 import { spacing } from '@/utils/SizeScaling';
-import { Tanking, TankingModel } from '@/models/Tanking';
+import { Tanking } from '@/models/Tanking';
 import { useDatabase } from '@/database/databaseContext';
 import ActionButton from '@/components/ui/actionButton';
-import { Database } from '@/database/database';
-import { Station } from '@/models/Station';
-import Dropdown from '@/components/other/dropdown';
 
 export default function HomeScreen() {
   const { isDark } = useTheme();

@@ -9,7 +9,6 @@ export async function createTables(db: SQLite.SQLiteDatabase) {
         "id"	INTEGER PRIMARY KEY AUTOINCREMENT,
         "name"	TEXT,
         "address"	TEXT,
-        "fuel_id"	INTEGER,
         "price_per_unit"	NUMERIC,
         "last_visit"	NUMERIC,
         "provider"	TEXT,
@@ -24,12 +23,23 @@ export async function createTables(db: SQLite.SQLiteDatabase) {
         "name"	TEXT,
         "code"	TEXT,
         "trademark"	TEXT,
-        "unit"	TEXT,
+        "unit"	TEXT
       );
     `)
 
     await db.execAsync(`
-      CREATE TABLE IF NOT EXISTS "service" (
+      CREATE TABLE IF NOT EXISTS "station_fuel" (
+        "id_station"	INTEGER NOT NULL,
+        "id_fuel"	INTEGER NOT NULL,
+        "price_per_unit" NUMERIC,
+        PRIMARY KEY ("id_station", "id_fuel")
+        FOREIGN KEY("id_fuel") REFERENCES "fuel"("id") ON DELETE CASCADE,
+        FOREIGN KEY("id_station") REFERENCES "station"("id") ON DELETE CASCADE
+      );
+    `)
+
+    await db.execAsync(`
+      CREATE TABLE IF NOT EXISTS "autoservice" (
         "id"	INTEGER PRIMARY KEY AUTOINCREMENT,
         "name"	TEXT,
         "address"	TEXT,
@@ -45,7 +55,13 @@ export async function createTables(db: SQLite.SQLiteDatabase) {
         "model"	TEXT,
         "manufacture_year"	NUMERIC,
         "registration_date"	NUMERIC,
+        "profile_id"	INTEGER,
         "fuel_id"	INTEGER,
+        "car_nickname"	TEXT,
+        "tachometer" INTEGER,
+        "created_at" NUMERIC,
+        "updated_at" NUMERIC,
+        FOREIGN KEY("profile_id") REFERENCES "profile"("id"),
         FOREIGN KEY("fuel_id") REFERENCES "fuel"("id")
       );
     `)
@@ -53,26 +69,25 @@ export async function createTables(db: SQLite.SQLiteDatabase) {
     await db.execAsync(`
       CREATE TABLE IF NOT EXISTS "profile" (
         "id"	INTEGER PRIMARY KEY AUTOINCREMENT,
-        "car_id"	INTEGER,
-        "car_nickname"	TEXT,
-        "tachometer" INTEGER
-        FOREIGN KEY("car_id") REFERENCES "car"("id")
+        "name"	TEXT,
+        "avatar_url"	TEXT,
+        "created_at"	NUMERIC,
+        "updated_at"	NUMERIC
       );
     `)
 
     await db.execAsync(`
       CREATE TABLE IF NOT EXISTS "part" (
         "id"	INTEGER PRIMARY KEY AUTOINCREMENT,
-        "profile_id"	INTEGER,
         "name"	TEXT,
         "manufacturer"	TEXT,
         "oem_code"	TEXT,
         "description"	TEXT,
         "price"	INTEGER,
+        "count"	NUMERIC,
         "unit"	TEXT,
         "created_at"	NUMERIC,
-        "updated_at"	NUMERIC,
-        FOREIGN KEY("profile_id") REFERENCES "profile"("id")
+        "updated_at"	NUMERIC
       );
   `)
 
@@ -85,24 +100,24 @@ export async function createTables(db: SQLite.SQLiteDatabase) {
         "amount"	NUMERIC,
         "mileage"	NUMERIC,
         "created_at"	NUMERIC,
-        FOREIGN KEY("profile_id") REFERENCES "profile"("id"),
+        "updated_at"	NUMERIC,
+        FOREIGN KEY("profile_id") REFERENCES "profile"("id") ON DELETE CASCADE,
         FOREIGN KEY("station_id") REFERENCES "station"("id")
       );
     `)
 
     await db.execAsync(`
-      CREATE TABLE IF NOT EXISTS "service_history" (
+      CREATE TABLE IF NOT EXISTS "servicing" (
         "id"	INTEGER PRIMARY KEY AUTOINCREMENT,
         "profile_id"	INTEGER,
         "name"	TEXT,
         "description"	TEXT,
-        "service_id"	INTEGER,
-        "parts_ids"	TEXT,
+        "autoservice_id"	INTEGER,
         "service_date"	NUMERIC,
-        "created_at" NUMERIC,
-        "updated_at" NUMERIC,
-        FOREIGN KEY("service_id") REFERENCES "service"("id"),
-        FOREIGN KEY("profile_id") REFERENCES "profile"("id"),
+        "created_at"	NUMERIC,
+        "updated_at"	NUMERIC,
+        FOREIGN KEY("autoservice_id") REFERENCES "autoservice"("id"),
+	      FOREIGN KEY("profile_id") REFERENCES "profile"("id") ON DELETE CASCADE
       );
     `)
 

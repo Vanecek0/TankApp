@@ -55,7 +55,7 @@ export default function RootLayout() {
     const seedDb = async () => {
       await Database.seedData();
     };
-    //seedDb();
+    seedDb();
 
 
     prepare();

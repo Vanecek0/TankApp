@@ -21,7 +21,7 @@ export const DatabaseProvider = ({ children }: { children: React.ReactNode }) =>
     const db = await Database.getConnection();
     if (db) {
       try {
-        const data = await TankingModel.getAllTankingsWithStation();
+        const data = await TankingModel.getAllTankingsWithStationFuel();
         setTankings(data);
       } catch (err) {
         console.error(err);

@@ -1,22 +1,20 @@
 import { Database } from "@/database/database";
 
-export type Station = {
+export type Fuel = {
   id?: number;
   name: string;
-  address: string;
-  last_visit: number;
-  provider: string;
-  created_at: number;
-  updated_at: number;
+  code: string;
+  trademark: string;
+  unit: string;
 };
 
-export class StationModel {
+export class FuelModel {
 
-    static async create(station: Station) {
+    static async create(fuel: Fuel) {
         try {
             const result = await Database.executeSql(
-                'INSERT INTO station (name, address, last_visit, provider, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)',
-                [station.name, station.address, station.last_visit, station.provider, station.created_at, station.updated_at]
+                'INSERT INTO fuel (name, code, trademark, unit) VALUES (?, ?, ?, ?)',
+                [fuel.name, fuel.code, fuel.trademark, fuel.unit]
             );
 
             return result;
@@ -27,16 +25,16 @@ export class StationModel {
         }
     }
 
-    static async all(): Promise<Station[]> {
+    static async all(): Promise<Fuel[]> {
         const db = await Database.getConnection();
-        const rows = await db.getAllAsync<Station>('SELECT * FROM station');
+        const rows = await db.getAllAsync<Fuel>('SELECT * FROM fuel');
         return rows;
     }
 
     static async count(): Promise<any> {
         const db = await Database.getConnection();
         const promiseThen = new Promise((resolve, reject) => {
-            const count = db.getAllAsync('SELECT COUNT(*) FROM station')
+            const count = db.getAllAsync('SELECT COUNT(*) FROM fuel')
             resolve(count);
         });
 
@@ -47,14 +45,14 @@ export class StationModel {
             .catch((err) => console.log(err));
     }
 
-    static async findById(id: number): Promise<Station | null> {
+    static async findById(id: number): Promise<Fuel | null> {
         const db = await Database.getConnection();
-        const row = await db.getFirstAsync<Station>('SELECT * FROM station WHERE id = ?', [id]);
+        const row = await db.getFirstAsync<Fuel>('SELECT * FROM fuel WHERE id = ?', [id]);
         return row;
     }
 
     static async delete(id: number) {
-        await Database.executeSql('DELETE FROM station WHERE id = ?', [id]);
+        await Database.executeSql('DELETE FROM fuel WHERE id = ?', [id]);
     }
 
 }
