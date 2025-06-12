@@ -23,6 +23,23 @@ export async function seed(db: SQLite.SQLiteDatabase) {
             await db.execAsync("DELETE FROM station;")
             await db.execAsync("DELETE FROM sqlite_sequence WHERE name IN ('station', 'tanking');")
 
+             const profileSeeds = await getProfileSeeds()
+            console.log(`Seeding ${profileSeeds.length} profiles...`)
+
+            for (const profile of profileSeeds) {
+                const create = ProfileModel.create(profile)
+                console.log(`Inserted profile: ${create}`)
+            }
+
+             const fuelSeeds = await getFuelSeeds()
+            console.log(`Seeding ${fuelSeeds.length} fuels...`)
+
+            for (const fuel of fuelSeeds) {
+                const create = FuelModel.create(fuel)
+                console.log(`Inserted fuel: ${create}`)
+            }
+
+
             const stationSeeds = await getStationSeeds()
             console.log(`Seeding ${stationSeeds.length} stations...`)
 
@@ -39,28 +56,12 @@ export async function seed(db: SQLite.SQLiteDatabase) {
                 console.log(`Inserted tanking: ${create}`)
             }
 
-            const fuelSeeds = await getFuelSeeds()
-            console.log(`Seeding ${fuelSeeds.length} fuels...`)
-
-            for (const fuel of fuelSeeds) {
-                const create = FuelModel.create(fuel)
-                console.log(`Inserted fuel: ${create}`)
-            }
-
             const stationFuelSeeds = await getStationFuelSeeds()
             console.log(`Seeding ${fuelSeeds.length} join table station_fuel...`)
 
             for (const stationFuel of stationFuelSeeds) {
                 const create = StationFuelModel.create(stationFuel)
                 console.log(`Inserted station_fuel: ${create}`)
-            }
-
-            const profileSeeds = await getProfileSeeds()
-            console.log(`Seeding ${profileSeeds.length} profiles...`)
-
-            for (const profile of profileSeeds) {
-                const create = ProfileModel.create(profile)
-                console.log(`Inserted profile: ${create}`)
             }
 
             await db.execAsync("COMMIT;")

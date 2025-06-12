@@ -29,10 +29,10 @@ export async function createTables(db: SQLite.SQLiteDatabase) {
 
     await db.execAsync(`
       CREATE TABLE IF NOT EXISTS "station_fuel" (
+        "id" INTEGER PRIMARY KEY AUTOINCREMENT,
         "id_station"	INTEGER NOT NULL,
         "id_fuel"	INTEGER NOT NULL,
         "price_per_unit" NUMERIC,
-        PRIMARY KEY ("id_station", "id_fuel")
         FOREIGN KEY("id_fuel") REFERENCES "fuel"("id") ON DELETE CASCADE,
         FOREIGN KEY("id_station") REFERENCES "station"("id") ON DELETE CASCADE
       );
@@ -94,15 +94,14 @@ export async function createTables(db: SQLite.SQLiteDatabase) {
     await db.execAsync(`
       CREATE TABLE IF NOT EXISTS "tanking" (
         "id"	INTEGER PRIMARY KEY AUTOINCREMENT,
-        "profile_id"	INTEGER,
-        "station_id"	INTEGER,
+        "station_fuel_id" INTEGER,
         "price"	NUMERIC,
         "amount"	NUMERIC,
         "mileage"	NUMERIC,
+        "tachometer" NUMERIC,
         "created_at"	NUMERIC,
         "updated_at"	NUMERIC,
-        FOREIGN KEY("profile_id") REFERENCES "profile"("id") ON DELETE CASCADE,
-        FOREIGN KEY("station_id") REFERENCES "station"("id")
+        FOREIGN KEY("station_fuel_id") REFERENCES "station_fuel"("id")
       );
     `)
 

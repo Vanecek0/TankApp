@@ -88,6 +88,7 @@ export default function HomeScreen() {
           contentContainerStyle={{ ...spacing.gap(12), ...spacing.borderRadius(12), ...spacing.mx(20), ...spacing.pb(96) }}
           renderItem={renderItem}
           getItemCount={(_data: unknown) => tankings.length}
+          keyExtractor={(item, index) => item.id?.toString() ?? index.toString()}
           getItem={(_data: unknown, index: number) => tankings[index]}
           ListEmptyComponent={<ScaledText style={{...spacing.p(28)}} className="text-center font-bold" color={Colors.inactive_icon} size="base">Žádné další záznamy</ScaledText>}
         />

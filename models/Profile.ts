@@ -13,13 +13,13 @@ export class ProfileModel {
     static async create(profile: Profile) {
         try {
             const result = await Database.executeSql(
-                'INSERT INTO profile (name, avatar_url, created_at, updated_at) VALUES (?)',
+                'INSERT INTO profile (name, avatar_url, created_at, updated_at) VALUES (?, ?, ?, ?)',
                 [profile.name, profile.avatar_url, profile.created_at, profile.updated_at]
             );
             return result;
         }
         catch (error) {
-            console.error('Chyba při vkládání:', error);
+            console.error('Chyba při vkládání p:', error);
             throw new Error('Nepodařilo se vytvořit nový záznam.');
         }
     }
