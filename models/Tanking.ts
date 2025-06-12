@@ -1,5 +1,6 @@
 import { Database } from "@/database/database";
 import { Station } from "./Station";
+import { Fuel } from "./Fuel";
 
 export type Tanking = {
   id?: number;
@@ -24,8 +25,8 @@ export class TankingModel {
       return result;
     }
     catch (error) {
-      console.error('Chyba při vkládání tankování:', error);
-      throw new Error('Nepodařilo se vytvořit nový záznam o tankování.');
+      console.error('Chyba při vkládání:', error);
+      throw new Error('Nepodařilo se vytvořit nový záznam.');
     }
   }
 
@@ -50,6 +51,64 @@ export class TankingModel {
       .catch((err) => console.log(err));
   }
 
+  static async getAllTankingsWithStationFuel(limit?: number): Promise<(Tanking & { station: Station, fuel: Fuel })[]> {
+    const db = await Database.getConnection();
+    const rows = await db.getAllAsync(
+      `SELECT 
+        t.*,
+        s.name AS station_name,
+        s.address AS station_address,
+        s.last_visit AS station_last_visit,
+        s.provider AS station_provider,
+        s.created_at AS station_created_at,
+        s.updated_at AS station_updated_at
+        f.id AS fuel_id,
+        f.name AS fuel_name,
+        f.code AS fuel_code,
+        f.trademark AS fuel_trademark,
+        f.unit AS fuel_unit,
+        sf.price_per_unit AS fuel_price_per_unit
+      FROM tanking t
+      JOIN station s ON t.station_id = s.id
+      LEFT JOIN station_fuel sf ON sf.id_station = s.id
+      LEFT JOIN fuel f ON sf.id_fuel = f.id
+      WHERE t.profile_id = 1
+      ORDER BY t.created_at DESC
+    ${limit != null ? 'LIMIT ?' : ''}`,
+      [limit!],
+    )
+
+    return rows.map((row: any) => ({
+      id: row.id,
+      profile_id: row.profile_id,
+      station_id: row.station_id,
+      price: row.price,
+      amount: row.amount,
+      mileage: row.mileage,
+      created_at: row.created_at,
+      updated_at: row.updated_at,
+      station: {
+        id: row.station_id,
+        name: row.station_name,
+        address: row.station_address,
+        fuel_id: row.station_fuel_id,
+        price_per_unit: row.station_price_per_unit,
+        last_visit: row.station_last_visit,
+        provider: row.station_provider,
+        created_at: row.station_created_at,
+        updated_at: row.station_updated_at
+      },
+      fuel: {
+        id: row.fuel_id,
+        name: row.fuel_name,
+        code: row.fuel_code,
+        trademark: row.fuel_trademark,
+        unit: row.fuel_unit,
+        price_per_unit: row.fuel_price_per_unit,
+      },
+    }));
+  }
+
   static async getAllTankingsWithStation(limit?: number): Promise<(Tanking & { station: Station })[]> {
     const db = await Database.getConnection();
     const rows = await db.getAllAsync(
@@ -58,8 +117,6 @@ export class TankingModel {
          s.id AS station_id,
          s.name AS station_name,
          s.address AS station_address,
-         s.fuel_id AS station_fuel_id,
-         s.price_per_unit AS station_price_per_unit,
          s.last_visit AS station_last_visit,
          s.provider AS station_provider,
          s.created_at AS station_created_at,
@@ -97,7 +154,7 @@ export class TankingModel {
   static async findById(id: number): Promise<Tanking | null> {
     const db = await Database.getConnection();
     const row = await db.getFirstAsync<Tanking>('SELECT * FROM tanking WHERE id = ?', [id]);
-    return row ?? null;
+    return row;
   }
 
   static async delete(id: number) {
