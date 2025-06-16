@@ -46,12 +46,12 @@ export async function seed(db: SQLite.SQLiteDatabase) {
             await db.execAsync("DELETE FROM station_fuel;")
             await db.execAsync("DELETE FROM servicing_part;")
             await db.execAsync("DELETE FROM sqlite_sequence WHERE name IN ('station', 'tanking', 'fuel', 'servicing', 'autoservice', 'profile', 'part', 'car', 'badge', 'badge_tanking', 'station_fuel', 'servicing_part');")*/
-            
+
             const profileSeeds = await getProfileSeeds()
             console.log(`Seeding ${profileSeeds.length} profiles...`)
 
             for (const profile of profileSeeds) {
-                const create = ProfileModel.create(profile)
+                const create = await ProfileModel.create(profile)
                 console.log(`Inserted profile: ${create}`)
             }
 
@@ -59,7 +59,7 @@ export async function seed(db: SQLite.SQLiteDatabase) {
             console.log(`Seeding ${fuelSeeds.length} fuels...`)
 
             for (const fuel of fuelSeeds) {
-                const create = FuelModel.create(fuel)
+                const create = await FuelModel.create(fuel)
                 console.log(`Inserted fuel: ${create}`)
             }
 
@@ -67,7 +67,7 @@ export async function seed(db: SQLite.SQLiteDatabase) {
             console.log(`Seeding ${stationSeeds.length} stations...`)
 
             for (const station of stationSeeds) {
-                const create = StationModel.create(station)
+                const create = await StationModel.create(station)
                 console.log(`Inserted station: ${create}`)
             }
 
@@ -75,7 +75,7 @@ export async function seed(db: SQLite.SQLiteDatabase) {
             console.log(`Seeding ${stationFuelSeeds.length} join table station_fuel...`)
 
             for (const stationFuel of stationFuelSeeds) {
-                const create = StationFuelModel.create(stationFuel)
+                const create = await StationFuelModel.create(stationFuel)
                 console.log(`Inserted station_fuel: ${create}`)
             }
 
@@ -83,7 +83,7 @@ export async function seed(db: SQLite.SQLiteDatabase) {
             console.log(`Seeding ${autoserviceSeeds.length} autoservice...`)
 
             for (const autoservice of autoserviceSeeds) {
-                const create = AutoserviceModel.create(autoservice)
+                const create = await AutoserviceModel.create(autoservice)
                 console.log(`Inserted autoservice: ${create}`)
             }
 
@@ -91,7 +91,7 @@ export async function seed(db: SQLite.SQLiteDatabase) {
             console.log(`Seeding ${partSeeds.length} part...`)
 
             for (const part of partSeeds) {
-                const create = PartModel.create(part)
+                const create = await PartModel.create(part)
                 console.log(`Inserted part: ${create}`)
             }
 
@@ -99,7 +99,7 @@ export async function seed(db: SQLite.SQLiteDatabase) {
             console.log(`Seeding ${partSeeds.length} car...`)
 
             for (const car of carSeeds) {
-                const create = CarModel.create(car)
+                const create = await CarModel.create(car)
                 console.log(`Inserted car: ${create}`)
             }
 
@@ -107,7 +107,7 @@ export async function seed(db: SQLite.SQLiteDatabase) {
             console.log(`Seeding ${servicingSeeds.length} servicing...`)
 
             for (const servicing of servicingSeeds) {
-                const create = ServicingModel.create(servicing)
+                const create = await ServicingModel.create(servicing)
                 console.log(`Inserted servicing: ${create}`)
             }
 
@@ -115,34 +115,34 @@ export async function seed(db: SQLite.SQLiteDatabase) {
             console.log(`Seeding ${fuelSeeds.length} join table servicing_part...`)
 
             for (const servicingPart of servicingPartSeeds) {
-                const create = ServicingPartModel.create(servicingPart)
+                const create = await ServicingPartModel.create(servicingPart)
                 console.log(`Inserted servicing_part: ${create}`)
-            }
-
-            const badgeSeeds = await getBadgeSeeds()
-            console.log(`Seeding ${badgeSeeds.length} join table badge...`)
-
-            for (const badge of badgeSeeds) {
-                const create = BadgeModel.create(badge)
-                console.log(`Inserted badge: ${create}`)
             }
 
             const tankingSeeds = await getTankingSeeds()
             console.log(`Seeding ${tankingSeeds.length} tankings...`)
 
             for (const tanking of tankingSeeds) {
-                const create = TankingModel.create(tanking)
+                const create = await TankingModel.create(tanking)
                 console.log(`Inserted tanking: ${create}`)
+            }
+
+            const badgeSeeds = await getBadgeSeeds()
+            console.log(`Seeding ${badgeSeeds.length} join table badge...`)
+
+            for (const badge of badgeSeeds) {
+                const create = await BadgeModel.create(badge)
+                console.log(`Inserted badge: ${create}`)
             }
 
             const badgeTankingSeeds = await getBadgeTankingSeeds()
             console.log(`Seeding ${badgeTankingSeeds.length} join table badge_tanking...`)
 
             for (const badgeTanking of badgeTankingSeeds) {
-                const create = BadgeTankingModel.create(badgeTanking)
+                const create = await BadgeTankingModel.create(badgeTanking)
                 console.log(`Inserted badge_tanking: ${create}`)
             }
-            
+
 
             await db.execAsync("COMMIT;")
             console.log("Seeding complete")

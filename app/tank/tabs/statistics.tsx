@@ -59,7 +59,7 @@ export function TankStatistics() {
       </View>
       <View style={{ backgroundColor: isDark ? Colors.dark.secondary_light : Colors.white, ...spacing.p(20), ...spacing.borderRadius(8)  }} className={`basis-[48.5%] rounded-lg`}>
         <ScaledText style={{...spacing.mb(32)}} size='lg' className='font-bold' isThemed={true}>Vývoj ceny paliva</ScaledText>
-        <Graph routePathName={pathname + "/statistics"}></Graph>
+        <Graph data={[]} routePathName={pathname + "/statistics"}></Graph>
       </View>
       <View style={{ backgroundColor: isDark ? Colors.dark.secondary_light : Colors.white, ...spacing.p(20), ...spacing.borderRadius(8)  }} className={`basis-[48.5%] rounded-lg`}>
         <ScaledText style={{...spacing.mb(12)}} size='lg' className='font-bold' isThemed={true}>Nejčastější čerpací stanice</ScaledText>

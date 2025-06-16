@@ -44,10 +44,20 @@ export class Database {
   }
 
   static async init() {
+    const db = await this.getConnection()
+
     try {
+      console.log("Initializing database...")
+      await db.execAsync(`PRAGMA foreign_keys = OFF;`)
+      await db.execAsync(`BEGIN TRANSACTION;`)
+
       await this.createTables()
+
+      await db.execAsync(`COMMIT;`)
+      await db.execAsync(`PRAGMA foreign_keys = ON;`)
       console.log("Database init complete")
     } catch (error) {
+      await db.execAsync(`ROLLBACK;`)
       console.error("Database init failed:", error)
       throw error
     }
@@ -61,6 +71,7 @@ export class Database {
   static async seedData() {
     try {
       const db = await this.getConnection()
+      await db.runAsync('PRAGMA foreign_keys = ON;')
 
       const tables = await db.getAllAsync<{ name: string }>(`
         SELECT name FROM sqlite_master 
@@ -85,20 +96,30 @@ export class Database {
       const db = await this.getConnection()
 
       await db.execAsync(`PRAGMA foreign_keys = OFF;`)
+      await db.execAsync(`BEGIN TRANSACTION;`)
 
       const tables = await db.getAllAsync<{ name: string }>(`
-        SELECT name FROM sqlite_master
-        WHERE type='table' AND name NOT LIKE 'sqlite_%';
-      `)
+      SELECT name FROM sqlite_master
+      WHERE type='table' AND name NOT LIKE 'sqlite_%';
+    `)
 
       for (const { name } of tables) {
+        console.log(`Dropping table: ${name}`)
         await db.execAsync(`DROP TABLE IF EXISTS "${name}";`)
       }
 
+      await db.execAsync(`COMMIT;`)
       await db.execAsync(`PRAGMA foreign_keys = ON;`)
+
       console.log("Database reset complete")
     } catch (error) {
-      console.error("Database reset failed:", error)
+      console.error("Database reset failed, rolling back:", error)
+      try {
+        const db = await this.getConnection()
+        await db.execAsync("ROLLBACK;")
+      } catch (rollbackError) {
+        console.error("Rollback failed:", rollbackError)
+      }
       throw error
     }
   }
