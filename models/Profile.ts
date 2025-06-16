@@ -19,7 +19,7 @@ export class ProfileModel {
             return result;
         }
         catch (error) {
-            console.error('Chyba při vkládání p:', error);
+            console.error('Chyba při vkládání profile:', error);
             throw new Error('Nepodařilo se vytvořit nový záznam.');
         }
     }

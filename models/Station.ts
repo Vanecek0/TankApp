@@ -22,7 +22,7 @@ export class StationModel {
             return result;
         }
         catch (error) {
-            console.error('Chyba při vkládání s:', error);
+            console.error('Chyba při vkládání station:', error);
             throw new Error('Nepodařilo se vytvořit nový záznam.');
         }
     }

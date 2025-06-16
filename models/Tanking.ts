@@ -1,10 +1,13 @@
 import { Database } from "@/database/database";
 import { Station } from "./Station";
 import { Fuel } from "./Fuel";
+import { StationFuel } from "./StationFuel";
 
 export type Tanking = {
   id?: number;
+  profile_id: number;
   station_fuel_id: number;
+  price_per_unit: number;
   price: number;
   amount: number;
   mileage: number;
@@ -18,14 +21,14 @@ export class TankingModel {
   static async create(tanking: Tanking) {
     try {
       const result = await Database.executeSql(
-        'INSERT INTO tanking (station_fuel_id, price, amount, mileage, tachometer, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)',
-        [tanking.station_fuel_id, tanking.price, tanking.amount, tanking.mileage, tanking.tachometer, Date.now(), Date.now()]
+        'INSERT INTO tanking (profile_id, station_fuel_id, price_per_unit, price, amount, mileage, tachometer, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        [tanking.profile_id, tanking.station_fuel_id, tanking.price_per_unit, tanking.price, tanking.amount, tanking.mileage, tanking.tachometer, Date.now(), Date.now()]
       );
 
       return result;
     }
     catch (error) {
-      console.error('Chyba při vkládání:', error);
+      console.error('Chyba při vkládání tanking:', error);
       throw new Error('Nepodařilo se vytvořit nový záznam.');
     }
   }
@@ -51,7 +54,7 @@ export class TankingModel {
       .catch((err) => console.log(err));
   }
 
-  static async getAllTankingsWithStationFuel(limit?: number): Promise<(Tanking & { station: Station, fuel: Fuel })[]> {
+  static async getAllTankingsWithStationFuel(limit?: number): Promise<(Tanking & { station: Station, fuel: Fuel, station_fuel: StationFuel })[]> {
     const db = await Database.getConnection();
     const rows = await db.getAllAsync(
       `SELECT 
@@ -68,11 +71,12 @@ export class TankingModel {
       f.code AS fuel_code,
       f.trademark AS fuel_trademark,
       f.unit AS fuel_unit,
-      sf.price_per_unit AS fuel_price_per_unit
+      sf.last_price_per_unit AS last_price_per_unit
     FROM tanking t
     INNER JOIN station_fuel sf ON t.station_fuel_id = sf.id
     INNER JOIN station s ON sf.id_station = s.id
     INNER JOIN fuel f ON sf.id_fuel = f.id
+    WHERE profile_id = 1
     ORDER BY t.created_at DESC
     ${limit != null ? 'LIMIT ?' : ''}`,
       [limit!],
@@ -80,7 +84,9 @@ export class TankingModel {
 
     return rows.map((row: any) => ({
       id: row.id,
+      profile_id: row.profile_id,
       station_fuel_id: row.station_fuel_id,
+      price_per_unit: row.price_per_unit,
       price: row.price,
       amount: row.amount,
       mileage: row.mileage,
@@ -101,9 +107,14 @@ export class TankingModel {
         name: row.fuel_name,
         code: row.fuel_code,
         trademark: row.fuel_trademark,
-        unit: row.fuel_unit,
-        price_per_unit: row.fuel_price_per_unit
+        unit: row.fuel_unit
       },
+      station_fuel: {
+        id: row.station_fuel_id,
+        id_station: row.id_station,
+        id_fuel: row.id_fuel,
+        last_price_per_unit: row.last_price_per_unit
+      }
     }));
   }
 
@@ -128,7 +139,9 @@ export class TankingModel {
 
     return rows.map((row: any) => ({
       id: row.id,
+      profile_id: row.profile_id,
       station_fuel_id: row.station_fuel_id,
+      price_per_unit: row.price_per_unit,
       price: row.price,
       amount: row.amount,
       mileage: row.mileage,

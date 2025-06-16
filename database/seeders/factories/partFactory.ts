@@ -116,6 +116,6 @@ export async function getPartSeeds() {
             unit: 'ks',
             created_at: Date.now(),
             updated_at: Date.now(),
-          }),
+          })
     ];
 }

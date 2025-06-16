@@ -20,7 +20,7 @@ export class AutoserviceModel {
             return result;
         }
         catch (error) {
-            console.error('Chyba při vkládání:', error);
+            console.error('Chyba při vkládání autoservice:', error);
             throw new Error('Nepodařilo se vytvořit nový záznam.');
         }
     }

@@ -4,7 +4,7 @@ export type StationFuel = {
     id?: number;
     id_station: number;
     id_fuel: number;
-    price_per_unit: number;
+    last_price_per_unit: number;
 };
 
 
@@ -13,13 +13,13 @@ export class StationFuelModel {
     static async create(station_fuel: StationFuel) {
         try {
             const result = await Database.executeSql(
-                'INSERT OR REPLACE INTO station_fuel (id_station, id_fuel, price_per_unit) VALUES (?, ?, ?)',
-                [station_fuel.id_station, station_fuel.id_fuel, station_fuel.price_per_unit]
+                'INSERT OR REPLACE INTO station_fuel (id_station, id_fuel, last_price_per_unit) VALUES (?, ?, ?)',
+                [station_fuel.id_station, station_fuel.id_fuel, station_fuel.last_price_per_unit]
             );
             return result;
         }
         catch (error) {
-            console.error('Chyba při vkládání o:', error);
+            console.error('Chyba při vkládání station_fuel:', error);
             throw new Error('Nepodařilo se vytvořit nový záznam.');
         }
     }
@@ -42,12 +42,6 @@ export class StationFuelModel {
                 return val[0]["COUNT(*)"];
             })
             .catch((err) => console.log(err));
-    }
-
-    static async findById(id: number): Promise<StationFuel | null> {
-        const db = await Database.getConnection();
-        const row = await db.getFirstAsync<StationFuel>('SELECT sf.*, s.name AS station_name, f.name AS fuel_name FROM station_fuel sf INNER JOIN station s ON sf.station_id = s.id INNER JOIN fuel f ON sf.fuel_id = f.id WHERE sf.id = ?', [id]);
-        return row;
     }
 
     static async delete(id: number) {

@@ -107,6 +107,6 @@ export async function getFuelSeeds() {
             code: 'ELEC',
             trademark: 'Electric',
             unit: 'kWh',
-        }),
+        })
     ];
 }

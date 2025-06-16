@@ -20,7 +20,7 @@ export class FuelModel {
             return result;
         }
         catch (error) {
-            console.error('Chyba při vkládání:', error);
+            console.error('Chyba při vkládání fuel:', error);
             throw new Error('Nepodařilo se vytvořit nový záznam.');
         }
     }

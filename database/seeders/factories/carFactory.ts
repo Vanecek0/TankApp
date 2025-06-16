@@ -124,6 +124,6 @@ export async function getCarSeeds() {
             fuel_id: 13,
             car_nickname: 'Teslička',
             tachometer: 25300,
-        }),
+        })
     ];
 }

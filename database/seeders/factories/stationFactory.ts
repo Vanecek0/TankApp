@@ -29,6 +29,6 @@ export async function getStationSeeds() {
             provider: 'Shell',
             created_at: Date.now() - 1000 * 60 * 60 * 24 * 20,
             updated_at: Date.now() - 1000 * 60 * 60 * 24 * 20,
-        }),
+        })
     ];
 }
