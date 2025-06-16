@@ -1,5 +1,5 @@
 import { ScrollView, TouchableOpacity, View, VirtualizedList } from 'react-native';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useTheme } from '@/theme/ThemeProvider';
 import { usePathname } from 'expo-router';
 import { Colors } from '@/constants/Colors';
@@ -13,13 +13,32 @@ import ScaledText from '@/components/other/scaledText';
 import Icon from '@/components/ui/Icon';
 import Badge from '@/components/ui/badge';
 import ActionButton from '@/components/ui/actionButton';
+import { Badge as BadgeType, BadgeModel } from '@/models/Badge';
 
 export default function TankScreen() {
   const { isDark } = useTheme();
   const pathname = usePathname();
   const { tankings, isLoading } = useDatabase();
 
+
   const TankingItem = React.memo(({ item }: any) => {
+
+    const [badges, setBadges] = useState<BadgeType[]>([]);
+    const [badgesall, setBadgesAll] = useState<BadgeType[]>([]);
+
+    useEffect(() => {
+      const loadBadges = async () => {
+        try {
+          const result = await BadgeModel.getBadgesByTanking(item.id);
+          setBadges(result);
+        } catch (error) {
+          console.error("Nepodařilo se načíst odznaky:", error);
+        }
+      };
+
+      loadBadges();
+    }, [item.id]);
+
     return (
       <View style={{ backgroundColor: isDark ? Colors.dark.secondary_light : Colors.white, ...spacing.p(20), ...spacing.borderRadius(8) }}>
         <View key={item.id} style={{ ...spacing.gap(20) }}>
@@ -57,7 +76,7 @@ export default function TankScreen() {
             <View style={{ ...spacing.gap(12) }} className='flex-row'>
               <View className='basis-1/3'>
                 <ScaledText isThemed={true} size="sm" className='font-bold'>Cena za jednotku</ScaledText>
-                <ScaledText isThemed={true} size="xs" >{item.fuel.price_per_unit} Kč/l</ScaledText>
+                <ScaledText isThemed={true} size="xs" >{item.price_per_unit} Kč/l</ScaledText>
               </View>
               <View className='basis-1/3'>
                 <ScaledText isThemed={true} size="sm" className='font-bold'>Ujeto od posl.</ScaledText>
@@ -69,7 +88,20 @@ export default function TankScreen() {
               </View>
             </View>
           </View>
-          <Badge badgeColor={Colors.badge.green} textColor={Colors.white} size='xs' value='Plná nádrž' />
+          <View style={{ ...spacing.gap(8) }} className='flex-row'>
+            {badges.map((badge, index) => (
+              <>
+                {console.log(badgesall)}
+                <Badge
+                  key={`${badge.id}-${index}`}
+                  badgeColor={badge.color}
+                  textColor={Colors.white}
+                  size='xs'
+                  value={badge.name}
+                />
+              </>
+            ))}
+          </View>
         </View>
       </View>
     )
@@ -123,7 +155,7 @@ export default function TankScreen() {
                       Seznam
                     </ScaledText>
                   </TouchableOpacity>
-                  <TouchableOpacity style={{ width: "50%", ...spacing.py(10), ...spacing.mb(5),  borderTopRightRadius: 8, borderTopLeftRadius: 8, borderBottomWidth: 3, borderBottomColor: Colors.primary, backgroundColor: isDark ? Colors.dark.secondary_light : Colors.white }} onPress={() => setTab('stats')}>
+                  <TouchableOpacity style={{ width: "50%", ...spacing.py(10), ...spacing.mb(5), borderTopRightRadius: 8, borderTopLeftRadius: 8, borderBottomWidth: 3, borderBottomColor: Colors.primary, backgroundColor: isDark ? Colors.dark.secondary_light : Colors.white }} onPress={() => setTab('stats')}>
                     <ScaledText size='base' style={[{ fontWeight: 'bold', textAlign: "center", color: isDark ? Colors.dark.text : Colors.light.text }]}>
                       Statistiky
                     </ScaledText>

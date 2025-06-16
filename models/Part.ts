@@ -25,7 +25,7 @@ export class PartModel {
             return result;
         }
         catch (error) {
-            console.error('Chyba při vkládání:', error);
+            console.error('Chyba při vkládání part:', error);
             throw new Error('Nepodařilo se vytvořit nový záznam.');
         }
     }

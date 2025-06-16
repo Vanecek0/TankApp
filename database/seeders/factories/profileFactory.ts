@@ -24,6 +24,6 @@ export async function getProfileSeeds() {
             avatar_url: 'https://i.pravatar.cc/150?img=25',
             created_at: Date.now(),
             updated_at: Date.now(),
-        }),
+        })
     ];
 }

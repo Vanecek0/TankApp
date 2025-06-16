@@ -23,7 +23,7 @@ export async function getAutoserviceSeeds() {
             address: 'U Studentky 555, 338 08 Zbiroh',
             created_at: Date.now(),
             updated_at: Date.now(),
-        }),
+        })
 
     ];
 }

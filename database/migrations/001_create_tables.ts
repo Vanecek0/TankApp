@@ -32,7 +32,7 @@ export async function createTables(db: SQLite.SQLiteDatabase) {
         "id" INTEGER PRIMARY KEY AUTOINCREMENT,
         "id_station"	INTEGER NOT NULL,
         "id_fuel"	INTEGER NOT NULL,
-        "price_per_unit" NUMERIC,
+        "last_price_per_unit" NUMERIC,
         FOREIGN KEY("id_fuel") REFERENCES "fuel"("id") ON DELETE CASCADE,
         FOREIGN KEY("id_station") REFERENCES "station"("id") ON DELETE CASCADE
       );
@@ -94,14 +94,35 @@ export async function createTables(db: SQLite.SQLiteDatabase) {
     await db.execAsync(`
       CREATE TABLE IF NOT EXISTS "tanking" (
         "id"	INTEGER PRIMARY KEY AUTOINCREMENT,
+        "profile_id" INTEGER,
         "station_fuel_id" INTEGER,
+        "price_per_unit" NUMERIC,
         "price"	NUMERIC,
         "amount"	NUMERIC,
         "mileage"	NUMERIC,
         "tachometer" NUMERIC,
         "created_at"	NUMERIC,
         "updated_at"	NUMERIC,
+        FOREIGN KEY("profile_id") REFERENCES "profile"("id"),
         FOREIGN KEY("station_fuel_id") REFERENCES "station_fuel"("id")
+      );
+    `)
+
+    await db.execAsync(`
+      CREATE TABLE IF NOT EXISTS "badge" (
+        "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+        "name"	TEXT,
+        "color"	TEXT
+      );
+    `)
+
+    await db.execAsync(`
+      CREATE TABLE IF NOT EXISTS "badge_tanking" (
+        "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+        "id_badge"	INTEGER NOT NULL,
+        "id_tanking"	INTEGER NOT NULL,
+        FOREIGN KEY("id_badge") REFERENCES "badge"("id") ON DELETE CASCADE,
+        FOREIGN KEY("id_tanking") REFERENCES "tanking"("id") ON DELETE CASCADE
       );
     `)
 
@@ -115,8 +136,18 @@ export async function createTables(db: SQLite.SQLiteDatabase) {
         "service_date"	NUMERIC,
         "created_at"	NUMERIC,
         "updated_at"	NUMERIC,
-        FOREIGN KEY("autoservice_id") REFERENCES "autoservice"("id"),
+        FOREIGN KEY("autoservice_id") REFERENCES "autoservice"("id") ON DELETE CASCADE,
 	      FOREIGN KEY("profile_id") REFERENCES "profile"("id") ON DELETE CASCADE
+      );
+    `)
+
+    await db.execAsync(`
+      CREATE TABLE IF NOT EXISTS "servicing_part" (
+        "id"	INTEGER PRIMARY KEY AUTOINCREMENT,
+        "id_part" INTEGER,
+        "id_servicing" INTEGER,
+        FOREIGN KEY("id_part") REFERENCES "part"("id"),
+	      FOREIGN KEY("id_servicing") REFERENCES "servicing"("id") ON DELETE CASCADE
       );
     `)
 
