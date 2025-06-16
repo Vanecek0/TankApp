@@ -22,7 +22,7 @@ export class TankingModel {
     try {
       const result = await Database.executeSql(
         'INSERT INTO tanking (profile_id, station_fuel_id, price_per_unit, price, amount, mileage, tachometer, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
-        [tanking.profile_id, tanking.station_fuel_id, tanking.price_per_unit, tanking.price, tanking.amount, tanking.mileage, tanking.tachometer, Date.now(), Date.now()]
+        [tanking.profile_id, tanking.station_fuel_id, tanking.price_per_unit, tanking.price, tanking.amount, tanking.mileage, tanking.tachometer, tanking.created_at, tanking.updated_at]
       );
 
       return result;
@@ -36,7 +36,6 @@ export class TankingModel {
   static async all(): Promise<Tanking[]> {
     const db = await Database.getConnection();
     const rows = await db.getAllAsync<Tanking>('SELECT * FROM tanking');
-    console.log(rows);
     return rows;
   }
 
@@ -52,6 +51,62 @@ export class TankingModel {
         return val[0]["COUNT(*)"];
       })
       .catch((err) => console.log(err));
+  }
+
+  static async getTotalPriceAndMileage(): Promise<{ total_price: number; total_mileage: number }> {
+    const db = await Database.getConnection();
+
+    const query = `
+    SELECT 
+      SUM(price) AS total_price,
+      SUM(mileage) AS total_mileage
+    FROM tanking
+    WHERE profile_id = 1
+  `;
+
+    try {
+      const result = await db.getFirstAsync<{
+        total_price: number;
+        total_mileage: number;
+      }>(query);
+
+      return {
+        total_price: result?.total_price ?? 0,
+        total_mileage: result?.total_mileage ?? 0,
+      };
+    } catch (error) {
+      console.error("Failed to get total price and mileage:", error);
+      throw error;
+    }
+  }
+
+  static async getPriceMileageSumByDate(limit?: number): Promise<{ month: string; total_price: number; total_mileage: number }[]> {
+    const db = await Database.getConnection()
+
+    const query = `
+    SELECT 
+      strftime('%Y-%m', created_at / 1000, 'unixepoch') AS month,
+      SUM(price) AS total_price,
+      SUM(mileage) AS total_mileage
+    FROM tanking
+    WHERE profile_id = 1
+    GROUP BY month
+    ORDER BY month DESC
+    ${limit ? `LIMIT ${limit}` : ''}
+  `
+
+    try {
+      const result = await db.getAllAsync<{
+        month: string
+        total_price: number
+        total_mileage: number
+      }>(query)
+
+      return result
+    } catch (error) {
+      console.error("Failed to get monthly price/mileage sums:", error)
+      throw error
+    }
   }
 
   static async getAllTankingsWithStationFuel(limit?: number): Promise<(Tanking & { station: Station, fuel: Fuel, station_fuel: StationFuel })[]> {

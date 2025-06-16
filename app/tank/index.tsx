@@ -24,7 +24,6 @@ export default function TankScreen() {
   const TankingItem = React.memo(({ item }: any) => {
 
     const [badges, setBadges] = useState<BadgeType[]>([]);
-    const [badgesall, setBadgesAll] = useState<BadgeType[]>([]);
 
     useEffect(() => {
       const loadBadges = async () => {
@@ -46,7 +45,7 @@ export default function TankScreen() {
             <ScaledText className='rounded-full' style={{ backgroundColor: "lightgray", fontWeight: "bold", ...spacing.p(16) }} size='base'>{item.station.provider.slice(0, 2).toUpperCase()}</ScaledText>
             <View className='flex-row justify-between flex-1'>
               <View style={{ ...spacing.gap(4) }} className='flex items-start w-2/3'>
-                <ScaledText isThemed={true} size="lg" className='font-bold'>{item.station.name}</ScaledText>
+                <ScaledText isThemed={true} size="lg" className='font-bold'>{item.id}{item.station.name}</ScaledText>
                 <View style={{ ...spacing.gap(2) }} className='flex-row justify-center items-center'>
                   <Icon name="map_pin" color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor() * 15} />
                   <ScaledText numberOfLines={1} ellipsizeMode="tail" className='text-ellipsis overflow-visible w-2/3' isThemed={true} size="sm">{item.station.address}</ScaledText>
@@ -89,17 +88,14 @@ export default function TankScreen() {
             </View>
           </View>
           <View style={{ ...spacing.gap(8) }} className='flex-row'>
-            {badges.map((badge, index) => (
-              <>
-                {console.log(badgesall)}
+            {badges.map((badge) => (
                 <Badge
-                  key={`${badge.id}-${index}`}
+                  key={badge.id}
                   badgeColor={badge.color}
                   textColor={Colors.white}
                   size='xs'
                   value={badge.name}
                 />
-              </>
             ))}
           </View>
         </View>

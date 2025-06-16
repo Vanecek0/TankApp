@@ -3,8 +3,7 @@ import TankDashboard from "./tank";
 import ServisDashboard from "./servis";
 import StationDashboard from "./station";
 
-export default function Dashboard({ data, routePathName, className }: {
-    data?: JSON;
+export default function Dashboard({ routePathName, className }: {
     routePathName?: string;
     className?: string;
 }) {
@@ -12,15 +11,15 @@ export default function Dashboard({ data, routePathName, className }: {
     const renderDashboard = () => {
         switch (routePathName) {
             case "home":
-                return <TankDashboard routePathName={routePathName} data={data}/>;
+                return <TankDashboard routePathName={routePathName}/>;
             case "/tank":
-                return <TankDashboard routePathName={routePathName} data={data}/>;
-            case "/servis":
-                return <ServisDashboard routePathName={routePathName} data={data}/>
-            case "/statiom":
-                return <StationDashboard routePathName={routePathName} data={data}/>;
+                return <TankDashboard routePathName={routePathName}/>;
+            /*case "/servis":
+                return <ServisDashboard routePathName={routePathName} data={data}/>*/
+            /*case "/station":
+                return <StationDashboard routePathName={routePathName} data={data}/>;*/
             default:
-                return <TankDashboard routePathName={routePathName} data={data}/>;
+                return <TankDashboard routePathName={routePathName}/>;
         }
     };
 

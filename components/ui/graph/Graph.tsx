@@ -4,7 +4,7 @@ import TankLineGraph from "./graphs/TankLineGraph";
 
 export default function Graph({ routePathName, data, className }: {
   routePathName?: string;
-  data?: JSON;
+  data: any[];
   className?: string;
 }) {
   const renderGraph = () => {

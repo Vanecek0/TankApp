@@ -5,6 +5,8 @@ import { Database } from './database';
 
 export type modelTypes = {
   tankings: (Tanking & { station: Station })[];
+  tankingSumsByDate: ({ month: string; total_price: number; total_mileage: number })[]
+  tankingSums: {total_price: number; total_mileage: number } | undefined
   isLoading: boolean;
   initAll: () => Promise<void>;
   initTankings: () => Promise<void>;
@@ -14,6 +16,8 @@ export const DatabaseContext = createContext<modelTypes | undefined>(undefined);
 
 export const DatabaseProvider = ({ children }: { children: React.ReactNode }) => {
   const [tankings, setTankings] = useState<(Tanking & { station: Station })[]>([]);
+  const [tankingSums, setTankingSums] = useState<({ total_price: number; total_mileage: number })>();
+  const [tankingSumsByDate, setTankingSumsByDate] = useState<({ month: string; total_price: number; total_mileage: number })[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const initTankings = async () => {
@@ -22,7 +26,11 @@ export const DatabaseProvider = ({ children }: { children: React.ReactNode }) =>
     if (db) {
       try {
         const data = await TankingModel.getAllTankingsWithStationFuel();
+        const dataSums = await TankingModel.getTotalPriceAndMileage();
+        const dataSumsByDate = await TankingModel.getPriceMileageSumByDate();
         setTankings(data);
+        setTankingSums(dataSums);
+        setTankingSumsByDate(dataSumsByDate);
       } catch (err) {
         console.error(err);
       }
@@ -46,7 +54,7 @@ export const DatabaseProvider = ({ children }: { children: React.ReactNode }) =>
   }, []);
 
   return (
-    <DatabaseContext.Provider value={{ tankings, initTankings, initAll, isLoading }}>
+    <DatabaseContext.Provider value={{ tankings, tankingSumsByDate, tankingSums, initTankings, initAll, isLoading }}>
       {children}
     </DatabaseContext.Provider>
   );

@@ -9,9 +9,9 @@ import { BarChart, CurveType, LineChart } from "react-native-gifted-charts";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient, Stop } from "react-native-svg";
 
-export default function TankGraph({ className }: {
+export default function TankGraph({ className, data }: {
     className?: string;
-    data?: JSON;
+    data: any[];
 }) {
 
     const [parentWidth, setParentWidth] = useState(0);
@@ -23,244 +23,88 @@ export default function TankGraph({ className }: {
 
     const [highlightedGroupIndex, setHighlightedGroupIndex] = useState<number | null>(null);
 
-
     const fuelWeight = 1;
     const distanceWeight = 2.66;
 
-    const barData = [
-        {
-            originalValue: 4523,
-            value: 4523 * fuelWeight,
-            label: 'Led',
-            labelFull: 'Leden',
-            spacing: 2,
-            frontColor: '',
-            textColor: '#fff',
-            groupIndex: 0,
-        },
-        {
-            originalValue: 842,
-            value: 842 * distanceWeight,
-            frontColor: '#ffffff',
-            textColor: '#000',
-            groupIndex: 0,
-        },
-        {
-            originalValue: 4123,
-            value: 4123 * fuelWeight,
-            label: 'Únr',
-            labelFull: 'Únor',
-            spacing: 2,
-            frontColor: '',
-            textColor: '#fff',
-            groupIndex: 1,
-        },
-        {
-            originalValue: 712,
-            value: 712 * distanceWeight,
-            frontColor: '#ffffff',
-            textColor: '#000',
-            groupIndex: 1,
-        },
-        {
-            originalValue: 4951,
-            value: 4951 * fuelWeight,
-            label: 'Bře',
-            labelFull: 'Březen',
-            spacing: 2,
-            frontColor: '',
-            textColor: '#fff',
-            groupIndex: 2,
-        },
-        {
-            originalValue: 904,
-            value: 904 * distanceWeight,
-            frontColor: '#ffffff',
-            textColor: '#000',
-            groupIndex: 2,
-        },
-        {
-            originalValue: 6025,
-            value: 6025 * fuelWeight,
-            label: 'Dub',
-            labelFull: 'Duben',
-            spacing: 2,
-            frontColor: '',
-            textColor: '#fff',
-            groupIndex: 3,
-        },
-        {
-            originalValue: 1203,
-            value: 1203 * distanceWeight,
-            frontColor: '#ffffff',
-            textColor: '#000',
-            groupIndex: 3,
-        },
-        {
-            originalValue: 3087,
-            value: 3087 * fuelWeight,
-            label: 'Kvě',
-            labelFull: 'Květen',
-            spacing: 2,
-            frontColor: '',
-            textColor: '#fff',
-            groupIndex: 4,
-        },
-        {
-            originalValue: 698,
-            value: 698 * distanceWeight,
-            frontColor: '#ffffff',
-            textColor: '#000',
-            groupIndex: 4,
-        },
-        {
-            originalValue: 4396,
-            value: 4396 * fuelWeight,
-            label: 'Čer',
-            labelFull: 'Červen',
-            spacing: 2,
-            frontColor: '',
-            textColor: '#fff',
-            groupIndex: 5,
-        },
+    function transformToBarData(
+        tankingSums: any[],
+        fuelWeight: number,
+        distanceWeight: number
+    ) {
+        const monthLabels = [
+            { short: "Led", full: "Leden" },
+            { short: "Únr", full: "Únor" },
+            { short: "Bře", full: "Březen" },
+            { short: "Dub", full: "Duben" },
+            { short: "Kvě", full: "Květen" },
+            { short: "Čer", full: "Červen" },
+            { short: "Čvc", full: "Červenec" },
+            { short: "Srp", full: "Srpen" },
+            { short: "Zář", full: "Září" },
+            { short: "Říj", full: "Říjen" },
+            { short: "Lis", full: "Listopad" },
+            { short: "Pro", full: "Prosinec" }
+        ]
 
-        {
-            originalValue: 832,
-            value: 832 * distanceWeight,
-            frontColor: '#ffffff',
-            textColor: '#000',
-            groupIndex: 5,
-        },
-        {
-            originalValue: 5120,
-            value: 5120 * fuelWeight,
-            label: 'Čvc',
-            labelFull: 'Červenec',
-            spacing: 2,
-            frontColor: '',
-            textColor: '#fff',
-            groupIndex: 6,
-        },
-        {
-            originalValue: 1105,
-            value: 1105 * distanceWeight,
-            frontColor: '#ffffff',
-            textColor: '#000',
-            groupIndex: 6,
-        },
-        {
-            originalValue: 4783,
-            value: 4783 * fuelWeight,
-            label: 'Srp',
-            labelFull: 'Srpen',
-            spacing: 2,
-            frontColor: '',
-            textColor: '#fff',
-            groupIndex: 7,
-        },
-        {
-            originalValue: 973,
-            value: 973 * distanceWeight,
-            frontColor: '#ffffff',
-            textColor: '#000',
-            groupIndex: 7,
-        },
-        {
-            originalValue: 3902,
-            value: 3902 * fuelWeight,
-            label: 'Zář',
-            labelFull: 'Září',
-            spacing: 2,
-            frontColor: '',
-            textColor: '#fff',
-            groupIndex: 8,
-        },
-        {
-            originalValue: 852,
-            value: 852 * distanceWeight,
-            frontColor: '#ffffff',
-            textColor: '#000',
-            groupIndex: 8,
-        },
-        {
-            originalValue: 4308,
-            value: 4308 * fuelWeight,
-            label: 'Říj',
-            labelFull: 'Říjen',
-            spacing: 2,
-            frontColor: '',
-            textColor: '#fff',
-            groupIndex: 9,
-        },
-        {
-            originalValue: 790,
-            value: 790 * distanceWeight,
-            frontColor: '#ffffff',
-            textColor: '#000',
-            groupIndex: 9,
-        },
-        {
-            originalValue: 4021,
-            value: 4021 * fuelWeight,
-            label: 'Lis',
-            labelFull: 'Listopad',
-            spacing: 2,
-            frontColor: '',
-            textColor: '#fff',
-            groupIndex: 10,
-        },
-        {
-            originalValue: 865,
-            value: 865 * distanceWeight,
-            frontColor: '#ffffff',
-            textColor: '#000',
-            groupIndex: 10,
-        },
-        {
-            originalValue: 3897,
-            value: 3897 * fuelWeight,
-            label: 'Pro',
-            labelFull: 'Prosinec',
-            spacing: 2,
-            frontColor: '',
-            textColor: '#fff',
-            groupIndex: 11,
-        },
-        {
-            originalValue: 743,
-            value: 743 * distanceWeight,
-            frontColor: '#ffffff',
-            textColor: '#000',
-            groupIndex: 11,
+        const barData: any[] = []
+
+        for (let i = 0; i < 12; i++) {
+            const entry = tankingSums.find(e =>
+                parseInt(e.month.slice(5), 10) === i + 1
+            );
+
+            const total_price = entry?.total_price ?? 0;
+            const total_mileage = entry?.total_mileage ?? 0;
+
+            barData.push({
+                originalValue: total_price,
+                value: total_price * fuelWeight,
+                label: monthLabels[i].short,
+                labelFull: monthLabels[i].full,
+                spacing: 2,
+                frontColor: '',
+                textColor: '#fff',
+                groupIndex: i
+            });
+
+            barData.push({
+                originalValue: total_mileage,
+                value: total_mileage * distanceWeight,
+                frontColor: '#ffffff',
+                textColor: '#000',
+                groupIndex: i
+            });
         }
-    ];
+        return barData
+    }
 
+    const barData = transformToBarData(data, fuelWeight, distanceWeight)
 
-    const average =
-        barData.reduce((sum, item) => sum + item.value, 0) / barData.length;
+    const validItems = barData.filter(item => item.originalValue > 0);
+    const average = validItems.length > 0 ? validItems.reduce((sum, item) => sum + item.value, 0) / validItems.length: 0;
 
     return (
-        <SafeAreaView onLayout={onLayout} style={{maxHeight: parentWidth / 3, ...spacing.my(15), ...spacing.height(120)}} className={`items-center h- justify-center ${className}`}>
+        <SafeAreaView onLayout={onLayout} style={{ maxHeight: parentWidth / 3, ...spacing.my(15), ...spacing.height(120) }} className={`items-center h- justify-center ${className}`}>
             <BarChart
                 data={barData.map(item => ({
                     ...item,
                     frontColor: highlightedGroupIndex === null ? item.frontColor == '' ? `${darkenHexColor(Colors.primary, -50)}` : `${item.frontColor}` : item.groupIndex === highlightedGroupIndex ? item.frontColor == '' ? `${darkenHexColor(Colors.primary, -50)}` : `${item.frontColor}` : item.frontColor == '' ? `${darkenHexColor(Colors.primary, -50)}` : `${item.frontColor}`,
                 }))}
                 overflowTop={1}
-                initialSpacing={10*getScaleFactor()}
+                initialSpacing={10 * getScaleFactor()}
                 parentWidth={parentWidth}
                 adjustToWidth
-                width={parentWidth - (20*getScaleFactor())}
+                width={parentWidth - (20 * getScaleFactor())}
                 height={parentWidth / 3}
-                spacing={22*getScaleFactor()}
-                barWidth={24*getScaleFactor()}
-                labelWidth={(24 * 2)*getScaleFactor()}
+                spacing={22 * getScaleFactor()}
+                barWidth={24 * getScaleFactor()}
+                labelWidth={(24 * 2) * getScaleFactor()}
                 hideRules
                 noOfSections={1}
                 endSpacing={0}
                 cappedBars
                 capColor={'#fff'}
-                capThickness={3*getScaleFactor()}
+                capThickness={3 * getScaleFactor()}
                 barBorderRadius={0}
                 barBorderWidth={0}
                 xAxisLabelTextStyle={{
@@ -282,8 +126,8 @@ export default function TankGraph({ className }: {
                 referenceLine1Position={average}
                 referenceLine1Config={{
                     color: '#fff',
-                    dashWidth: 2*getScaleFactor(),
-                    dashGap: 3*getScaleFactor(),
+                    dashWidth: 2 * getScaleFactor(),
+                    dashGap: 3 * getScaleFactor(),
                 }}
                 autoCenterTooltip={true}
                 focusBarOnPress={false}

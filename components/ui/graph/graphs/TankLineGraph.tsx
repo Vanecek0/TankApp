@@ -11,7 +11,7 @@ import { LinearGradient, Stop } from "react-native-svg";
 
 export default function TankLineGraph({ className }: {
     className?: string;
-    data?: JSON;
+    data?: any[];
 }) {
     const { isDark } = useTheme();
 

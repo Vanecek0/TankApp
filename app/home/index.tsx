@@ -1,5 +1,5 @@
 import { RefreshControl, View, VirtualizedList } from 'react-native';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useTheme } from '@/theme/ThemeProvider';
 import { Link, usePathname } from 'expo-router';
 import { Colors } from '@/constants/Colors';
@@ -8,7 +8,7 @@ import ScaledText from '@/components/other/scaledText';
 import Icon from '@/components/ui/Icon';
 import getScaleFactor, { scaled } from '@/utils/SizeScaling';
 import { spacing } from '@/utils/SizeScaling';
-import { Tanking } from '@/models/Tanking';
+import { Tanking, TankingModel } from '@/models/Tanking';
 import { useDatabase } from '@/database/databaseContext';
 import ActionButton from '@/components/ui/actionButton';
 
@@ -65,7 +65,7 @@ export default function HomeScreen() {
         {/*allTankings.map((item) => (
           <ScaledText size='base'>{item.id}</ScaledText>
         ))*/}
-        
+
         <VirtualizedList
           ListHeaderComponent={
             <>
@@ -90,7 +90,7 @@ export default function HomeScreen() {
           getItemCount={(_data: unknown) => tankings.length}
           keyExtractor={(item, index) => item.id?.toString() ?? index.toString()}
           getItem={(_data: unknown, index: number) => tankings[index]}
-          ListEmptyComponent={<ScaledText style={{...spacing.p(28)}} className="text-center font-bold" color={Colors.inactive_icon} size="base">Žádné další záznamy</ScaledText>}
+          ListEmptyComponent={<ScaledText style={{ ...spacing.p(28) }} className="text-center font-bold" color={Colors.inactive_icon} size="base">Žádné další záznamy</ScaledText>}
         />
       </View>
       <ActionButton />
