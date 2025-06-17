@@ -101,6 +101,7 @@ export async function createTables(db: SQLite.SQLiteDatabase) {
         "amount"	NUMERIC,
         "mileage"	NUMERIC,
         "tachometer" NUMERIC,
+        "tank_date" NUMERIC,
         "created_at"	NUMERIC,
         "updated_at"	NUMERIC,
         FOREIGN KEY("profile_id") REFERENCES "profile"("id"),

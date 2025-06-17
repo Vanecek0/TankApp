@@ -14,97 +14,91 @@ import Icon from '@/components/ui/Icon';
 import Badge from '@/components/ui/badge';
 import ActionButton from '@/components/ui/actionButton';
 import { Badge as BadgeType, BadgeModel } from '@/models/Badge';
+import { Station } from '@/models/Station';
+import { Fuel } from '@/models/Fuel';
+import { StationFuel } from '@/models/StationFuel';
+import { getDate } from '@/utils/getDate';
 
 export default function TankScreen() {
   const { isDark } = useTheme();
   const pathname = usePathname();
   const { tankings, isLoading } = useDatabase();
 
-
-  const TankingItem = React.memo(({ item }: any) => {
-
-    const [badges, setBadges] = useState<BadgeType[]>([]);
-
-    useEffect(() => {
-      const loadBadges = async () => {
-        try {
-          const result = await BadgeModel.getBadgesByTanking(item.id);
-          setBadges(result);
-        } catch (error) {
-          console.error("Nepodařilo se načíst odznaky:", error);
-        }
-      };
-
-      loadBadges();
-    }, [item.id]);
-
+  const TankingItem = React.memo(({ item }: { item: { month: string, tankings: (Tanking & { station: Station, fuel: Fuel, station_fuel: StationFuel })[] } }) => {
     return (
-      <View style={{ backgroundColor: isDark ? Colors.dark.secondary_light : Colors.white, ...spacing.p(20), ...spacing.borderRadius(8) }}>
-        <View key={item.id} style={{ ...spacing.gap(20) }}>
-          <View style={{ ...spacing.gap(12) }} className=' flex-row items-center w-full'>
-            <ScaledText className='rounded-full' style={{ backgroundColor: "lightgray", fontWeight: "bold", ...spacing.p(16) }} size='base'>{item.station.provider.slice(0, 2).toUpperCase()}</ScaledText>
-            <View className='flex-row justify-between flex-1'>
-              <View style={{ ...spacing.gap(4) }} className='flex items-start w-2/3'>
-                <ScaledText isThemed={true} size="lg" className='font-bold'>{item.id}{item.station.name}</ScaledText>
-                <View style={{ ...spacing.gap(2) }} className='flex-row justify-center items-center'>
-                  <Icon name="map_pin" color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor() * 15} />
-                  <ScaledText numberOfLines={1} ellipsizeMode="tail" className='text-ellipsis overflow-visible w-2/3' isThemed={true} size="sm">{item.station.address}</ScaledText>
+      <View style={{ ...spacing.gap(12) }}>
+        <ScaledText size='lg' className='font-bold capitalize' style={{ color: isDark ? Colors.dark.text : '' }}>{getDate(item.month).monthLong} {getDate(item.month).year}</ScaledText>
+        <View style={{ ...spacing.gap(12) }}>
+          {item.tankings.map((item) => (
+            <View key={item.id} style={{ backgroundColor: isDark ? Colors.dark.secondary_light : Colors.white, ...spacing.p(20), ...spacing.borderRadius(8) }}>
+              <View key={item.id} style={{ ...spacing.gap(20) }}>
+                <View style={{ ...spacing.gap(12) }} className=' flex-row items-center w-full'>
+                  <ScaledText className='rounded-full' style={{ backgroundColor: "lightgray", fontWeight: "bold", ...spacing.p(16) }} size='base'>{item.station.provider.slice(0, 2).toUpperCase()}</ScaledText>
+                  <View className='flex-row justify-between flex-1'>
+                    <View style={{ ...spacing.gap(4) }} className='flex items-start w-2/3'>
+                      <ScaledText isThemed={true} size="lg" className='font-bold'>{item.station.name}</ScaledText>
+                      <View style={{ ...spacing.gap(2) }} className='flex-row justify-center items-center'>
+                        <Icon name="map_pin" color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor() * 15} />
+                        <ScaledText numberOfLines={1} ellipsizeMode="tail" className='text-ellipsis overflow-visible w-2/3' isThemed={true} size="sm">{item.station.address}</ScaledText>
+                      </View>
+                    </View>
+                    <View style={{ ...spacing.gap(4) }} className='flex items-end'>
+                      <ScaledText isThemed={true} size="lg" className='font-bold'>{item.price} Kč</ScaledText>
+                      <ScaledText isThemed={true} size="sm" className='text-xs'>{item.amount}l</ScaledText>
+                    </View>
+                  </View>
+                </View>
+                <View style={{ ...spacing.gap(12) }} className='flex'>
+                  <View style={{ ...spacing.gap(12) }} className='flex-row'>
+                    <View className='basis-1/3'>
+                      <ScaledText isThemed={true} size="sm" className='font-bold' >Datum a čas</ScaledText>
+                      <ScaledText isThemed={true} size="xs" >{new Date(item.tank_date).toLocaleDateString("cs-CZ")}, {new Date(item.created_at).toLocaleTimeString("cs-CZ", { hour: "2-digit", minute: "2-digit" })}</ScaledText>
+                    </View>
+                    <View className='basis-1/3'>
+                      <ScaledText isThemed={true} size="sm" className='font-bold'>Stav tachometru</ScaledText>
+                      <ScaledText isThemed={true} size="xs" >{item.tachometer} km</ScaledText>
+                    </View>
+                    <View className='basis-1/3'>
+                      <ScaledText isThemed={true} size="sm" className='font-bold'>Typ paliva</ScaledText>
+                      <ScaledText isThemed={true} size="xs" >{item.fuel.trademark}</ScaledText>
+                    </View>
+                  </View>
+                  <View style={{ ...spacing.gap(12) }} className='flex-row'>
+                    <View className='basis-1/3'>
+                      <ScaledText isThemed={true} size="sm" className='font-bold'>Cena za jednotku</ScaledText>
+                      <ScaledText isThemed={true} size="xs" >{item.price_per_unit} Kč/l</ScaledText>
+                    </View>
+                    <View className='basis-1/3'>
+                      <ScaledText isThemed={true} size="sm" className='font-bold'>Ujeto od posl.</ScaledText>
+                      <ScaledText isThemed={true} size="xs" >{item.mileage} km</ScaledText>
+                    </View>
+                    <View className='basis-1/3'>
+                      <ScaledText isThemed={true} size="sm" className='font-bold'>Spotřeba</ScaledText>
+                      <ScaledText isThemed={true} size="xs" >{((item.amount / item.mileage) * 100).toFixed(2)} l/100km</ScaledText>
+                    </View>
+                  </View>
+                </View>
+                <View style={{ ...spacing.gap(8) }} className='flex-row'>
+                  {/*badges[item.id!].map((badge: BadgeType) => (
+                  <Badge
+                    key={badge.id}
+                    badgeColor={badge.color}
+                    textColor={Colors.white}
+                    size='xs'
+                    value={badge.name}
+                  />
+                ))*/}
                 </View>
               </View>
-              <View style={{ ...spacing.gap(4) }} className='flex items-end'>
-                <ScaledText isThemed={true} size="lg" className='font-bold'>{item.price} Kč</ScaledText>
-                <ScaledText isThemed={true} size="sm" className='text-xs'>{item.amount}l</ScaledText>
-              </View>
             </View>
-          </View>
-          <View style={{ ...spacing.gap(12) }} className='flex'>
-            <View style={{ ...spacing.gap(12) }} className='flex-row'>
-              <View className='basis-1/3'>
-                <ScaledText isThemed={true} size="sm" className='font-bold' >Datum a čas</ScaledText>
-                <ScaledText isThemed={true} size="xs" >{new Date(item.created_at).toLocaleDateString("cs-CZ")}, {new Date(item.created_at).toLocaleTimeString("cs-CZ", { hour: "2-digit", minute: "2-digit" })}</ScaledText>
-              </View>
-              <View className='basis-1/3'>
-                <ScaledText isThemed={true} size="sm" className='font-bold'>Stav tachometru</ScaledText>
-                <ScaledText isThemed={true} size="xs" >{item.tachometer} km</ScaledText>
-              </View>
-              <View className='basis-1/3'>
-                <ScaledText isThemed={true} size="sm" className='font-bold'>Typ paliva</ScaledText>
-                <ScaledText isThemed={true} size="xs" >{item.fuel.trademark}</ScaledText>
-              </View>
-            </View>
-            <View style={{ ...spacing.gap(12) }} className='flex-row'>
-              <View className='basis-1/3'>
-                <ScaledText isThemed={true} size="sm" className='font-bold'>Cena za jednotku</ScaledText>
-                <ScaledText isThemed={true} size="xs" >{item.price_per_unit} Kč/l</ScaledText>
-              </View>
-              <View className='basis-1/3'>
-                <ScaledText isThemed={true} size="sm" className='font-bold'>Ujeto od posl.</ScaledText>
-                <ScaledText isThemed={true} size="xs" >{item.mileage} km</ScaledText>
-              </View>
-              <View className='basis-1/3'>
-                <ScaledText isThemed={true} size="sm" className='font-bold'>Spotřeba</ScaledText>
-                <ScaledText isThemed={true} size="xs" >{((item.amount / item.mileage) * 100).toFixed(2)} l/100km</ScaledText>
-              </View>
-            </View>
-          </View>
-          <View style={{ ...spacing.gap(8) }} className='flex-row'>
-            {badges.map((badge) => (
-                <Badge
-                  key={badge.id}
-                  badgeColor={badge.color}
-                  textColor={Colors.white}
-                  size='xs'
-                  value={badge.name}
-                />
-            ))}
-          </View>
+          ))}
         </View>
       </View>
     )
   })
 
   const renderItem = useCallback(
-    ({ item }: { item: Tanking }) => <TankingItem item={item} />,
+    ({ item }: { item: { month: string, tankings: (Tanking & { station: Station, fuel: Fuel, station_fuel: StationFuel })[] } }) => <TankingItem item={item} />,
     [isDark]
   );
   const [tab, setTab] = useState<'list' | 'stats'>('list');
@@ -133,11 +127,12 @@ export default function TankScreen() {
 
                 </>
               }
-              initialNumToRender={5}
-              maxToRenderPerBatch={3}
-              windowSize={5}
+              initialNumToRender={1}
+              maxToRenderPerBatch={1}
+              windowSize={2}
               contentContainerStyle={{ ...spacing.gap(12), ...spacing.borderRadius(12), ...spacing.pb(96) }}
               renderItem={renderItem}
+              keyExtractor={(item, index) => tankings[index].month ?? index.toString()}
               getItemCount={(_data: unknown) => tankings.length}
               getItem={(_data: unknown, index: number) => tankings[index]}
             />
@@ -160,12 +155,10 @@ export default function TankScreen() {
                 <TankStatistics />
               </ScrollView>
             </>
-          )
-          }
+          )}
         </View>
         <ActionButton />
       </View>
     </>
   );
-
 }
