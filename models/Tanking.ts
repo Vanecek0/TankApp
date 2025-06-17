@@ -12,6 +12,7 @@ export type Tanking = {
   amount: number;
   mileage: number;
   tachometer: number;
+  tank_date: number;
   created_at: number;
   updated_at: number;
 };
@@ -21,8 +22,8 @@ export class TankingModel {
   static async create(tanking: Tanking) {
     try {
       const result = await Database.executeSql(
-        'INSERT INTO tanking (profile_id, station_fuel_id, price_per_unit, price, amount, mileage, tachometer, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
-        [tanking.profile_id, tanking.station_fuel_id, tanking.price_per_unit, tanking.price, tanking.amount, tanking.mileage, tanking.tachometer, tanking.created_at, tanking.updated_at]
+        'INSERT INTO tanking (profile_id, station_fuel_id, price_per_unit, price, amount, mileage, tachometer, tank_date, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        [tanking.profile_id, tanking.station_fuel_id, tanking.price_per_unit, tanking.price, tanking.amount, tanking.mileage, tanking.tachometer, tanking.tank_date, tanking.created_at, tanking.updated_at]
       );
 
       return result;
@@ -109,6 +110,90 @@ export class TankingModel {
     }
   }
 
+  static async getGroupedTankingsByMonth(): Promise<{
+    month: string,
+    tankings: (Tanking & { station: Station, fuel: Fuel, station_fuel: StationFuel })[]
+  }[]> {
+    const db = await Database.getConnection();
+    const rows = await db.getAllAsync(
+      `SELECT 
+        t.*,
+        strftime('%Y-%m', datetime(t.tank_date / 1000, 'unixepoch')) AS tank_month,
+        s.id AS station_id,
+        s.name AS station_name,
+        s.address AS station_address,
+        s.last_visit AS station_last_visit,
+        s.provider AS station_provider,
+        s.created_at AS station_created_at,
+        s.updated_at AS station_updated_at,
+        f.id AS fuel_id,
+        f.name AS fuel_name,
+        f.code AS fuel_code,
+        f.trademark AS fuel_trademark,
+        f.unit AS fuel_unit,
+        sf.id_station,
+        sf.id_fuel,
+        sf.last_price_per_unit AS last_price_per_unit
+      FROM tanking t
+      INNER JOIN station_fuel sf ON t.station_fuel_id = sf.id
+      INNER JOIN station s ON sf.id_station = s.id
+      INNER JOIN fuel f ON sf.id_fuel = f.id
+      WHERE t.profile_id = 1
+      ORDER BY t.tank_date DESC
+      `
+    );
+
+    const grouped = new Map<string, any[]>();
+
+    rows.map((row: any) => {
+      const month = row.tank_month;
+      if (!grouped.has(month)) {
+        grouped.set(month, []);
+      }
+
+      grouped.get(month)!.push({
+        id: row.id,
+        profile_id: row.profile_id,
+        station_fuel_id: row.station_fuel_id,
+        price_per_unit: row.price_per_unit,
+        price: row.price,
+        amount: row.amount,
+        mileage: row.mileage,
+        tachometer: row.tachometer,
+        tank_date: row.tank_date,
+        created_at: row.created_at,
+        updated_at: row.updated_at,
+        station: {
+          id: row.station_id,
+          name: row.station_name,
+          address: row.station_address,
+          last_visit: row.station_last_visit,
+          provider: row.station_provider,
+          created_at: row.station_created_at,
+          updated_at: row.station_updated_at
+        },
+        fuel: {
+          id: row.fuel_id,
+          name: row.fuel_name,
+          code: row.fuel_code,
+          trademark: row.fuel_trademark,
+          unit: row.fuel_unit
+        },
+        station_fuel: {
+          id: row.station_fuel_id,
+          id_station: row.id_station,
+          id_fuel: row.id_fuel,
+          last_price_per_unit: row.last_price_per_unit
+        }
+      });
+    })
+
+    return Array.from(grouped.entries()).map(([month, tankings]) => ({
+      month,
+      tankings
+    }));
+  }
+
   static async getAllTankingsWithStationFuel(limit?: number): Promise<(Tanking & { station: Station, fuel: Fuel, station_fuel: StationFuel })[]> {
     const db = await Database.getConnection();
     const rows = await db.getAllAsync(
@@ -132,7 +217,7 @@ export class TankingModel {
     INNER JOIN station s ON sf.id_station = s.id
     INNER JOIN fuel f ON sf.id_fuel = f.id
     WHERE profile_id = 1
-    ORDER BY t.created_at DESC
+    ORDER BY t.tank_date DESC
     ${limit != null ? 'LIMIT ?' : ''}`,
       [limit!],
     )
@@ -146,6 +231,7 @@ export class TankingModel {
       amount: row.amount,
       mileage: row.mileage,
       tachometer: row.tachometer,
+      tank_date: row.tank_date,
       created_at: row.created_at,
       updated_at: row.updated_at,
       station: {
@@ -187,7 +273,7 @@ export class TankingModel {
          s.updated_at AS station_updated_at
        FROM tanking t
        INNER JOIN station s ON t.station_id = s.id
-       ORDER BY t.created_at DESC 
+       ORDER BY t.tank_date DESC 
     ${limit != null ? 'LIMIT ?' : ''}`,
       [limit!],
     )
@@ -201,6 +287,7 @@ export class TankingModel {
       amount: row.amount,
       mileage: row.mileage,
       tachometer: row.tachometer,
+      tank_date: row.tank_date,
       created_at: row.created_at,
       updated_at: row.updated_at,
       station: {

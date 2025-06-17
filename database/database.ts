@@ -96,7 +96,7 @@ export class Database {
       const db = await this.getConnection()
 
       await db.execAsync(`PRAGMA foreign_keys = OFF;`)
-      await db.execAsync(`BEGIN TRANSACTION;`)
+      await db.execAsync(`BEGIN IMMEDIATE TRANSACTION;`)
 
       const tables = await db.getAllAsync<{ name: string }>(`
       SELECT name FROM sqlite_master

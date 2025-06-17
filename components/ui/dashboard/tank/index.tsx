@@ -14,7 +14,7 @@ export default function TankDashboard({ routePathName, className }: {
             <ScaledText size="lg" className="text-center text-white font-bold">Leden 2025 – Únor 2025</ScaledText>
             <View style={{ ...spacing.my(12) }} className="flex-row justify-between">
                 <View className="items-center">
-                    <ScaledText style={{ ...spacing.mb(4) }} size="3xl" className="text-white font-bold">{tankingSums?.total_price}</ScaledText>
+                    <ScaledText style={{ ...spacing.mb(4) }} size="3xl" className="text-white font-bold">{tankingSums?.total_price} kč</ScaledText>
                     <ScaledText size="lg" className="text-hidden_text font-bold">Výdaje za palivo</ScaledText>
                 </View>
                 <View className="items-center">
