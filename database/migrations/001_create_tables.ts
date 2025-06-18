@@ -152,6 +152,18 @@ export async function createTables(db: SQLite.SQLiteDatabase) {
       );
     `)
 
+    await db.execAsync(`
+      CREATE VIEW IF NOT EXISTS "monthly_tanking_stats" AS
+      SELECT 
+        strftime('%Y-%m', datetime(tank_date / 1000, 'unixepoch')) AS period,
+        SUM(amount) AS total_amount,
+        SUM(price) AS total_price,
+        MAX(tachometer) AS last_tachometer
+        AVG(price_per_unit) AS avg_price_per_unit
+      FROM tanking
+      GROUP BY period;
+    `);
+
     console.log("Tables created successfully")
   } catch (error) {
     console.error("Error creating tables:", error)

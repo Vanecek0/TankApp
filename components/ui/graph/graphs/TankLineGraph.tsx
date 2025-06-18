@@ -99,18 +99,60 @@ export default function TankLineGraph({ className }: {
         },
     ];
 
-    const barData = [
-        {
-            originalValue: 4523,
-            value: 4523 * 1,
-            label: 'Jan',
-            spacing: 2,
-            frontColor: '#FF4D00',
-            textColor: '#fff',
-            groupIndex: 0,
-        },
+    function transformData(
+        tankingSums: any[],
+        fuelWeight: number,
+        distanceWeight: number
+    ) {
+        const monthLabels = [
+            { short: "Led", full: "Leden" },
+            { short: "Únr", full: "Únor" },
+            { short: "Bře", full: "Březen" },
+            { short: "Dub", full: "Duben" },
+            { short: "Kvě", full: "Květen" },
+            { short: "Čer", full: "Červen" },
+            { short: "Čvc", full: "Červenec" },
+            { short: "Srp", full: "Srpen" },
+            { short: "Zář", full: "Září" },
+            { short: "Říj", full: "Říjen" },
+            { short: "Lis", full: "Listopad" },
+            { short: "Pro", full: "Prosinec" }
+        ]
 
-    ];
+        const barData: any[] = []
+
+        for (let i = 0; i < 12; i++) {
+            const entry = tankingSums.find(e =>
+                parseInt(e.month.slice(5), 10) === i + 1
+            );
+
+            const total_price = entry?.total_price ?? 0;
+            const total_mileage = entry?.total_mileage ?? 0;
+
+            barData.push({
+                originalValue: total_price,
+                value: total_price * fuelWeight,
+                label: monthLabels[i].short,
+                labelFull: monthLabels[i].full,
+                spacing: 2,
+                frontColor: '',
+                textColor: '#fff',
+                groupIndex: i
+            });
+
+            barData.push({
+                originalValue: total_mileage,
+                value: total_mileage * distanceWeight,
+                frontColor: '#ffffff',
+                textColor: '#000',
+                groupIndex: i
+            });
+        }
+        return barData
+    }
+
+    const barData = transformData(data, fuelWeight, distanceWeight)
+
     return (
         <SafeAreaView onLayout={onLayout} style={{ maxHeight: parentWidth / 3, ...spacing.my(15) }} className={`items-center justify-center ${className}`}>
 
