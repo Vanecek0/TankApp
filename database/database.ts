@@ -93,34 +93,44 @@ export class Database {
 
   static async resetDatabase() {
     try {
-      const db = await this.getConnection()
+      const db = await this.getConnection();
 
-      await db.execAsync(`PRAGMA foreign_keys = OFF;`)
-      await db.execAsync(`BEGIN IMMEDIATE TRANSACTION;`)
+      await db.execAsync(`PRAGMA foreign_keys = OFF;`);
+      await db.execAsync(`BEGIN IMMEDIATE TRANSACTION;`);
 
+      // Drop views
+      const views = await db.getAllAsync<{ name: string }>(`
+        SELECT name FROM sqlite_master
+        WHERE type = 'view' AND name NOT LIKE 'sqlite_%';
+      `);
+      for (const { name } of views) {
+        console.log(`Dropping view: ${name}`);
+        await db.execAsync(`DROP VIEW IF EXISTS "${name}";`);
+      }
+
+      // Drop tables
       const tables = await db.getAllAsync<{ name: string }>(`
-      SELECT name FROM sqlite_master
-      WHERE type='table' AND name NOT LIKE 'sqlite_%';
-    `)
-
+        SELECT name FROM sqlite_master
+        WHERE type = 'table' AND name NOT LIKE 'sqlite_%';
+      `);
       for (const { name } of tables) {
-        console.log(`Dropping table: ${name}`)
-        await db.execAsync(`DROP TABLE IF EXISTS "${name}";`)
+        console.log(`Dropping table: ${name}`);
+        await db.execAsync(`DROP TABLE IF EXISTS "${name}";`);
       }
 
-      await db.execAsync(`COMMIT;`)
-      await db.execAsync(`PRAGMA foreign_keys = ON;`)
+      await db.execAsync(`COMMIT;`);
+      await db.execAsync(`PRAGMA foreign_keys = ON;`);
 
-      console.log("Database reset complete")
+      console.log("Database reset complete");
     } catch (error) {
-      console.error("Database reset failed, rolling back:", error)
+      console.error("Database reset failed, rolling back:", error);
       try {
-        const db = await this.getConnection()
-        await db.execAsync("ROLLBACK;")
+        const db = await this.getConnection();
+        await db.execAsync("ROLLBACK;");
       } catch (rollbackError) {
-        console.error("Rollback failed:", rollbackError)
+        console.error("Rollback failed:", rollbackError);
       }
-      throw error
+      throw error;
     }
   }
 }

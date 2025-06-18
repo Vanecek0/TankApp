@@ -57,7 +57,6 @@ export default function RootLayout() {
     };
     //seedDb();
 
-
     prepare();
   }, []);
 
