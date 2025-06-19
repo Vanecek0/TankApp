@@ -29,7 +29,6 @@ export function TankStatistics() {
 
   return (
     <>
-      {console.log(statistics)}
       <View style={{ ...spacing.gap(12), ...spacing.mb(112) }} className='flex'>
         <View style={{ ...spacing.mt(8) }} className='flex-row flex-wrap justify-between'>
           <View style={{ backgroundColor: isDark ? Colors.dark.secondary_light : Colors.white, ...spacing.p(20), ...spacing.mb(12), ...spacing.borderRadius(8) }} className={`basis-[48.5%]`}>

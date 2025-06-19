@@ -2,6 +2,7 @@ import { Database } from "@/database/database";
 import { Station } from "./Station";
 import { Fuel } from "./Fuel";
 import { StationFuel } from "./StationFuel";
+import { Badge, BadgeModel } from "./Badge";
 
 export type Tanking = {
   id?: number;
@@ -81,33 +82,133 @@ export class TankingModel {
     }
   }
 
-  static async getPriceMileageSumByDate(limit?: number): Promise<{ month: string; total_price: number; total_mileage: number }[]> {
+  static async getPriceMileageSumByDate(fromDate?: Date, toDate?: Date, limit?: number): Promise<{ month: string; total_price: number; total_mileage: number }[]> {
     const db = await Database.getConnection()
-
-    const query = `
-    SELECT 
-      strftime('%Y-%m', created_at / 1000, 'unixepoch') AS month,
-      SUM(price) AS total_price,
-      SUM(mileage) AS total_mileage
-    FROM tanking
-    WHERE profile_id = 1
-    GROUP BY month
-    ORDER BY month DESC
-    ${limit ? `LIMIT ${limit}` : ''}
-  `
+    
+    const from = fromDate?.getTime() ?? 0;
+    const to = toDate?.getTime() ?? Date.now();
 
     try {
       const result = await db.getAllAsync<{
         month: string
         total_price: number
         total_mileage: number
-      }>(query)
+      }>(`
+        SELECT 
+          strftime('%Y-%m', created_at / 1000, 'unixepoch') AS month,
+          SUM(price) AS total_price,
+          SUM(mileage) AS total_mileage
+        FROM tanking
+        WHERE profile_id = 1
+        AND created_at >= ?
+        AND created_at < ?
+        GROUP BY month
+        ORDER BY month DESC
+        ${limit ? `LIMIT ?` : ''}
+          `, [from, to, limit!]);
 
       return result
     } catch (error) {
       console.error("Failed to get monthly price/mileage sums:", error)
       throw error
     }
+  }
+
+  static async getGroupedTankingsWithBadgesByMonth(): Promise<{
+    month: string,
+    tankings: (Tanking & {
+      station: Station,
+      fuel: Fuel,
+      station_fuel: StationFuel,
+      badges: Badge[]
+    })[]
+  }[]> {
+    const db = await Database.getConnection();
+
+    const rows = await db.getAllAsync(
+      `SELECT 
+        t.*,
+        strftime('%Y-%m', datetime(t.tank_date / 1000, 'unixepoch')) AS tank_month,
+        s.id AS station_id,
+        s.name AS station_name,
+        s.address AS station_address,
+        s.last_visit AS station_last_visit,
+        s.provider AS station_provider,
+        s.created_at AS station_created_at,
+        s.updated_at AS station_updated_at,
+        f.id AS fuel_id,
+        f.name AS fuel_name,
+        f.code AS fuel_code,
+        f.trademark AS fuel_trademark,
+        f.unit AS fuel_unit,
+        sf.id_station,
+        sf.id_fuel,
+        sf.last_price_per_unit AS last_price_per_unit
+      FROM tanking t
+      INNER JOIN station_fuel sf ON t.station_fuel_id = sf.id
+      INNER JOIN station s ON sf.id_station = s.id
+      INNER JOIN fuel f ON sf.id_fuel = f.id
+      WHERE t.profile_id = 1
+      ORDER BY t.tank_date DESC
+      `
+    );
+    const tankingIds = rows.map((row: any) => row.id);
+
+    let badgesData: { [key: number]: Badge[] } = {};
+    if (tankingIds.length > 0) {
+      badgesData = await BadgeModel.getBadgesByTanking(tankingIds);
+    }
+
+    const grouped = new Map<string, any[]>();
+
+    rows.map((row: any) => {
+      const month = row.tank_month;
+      if (!grouped.has(month)) {
+        grouped.set(month, []);
+      }
+
+      grouped.get(month)!.push({
+        id: row.id,
+        profile_id: row.profile_id,
+        station_fuel_id: row.station_fuel_id,
+        price_per_unit: row.price_per_unit,
+        price: row.price,
+        amount: row.amount,
+        mileage: row.mileage,
+        tachometer: row.tachometer,
+        tank_date: row.tank_date,
+        created_at: row.created_at,
+        updated_at: row.updated_at,
+        station: {
+          id: row.station_id,
+          name: row.station_name,
+          address: row.station_address,
+          last_visit: row.station_last_visit,
+          provider: row.station_provider,
+          created_at: row.station_created_at,
+          updated_at: row.station_updated_at
+        },
+        fuel: {
+          id: row.fuel_id,
+          name: row.fuel_name,
+          code: row.fuel_code,
+          trademark: row.fuel_trademark,
+          unit: row.fuel_unit
+        },
+        station_fuel: {
+          id: row.station_fuel_id,
+          id_station: row.id_station,
+          id_fuel: row.id_fuel,
+          last_price_per_unit: row.last_price_per_unit
+        },
+        badges: badgesData[row.id] || []
+      });
+    })
+
+    return Array.from(grouped.entries()).map(([month, tankings]) => ({
+      month,
+      tankings
+    }));
   }
 
   static async getGroupedTankingsByMonth(): Promise<{

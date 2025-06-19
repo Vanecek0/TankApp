@@ -1,19 +1,20 @@
 import ScaledText from "@/components/other/scaledText";
 import { Colors } from "@/constants/Colors";
 import { FontSizes } from "@/constants/FontSizes";
+import { useDatabase } from "@/database/databaseContext";
 import { useTheme } from "@/theme/ThemeProvider";
 import getScaleFactor, { spacing } from "@/utils/SizeScaling";
 import { useState } from "react";
 import { Text, View } from "react-native";
 import { BarChart, CurveType, LineChart } from "react-native-gifted-charts";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { LinearGradient, Stop } from "react-native-svg";
 
 export default function TankLineGraph({ className }: {
     className?: string;
     data?: any[];
 }) {
     const { isDark } = useTheme();
+    const { tankings, initTankings, isLoading } = useDatabase();
 
     const [parentWidth, setParentWidth] = useState(0);
 
@@ -24,85 +25,9 @@ export default function TankLineGraph({ className }: {
 
     const weight = 1;
 
-    const data = [
-        {
-            originalValue: 34.2,
-            value: 34.2 * weight,
-            label: 'Led',
-            labelFull: 'Leden',
-        },
-        {
-            originalValue: 35.1,
-            value: 35.1 * weight,
-            label: 'Únr',
-            labelFull: 'Únor',
-        },
-        {
-            originalValue: 36.5,
-            value: 36.5 * weight,
-            label: 'Bře',
-            labelFull: 'Březen',
-        },
-        {
-            originalValue: 38.9,
-            value: 38.9 * weight,
-            label: 'Dub',
-            labelFull: 'Duben',
-        },
-        {
-            originalValue: 39.3,
-            value: 39.3 * weight,
-            label: 'Kvě',
-            labelFull: 'Květen',
-        },
-        {
-            originalValue: 39.8,
-            value: 39.8 * weight,
-            label: 'Čer',
-            labelFull: 'Červen',
-        },
-        {
-            originalValue: 41.2,
-            value: 41.2 * weight,
-            label: 'Čvc',
-            labelFull: 'Červenec',
-        },
-        {
-            originalValue: 40.7,
-            value: 40.7 * weight,
-            label: 'Srp',
-            labelFull: 'Srpen',
-        },
-        {
-            originalValue: 38.5,
-            value: 38.5 * weight,
-            label: 'Zář',
-            labelFull: 'Září',
-        },
-        {
-            originalValue: 37.1,
-            value: 37.1 * weight,
-            label: 'Říj',
-            labelFull: 'Říjen',
-        },
-        {
-            originalValue: 35.6,
-            value: 35.6 * weight,
-            label: 'Lis',
-            labelFull: 'Listopad',
-        },
-        {
-            originalValue: 34.8,
-            value: 34.8 * weight,
-            label: 'Pro',
-            labelFull: 'Prosinec',
-        },
-    ];
-
     function transformData(
         tankingSums: any[],
-        fuelWeight: number,
-        distanceWeight: number
+        weight: number
     ) {
         const monthLabels = [
             { short: "Led", full: "Leden" },
@@ -126,32 +51,26 @@ export default function TankLineGraph({ className }: {
                 parseInt(e.month.slice(5), 10) === i + 1
             );
 
-            const total_price = entry?.total_price ?? 0;
-            const total_mileage = entry?.total_mileage ?? 0;
+            const price_per_unit = entry?.price_per_unit ?? 0;
+            const month = monthLabels[i];
 
             barData.push({
-                originalValue: total_price,
-                value: total_price * fuelWeight,
-                label: monthLabels[i].short,
-                labelFull: monthLabels[i].full,
-                spacing: 2,
-                frontColor: '',
-                textColor: '#fff',
-                groupIndex: i
-            });
-
-            barData.push({
-                originalValue: total_mileage,
-                value: total_mileage * distanceWeight,
-                frontColor: '#ffffff',
-                textColor: '#000',
-                groupIndex: i
+                originalValue: price_per_unit,
+                value: price_per_unit * weight,
+                label: month.short,
+                labelFull: month.full
             });
         }
         return barData
     }
 
-    const barData = transformData(data, fuelWeight, distanceWeight)
+    const tankingsFlattened = tankings.flatMap(item =>
+        item.tankings.map(tanking => ({
+            ...tanking,
+            month: item.month
+        }))
+    );
+    const data = transformData(tankingsFlattened, weight)
 
     return (
         <SafeAreaView onLayout={onLayout} style={{ maxHeight: parentWidth / 3, ...spacing.my(15) }} className={`items-center justify-center ${className}`}>
