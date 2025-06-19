@@ -4,10 +4,9 @@ import { FontSizes } from "@/constants/FontSizes";
 import darkenHexColor from "@/utils/colorDarken";
 import getScaleFactor, { spacing } from "@/utils/SizeScaling";
 import { useState } from "react";
-import { Text, View } from "react-native";
-import { BarChart, CurveType, LineChart } from "react-native-gifted-charts";
+import { View } from "react-native";
+import { BarChart } from "react-native-gifted-charts";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { LinearGradient, Stop } from "react-native-svg";
 
 export default function TankGraph({ className, data }: {
     className?: string;
@@ -49,8 +48,9 @@ export default function TankGraph({ className, data }: {
         const barData: any[] = []
 
         for (let i = 0; i < 12; i++) {
-            const entry = tankingSums.find(e =>
-                parseInt(e.month.slice(5), 10) === i + 1
+            // OPRAVA: Přidána kontrola existence dat a vlastnosti month
+            const entry = tankingSums?.find(e =>
+                e && e.month && parseInt(e.month.slice(5), 10) === i + 1
             );
 
             const total_price = entry?.total_price ?? 0;
@@ -78,10 +78,21 @@ export default function TankGraph({ className, data }: {
         return barData
     }
 
+    // OPRAVA: Kontrola existence dat před transformací
+    if (!data || !Array.isArray(data)) {
+        return (
+            <SafeAreaView style={{ maxHeight: parentWidth / 3, ...spacing.my(15), ...spacing.height(120) }} className={`items-center justify-center ${className}`}>
+                <ScaledText size="sm" style={{ color: Colors.light.text }}>
+                    Načítání dat...
+                </ScaledText>
+            </SafeAreaView>
+        );
+    }
+
     const barData = transformToBarData(data, fuelWeight, distanceWeight)
 
     const validItems = barData.filter(item => item.originalValue > 0);
-    const average = validItems.length > 0 ? validItems.reduce((sum, item) => sum + item.value, 0) / validItems.length: 0;
+    const average = validItems.length > 0 ? validItems.reduce((sum, item) => sum + item.value, 0) / validItems.length : 0;
 
     return (
         <SafeAreaView onLayout={onLayout} style={{ maxHeight: parentWidth / 3, ...spacing.my(15), ...spacing.height(120) }} className={`items-center h- justify-center ${className}`}>

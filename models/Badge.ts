@@ -29,7 +29,7 @@ export class BadgeModel {
         return rows;
     }
 
-    static async getBadgesByTanking(tanking_id: number): Promise<(Badge)[]> {
+    static async getBadgeByTanking(tanking_id: number): Promise<(Badge)[]> {
         const db = await Database.getConnection();
         const rows = await db.getAllAsync(
             `SELECT b.* FROM badge b
@@ -44,6 +44,37 @@ export class BadgeModel {
             name: row.name,
             color: row.color,
         }))
+    }
+
+    static async getBadgesByTanking(tanking_ids: number[]): Promise<{ [key: number]: Badge[] }> {
+        if (tanking_ids.length === 0) return {};
+
+        const db = await Database.getConnection();
+        const placeholders = tanking_ids.map(() => '?').join(',');
+
+        const rows = await db.getAllAsync(
+            `SELECT b.*, bt.id_tanking
+             FROM badge b
+             INNER JOIN badge_tanking bt ON b.id = bt.id_badge
+             WHERE bt.id_tanking IN (${placeholders})
+             ORDER BY bt.id_tanking, b.id DESC`,
+            tanking_ids
+        );
+
+        const result: { [key: number]: Badge[] } = {};
+        rows.forEach((row: any) => {
+            const tankingId = row.id_tanking;
+            if (!result[tankingId]) {
+                result[tankingId] = [];
+            }
+            result[tankingId].push({
+                id: row.id,
+                name: row.name,
+                color: row.color,
+            });
+        });
+
+        return result;
     }
 
     static async count(): Promise<any> {
