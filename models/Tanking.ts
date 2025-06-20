@@ -95,13 +95,13 @@ export class TankingModel {
         total_mileage: number
       }>(`
         SELECT 
-          strftime('%Y-%m', created_at / 1000, 'unixepoch') AS month,
+          strftime('%Y-%m', tank_date / 1000, 'unixepoch') AS month,
           SUM(price) AS total_price,
           SUM(mileage) AS total_mileage
         FROM tanking
         WHERE profile_id = 1
-        AND created_at >= ?
-        AND created_at < ?
+        AND tank_date >= ?
+        AND tank_date < ?
         GROUP BY month
         ORDER BY month DESC
         ${limit ? `LIMIT ?` : ''}
