@@ -157,6 +157,7 @@ export async function createTables(db: SQLite.SQLiteDatabase) {
       SELECT 
         strftime('%Y-%m', datetime(tank_date / 1000, 'unixepoch')) AS period,
         SUM(amount) AS total_amount,
+        SUM(mileage) AS total_mileage,
         SUM(price) AS total_price,
         MAX(tachometer) AS last_tachometer,
         AVG(price_per_unit) AS avg_price_per_unit
