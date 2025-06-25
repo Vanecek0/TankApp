@@ -2,7 +2,6 @@ import { View } from "react-native";
 import Graph from "../../graph/Graph";
 import ScaledText from "@/components/other/scaledText";
 import { spacing } from "@/utils/SizeScaling";
-import { useDatabase } from "@/database/databaseContext";
 import { useEffect, useState } from "react";
 import { TankingModel } from "@/models/Tanking";
 import { TankingStatistics, TankingStatisticsModel } from "@/models/TankingStatistics";
@@ -11,18 +10,17 @@ export default function TankDashboard({ routePathName, className }: {
     routePathName?: string;
     className?: string;
 }) {
-    const { tankingSums} = useDatabase();
     const [tankingSumsDate, setTankingSumsDate] = useState<({ month: string; total_price: number; total_mileage: number })[]>([])
     const [tankingStatistics, setTankingStatistics] = useState<Omit<TankingStatistics, 'period'>>()
 
     useEffect(() => {
         const getTankingSums = async() => {
-            const tankingSums = await TankingModel.getPriceMileageSumByDate(new Date('2023-5'), new Date('2023-6'));
+            const tankingSums = await TankingModel.getPriceMileageSumByDate();
             setTankingSumsDate(tankingSums)
         }
 
         const getTankingStatistics = async() => {
-            const tankingStatisticsDate = await TankingStatisticsModel.getSumOfMonthlyTankingStatsByDate(new Date('2023-5'), new Date('2023-6'));
+            const tankingStatisticsDate = await TankingStatisticsModel.getSumOfMonthlyTankingStatsByDate();
             setTankingStatistics(tankingStatisticsDate)
         }
 
@@ -32,7 +30,6 @@ export default function TankDashboard({ routePathName, className }: {
     },[])
     return (
         <>
-        {console.log(tankingStatistics)}
             <View style={{ ...spacing.p(20), ...spacing.borderRadius(12) }} className={`${className} flex-col bg-primary`}>
                 <ScaledText size="lg" className="text-center text-white font-bold">Leden 2025 – Únor 2025</ScaledText>
                 <View style={{ ...spacing.my(12) }} className="flex-row justify-between">

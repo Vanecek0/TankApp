@@ -3,6 +3,7 @@ import { Database } from "@/database/database";
 export type TankingStatistics = {
     period: string;
     total_amount: number;
+    total_mileage: number;
     total_price: number;
     last_tachometer: number;
     avg_price_per_unit: number;
