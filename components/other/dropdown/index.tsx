@@ -12,17 +12,19 @@ type OptionItem = {
 }
 
 export type CustomButtonProps = TouchableOpacityProps & {
-    placeholder: string;
+    placeholder?: string;
+    defaultIndex?: number;
     data?: OptionItem[];
     dropdownStyle?: ViewStyle
     dropdownTextStyle?: TextStyle
     onChange: (item: OptionItem) => void;
 };
 
-export default function Dropdown({ placeholder, data = [], onChange, dropdownStyle, dropdownTextStyle }: CustomButtonProps) {
+export default function Dropdown({ placeholder, defaultIndex = 0, data = [], onChange, dropdownStyle, dropdownTextStyle }: CustomButtonProps) {
     const [expanded, setExpanded] = useState(false);
     const toggleExpanded = useCallback(() => setExpanded((e) => !e), []);
-    const [value, setValue] = useState('');
+    const [value, setValue] = useState(!placeholder ? data[defaultIndex].value : '');
+    const [label, setLabel] = useState(!placeholder ? data[defaultIndex].label : '');
     const [buttonHeight, setButtonHeight] = useState(0);
     const { isDark } = useTheme();
 
@@ -30,6 +32,7 @@ export default function Dropdown({ placeholder, data = [], onChange, dropdownSty
         (item: OptionItem) => {
             onChange(item);
             setValue(item.value);
+            setLabel(item.label);
             setExpanded(false);
         },
         [onChange]
@@ -49,7 +52,7 @@ export default function Dropdown({ placeholder, data = [], onChange, dropdownSty
                 }
                 className="flex-row items-center justify-between"
             >
-                <ScaledText size="base" style={[{ color: isDark ? Colors.white : Colors.light.text }, dropdownTextStyle]}>{value || placeholder}</ScaledText>
+                <ScaledText size="base" style={[{ color: isDark ? Colors.white : Colors.light.text }, dropdownTextStyle]}>{label || placeholder}</ScaledText>
                 <Icon name="chevron_down" color={isDark ? Colors.dark.secondary_lighter : Colors.light.text} size={getScaleFactor() * 20} />
             </TouchableOpacity>
 
@@ -59,7 +62,7 @@ export default function Dropdown({ placeholder, data = [], onChange, dropdownSty
                         <View style={{ ...spacing.p(0) }} className="absolute inset-0" />
                     </TouchableWithoutFeedback>
 
-                    <View style={[{ position: 'absolute', top: buttonHeight + 2, left: 0, right: 0, zIndex: 10, backgroundColor: isDark ? Colors.dark.secondary_light : Colors.white, ...spacing.borderRadius(12), ...spacing.borderWidth(0.5), borderColor: isDark ? Colors.dark.secondary_lighter : Colors.white, ...spacing.maxHeight(280), },]} >
+                    <View style={[{ position: 'absolute', top: buttonHeight + 2, left: 0, right: 0, zIndex: 10, backgroundColor: isDark ? Colors.dark.secondary_light : Colors.white, ...spacing.borderRadius(12), ...spacing.borderWidth(0.5), borderColor: isDark ? Colors.dark.secondary_lighter : Colors.white, ...spacing.maxHeight(280)},]} >
                         <ScrollView>
                             {
                                 data.map((item) => (
@@ -69,7 +72,7 @@ export default function Dropdown({ placeholder, data = [], onChange, dropdownSty
                                         activeOpacity={0.8}
                                         onPress={() => onSelect(item)}
                                     >
-                                        <ScaledText size="base" style={{...spacing.p(8), color: isDark ? Colors.white : '', backgroundColor: value == item.value ? Colors.dark.secondary_lighter : ''}}>{item.label}</ScaledText>
+                                        <ScaledText size="base" style={{...spacing.p(8), ...spacing.borderRadius(8) ,color: isDark ? Colors.white : '', backgroundColor: value == item.value ? Colors.dark.secondary_lighter : ''}}>{item.label}</ScaledText>
                                     </TouchableOpacity>
                                 ))
                             }

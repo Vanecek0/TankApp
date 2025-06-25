@@ -15,15 +15,25 @@ import ActionButton from '@/components/ui/actionButton';
 import { Station } from '@/models/Station';
 import { Fuel } from '@/models/Fuel';
 import { StationFuel } from '@/models/StationFuel';
+import Dropdown from '@/components/other/dropdown';
+import { useUser } from '@/context/userContext';
 
 export default function HomeScreen() {
   const { isDark } = useTheme();
   const pathname = usePathname();
+  const [orderTankings, setOrderTankings] = useState('DESC');
   const { tankings, initTankings, isLoading } = useDatabase();
 
+  const loadTankings = async(orderTankings:string) => {
+    await initTankings(orderTankings);
+  }
   const onRefresh = useCallback(async () => {
-    await initTankings();
+    await loadTankings(orderTankings);
   }, []);
+
+  useEffect(() => {
+    loadTankings(orderTankings);
+  },[orderTankings])
 
   const TankingItem = React.memo(({ item }: { item: { month: string, tankings: (Tanking & { station: Station, fuel: Fuel, station_fuel: StationFuel })[] } }) => {
     return (
@@ -74,16 +84,21 @@ export default function HomeScreen() {
       <View className='flex-1' style={{ backgroundColor: isDark ? Colors.dark.background : Colors.light.background }}>
         <VirtualizedList
           ListHeaderComponent={
-            <>
+            <View>
               <Dashboard routePathName={pathname} />
-              <View style={{ ...spacing.mt(24), ...spacing.mb(12) }} className='flex-row justify-between'>
+              <View style={{ ...spacing.mt(24), ...spacing.mb(12) }} className='flex-row items-center justify-between'>
                 <ScaledText size='lg' className='font-bold' isThemed={true}>Poslední záznamy</ScaledText>
-                <View className='flex-row items-center'>
-                  <ScaledText size='base' className='font-bold' isThemed={true}>Nejnovější</ScaledText>
-                  <Link className="flex" href={'/tank'}><Icon name="chevron_down" color={isDark ? Colors.dark.text : Colors.light.text} style={{ ...spacing.width(18), ...spacing.height(18) }} /></Link>
-                </View>
+                <Dropdown
+                  defaultIndex={0}
+                  data={[
+                    { value: 'DESC', label: 'Nejnovější' },
+                    { value: 'ASC', label: 'Nejstarší' }
+                  ]}
+                  onChange={(item) => setOrderTankings(item.value)}
+                  dropdownStyle={{...spacing.borderRadius(12), ...spacing.width(150) , ...spacing.borderWidth(0.5), ...spacing.px(12), borderColor: isDark ? Colors.dark.secondary_lighter : Colors.light.secondary, backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.secondary }}
+                ></Dropdown>
               </View>
-            </>
+            </View>
           }
           refreshControl={
             <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
@@ -91,6 +106,7 @@ export default function HomeScreen() {
           initialNumToRender={1}
           maxToRenderPerBatch={1}
           windowSize={2}
+          ListHeaderComponentStyle={{zIndex:50}}
           contentContainerStyle={{ ...spacing.gap(12), ...spacing.borderRadius(12), ...spacing.mx(20), ...spacing.pb(96) }}
           renderItem={renderItem}
           getItemCount={(_data: unknown) => tankings.length}

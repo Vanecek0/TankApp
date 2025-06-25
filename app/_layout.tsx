@@ -21,6 +21,7 @@ import { Provider } from 'react-redux'
 import store from "../redux/store";
 import { DatabaseProvider } from "@/database/databaseContext";
 import { ModalProvider } from "@/providers/modalProvider";
+import { UserProvider } from "@/context/userContext";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -67,7 +68,7 @@ export default function RootLayout() {
   }, [isReady]);
 
   if (!isReady) {
-    return null;
+    return null; 
   }
 
   return (
@@ -75,9 +76,11 @@ export default function RootLayout() {
       <SQLiteProvider databaseName="database.db">
         {/*<Provider store={store}>*/}
         <ThemeProvider>
-          <ModalProvider>
-            <AppContent />
-          </ModalProvider>
+          <UserProvider>
+            <ModalProvider>
+              <AppContent />
+            </ModalProvider>
+          </UserProvider>
         </ThemeProvider>
         {/*</Provider>*/}
       </SQLiteProvider>

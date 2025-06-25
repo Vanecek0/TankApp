@@ -84,7 +84,7 @@ export class TankingModel {
 
   static async getPriceMileageSumByDate(fromDate?: Date, toDate?: Date, limit?: number): Promise<{ month: string; total_price: number; total_mileage: number }[]> {
     const db = await Database.getConnection()
-    
+
     const from = fromDate?.getTime() ?? 0;
     const to = toDate?.getTime() ?? Date.now();
 
@@ -211,7 +211,7 @@ export class TankingModel {
     }));
   }
 
-  static async getGroupedTankingsByMonth(): Promise<{
+  static async getGroupedTankingsByMonth(order?: string): Promise<{
     month: string,
     tankings: (Tanking & { station: Station, fuel: Fuel, station_fuel: StationFuel })[]
   }[]> {
@@ -240,8 +240,9 @@ export class TankingModel {
       INNER JOIN station s ON sf.id_station = s.id
       INNER JOIN fuel f ON sf.id_fuel = f.id
       WHERE t.profile_id = 1
-      ORDER BY t.tank_date DESC
-      `
+      ORDER BY t.tank_date 
+      ${order != null ? order : ''}`,
+      [order!],
     );
 
     const grouped = new Map<string, any[]>();
@@ -298,28 +299,28 @@ export class TankingModel {
   static async getAllTankingsWithStationFuel(limit?: number): Promise<(Tanking & { station: Station, fuel: Fuel, station_fuel: StationFuel })[]> {
     const db = await Database.getConnection();
     const rows = await db.getAllAsync(
-      `SELECT 
-      t.*,
+      `SELECT
+    t.*,
       s.id AS station_id,
-      s.name AS station_name,
-      s.address AS station_address,
-      s.last_visit AS station_last_visit,
-      s.provider AS station_provider,
-      s.created_at AS station_created_at,
-      s.updated_at AS station_updated_at,
-      f.id AS fuel_id,
-      f.name AS fuel_name,
-      f.code AS fuel_code,
-      f.trademark AS fuel_trademark,
-      f.unit AS fuel_unit,
-      sf.last_price_per_unit AS last_price_per_unit
+        s.name AS station_name,
+          s.address AS station_address,
+            s.last_visit AS station_last_visit,
+              s.provider AS station_provider,
+                s.created_at AS station_created_at,
+                  s.updated_at AS station_updated_at,
+                    f.id AS fuel_id,
+                      f.name AS fuel_name,
+                        f.code AS fuel_code,
+                          f.trademark AS fuel_trademark,
+                            f.unit AS fuel_unit,
+                              sf.last_price_per_unit AS last_price_per_unit
     FROM tanking t
     INNER JOIN station_fuel sf ON t.station_fuel_id = sf.id
     INNER JOIN station s ON sf.id_station = s.id
     INNER JOIN fuel f ON sf.id_fuel = f.id
     WHERE profile_id = 1
     ORDER BY t.tank_date DESC
-    ${limit != null ? 'LIMIT ?' : ''}`,
+    ${ limit != null ? 'LIMIT ?' : '' } `,
       [limit!],
     )
 
@@ -363,19 +364,19 @@ export class TankingModel {
   static async getAllTankingsWithStation(limit?: number): Promise<(Tanking & { station: Station })[]> {
     const db = await Database.getConnection();
     const rows = await db.getAllAsync(
-      `SELECT 
-         t.*,
-         s.id AS station_id,
-         s.name AS station_name,
-         s.address AS station_address,
-         s.last_visit AS station_last_visit,
-         s.provider AS station_provider,
-         s.created_at AS station_created_at,
-         s.updated_at AS station_updated_at
+      `SELECT
+    t.*,
+      s.id AS station_id,
+        s.name AS station_name,
+          s.address AS station_address,
+            s.last_visit AS station_last_visit,
+              s.provider AS station_provider,
+                s.created_at AS station_created_at,
+                  s.updated_at AS station_updated_at
        FROM tanking t
        INNER JOIN station s ON t.station_id = s.id
        ORDER BY t.tank_date DESC 
-    ${limit != null ? 'LIMIT ?' : ''}`,
+    ${ limit != null ? 'LIMIT ?' : '' } `,
       [limit!],
     )
 
