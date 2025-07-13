@@ -17,8 +17,8 @@ module.exports = {
         hidden_text: "#FF9BB0",
         background: "#f2f2f2",
         background_dark: "#0D0D0D"
-      }
-    }
+      },
+    },
   },
   plugins: [],
-}
+};

@@ -6,7 +6,6 @@ export type Car = {
     model: string;
     manufacture_year: number;
     registration_date: number;
-    profile_id: number;
     fuel_id: number;
     car_nickname: string;
     tachometer: number;
@@ -17,8 +16,8 @@ export class CarModel {
     static async create(car: Car) {
         try {
             const result = await Database.executeSql(
-                'INSERT INTO car (manufacturer, model, manufacture_year, registration_date, profile_id, fuel_id, car_nickname, tachometer) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-                [car.manufacturer, car.model, car.manufacture_year, car.registration_date, car.profile_id, car.fuel_id, car.car_nickname, car.tachometer]
+                'INSERT INTO car (manufacturer, model, manufacture_year, registration_date, fuel_id, car_nickname, tachometer) VALUES (?, ?, ?, ?, ?, ?, ?)',
+                [car.manufacturer, car.model, car.manufacture_year, car.registration_date, car.fuel_id, car.car_nickname, car.tachometer]
             );
 
             return result;
@@ -28,6 +27,12 @@ export class CarModel {
             throw new Error('Nepodařilo se vytvořit nový záznam.');
         }
     }
+
+    static async first(): Promise<Car | null> {
+            const db = await Database.getConnection();
+            const row = await db.getFirstAsync<Car>('SELECT * FROM car ORDER BY id ASC LIMIT 1');
+            return row ?? null;
+        }
 
     static async all(): Promise<Car[]> {
         const db = await Database.getConnection();

@@ -2,7 +2,7 @@ import { Servicing } from "@/models/Servicing";
 
 export function createServicingSeed(overrides: Partial<Servicing> = {}): Servicing {
     return {
-        profile_id: 1,
+        car_id: 1,
         name: '',
         description: '',
         autoservice_id: 1,
@@ -16,7 +16,7 @@ export function createServicingSeed(overrides: Partial<Servicing> = {}): Servici
 export async function getServicingSeeds() {
     return [
         createServicingSeed({ 
-            profile_id: 1, 
+            car_id: 1, 
             name: 'Výmena oleje a filtrů', 
             description: 'Pravidelná výměna motorového oleje, olejového a vzduchového filtru.',
             autoservice_id: 1, 
@@ -26,7 +26,7 @@ export async function getServicingSeeds() {
         }),
         
         createServicingSeed({ 
-            profile_id: 1, 
+            car_id: 1, 
             name: 'Kontrola brzdového systému', 
             description: 'Kontrola a výměna brzdových destiček a odvzdušnění brzd.',
             autoservice_id: 2, 
@@ -36,7 +36,7 @@ export async function getServicingSeeds() {
         }),
         
         createServicingSeed({ 
-            profile_id: 2, 
+            car_id: 2, 
             name: 'Servis klimatizace', 
             description: 'Doplnění chladiva a vyčištění klimatizační jednotky.',
             autoservice_id: 1, 
@@ -46,7 +46,7 @@ export async function getServicingSeeds() {
         }),
         
         createServicingSeed({ 
-            profile_id: 2, 
+            car_id: 2, 
             name: 'Výměna pneumatik', 
             description: 'Přezutí na letní pneumatiky a vyvážení kol.',
             autoservice_id: 2, 

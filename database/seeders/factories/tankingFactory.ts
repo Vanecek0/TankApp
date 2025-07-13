@@ -2,7 +2,7 @@ import { Tanking } from "@/models/Tanking";
 
 export function createTankingSeed(overrides: Partial<Tanking> = {}): Tanking {
     return {
-        profile_id: 1,
+        car_id: 1,
         station_fuel_id: 1,
         price_per_unit: 20,
         price: 0,
@@ -24,7 +24,7 @@ export async function getTankingSeeds() {
         // ========== ROK 2021 ==========
         // Leden 2021
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 30.6,
             price: 1071,
@@ -36,7 +36,7 @@ export async function getTankingSeeds() {
             updated_at: 1609545600000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 31.2,
             price: 1092,
@@ -48,7 +48,7 @@ export async function getTankingSeeds() {
             updated_at: 1609804800000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 29.1,
             price: 1018.5,
@@ -60,7 +60,7 @@ export async function getTankingSeeds() {
             updated_at: 1610064000000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 35.5,
             price: 1242.5,
@@ -72,7 +72,7 @@ export async function getTankingSeeds() {
             updated_at: 1610323200000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 31.5,
             price: 1102.5,
@@ -84,7 +84,7 @@ export async function getTankingSeeds() {
             updated_at: 1610582400000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 33.4,
             price: 1169,
@@ -96,7 +96,7 @@ export async function getTankingSeeds() {
             updated_at: 1610841600000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 30.3,
             price: 1060.5,
@@ -108,7 +108,7 @@ export async function getTankingSeeds() {
             updated_at: 1611100800000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 29.1,
             price: 1018.5,
@@ -121,7 +121,7 @@ export async function getTankingSeeds() {
         }),
         // Únor 2021
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 29,
             price: 1015,
@@ -133,7 +133,7 @@ export async function getTankingSeeds() {
             updated_at: 1612224000000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 35,
             price: 1225,
@@ -145,7 +145,7 @@ export async function getTankingSeeds() {
             updated_at: 1612483200000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 30.3,
             price: 1060.5,
@@ -157,7 +157,7 @@ export async function getTankingSeeds() {
             updated_at: 1612742400000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 32.3,
             price: 1130.5,
@@ -169,7 +169,7 @@ export async function getTankingSeeds() {
             updated_at: 1613001600000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 30.9,
             price: 1081.5,
@@ -181,7 +181,7 @@ export async function getTankingSeeds() {
             updated_at: 1613260800000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 35.6,
             price: 1246,
@@ -193,7 +193,7 @@ export async function getTankingSeeds() {
             updated_at: 1613520000000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 34.7,
             price: 1214.5,
@@ -205,7 +205,7 @@ export async function getTankingSeeds() {
             updated_at: 1613779200000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 27.8,
             price: 973,
@@ -218,7 +218,7 @@ export async function getTankingSeeds() {
         }),
         // Březen 2021
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 35.2,
             price: 1232,
@@ -230,7 +230,7 @@ export async function getTankingSeeds() {
             updated_at: 1614643200000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 31.4,
             price: 1099,
@@ -242,7 +242,7 @@ export async function getTankingSeeds() {
             updated_at: 1614902400000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 35.7,
             price: 1249.5,
@@ -254,7 +254,7 @@ export async function getTankingSeeds() {
             updated_at: 1615161600000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 33.8,
             price: 1183,
@@ -266,7 +266,7 @@ export async function getTankingSeeds() {
             updated_at: 1615420800000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 31.2,
             price: 1092,
@@ -278,7 +278,7 @@ export async function getTankingSeeds() {
             updated_at: 1615680000000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 31.8,
             price: 1113,
@@ -290,7 +290,7 @@ export async function getTankingSeeds() {
             updated_at: 1615939200000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 34.8,
             price: 1218,
@@ -302,7 +302,7 @@ export async function getTankingSeeds() {
             updated_at: 1616198400000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 31.9,
             price: 1116.5,
@@ -315,7 +315,7 @@ export async function getTankingSeeds() {
         }),
         // Duben 2021
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 28.8,
             price: 1008,
@@ -327,7 +327,7 @@ export async function getTankingSeeds() {
             updated_at: 1617321600000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 33.1,
             price: 1158.5,
@@ -339,7 +339,7 @@ export async function getTankingSeeds() {
             updated_at: 1617580800000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 29.8,
             price: 1043,
@@ -351,7 +351,7 @@ export async function getTankingSeeds() {
             updated_at: 1617840000000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 34.6,
             price: 1211,
@@ -363,7 +363,7 @@ export async function getTankingSeeds() {
             updated_at: 1618099200000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 29.3,
             price: 1025.5,
@@ -375,7 +375,7 @@ export async function getTankingSeeds() {
             updated_at: 1618358400000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 33,
             price: 1155,
@@ -387,7 +387,7 @@ export async function getTankingSeeds() {
             updated_at: 1618617600000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 33.2,
             price: 1162,
@@ -399,7 +399,7 @@ export async function getTankingSeeds() {
             updated_at: 1618876800000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 31.1,
             price: 1088.5,
@@ -412,7 +412,7 @@ export async function getTankingSeeds() {
         }),
         // Květen 2021
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 31.7,
             price: 1109.5,
@@ -424,7 +424,7 @@ export async function getTankingSeeds() {
             updated_at: 1619913600000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 28.4,
             price: 994,
@@ -436,7 +436,7 @@ export async function getTankingSeeds() {
             updated_at: 1620172800000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 31.4,
             price: 1099,
@@ -448,7 +448,7 @@ export async function getTankingSeeds() {
             updated_at: 1620432000000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 30.2,
             price: 1057,
@@ -460,7 +460,7 @@ export async function getTankingSeeds() {
             updated_at: 1620691200000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 34.9,
             price: 1221.5,
@@ -472,7 +472,7 @@ export async function getTankingSeeds() {
             updated_at: 1620950400000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 33.3,
             price: 1165.5,
@@ -484,7 +484,7 @@ export async function getTankingSeeds() {
             updated_at: 1621209600000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 30,
             price: 1050,
@@ -496,7 +496,7 @@ export async function getTankingSeeds() {
             updated_at: 1621468800000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 29.5,
             price: 1032.5,
@@ -509,7 +509,7 @@ export async function getTankingSeeds() {
         }),
         // Červen 2021
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 33,
             price: 1155,
@@ -521,7 +521,7 @@ export async function getTankingSeeds() {
             updated_at: 1622592000000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 29,
             price: 1015,
@@ -533,7 +533,7 @@ export async function getTankingSeeds() {
             updated_at: 1622851200000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 35,
             price: 1225,
@@ -545,7 +545,7 @@ export async function getTankingSeeds() {
             updated_at: 1623110400000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 30.9,
             price: 1081.5,
@@ -557,7 +557,7 @@ export async function getTankingSeeds() {
             updated_at: 1623369600000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 32.9,
             price: 1151.5,
@@ -569,7 +569,7 @@ export async function getTankingSeeds() {
             updated_at: 1623628800000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 34.8,
             price: 1218,
@@ -581,7 +581,7 @@ export async function getTankingSeeds() {
             updated_at: 1623888000000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 29.6,
             price: 1036,
@@ -593,7 +593,7 @@ export async function getTankingSeeds() {
             updated_at: 1624147200000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 32.5,
             price: 1137.5,
@@ -606,7 +606,7 @@ export async function getTankingSeeds() {
         }),
         // Červenec 2021
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 32.5,
             price: 1137.5,
@@ -618,7 +618,7 @@ export async function getTankingSeeds() {
             updated_at: 1625184000000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 32.5,
             price: 1137.5,
@@ -630,7 +630,7 @@ export async function getTankingSeeds() {
             updated_at: 1625443200000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 31.1,
             price: 1088.5,
@@ -642,7 +642,7 @@ export async function getTankingSeeds() {
             updated_at: 1625702400000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 34.1,
             price: 1193.5,
@@ -654,7 +654,7 @@ export async function getTankingSeeds() {
             updated_at: 1625961600000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 35.3,
             price: 1235.5,
@@ -666,7 +666,7 @@ export async function getTankingSeeds() {
             updated_at: 1626220800000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 34.2,
             price: 1197,
@@ -678,7 +678,7 @@ export async function getTankingSeeds() {
             updated_at: 1626480000000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 30.1,
             price: 1053.5,
@@ -690,7 +690,7 @@ export async function getTankingSeeds() {
             updated_at: 1626739200000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 31.6,
             price: 1106,
@@ -703,7 +703,7 @@ export async function getTankingSeeds() {
         }),
         // Srpen 2021
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 33.5,
             price: 1172.5,
@@ -715,7 +715,7 @@ export async function getTankingSeeds() {
             updated_at: 1627862400000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 34.3,
             price: 1200.5,
@@ -727,7 +727,7 @@ export async function getTankingSeeds() {
             updated_at: 1628121600000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 28.6,
             price: 1001,
@@ -739,7 +739,7 @@ export async function getTankingSeeds() {
             updated_at: 1628380800000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 34.8,
             price: 1218,
@@ -751,7 +751,7 @@ export async function getTankingSeeds() {
             updated_at: 1628640000000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 28.7,
             price: 1004.5,
@@ -763,7 +763,7 @@ export async function getTankingSeeds() {
             updated_at: 1628899200000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 30.3,
             price: 1060.5,
@@ -775,7 +775,7 @@ export async function getTankingSeeds() {
             updated_at: 1629158400000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 32.1,
             price: 1123.5,
@@ -787,7 +787,7 @@ export async function getTankingSeeds() {
             updated_at: 1629417600000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 34.3,
             price: 1200.5,
@@ -800,7 +800,7 @@ export async function getTankingSeeds() {
         }),
         // Září 2021
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 30.3,
             price: 1060.5,
@@ -812,7 +812,7 @@ export async function getTankingSeeds() {
             updated_at: 1630540800000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 34.2,
             price: 1197,
@@ -824,7 +824,7 @@ export async function getTankingSeeds() {
             updated_at: 1630800000000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 32.5,
             price: 1137.5,
@@ -836,7 +836,7 @@ export async function getTankingSeeds() {
             updated_at: 1631059200000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 27.8,
             price: 973,
@@ -848,7 +848,7 @@ export async function getTankingSeeds() {
             updated_at: 1631318400000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 29.8,
             price: 1043,
@@ -860,7 +860,7 @@ export async function getTankingSeeds() {
             updated_at: 1631577600000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 33.8,
             price: 1183,
@@ -872,7 +872,7 @@ export async function getTankingSeeds() {
             updated_at: 1631836800000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 28.7,
             price: 1004.5,
@@ -884,7 +884,7 @@ export async function getTankingSeeds() {
             updated_at: 1632096000000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 31.1,
             price: 1088.5,
@@ -897,7 +897,7 @@ export async function getTankingSeeds() {
         }),
         // Říjen 2021
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 29.1,
             price: 1018.5,
@@ -909,7 +909,7 @@ export async function getTankingSeeds() {
             updated_at: 1633132800000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 34.5,
             price: 1207.5,
@@ -921,7 +921,7 @@ export async function getTankingSeeds() {
             updated_at: 1633392000000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 31.7,
             price: 1109.5,
@@ -933,7 +933,7 @@ export async function getTankingSeeds() {
             updated_at: 1633651200000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 33.4,
             price: 1169,
@@ -945,7 +945,7 @@ export async function getTankingSeeds() {
             updated_at: 1633910400000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 35.6,
             price: 1246,
@@ -957,7 +957,7 @@ export async function getTankingSeeds() {
             updated_at: 1634169600000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 32.5,
             price: 1137.5,
@@ -969,7 +969,7 @@ export async function getTankingSeeds() {
             updated_at: 1634428800000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 30.8,
             price: 1078,
@@ -981,7 +981,7 @@ export async function getTankingSeeds() {
             updated_at: 1634688000000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 30.1,
             price: 1053.5,
@@ -994,7 +994,7 @@ export async function getTankingSeeds() {
         }),
         // Listopad 2021
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 32.4,
             price: 1134,
@@ -1006,7 +1006,7 @@ export async function getTankingSeeds() {
             updated_at: 1635811200000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 33.1,
             price: 1158.5,
@@ -1018,7 +1018,7 @@ export async function getTankingSeeds() {
             updated_at: 1636070400000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 29.6,
             price: 1036,
@@ -1030,7 +1030,7 @@ export async function getTankingSeeds() {
             updated_at: 1636329600000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 35.1,
             price: 1228.5,
@@ -1042,7 +1042,7 @@ export async function getTankingSeeds() {
             updated_at: 1636588800000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 34.2,
             price: 1197,
@@ -1054,7 +1054,7 @@ export async function getTankingSeeds() {
             updated_at: 1636848000000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 31.1,
             price: 1088.5,
@@ -1066,7 +1066,7 @@ export async function getTankingSeeds() {
             updated_at: 1637107200000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 30.8,
             price: 1078,
@@ -1078,7 +1078,7 @@ export async function getTankingSeeds() {
             updated_at: 1637366400000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 30.6,
             price: 1071,
@@ -1091,7 +1091,7 @@ export async function getTankingSeeds() {
         }),
         // Prosinec 2021
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 31.2,
             price: 1092,
@@ -1103,7 +1103,7 @@ export async function getTankingSeeds() {
             updated_at: 1638403200000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 28.9,
             price: 1011.5,
@@ -1115,7 +1115,7 @@ export async function getTankingSeeds() {
             updated_at: 1638662400000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 31,
             price: 1085,
@@ -1127,7 +1127,7 @@ export async function getTankingSeeds() {
             updated_at: 1638921600000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 31.7,
             price: 1109.5,
@@ -1139,7 +1139,7 @@ export async function getTankingSeeds() {
             updated_at: 1639180800000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 34.5,
             price: 1207.5,
@@ -1151,7 +1151,7 @@ export async function getTankingSeeds() {
             updated_at: 1639440000000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 32.5,
             price: 1137.5,
@@ -1163,7 +1163,7 @@ export async function getTankingSeeds() {
             updated_at: 1639699200000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 33.5,
             price: 1172.5,
@@ -1175,7 +1175,7 @@ export async function getTankingSeeds() {
             updated_at: 1639958400000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 30.7,
             price: 1074.5,
@@ -1190,7 +1190,7 @@ export async function getTankingSeeds() {
         // ========== ROK 2022 ==========
         // Leden 2022
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 37.6,
             price: 1316,
@@ -1202,7 +1202,7 @@ export async function getTankingSeeds() {
             updated_at: 1641081600000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 36.1,
             price: 1263.5,
@@ -1214,7 +1214,7 @@ export async function getTankingSeeds() {
             updated_at: 1641340800000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 41.8,
             price: 1463,
@@ -1226,7 +1226,7 @@ export async function getTankingSeeds() {
             updated_at: 1641600000000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 33.4,
             price: 1169,
@@ -1238,7 +1238,7 @@ export async function getTankingSeeds() {
             updated_at: 1641859200000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 36.4,
             price: 1274,
@@ -1250,7 +1250,7 @@ export async function getTankingSeeds() {
             updated_at: 1642118400000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 42.3,
             price: 1480.5,
@@ -1262,7 +1262,7 @@ export async function getTankingSeeds() {
             updated_at: 1642377600000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 41.1,
             price: 1438.5,
@@ -1274,7 +1274,7 @@ export async function getTankingSeeds() {
             updated_at: 1642636800000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 41.3,
             price: 1445.5,
@@ -1287,7 +1287,7 @@ export async function getTankingSeeds() {
         }),
         // Únor 2022
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 40.3,
             price: 1410.5,
@@ -1299,7 +1299,7 @@ export async function getTankingSeeds() {
             updated_at: 1643760000000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 33.8,
             price: 1183,
@@ -1311,7 +1311,7 @@ export async function getTankingSeeds() {
             updated_at: 1644019200000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 41.8,
             price: 1463,
@@ -1323,7 +1323,7 @@ export async function getTankingSeeds() {
             updated_at: 1644278400000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 38.4,
             price: 1344,
@@ -1335,7 +1335,7 @@ export async function getTankingSeeds() {
             updated_at: 1644537600000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 33,
             price: 1155,
@@ -1347,7 +1347,7 @@ export async function getTankingSeeds() {
             updated_at: 1644796800000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 37.1,
             price: 1298.5,
@@ -1359,7 +1359,7 @@ export async function getTankingSeeds() {
             updated_at: 1645056000000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 39.9,
             price: 1396.5,
@@ -1371,7 +1371,7 @@ export async function getTankingSeeds() {
             updated_at: 1645315200000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 34.6,
             price: 1211,
@@ -1384,7 +1384,7 @@ export async function getTankingSeeds() {
         }),
         // Březen 2022
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 32.4,
             price: 1134,
@@ -1396,7 +1396,7 @@ export async function getTankingSeeds() {
             updated_at: 1646179200000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 35.2,
             price: 1232,
@@ -1408,7 +1408,7 @@ export async function getTankingSeeds() {
             updated_at: 1646438400000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 43,
             price: 1505,
@@ -1420,7 +1420,7 @@ export async function getTankingSeeds() {
             updated_at: 1646697600000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 32.6,
             price: 1141,
@@ -1432,7 +1432,7 @@ export async function getTankingSeeds() {
             updated_at: 1646956800000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 42.2,
             price: 1477,
@@ -1444,7 +1444,7 @@ export async function getTankingSeeds() {
             updated_at: 1647216000000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 42.5,
             price: 1487.5,
@@ -1456,7 +1456,7 @@ export async function getTankingSeeds() {
             updated_at: 1647475200000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 42.2,
             price: 1477,
@@ -1468,7 +1468,7 @@ export async function getTankingSeeds() {
             updated_at: 1647734400000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 38.3,
             price: 1340.5,
@@ -1481,7 +1481,7 @@ export async function getTankingSeeds() {
         }),
         // Duben 2022
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 37.2,
             price: 1302,
@@ -1493,7 +1493,7 @@ export async function getTankingSeeds() {
             updated_at: 1648857600000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 39.4,
             price: 1379,
@@ -1505,7 +1505,7 @@ export async function getTankingSeeds() {
             updated_at: 1649116800000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 39.8,
             price: 1393,
@@ -1517,7 +1517,7 @@ export async function getTankingSeeds() {
             updated_at: 1649376000000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 41,
             price: 1435,
@@ -1529,7 +1529,7 @@ export async function getTankingSeeds() {
             updated_at: 1649635200000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 34.1,
             price: 1193.5,
@@ -1541,7 +1541,7 @@ export async function getTankingSeeds() {
             updated_at: 1649894400000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 33.1,
             price: 1158.5,
@@ -1553,7 +1553,7 @@ export async function getTankingSeeds() {
             updated_at: 1650153600000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 42,
             price: 1470,
@@ -1565,7 +1565,7 @@ export async function getTankingSeeds() {
             updated_at: 1650412800000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 38.3,
             price: 1340.5,
@@ -1578,7 +1578,7 @@ export async function getTankingSeeds() {
         }),
         // Květen 2022
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 37.5,
             price: 1312.5,
@@ -1590,7 +1590,7 @@ export async function getTankingSeeds() {
             updated_at: 1651449600000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 34.5,
             price: 1207.5,
@@ -1602,7 +1602,7 @@ export async function getTankingSeeds() {
             updated_at: 1651708800000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 36,
             price: 1260,
@@ -1614,7 +1614,7 @@ export async function getTankingSeeds() {
             updated_at: 1651968000000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 38.9,
             price: 1361.5,
@@ -1626,7 +1626,7 @@ export async function getTankingSeeds() {
             updated_at: 1652227200000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 42.3,
             price: 1480.5,
@@ -1638,7 +1638,7 @@ export async function getTankingSeeds() {
             updated_at: 1652486400000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 34.2,
             price: 1197,
@@ -1650,7 +1650,7 @@ export async function getTankingSeeds() {
             updated_at: 1652745600000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 42.3,
             price: 1480.5,
@@ -1662,7 +1662,7 @@ export async function getTankingSeeds() {
             updated_at: 1653004800000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 33.7,
             price: 1179.5,
@@ -1675,7 +1675,7 @@ export async function getTankingSeeds() {
         }),
         // Červen 2022
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 37.7,
             price: 1319.5,
@@ -1687,7 +1687,7 @@ export async function getTankingSeeds() {
             updated_at: 1654128000000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 38.8,
             price: 1358,
@@ -1699,7 +1699,7 @@ export async function getTankingSeeds() {
             updated_at: 1654387200000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 39.5,
             price: 1382.5,
@@ -1711,7 +1711,7 @@ export async function getTankingSeeds() {
             updated_at: 1654646400000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 36.7,
             price: 1284.5,
@@ -1723,7 +1723,7 @@ export async function getTankingSeeds() {
             updated_at: 1654905600000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 38.1,
             price: 1333.5,
@@ -1735,7 +1735,7 @@ export async function getTankingSeeds() {
             updated_at: 1655164800000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 33.3,
             price: 1165.5,
@@ -1747,7 +1747,7 @@ export async function getTankingSeeds() {
             updated_at: 1655424000000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 39.1,
             price: 1368.5,
@@ -1759,7 +1759,7 @@ export async function getTankingSeeds() {
             updated_at: 1655683200000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 40,
             price: 1400,
@@ -1772,7 +1772,7 @@ export async function getTankingSeeds() {
         }),
         // Červenec 2022
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 39.7,
             price: 1389.5,
@@ -1784,7 +1784,7 @@ export async function getTankingSeeds() {
             updated_at: 1656720000000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 36.2,
             price: 1267,
@@ -1796,7 +1796,7 @@ export async function getTankingSeeds() {
             updated_at: 1656979200000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 37.1,
             price: 1298.5,
@@ -1808,7 +1808,7 @@ export async function getTankingSeeds() {
             updated_at: 1657238400000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 35.6,
             price: 1246,
@@ -1820,7 +1820,7 @@ export async function getTankingSeeds() {
             updated_at: 1657497600000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 37.3,
             price: 1305.5,
@@ -1832,7 +1832,7 @@ export async function getTankingSeeds() {
             updated_at: 1657756800000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 35.5,
             price: 1242.5,
@@ -1844,7 +1844,7 @@ export async function getTankingSeeds() {
             updated_at: 1658016000000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 38.5,
             price: 1347.5,
@@ -1856,7 +1856,7 @@ export async function getTankingSeeds() {
             updated_at: 1658275200000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 42.3,
             price: 1480.5,
@@ -1869,7 +1869,7 @@ export async function getTankingSeeds() {
         }),
         // Srpen 2022
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 43.4,
             price: 1519,
@@ -1881,7 +1881,7 @@ export async function getTankingSeeds() {
             updated_at: 1659398400000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 38.7,
             price: 1354.5,
@@ -1893,7 +1893,7 @@ export async function getTankingSeeds() {
             updated_at: 1659657600000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 42.7,
             price: 1494.5,
@@ -1905,7 +1905,7 @@ export async function getTankingSeeds() {
             updated_at: 1659916800000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 38.1,
             price: 1333.5,
@@ -1917,7 +1917,7 @@ export async function getTankingSeeds() {
             updated_at: 1660176000000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 37.8,
             price: 1323,
@@ -1929,7 +1929,7 @@ export async function getTankingSeeds() {
             updated_at: 1660435200000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 34.9,
             price: 1221.5,
@@ -1941,7 +1941,7 @@ export async function getTankingSeeds() {
             updated_at: 1660694400000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 38.4,
             price: 1344,
@@ -1953,7 +1953,7 @@ export async function getTankingSeeds() {
             updated_at: 1660953600000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 32,
             price: 1120,
@@ -1966,7 +1966,7 @@ export async function getTankingSeeds() {
         }),
         // Září 2022
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 34.4,
             price: 1204,
@@ -1978,7 +1978,7 @@ export async function getTankingSeeds() {
             updated_at: 1662076800000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 38.2,
             price: 1337,
@@ -1990,7 +1990,7 @@ export async function getTankingSeeds() {
             updated_at: 1662336000000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 35.1,
             price: 1228.5,
@@ -2002,7 +2002,7 @@ export async function getTankingSeeds() {
             updated_at: 1662595200000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 35,
             price: 1225,
@@ -2014,7 +2014,7 @@ export async function getTankingSeeds() {
             updated_at: 1662854400000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 37.7,
             price: 1319.5,
@@ -2026,7 +2026,7 @@ export async function getTankingSeeds() {
             updated_at: 1663113600000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 34.7,
             price: 1214.5,
@@ -2038,7 +2038,7 @@ export async function getTankingSeeds() {
             updated_at: 1663372800000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 38.1,
             price: 1333.5,
@@ -2050,7 +2050,7 @@ export async function getTankingSeeds() {
             updated_at: 1663632000000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 35.5,
             price: 1242.5,
@@ -2063,7 +2063,7 @@ export async function getTankingSeeds() {
         }),
         // Říjen 2022
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 43.1,
             price: 1508.5,
@@ -2075,7 +2075,7 @@ export async function getTankingSeeds() {
             updated_at: 1664668800000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 35.9,
             price: 1256.5,
@@ -2087,7 +2087,7 @@ export async function getTankingSeeds() {
             updated_at: 1664928000000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 39.3,
             price: 1375.5,
@@ -2099,7 +2099,7 @@ export async function getTankingSeeds() {
             updated_at: 1665187200000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 34.8,
             price: 1218,
@@ -2111,7 +2111,7 @@ export async function getTankingSeeds() {
             updated_at: 1665446400000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 33.8,
             price: 1183,
@@ -2123,7 +2123,7 @@ export async function getTankingSeeds() {
             updated_at: 1665705600000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 38.6,
             price: 1351,
@@ -2135,7 +2135,7 @@ export async function getTankingSeeds() {
             updated_at: 1665964800000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 35.5,
             price: 1242.5,
@@ -2147,7 +2147,7 @@ export async function getTankingSeeds() {
             updated_at: 1666224000000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 38.9,
             price: 1361.5,
@@ -2160,7 +2160,7 @@ export async function getTankingSeeds() {
         }),
         // Listopad 2022
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 42.6,
             price: 1491,
@@ -2172,7 +2172,7 @@ export async function getTankingSeeds() {
             updated_at: 1667347200000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 38.6,
             price: 1351,
@@ -2184,7 +2184,7 @@ export async function getTankingSeeds() {
             updated_at: 1667606400000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 35.9,
             price: 1256.5,
@@ -2196,7 +2196,7 @@ export async function getTankingSeeds() {
             updated_at: 1667865600000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 39.7,
             price: 1389.5,
@@ -2208,7 +2208,7 @@ export async function getTankingSeeds() {
             updated_at: 1668124800000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 38.8,
             price: 1358,
@@ -2220,7 +2220,7 @@ export async function getTankingSeeds() {
             updated_at: 1668384000000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 39.7,
             price: 1389.5,
@@ -2232,7 +2232,7 @@ export async function getTankingSeeds() {
             updated_at: 1668643200000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 37.8,
             price: 1323,
@@ -2244,7 +2244,7 @@ export async function getTankingSeeds() {
             updated_at: 1668902400000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 38.4,
             price: 1344,
@@ -2257,7 +2257,7 @@ export async function getTankingSeeds() {
         }),
         // Prosinec 2022
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 36.4,
             price: 1274,
@@ -2269,7 +2269,7 @@ export async function getTankingSeeds() {
             updated_at: 1669939200000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 35.6,
             price: 1246,
@@ -2281,7 +2281,7 @@ export async function getTankingSeeds() {
             updated_at: 1670198400000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 42.5,
             price: 1487.5,
@@ -2293,7 +2293,7 @@ export async function getTankingSeeds() {
             updated_at: 1670457600000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 43,
             price: 1505,
@@ -2305,7 +2305,7 @@ export async function getTankingSeeds() {
             updated_at: 1670716800000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 37.5,
             price: 1312.5,
@@ -2317,7 +2317,7 @@ export async function getTankingSeeds() {
             updated_at: 1670976000000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 39.1,
             price: 1368.5,
@@ -2329,7 +2329,7 @@ export async function getTankingSeeds() {
             updated_at: 1671235200000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 39.3,
             price: 1375.5,
@@ -2341,7 +2341,7 @@ export async function getTankingSeeds() {
             updated_at: 1671494400000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 36.4,
             price: 1274,
@@ -2356,7 +2356,7 @@ export async function getTankingSeeds() {
         // ========== ROK 2023 ==========
         // Leden 2023
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 35.5,
             price: 1242.5,
@@ -2368,7 +2368,7 @@ export async function getTankingSeeds() {
             updated_at: 1672617600000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 36.4,
             price: 1274,
@@ -2380,7 +2380,7 @@ export async function getTankingSeeds() {
             updated_at: 1672876800000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 37.8,
             price: 1323,
@@ -2392,7 +2392,7 @@ export async function getTankingSeeds() {
             updated_at: 1673136000000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 40.9,
             price: 1431.5,
@@ -2404,7 +2404,7 @@ export async function getTankingSeeds() {
             updated_at: 1673395200000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 37.4,
             price: 1309,
@@ -2416,7 +2416,7 @@ export async function getTankingSeeds() {
             updated_at: 1673654400000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 35.3,
             price: 1235.5,
@@ -2428,7 +2428,7 @@ export async function getTankingSeeds() {
             updated_at: 1673913600000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 38.1,
             price: 1333.5,
@@ -2440,7 +2440,7 @@ export async function getTankingSeeds() {
             updated_at: 1674172800000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 34.2,
             price: 1197,
@@ -2453,7 +2453,7 @@ export async function getTankingSeeds() {
         }),
         // Únor 2023
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 37.6,
             price: 1316,
@@ -2465,7 +2465,7 @@ export async function getTankingSeeds() {
             updated_at: 1675296000000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 40.2,
             price: 1407,
@@ -2477,7 +2477,7 @@ export async function getTankingSeeds() {
             updated_at: 1675555200000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 35,
             price: 1225,
@@ -2489,7 +2489,7 @@ export async function getTankingSeeds() {
             updated_at: 1675814400000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 36.6,
             price: 1281,
@@ -2501,7 +2501,7 @@ export async function getTankingSeeds() {
             updated_at: 1676073600000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 40.7,
             price: 1424.5,
@@ -2513,7 +2513,7 @@ export async function getTankingSeeds() {
             updated_at: 1676332800000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 38.2,
             price: 1337,
@@ -2525,7 +2525,7 @@ export async function getTankingSeeds() {
             updated_at: 1676592000000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 34,
             price: 1190,
@@ -2537,7 +2537,7 @@ export async function getTankingSeeds() {
             updated_at: 1676851200000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 38.3,
             price: 1340.5,
@@ -2550,7 +2550,7 @@ export async function getTankingSeeds() {
         }),
         // Březen 2023
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 39.9,
             price: 1396.5,
@@ -2562,7 +2562,7 @@ export async function getTankingSeeds() {
             updated_at: 1677715200000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 37.5,
             price: 1312.5,
@@ -2574,7 +2574,7 @@ export async function getTankingSeeds() {
             updated_at: 1677974400000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 37.1,
             price: 1298.5,
@@ -2586,7 +2586,7 @@ export async function getTankingSeeds() {
             updated_at: 1678233600000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 36.5,
             price: 1277.5,
@@ -2598,7 +2598,7 @@ export async function getTankingSeeds() {
             updated_at: 1678492800000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 37.3,
             price: 1305.5,
@@ -2610,7 +2610,7 @@ export async function getTankingSeeds() {
             updated_at: 1678752000000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 36.7,
             price: 1284.5,
@@ -2622,7 +2622,7 @@ export async function getTankingSeeds() {
             updated_at: 1679011200000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 36.7,
             price: 1284.5,
@@ -2634,7 +2634,7 @@ export async function getTankingSeeds() {
             updated_at: 1679270400000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 35.2,
             price: 1232,
@@ -2647,7 +2647,7 @@ export async function getTankingSeeds() {
         }),
         // Duben 2023
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 35,
             price: 1225,
@@ -2659,7 +2659,7 @@ export async function getTankingSeeds() {
             updated_at: 1680393600000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 35.4,
             price: 1239,
@@ -2671,7 +2671,7 @@ export async function getTankingSeeds() {
             updated_at: 1680652800000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 33.6,
             price: 1176,
@@ -2683,7 +2683,7 @@ export async function getTankingSeeds() {
             updated_at: 1680912000000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 35.1,
             price: 1228.5,
@@ -2695,7 +2695,7 @@ export async function getTankingSeeds() {
             updated_at: 1681171200000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 34.8,
             price: 1218,
@@ -2707,7 +2707,7 @@ export async function getTankingSeeds() {
             updated_at: 1681430400000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 37.4,
             price: 1309,
@@ -2719,7 +2719,7 @@ export async function getTankingSeeds() {
             updated_at: 1681689600000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 37.1,
             price: 1298.5,
@@ -2731,7 +2731,7 @@ export async function getTankingSeeds() {
             updated_at: 1681948800000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 39.7,
             price: 1389.5,
@@ -2744,7 +2744,7 @@ export async function getTankingSeeds() {
         }),
         // Květen 2023
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 35.2,
             price: 1232,
@@ -2756,7 +2756,7 @@ export async function getTankingSeeds() {
             updated_at: 1682985600000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 39.7,
             price: 1389.5,
@@ -2768,7 +2768,7 @@ export async function getTankingSeeds() {
             updated_at: 1683244800000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 35.2,
             price: 1232,
@@ -2780,7 +2780,7 @@ export async function getTankingSeeds() {
             updated_at: 1683504000000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 32.4,
             price: 1134,
@@ -2792,7 +2792,7 @@ export async function getTankingSeeds() {
             updated_at: 1683763200000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 36.9,
             price: 1291.5,
@@ -2804,7 +2804,7 @@ export async function getTankingSeeds() {
             updated_at: 1684022400000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 37,
             price: 1295,
@@ -2816,7 +2816,7 @@ export async function getTankingSeeds() {
             updated_at: 1684281600000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 40.4,
             price: 1414,
@@ -2828,7 +2828,7 @@ export async function getTankingSeeds() {
             updated_at: 1684540800000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 37.5,
             price: 1312.5,
@@ -2841,7 +2841,7 @@ export async function getTankingSeeds() {
         }),
         // Červen 2023
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 35.4,
             price: 1239,
@@ -2853,7 +2853,7 @@ export async function getTankingSeeds() {
             updated_at: 1685664000000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 39.7,
             price: 1389.5,
@@ -2865,7 +2865,7 @@ export async function getTankingSeeds() {
             updated_at: 1685923200000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 37.9,
             price: 1326.5,
@@ -2877,7 +2877,7 @@ export async function getTankingSeeds() {
             updated_at: 1686182400000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 37.5,
             price: 1312.5,
@@ -2889,7 +2889,7 @@ export async function getTankingSeeds() {
             updated_at: 1686441600000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 38.1,
             price: 1333.5,
@@ -2901,7 +2901,7 @@ export async function getTankingSeeds() {
             updated_at: 1686700800000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 35.2,
             price: 1232,
@@ -2913,7 +2913,7 @@ export async function getTankingSeeds() {
             updated_at: 1686960000000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 40,
             price: 1400,
@@ -2925,7 +2925,7 @@ export async function getTankingSeeds() {
             updated_at: 1687219200000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 36.7,
             price: 1284.5,
@@ -2938,7 +2938,7 @@ export async function getTankingSeeds() {
         }),
         // Červenec 2023
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 36.3,
             price: 1270.5,
@@ -2950,7 +2950,7 @@ export async function getTankingSeeds() {
             updated_at: 1688256000000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 34.3,
             price: 1200.5,
@@ -2962,7 +2962,7 @@ export async function getTankingSeeds() {
             updated_at: 1688515200000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 34,
             price: 1190,
@@ -2974,7 +2974,7 @@ export async function getTankingSeeds() {
             updated_at: 1688774400000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 38.7,
             price: 1354.5,
@@ -2986,7 +2986,7 @@ export async function getTankingSeeds() {
             updated_at: 1689033600000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 34.6,
             price: 1211,
@@ -2998,7 +2998,7 @@ export async function getTankingSeeds() {
             updated_at: 1689292800000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 39.5,
             price: 1382.5,
@@ -3010,7 +3010,7 @@ export async function getTankingSeeds() {
             updated_at: 1689552000000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 34.1,
             price: 1193.5,
@@ -3022,7 +3022,7 @@ export async function getTankingSeeds() {
             updated_at: 1689811200000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 37.4,
             price: 1309,
@@ -3035,7 +3035,7 @@ export async function getTankingSeeds() {
         }),
         // Srpen 2023
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 38.7,
             price: 1354.5,
@@ -3047,7 +3047,7 @@ export async function getTankingSeeds() {
             updated_at: 1690934400000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 36.6,
             price: 1281,
@@ -3059,7 +3059,7 @@ export async function getTankingSeeds() {
             updated_at: 1691193600000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 38.9,
             price: 1361.5,
@@ -3071,7 +3071,7 @@ export async function getTankingSeeds() {
             updated_at: 1691452800000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 37.8,
             price: 1323,
@@ -3083,7 +3083,7 @@ export async function getTankingSeeds() {
             updated_at: 1691712000000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 39.3,
             price: 1375.5,
@@ -3095,7 +3095,7 @@ export async function getTankingSeeds() {
             updated_at: 1691971200000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 34.1,
             price: 1193.5,
@@ -3107,7 +3107,7 @@ export async function getTankingSeeds() {
             updated_at: 1692230400000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 36.1,
             price: 1263.5,
@@ -3119,7 +3119,7 @@ export async function getTankingSeeds() {
             updated_at: 1692489600000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 37.8,
             price: 1323,
@@ -3132,7 +3132,7 @@ export async function getTankingSeeds() {
         }),
         // Září 2023
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 37.5,
             price: 1312.5,
@@ -3144,7 +3144,7 @@ export async function getTankingSeeds() {
             updated_at: 1693612800000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 34.5,
             price: 1207.5,
@@ -3156,7 +3156,7 @@ export async function getTankingSeeds() {
             updated_at: 1693872000000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 33,
             price: 1155,
@@ -3168,7 +3168,7 @@ export async function getTankingSeeds() {
             updated_at: 1694131200000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 35.2,
             price: 1232,
@@ -3180,7 +3180,7 @@ export async function getTankingSeeds() {
             updated_at: 1694390400000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 41.5,
             price: 1452.5,
@@ -3192,7 +3192,7 @@ export async function getTankingSeeds() {
             updated_at: 1694649600000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 34.9,
             price: 1221.5,
@@ -3204,7 +3204,7 @@ export async function getTankingSeeds() {
             updated_at: 1694908800000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 40.3,
             price: 1410.5,
@@ -3216,7 +3216,7 @@ export async function getTankingSeeds() {
             updated_at: 1695168000000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 37.1,
             price: 1298.5,
@@ -3229,7 +3229,7 @@ export async function getTankingSeeds() {
         }),
         // Říjen 2023
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 34.6,
             price: 1211,
@@ -3241,7 +3241,7 @@ export async function getTankingSeeds() {
             updated_at: 1696204800000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 37.5,
             price: 1312.5,
@@ -3253,7 +3253,7 @@ export async function getTankingSeeds() {
             updated_at: 1696464000000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 37.2,
             price: 1302,
@@ -3265,7 +3265,7 @@ export async function getTankingSeeds() {
             updated_at: 1696723200000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 36.2,
             price: 1267,
@@ -3277,7 +3277,7 @@ export async function getTankingSeeds() {
             updated_at: 1696982400000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 37.7,
             price: 1319.5,
@@ -3289,7 +3289,7 @@ export async function getTankingSeeds() {
             updated_at: 1697241600000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 39.7,
             price: 1389.5,
@@ -3301,7 +3301,7 @@ export async function getTankingSeeds() {
             updated_at: 1697500800000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 35.3,
             price: 1235.5,
@@ -3313,7 +3313,7 @@ export async function getTankingSeeds() {
             updated_at: 1697760000000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 34.5,
             price: 1207.5,
@@ -3326,7 +3326,7 @@ export async function getTankingSeeds() {
         }),
         // Listopad 2023
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 34.9,
             price: 1221.5,
@@ -3338,7 +3338,7 @@ export async function getTankingSeeds() {
             updated_at: 1698883200000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 34.7,
             price: 1214.5,
@@ -3350,7 +3350,7 @@ export async function getTankingSeeds() {
             updated_at: 1699142400000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 33.1,
             price: 1158.5,
@@ -3362,7 +3362,7 @@ export async function getTankingSeeds() {
             updated_at: 1699401600000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 35.9,
             price: 1256.5,
@@ -3374,7 +3374,7 @@ export async function getTankingSeeds() {
             updated_at: 1699660800000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 34.5,
             price: 1207.5,
@@ -3386,7 +3386,7 @@ export async function getTankingSeeds() {
             updated_at: 1699920000000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 38.4,
             price: 1344,
@@ -3398,7 +3398,7 @@ export async function getTankingSeeds() {
             updated_at: 1700179200000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 32.6,
             price: 1141,
@@ -3410,7 +3410,7 @@ export async function getTankingSeeds() {
             updated_at: 1700438400000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 38.4,
             price: 1344,
@@ -3423,7 +3423,7 @@ export async function getTankingSeeds() {
         }),
         // Prosinec 2023
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 35.8,
             price: 1253,
@@ -3435,7 +3435,7 @@ export async function getTankingSeeds() {
             updated_at: 1701475200000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 36.4,
             price: 1274,
@@ -3447,7 +3447,7 @@ export async function getTankingSeeds() {
             updated_at: 1701734400000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 36.1,
             price: 1263.5,
@@ -3459,7 +3459,7 @@ export async function getTankingSeeds() {
             updated_at: 1701993600000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 1,
             price_per_unit: 39.3,
             price: 1375.5,
@@ -3471,7 +3471,7 @@ export async function getTankingSeeds() {
             updated_at: 1702252800000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 2,
             price_per_unit: 38.8,
             price: 1358,
@@ -3483,7 +3483,7 @@ export async function getTankingSeeds() {
             updated_at: 1702512000000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 39.2,
             price: 1372,
@@ -3495,7 +3495,7 @@ export async function getTankingSeeds() {
             updated_at: 1702771200000,
         }),
         createTankingSeed({
-            profile_id: 1,
+            car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 37.8,
             price: 1323,
@@ -3507,7 +3507,7 @@ export async function getTankingSeeds() {
             updated_at: 1703030400000,
         }),
         createTankingSeed({
-            profile_id: 2,
+            car_id: 2,
             station_fuel_id: 2,
             price_per_unit: 36.1,
             price: 1263.5,

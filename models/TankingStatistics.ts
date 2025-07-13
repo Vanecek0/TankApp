@@ -57,7 +57,7 @@ export class TankingStatisticsModel {
               AVG(price_per_unit) AS avg_price_per_unit
             FROM tanking
             WHERE 
-            profile_id = 1
+            car_id = 1
             AND tank_date >= ?
               AND tank_date < ?
           `, [from, to]);

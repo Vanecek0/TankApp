@@ -2,7 +2,7 @@ import { Database } from "@/database/database";
 
 export type Servicing = {
   id?: number;
-  profile_id: number;
+  car_id: number;
   name: string;
   description: string;
   autoservice_id: number;
@@ -16,8 +16,8 @@ export class ServicingModel {
     static async create(servicing: Servicing) {
         try {
             const result = await Database.executeSql(
-                'INSERT INTO servicing (profile_id, name, description, autoservice_id, service_date, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)',
-                [servicing.profile_id, servicing.name, servicing.description, servicing.autoservice_id, servicing.service_date, servicing.created_at, servicing.updated_at]
+                'INSERT INTO servicing (car_id, name, description, autoservice_id, service_date, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)',
+                [servicing.car_id, servicing.name, servicing.description, servicing.autoservice_id, servicing.service_date, servicing.created_at, servicing.updated_at]
             );
             return result;
         }

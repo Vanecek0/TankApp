@@ -6,7 +6,7 @@ import { Badge, BadgeModel } from "./Badge";
 
 export type Tanking = {
   id?: number;
-  profile_id: number;
+  car_id: number;
   station_fuel_id: number;
   price_per_unit: number;
   price: number;
@@ -23,8 +23,8 @@ export class TankingModel {
   static async create(tanking: Tanking) {
     try {
       const result = await Database.executeSql(
-        'INSERT INTO tanking (profile_id, station_fuel_id, price_per_unit, price, amount, mileage, tachometer, tank_date, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-        [tanking.profile_id, tanking.station_fuel_id, tanking.price_per_unit, tanking.price, tanking.amount, tanking.mileage, tanking.tachometer, tanking.tank_date, tanking.created_at, tanking.updated_at]
+        'INSERT INTO tanking (car_id, station_fuel_id, price_per_unit, price, amount, mileage, tachometer, tank_date, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        [tanking.car_id, tanking.station_fuel_id, tanking.price_per_unit, tanking.price, tanking.amount, tanking.mileage, tanking.tachometer, tanking.tank_date, tanking.created_at, tanking.updated_at]
       );
 
       return result;
@@ -63,7 +63,7 @@ export class TankingModel {
       SUM(price) AS total_price,
       SUM(mileage) AS total_mileage
     FROM tanking
-    WHERE profile_id = 1
+    WHERE car_id = 1
   `;
 
     try {
@@ -99,7 +99,7 @@ export class TankingModel {
           SUM(price) AS total_price,
           SUM(mileage) AS total_mileage
         FROM tanking
-        WHERE profile_id = 1
+        WHERE car_id = 1
         AND tank_date >= ?
         AND tank_date < ?
         GROUP BY month
@@ -148,7 +148,7 @@ export class TankingModel {
       INNER JOIN station_fuel sf ON t.station_fuel_id = sf.id
       INNER JOIN station s ON sf.id_station = s.id
       INNER JOIN fuel f ON sf.id_fuel = f.id
-      WHERE t.profile_id = 1
+      WHERE t.car_id = 1
       ORDER BY t.tank_date DESC
       `
     );
@@ -169,7 +169,7 @@ export class TankingModel {
 
       grouped.get(month)!.push({
         id: row.id,
-        profile_id: row.profile_id,
+        car_id: row.car_id,
         station_fuel_id: row.station_fuel_id,
         price_per_unit: row.price_per_unit,
         price: row.price,
@@ -239,7 +239,7 @@ export class TankingModel {
       INNER JOIN station_fuel sf ON t.station_fuel_id = sf.id
       INNER JOIN station s ON sf.id_station = s.id
       INNER JOIN fuel f ON sf.id_fuel = f.id
-      WHERE t.profile_id = 1
+      WHERE t.car_id = 1
       ORDER BY t.tank_date 
       ${order != null ? order : ''}`,
       [order!],
@@ -255,7 +255,7 @@ export class TankingModel {
 
       grouped.get(month)!.push({
         id: row.id,
-        profile_id: row.profile_id,
+        car_id: row.car_id,
         station_fuel_id: row.station_fuel_id,
         price_per_unit: row.price_per_unit,
         price: row.price,
@@ -318,7 +318,7 @@ export class TankingModel {
     INNER JOIN station_fuel sf ON t.station_fuel_id = sf.id
     INNER JOIN station s ON sf.id_station = s.id
     INNER JOIN fuel f ON sf.id_fuel = f.id
-    WHERE profile_id = 1
+    WHERE car_id = 1
     ORDER BY t.tank_date DESC
     ${ limit != null ? 'LIMIT ?' : '' } `,
       [limit!],
@@ -326,7 +326,7 @@ export class TankingModel {
 
     return rows.map((row: any) => ({
       id: row.id,
-      profile_id: row.profile_id,
+      car_id: row.car_id,
       station_fuel_id: row.station_fuel_id,
       price_per_unit: row.price_per_unit,
       price: row.price,
@@ -382,7 +382,7 @@ export class TankingModel {
 
     return rows.map((row: any) => ({
       id: row.id,
-      profile_id: row.profile_id,
+      car_id: row.car_id,
       station_fuel_id: row.station_fuel_id,
       price_per_unit: row.price_per_unit,
       price: row.price,
