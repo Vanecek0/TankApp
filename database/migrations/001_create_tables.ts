@@ -55,24 +55,12 @@ export async function createTables(db: SQLite.SQLiteDatabase) {
         "model"	TEXT,
         "manufacture_year"	NUMERIC,
         "registration_date"	NUMERIC,
-        "profile_id"	INTEGER,
         "fuel_id"	INTEGER,
         "car_nickname"	TEXT,
         "tachometer" INTEGER,
         "created_at" NUMERIC,
         "updated_at" NUMERIC,
-        FOREIGN KEY("profile_id") REFERENCES "profile"("id"),
         FOREIGN KEY("fuel_id") REFERENCES "fuel"("id")
-      );
-    `)
-
-    await db.execAsync(`
-      CREATE TABLE IF NOT EXISTS "profile" (
-        "id"	INTEGER PRIMARY KEY AUTOINCREMENT,
-        "name"	TEXT,
-        "avatar_url"	TEXT,
-        "created_at"	NUMERIC,
-        "updated_at"	NUMERIC
       );
     `)
 
@@ -94,7 +82,7 @@ export async function createTables(db: SQLite.SQLiteDatabase) {
     await db.execAsync(`
       CREATE TABLE IF NOT EXISTS "tanking" (
         "id"	INTEGER PRIMARY KEY AUTOINCREMENT,
-        "profile_id" INTEGER,
+        "car_id"	INTEGER,
         "station_fuel_id" INTEGER,
         "price_per_unit" NUMERIC,
         "price"	NUMERIC,
@@ -104,7 +92,7 @@ export async function createTables(db: SQLite.SQLiteDatabase) {
         "tank_date" NUMERIC,
         "created_at"	NUMERIC,
         "updated_at"	NUMERIC,
-        FOREIGN KEY("profile_id") REFERENCES "profile"("id"),
+        FOREIGN KEY("car_id") REFERENCES "car"("id"),
         FOREIGN KEY("station_fuel_id") REFERENCES "station_fuel"("id")
       );
     `)
@@ -130,7 +118,7 @@ export async function createTables(db: SQLite.SQLiteDatabase) {
     await db.execAsync(`
       CREATE TABLE IF NOT EXISTS "servicing" (
         "id"	INTEGER PRIMARY KEY AUTOINCREMENT,
-        "profile_id"	INTEGER,
+        "car_id"	INTEGER,
         "name"	TEXT,
         "description"	TEXT,
         "autoservice_id"	INTEGER,
@@ -138,7 +126,7 @@ export async function createTables(db: SQLite.SQLiteDatabase) {
         "created_at"	NUMERIC,
         "updated_at"	NUMERIC,
         FOREIGN KEY("autoservice_id") REFERENCES "autoservice"("id") ON DELETE CASCADE,
-	      FOREIGN KEY("profile_id") REFERENCES "profile"("id") ON DELETE CASCADE
+	      FOREIGN KEY("car_id") REFERENCES "car"("id") ON DELETE CASCADE
       );
     `)
 

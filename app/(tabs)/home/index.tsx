@@ -1,4 +1,4 @@
-import { RefreshControl, View, VirtualizedList } from 'react-native';
+import { Button, RefreshControl, View, VirtualizedList } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTheme } from '@/theme/ThemeProvider';
 import { Link, usePathname } from 'expo-router';
@@ -16,7 +16,6 @@ import { Station } from '@/models/Station';
 import { Fuel } from '@/models/Fuel';
 import { StationFuel } from '@/models/StationFuel';
 import Dropdown from '@/components/other/dropdown';
-import { useUser } from '@/context/userContext';
 
 export default function HomeScreen() {
   const { isDark } = useTheme();
@@ -24,7 +23,7 @@ export default function HomeScreen() {
   const [orderTankings, setOrderTankings] = useState('DESC');
   const { tankings, initTankings, isLoading } = useDatabase();
 
-  const loadTankings = async(orderTankings:string) => {
+  const loadTankings = async (orderTankings: string) => {
     await initTankings(orderTankings);
   }
   const onRefresh = useCallback(async () => {
@@ -33,7 +32,7 @@ export default function HomeScreen() {
 
   useEffect(() => {
     loadTankings(orderTankings);
-  },[orderTankings])
+  }, [orderTankings])
 
   const TankingItem = React.memo(({ item }: { item: { month: string, tankings: (Tanking & { station: Station, fuel: Fuel, station_fuel: StationFuel })[] } }) => {
     return (
@@ -95,7 +94,7 @@ export default function HomeScreen() {
                     { value: 'ASC', label: 'Nejstarší' }
                   ]}
                   onChange={(item) => setOrderTankings(item.value)}
-                  dropdownStyle={{...spacing.borderRadius(12), ...spacing.width(150) , ...spacing.borderWidth(0.5), ...spacing.px(12), borderColor: isDark ? Colors.dark.secondary_lighter : Colors.light.secondary, backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.secondary }}
+                  dropdownStyle={{ ...spacing.borderRadius(12), ...spacing.width(150), ...spacing.borderWidth(0.5), ...spacing.px(12), borderColor: isDark ? Colors.dark.secondary_lighter : Colors.light.secondary, backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.secondary }}
                 ></Dropdown>
               </View>
             </View>
@@ -106,7 +105,7 @@ export default function HomeScreen() {
           initialNumToRender={1}
           maxToRenderPerBatch={1}
           windowSize={2}
-          ListHeaderComponentStyle={{zIndex:50}}
+          ListHeaderComponentStyle={{ zIndex: 50 }}
           contentContainerStyle={{ ...spacing.gap(12), ...spacing.borderRadius(12), ...spacing.mx(20), ...spacing.pb(96) }}
           renderItem={renderItem}
           getItemCount={(_data: unknown) => tankings.length}
