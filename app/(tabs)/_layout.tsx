@@ -7,14 +7,16 @@ import Icon from '../../components/ui/Icon';
 import { FontSizes } from '@/constants/FontSizes';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import SettingsBar from '@/components/ui/settingsBar';
+import { StatusBar } from 'expo-status-bar';
+import { ModalProvider } from '@/providers/modalProvider';
 
 export default function TabsLayout() {
     const { isDark } = useTheme();
 
     return (
         <SafeAreaView style={{ backgroundColor: isDark ? Colors.dark.background : Colors.light.background, flex: 1 }} className={`flex-1 ${isDark ? 'dark' : ''}`}>
-            <Text className="text-blue-700 font-bold">Test</Text>
-            <SettingsBar />
+            <ModalProvider>
+                <SettingsBar />
             <Tabs
                 screenOptions={{
                     tabBarActiveTintColor: Colors.primary,
@@ -28,8 +30,10 @@ export default function TabsLayout() {
                         },
                         android: {
                             backgroundColor: isDark ? Colors.dark.secondary : Colors.light.secondary,
-                            ...spacing.height(70),
+                            ...spacing.height(75),
                             borderTopWidth: 0,
+                            paddingBottom: 5,
+                            paddingTop: 5,
                         },
                         default: {
                             backgroundColor: isDark ? Colors.dark.secondary : Colors.light.secondary,
@@ -77,6 +81,8 @@ export default function TabsLayout() {
                     }}
                 />
             </Tabs>
+            <StatusBar style={isDark ? "light" : "dark"} />
+            </ModalProvider>
         </SafeAreaView>
     );
 }
