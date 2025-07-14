@@ -1,4 +1,4 @@
-import { Button, RefreshControl, View, VirtualizedList } from 'react-native';
+import { Button, RefreshControl, Text, View, VirtualizedList } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTheme } from '@/theme/ThemeProvider';
 import { Link, usePathname } from 'expo-router';
@@ -38,6 +38,9 @@ export default function HomeScreen() {
     return (
       <View style={{ ...spacing.gap(12) }}>
         <ScaledText size='lg' className='font-bold capitalize' style={{ color: isDark ? Colors.dark.text : '' }}>{getDate(item.month).monthLong} {getDate(item.month).year}</ScaledText>
+        <View className="flex-1 items-center justify-center bg-red-500">
+          <Text className="text-white text-2xl">Hello NativeWind</Text>
+        </View>
         <View style={{ ...spacing.gap(12) }}>
           {item.tankings.map((item) => (
             <View key={item.id} style={{ backgroundColor: isDark ? Colors.dark.secondary_light : Colors.white, ...spacing.p(20), ...spacing.borderRadius(8) }}>

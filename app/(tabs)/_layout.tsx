@@ -1,5 +1,5 @@
 import { Tabs } from 'expo-router';
-import { Platform } from 'react-native';
+import { Platform, Text } from 'react-native';
 import { useTheme } from '@/theme/ThemeProvider';
 import { Colors } from '@/constants/Colors';
 import getScaleFactor, { spacing } from '@/utils/SizeScaling';
@@ -13,6 +13,7 @@ export default function TabsLayout() {
 
     return (
         <SafeAreaView style={{ backgroundColor: isDark ? Colors.dark.background : Colors.light.background, flex: 1 }} className={`flex-1 ${isDark ? 'dark' : ''}`}>
+            <Text className="text-blue-700 font-bold">Test</Text>
             <SettingsBar />
             <Tabs
                 screenOptions={{

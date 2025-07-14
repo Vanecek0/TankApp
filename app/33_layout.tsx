@@ -8,10 +8,12 @@ import { SQLiteProvider } from "expo-sqlite";
 import { ModalProvider } from "@/providers/modalProvider";
 import { CarProvider } from "@/context/carContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Database } from "@/database/database";
+import { Text, View } from "react-native";
 
 SplashScreen.preventAutoHideAsync();
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout() {
     const [isReady, setIsReady] = useState(false);
 
     useEffect(() => {
@@ -39,6 +41,23 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 setIsReady(true);
             }
         }
+
+        const resetDb = async () => {
+            await Database.resetDatabase();
+        };
+        //resetDb();
+
+        const initDb = async () => {
+            await Database.init();
+        };
+        //initDb();
+
+        const seedDb = async () => {
+            await Database.seedData();
+        };
+        //seedDb();
+
+
         prepare();
     }, []);
 
@@ -51,14 +70,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     if (!isReady) return null;
 
     return (
-        <DatabaseProvider>
+        /*<DatabaseProvider>
             <SQLiteProvider databaseName="database.db">
                 <ThemeProvider>
                     <CarProvider>
                         <ModalProvider>
                             <SafeAreaProvider>
                                     <Stack>
-                                        <Stack.Screen name="(tabs)" options={{headerShown: false}} />
+                                        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
                                         <Stack.Screen name="+not-found" />
                                     </Stack>
                                     <StatusBar style="dark" />
@@ -67,6 +86,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     </CarProvider>
                 </ThemeProvider>
             </SQLiteProvider>
-        </DatabaseProvider>
+        </DatabaseProvider>*/
+        <View className="flex-1 items-center justify-center bg-gray-600">
+            <Text className="text-yellow-200 text-3xl">Hey! Welcome2.</Text>
+            <StatusBar style="light" />
+        </View>
     );
 }
