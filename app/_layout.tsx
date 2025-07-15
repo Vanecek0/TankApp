@@ -97,6 +97,7 @@ function DrawerWithTheme() {
             drawerContent={() => <SettingsBarDrawer />}
             screenOptions={{
                 headerShown: false,
+                swipeEnabled: false,
                 drawerStyle: {
                     backgroundColor: isDark ? Colors.dark.secondary : Colors.light.secondary
                 }
