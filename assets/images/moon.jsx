@@ -5,7 +5,7 @@ function SvgComponent(props) {
   return (
     <Svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 30 30"
+      viewBox="0 0 24 24"
       fill={props.color}
       className="size-6"
       {...props}
