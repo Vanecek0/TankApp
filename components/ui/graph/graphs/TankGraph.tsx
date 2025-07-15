@@ -5,6 +5,8 @@ import darkenHexColor from "@/utils/colorDarken";
 import getScaleFactor, { spacing } from "@/utils/SizeScaling";
 import { useState } from "react";
 import { View } from "react-native";
+import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import { PanGesture } from "react-native-gesture-handler/lib/typescript/handlers/gestures/panGesture";
 import { BarChart } from "react-native-gifted-charts";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -93,6 +95,7 @@ export default function TankGraph({ className, data }: {
 
     const validItems = barData.filter(item => item.originalValue > 0);
     const average = validItems.length > 0 ? validItems.reduce((sum, item) => sum + item.value, 0) / validItems.length : 0;
+
 
     return (
         <SafeAreaView onLayout={onLayout} style={{ maxHeight: parentWidth / 3, ...spacing.my(15), ...spacing.height(120) }} className={`items-center h- justify-center ${className}`}>

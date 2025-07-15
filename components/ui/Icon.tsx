@@ -21,6 +21,7 @@ import Average from "@/assets/images/average";
 import Droplet from "@/assets/images/droplet";
 import Speedometer from "@/assets/images/speedometer";
 import Dollar from "@/assets/images/dollar";
+import Users from "@/assets/images/users";
 
 const MAPPING = {
     car_repair: CarRepair,
@@ -43,7 +44,8 @@ const MAPPING = {
     moon: Moon,
     sun: Sun,
     speedometer: Speedometer,
-    dollar: Dollar
+    dollar: Dollar,
+    users: Users,
 } as const;
 
 export type IconSrc = keyof typeof MAPPING;

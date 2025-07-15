@@ -23,7 +23,6 @@ export default function SettingsBar({ className }: {
             </View>
             <View style={{...spacing.gap(8)}} className="flex-row">
                 <Link href={"/tank"} className="flex items-center"><Icon name="bell" color={Colors.inactive_icon} size={getScaleFactor()*30} /></Link>
-                <Link href={"/tank"} className="flex items-center"><Icon name="settings" color={Colors.inactive_icon} size={getScaleFactor()*30} /></Link>
                 <TouchableOpacity onPress={toggleColorScheme}>
                     <Icon name={isDark ? "sun" : "moon"} color={Colors.inactive_icon} size={getScaleFactor()*30} />
                 </TouchableOpacity>
