@@ -1,7 +1,7 @@
 import { Button, RefreshControl, Text, View, VirtualizedList } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTheme } from '@/theme/ThemeProvider';
-import { Link, usePathname } from 'expo-router';
+import { Link, useNavigation, usePathname } from 'expo-router';
 import { Colors } from '@/constants/Colors';
 import Dashboard from '@/components/ui/dashboard';
 import ScaledText from '@/components/other/scaledText';
@@ -16,6 +16,7 @@ import { Station } from '@/models/Station';
 import { Fuel } from '@/models/Fuel';
 import { StationFuel } from '@/models/StationFuel';
 import Dropdown from '@/components/other/dropdown';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 
 export default function HomeScreen() {
   const { isDark } = useTheme();
@@ -80,40 +81,41 @@ export default function HomeScreen() {
 
   return (
     <>
-      <View className='flex-1' style={{ backgroundColor: isDark ? Colors.dark.background : Colors.light.background }}>
-        <VirtualizedList
-          ListHeaderComponent={
-            <View>
-              <Dashboard routePathName={pathname} />
-              <View style={{ ...spacing.mt(24), ...spacing.mb(12) }} className='flex-row items-center justify-between'>
-                <ScaledText size='lg' className='font-bold' isThemed={true}>Poslední záznamy</ScaledText>
-                <Dropdown
-                  defaultIndex={0}
-                  data={[
-                    { value: 'DESC', label: 'Nejnovější' },
-                    { value: 'ASC', label: 'Nejstarší' }
-                  ]}
-                  onChange={(item) => setOrderTankings(item.value)}
-                  dropdownStyle={{ ...spacing.borderRadius(12), ...spacing.width(150), ...spacing.borderWidth(0.5), ...spacing.px(12), borderColor: isDark ? Colors.dark.secondary_lighter : Colors.light.secondary, backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.secondary }}
-                ></Dropdown>
+        <View className='flex-1' style={{ backgroundColor: isDark ? Colors.dark.background : Colors.light.background }}>
+          <VirtualizedList
+            ListHeaderComponent={
+              <View>
+                <Dashboard routePathName={pathname} />
+                <View style={{ ...spacing.mt(24), ...spacing.mb(12) }} className='flex-row items-center justify-between'>
+                  <ScaledText size='lg' className='font-bold' isThemed={true}>Poslední záznamy</ScaledText>
+                  <Dropdown
+                    defaultIndex={0}
+                    data={[
+                      { value: 'DESC', label: 'Nejnovější' },
+                      { value: 'ASC', label: 'Nejstarší' }
+                    ]}
+                    onChange={(item) => setOrderTankings(item.value)}
+                    dropdownStyle={{ ...spacing.borderRadius(12), ...spacing.width(150), ...spacing.borderWidth(0.5), ...spacing.px(12), borderColor: isDark ? Colors.dark.secondary_lighter : Colors.light.secondary, backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.secondary }}
+                  ></Dropdown>
+                </View>
               </View>
-            </View>
-          }
-          refreshControl={
-            <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
-          }
-          initialNumToRender={1}
-          maxToRenderPerBatch={1}
-          windowSize={2}
-          ListHeaderComponentStyle={{ zIndex: 50 }}
-          contentContainerStyle={{ ...spacing.gap(12), ...spacing.borderRadius(12), ...spacing.mx(20), ...spacing.pb(96) }}
-          renderItem={renderItem}
-          getItemCount={(_data: unknown) => tankings.length}
-          keyExtractor={(item, index) => tankings[index].month ?? index.toString()}
-          getItem={(_data: unknown, index: number) => tankings[index]}
-          ListEmptyComponent={<ScaledText style={{ ...spacing.p(28) }} className="text-center font-bold" color={Colors.inactive_icon} size="base">Žádné další záznamy</ScaledText>}
-        />
-      </View>
+            }
+            refreshControl={
+              <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
+            }
+            initialNumToRender={1}
+            maxToRenderPerBatch={1}
+            windowSize={2}
+            ListHeaderComponentStyle={{ zIndex: 50 }}
+            contentContainerStyle={{ ...spacing.gap(12), ...spacing.borderRadius(12), ...spacing.mx(20), ...spacing.pb(96) }}
+            renderItem={renderItem}
+            horizontal={false}
+            getItemCount={(_data: unknown) => tankings.length}
+            keyExtractor={(item, index) => tankings[index].month ?? index.toString()}
+            getItem={(_data: unknown, index: number) => tankings[index]}
+            ListEmptyComponent={<ScaledText style={{ ...spacing.p(28) }} className="text-center font-bold" color={Colors.inactive_icon} size="base">Žádné další záznamy</ScaledText>}
+          />
+        </View>
       <ActionButton />
     </>
   );
