@@ -1,6 +1,4 @@
-import { TouchableHighlight, TouchableOpacityProps, View, ViewStyle } from 'react-native';
-import type { FontSizeKey } from '../scaledText';
-import darkenHexColor from '@/utils/colorDarken';
+import { TouchableOpacityProps, View } from 'react-native';
 import CustomButton from '@/components/other/customButton';
 import { spacing } from '@/utils/SizeScaling';
 import { Colors } from '@/constants/Colors';

@@ -16,15 +16,17 @@ export default function SettingsBar({ className }: {
     const nav = useNavigation();
 
     return (
-        <View style={{ backgroundColor: isDark ? Colors.dark.background : Colors.light.background, ...spacing.py(12), ...spacing.px(20), ...spacing.gap(8)}} className={`${className} flex outline-none border-none flex-row items-center justify-between`}>
-            <View onTouchStart={() => {nav.dispatch(DrawerActions.openDrawer())}} style={{...spacing.gap(12)}} className="flex-row items-center">
+        <View style={{ backgroundColor: isDark ? Colors.dark.background : Colors.light.background, ...spacing.py(12), ...spacing.px(20), ...spacing.gap(8) }} className={`${className} flex outline-none border-none flex-row items-center justify-between`}>
+            <View onTouchStart={() => { nav.dispatch(DrawerActions.openDrawer()) }} style={{ ...spacing.gap(12) }} className="flex-row items-center">
                 <ScaledText className='rounded-full text-center flex justify-center items-center align-middle aspect-square' style={{ backgroundColor: "lightgray", fontWeight: "bold", ...spacing.width(40), ...spacing.height(40) }} size='sm'>{car?.car_nickname.slice(0, 2).toUpperCase()}</ScaledText>
                 <ScaledText size="base" className="font-bold" isThemed={true}>{car?.car_nickname}</ScaledText>
             </View>
-            <View style={{...spacing.gap(8)}} className="flex-row">
-                <Link href={"/tank"} className="flex items-center"><Icon name="bell" color={Colors.inactive_icon} size={getScaleFactor()*30} /></Link>
+            <View style={{ ...spacing.gap(8) }} className="flex-row justify-center align-middle">
+                <Link href={"/tank"} className="flex items-center"><Icon name="bell" color={Colors.inactive_icon} size={getScaleFactor() * 30} /></Link>
                 <TouchableOpacity onPress={toggleColorScheme}>
-                    <Icon name={isDark ? "sun" : "moon"} color={Colors.inactive_icon} size={getScaleFactor()*30} />
+                    <View className="justify-center items-center" style={{ width: getScaleFactor() * 30, height: getScaleFactor() * 30 }}>
+                        <Icon name={isDark ? "sun" : "moon"} color={Colors.inactive_icon} size={getScaleFactor() * 28} />
+                    </View>
                 </TouchableOpacity>
             </View>
         </View>

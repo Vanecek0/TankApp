@@ -1,23 +1,33 @@
 import { DrawerContentScrollView } from "@react-navigation/drawer";
-import SettingsBar from ".";
-import { Text, TouchableOpacity, View } from "react-native";
+import { View } from "react-native";
 import ScaledText from "@/components/other/scaledText";
-import { Link, useNavigation } from "expo-router";
+import { Link } from "expo-router";
 import getScaleFactor, { spacing } from "@/utils/SizeScaling";
 import { useTheme } from "@/theme/ThemeProvider";
 import { useCar } from "@/context/carContext";
 import Icon from "../Icon";
-import { DrawerActions } from "@react-navigation/native";
 import { Colors } from "@/constants/Colors";
+import { ModalProvider, useModal } from "@/providers/modalProvider";
+import AboutAppModal from "@/components/modal/aboutAppModal";
 
 export default function SettingsBarDrawer({ ...props }) {
 
-    const { toggleColorScheme, isDark } = useTheme();
-    const { car } = useCar();
-    const nav = useNavigation();
-
     return (
         <DrawerContentScrollView {...props} contentContainerStyle={{ marginHorizontal: getScaleFactor() * -12, flexGrow: 1 }}>
+            <ModalProvider>
+                <TestDrawerContent></TestDrawerContent>
+            </ModalProvider>
+        </DrawerContentScrollView>
+    );
+}
+
+function TestDrawerContent() {
+    const { isDark } = useTheme();
+    const { car } = useCar();
+    const { showModal } = useModal();
+
+    return (
+        <>
             <View className="border-b-[1px] flex-row justify-between" style={{ borderColor: isDark ? Colors.dark.secondary_light : Colors.light.background, marginHorizontal: getScaleFactor() * 16, ...spacing.mb(16), ...spacing.py(16) }}>
                 <View style={{ ...spacing.gap(12) }} className="flex-row items-center">
                     <ScaledText className='rounded-full text-center flex justify-center items-center align-middle aspect-square' style={{ backgroundColor: "lightgray", fontWeight: "bold", ...spacing.width(70), ...spacing.height(70) }} size='xl'>{car?.car_nickname.slice(0, 2).toUpperCase()}</ScaledText>
@@ -83,16 +93,16 @@ export default function SettingsBarDrawer({ ...props }) {
                             <ScaledText size='lg' style={{ color: Colors.inactive_icon }} className="font-medium" isThemed={true}>Nastavení</ScaledText>
                         </View>
                     </Link>
-                    <Link href={"/tank"} style={{ ...spacing.py(6) }}>
+                    <View onTouchEnd={() => {showModal(<AboutAppModal/>)}} className="flex-row" style={{ ...spacing.py(6) }}>
                         <View className="justify-center items-center" style={{ width: getScaleFactor() * 35, height: getScaleFactor() * 35 }}>
                             <Icon name="info" color={Colors.inactive_icon} size={getScaleFactor() * 35} />
                         </View>
-                        <View style={{ ...spacing.px(5) }} className="h-full justify-center">
+                        <View style={{ ...spacing.px(5) }} className="justify-center">
                             <ScaledText size='lg' style={{ color: Colors.inactive_icon }} className="font-medium" isThemed={true}>O aplikaci</ScaledText>
                         </View>
-                    </Link>
+                    </View>
                 </View>
             </View>
-        </DrawerContentScrollView>
+        </>
     );
 }

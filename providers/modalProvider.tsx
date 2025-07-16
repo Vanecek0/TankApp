@@ -1,39 +1,60 @@
-import { Colors } from '@/constants/Colors';
-import { useTheme } from '@/theme/ThemeProvider';
-import { spacing } from '@/utils/SizeScaling';
-import React, { createContext, useContext, useState } from 'react';
-import { Modal, View, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
+
+import { Colors } from "@/constants/Colors"
+import { useTheme } from "@/theme/ThemeProvider"
+import { spacing } from "@/utils/SizeScaling"
+import type React from "react"
+import { createContext, useContext, useState } from "react"
+import { Modal, View, StyleSheet, KeyboardAvoidingView, Platform, TouchableWithoutFeedback } from "react-native"
 
 type ModalContextType = {
-  showModal: (component: React.ReactNode) => void;
-  hideModal: () => void;
-};
+  showModal: (component: React.ReactNode) => void
+  hideModal: () => void
+}
 
-const ModalContext = createContext<ModalContextType | undefined>(undefined);
+const ModalContext = createContext<ModalContextType | undefined>(undefined)
+
 export const useModal = () => {
-  const context = useContext(ModalContext);
+  const context = useContext(ModalContext)
   if (!context) {
-    throw new Error('useModal must be used within a ModalProvider');
+    throw new Error("useModal must be used within a ModalProvider")
   }
-  return context;
-};
+  return context
+}
 
 export const ModalProvider = ({ children }: any) => {
-  const [modalContent, setModalContent] = useState(null);
+  const [modalContent, setModalContent] = useState<React.ReactNode>(null)
+  const { isDark } = useTheme()
 
-  const showModal = (component: any) => setModalContent(() => component);
-  const hideModal = () => setModalContent(null);
-  const { isDark } = useTheme();
+  const showModal = (component: React.ReactNode) => setModalContent(component)
+  const hideModal = () => setModalContent(null)
 
   return (
     <ModalContext.Provider value={{ showModal, hideModal }}>
       {children}
       {modalContent && (
-        <Modal className='flex-1 justify-center items-center' animationType="fade" transparent={true} onRequestClose={hideModal}>
-          <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={{ flex: 1 }}>
-            <View onTouchEnd={hideModal} className='absolute top-0 bottom-0 left-0 right-0 flex justify-center items-center' style={{ backgroundColor: isDark ? '#000000bf' : "#ffffffbf" }}></View>
-            <View className='flex-1 justify-center items-center relative'>
-              <View style={{width: '85%', backgroundColor: isDark ? Colors.dark.secondary : Colors.light.secondary, ...spacing.borderRadius(12) }}>
+        <Modal animationType="fade" transparent={true} visible={!!modalContent} onRequestClose={hideModal}>
+          <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}>
+            {/* Backdrop - kliknutelný overlay */}
+            <TouchableWithoutFeedback onPress={hideModal}>
+              <View
+                style={[
+                  styles.backdrop,
+                  { backgroundColor: isDark ? "rgba(0, 0, 0, 0.75)" : "rgba(255, 255, 255, 0.75)" },
+                ]}
+              />
+            </TouchableWithoutFeedback>
+
+            {/* Modal content */}
+            <View style={styles.modalContainer}>
+              <View
+                style={[
+                  styles.modalContent,
+                  {
+                    backgroundColor: isDark ? Colors.dark.secondary : Colors.light.secondary,
+                    ...spacing.borderRadius(12),
+                  },
+                ]}
+              >
                 {modalContent}
               </View>
             </View>
@@ -41,5 +62,28 @@ export const ModalProvider = ({ children }: any) => {
         </Modal>
       )}
     </ModalContext.Provider>
-  );
-};
+  )
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  backdrop: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 20,
+  },
+  modalContent: {
+    width: "85%",
+    maxHeight: "80%",
+  },
+})

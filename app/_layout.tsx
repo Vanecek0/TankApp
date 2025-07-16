@@ -79,9 +79,9 @@ export default function RootLayout() {
             <SQLiteProvider databaseName="database.db">
                 <ThemeProvider>
                     <CarProvider>
-                            <GestureHandlerRootView style={{ flex: 1 }}>
-                                <DrawerWithTheme />
-                            </GestureHandlerRootView>
+                        <GestureHandlerRootView style={{ flex: 1 }}>
+                            <DrawerWithTheme />
+                        </GestureHandlerRootView>
                     </CarProvider>
                 </ThemeProvider>
             </SQLiteProvider>
