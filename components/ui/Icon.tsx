@@ -22,6 +22,9 @@ import Droplet from "@/assets/images/droplet";
 import Speedometer from "@/assets/images/speedometer";
 import Dollar from "@/assets/images/dollar";
 import Users from "@/assets/images/users";
+import Palette from "@/assets/images/palette";
+import Info from "@/assets/images/info";
+import Document from "@/assets/images/document";
 
 const MAPPING = {
     car_repair: CarRepair,
@@ -46,6 +49,9 @@ const MAPPING = {
     speedometer: Speedometer,
     dollar: Dollar,
     users: Users,
+    palette: Palette,
+    info: Info,
+    document: Document,
 } as const;
 
 export type IconSrc = keyof typeof MAPPING;
