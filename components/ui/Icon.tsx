@@ -26,6 +26,8 @@ import Palette from "@/assets/images/palette";
 import Info from "@/assets/images/info";
 import Document from "@/assets/images/document";
 import Cross from "@/assets/images/cross";
+import ExternalLink from "@/assets/images/external_link";
+import Github from "@/assets/images/github";
 
 const MAPPING = {
     car_repair: CarRepair,
@@ -54,6 +56,8 @@ const MAPPING = {
     info: Info,
     document: Document,
     cross: Cross,
+    external_link: ExternalLink,
+    github: Github,
 } as const;
 
 export type IconSrc = keyof typeof MAPPING;
