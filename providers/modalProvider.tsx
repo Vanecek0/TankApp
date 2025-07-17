@@ -34,17 +34,15 @@ export const ModalProvider = ({ children }: any) => {
       {modalContent && (
         <Modal animationType="fade" transparent={true} visible={!!modalContent} onRequestClose={hideModal}>
           <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}>
-            {/* Backdrop - kliknutelný overlay */}
             <TouchableWithoutFeedback onPress={hideModal}>
               <View
                 style={[
                   styles.backdrop,
-                  { backgroundColor: isDark ? "rgba(0, 0, 0, 0.75)" : "rgba(255, 255, 255, 0.75)" },
+                  { backgroundColor: isDark ? "rgba(0, 0, 0, 0.75)" : "rgba(0, 0, 0, 0.5)" },
                 ]}
               />
             </TouchableWithoutFeedback>
 
-            {/* Modal content */}
             <View style={styles.modalContainer}>
               <View
                 style={[
@@ -83,7 +81,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   modalContent: {
-    width: "85%",
-    maxHeight: "80%",
+    width: "100%",
+    maxHeight: "85%",
   },
 })

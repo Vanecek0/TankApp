@@ -53,6 +53,8 @@ export const spacing = {
   m: (v: number) => ({ margin: scaled(v) }),
   mt: (v: number) => ({ marginTop: scaled(v) }),
   mb: (v: number) => ({ marginBottom: scaled(v) }),
+  me: (v: number) => ({ marginEnd: scaled(v) }),
+  ms: (v: number) => ({ marginStart: scaled(v) }),
   mx: (v: number) => ({
     marginLeft: scaled(v),
     marginRight: scaled(v),
