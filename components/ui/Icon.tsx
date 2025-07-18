@@ -28,6 +28,8 @@ import Document from "@/assets/images/document";
 import Cross from "@/assets/images/cross";
 import ExternalLink from "@/assets/images/external_link";
 import Github from "@/assets/images/github";
+import Bin from "@/assets/images/bin";
+import Edit from "@/assets/images/edit";
 
 const MAPPING = {
     car_repair: CarRepair,
@@ -37,6 +39,8 @@ const MAPPING = {
     car: Car,
     calc: Calc,
     bell: Bell,
+    bin: Bin,
+    edit: Edit,
     calendar: Calendar,
     clock: Clock,
     bars: Bars,
