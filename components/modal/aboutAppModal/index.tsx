@@ -86,7 +86,6 @@ export default function AboutAppModal() {
                                 </View>
                             </View>
                         </View>
-
                     </View>
                 </View>
 

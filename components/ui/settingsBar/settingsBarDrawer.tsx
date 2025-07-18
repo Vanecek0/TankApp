@@ -9,6 +9,7 @@ import Icon from "../Icon";
 import { Colors } from "@/constants/Colors";
 import { ModalProvider, useModal } from "@/providers/modalProvider";
 import AboutAppModal from "@/components/modal/aboutAppModal";
+import StationsModal from "@/components/modal/stationsModal";
 
 export default function SettingsBarDrawer({ ...props }) {
 
@@ -56,14 +57,14 @@ function TestDrawerContent() {
                                 <ScaledText size='lg' style={{ color: Colors.inactive_icon }} className="font-medium" isThemed={true}>Servis</ScaledText>
                             </View>
                         </Link>
-                        <Link href={"/tank"} style={{ ...spacing.py(6) }}>
+                        <View onTouchEnd={() => {showModal(<StationsModal/>)}} className="flex-row" style={{ ...spacing.py(6) }}>
                             <View className="justify-center items-center" style={{ width: getScaleFactor() * 35, height: getScaleFactor() * 35 }}>
-                                <Icon name="tank" color={Colors.inactive_icon} size={getScaleFactor() * 25} />
+                                <Icon name="map_pin" color={Colors.inactive_icon} size={getScaleFactor() * 25} />
                             </View>
-                            <View style={{ ...spacing.px(5) }} className="h-full justify-center">
-                                <ScaledText size='lg' style={{ color: Colors.inactive_icon }} className="font-medium" isThemed={true}>Oblíbené stanice</ScaledText>
+                            <View style={{ ...spacing.px(5) }} className="justify-center">
+                                <ScaledText size='lg' style={{ color: Colors.inactive_icon }} className="font-medium" isThemed={true}>Stanice</ScaledText>
                             </View>
-                        </Link>
+                        </View>
                         <Link href={"/tank"} style={{ ...spacing.py(6) }}>
                             <View className="justify-center items-center" style={{ width: getScaleFactor() * 35, height: getScaleFactor() * 35 }}>
                                 <Icon name="document" color={Colors.inactive_icon} size={getScaleFactor() * 30} />
