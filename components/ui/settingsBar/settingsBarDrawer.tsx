@@ -57,7 +57,7 @@ function TestDrawerContent() {
                                 <ScaledText size='lg' style={{ color: Colors.inactive_icon }} className="font-medium" isThemed={true}>Servis</ScaledText>
                             </View>
                         </Link>
-                        <View onTouchEnd={() => {showModal(<StationsModal/>)}} className="flex-row" style={{ ...spacing.py(6) }}>
+                        <View onTouchEnd={() => {showModal(StationsModal)}} className="flex-row" style={{ ...spacing.py(6) }}>
                             <View className="justify-center items-center" style={{ width: getScaleFactor() * 35, height: getScaleFactor() * 35 }}>
                                 <Icon name="map_pin" color={Colors.inactive_icon} size={getScaleFactor() * 25} />
                             </View>
@@ -94,7 +94,7 @@ function TestDrawerContent() {
                             <ScaledText size='lg' style={{ color: Colors.inactive_icon }} className="font-medium" isThemed={true}>Nastavení</ScaledText>
                         </View>
                     </Link>
-                    <View onTouchEnd={() => {showModal(<AboutAppModal/>)}} className="flex-row" style={{ ...spacing.py(6) }}>
+                    <View onTouchEnd={() => {showModal(AboutAppModal)}} className="flex-row" style={{ ...spacing.py(6) }}>
                         <View className="justify-center items-center" style={{ width: getScaleFactor() * 35, height: getScaleFactor() * 35 }}>
                             <Icon name="info" color={Colors.inactive_icon} size={getScaleFactor() * 35} />
                         </View>

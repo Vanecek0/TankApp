@@ -26,8 +26,7 @@ export default function ActionButton({ label, ...props }: CustomButtonProps) {
                         <View onTouchEnd={() => setIsOpen(!isOpen)} style={{ backgroundColor: isDark ? '#000000bf' : "#ffffffbf" }} className='flex absolute bottom-0 left-0 right-0 top-0'></View>
                         <View style={{ ...spacing.right(20), ...spacing.my(12) }} className='flex-col gap-3 items-end absolute right-0'>
                             <View onTouchEnd={
-                                () => {showModal(<AddTankRecordModal onSubmit={(val:any) => console.log('Záznam:', val)} 
-                                />); setIsOpen(!isOpen)}} style={{...spacing.right(10)}} className='flex-row items-center gap-3'>
+                                () => {showModal(AddTankRecordModal); setIsOpen(!isOpen)}} style={{...spacing.right(10)}} className='flex-row items-center gap-3'>
                                 <ScaledText size={'base'} color={isDark ? Colors.white : ''} className='font-bold'>Přidat tankování</ScaledText>
                                 <CustomButton labelClassName='aspect text-center' style={{ ...spacing.borderRadius(90), ...spacing.p(16), ...spacing.width(60) }} className={`flex shadow-md justify-center items-center aspect-square`} label={<Icon name="tank" color={Colors.primary} style={{ ...spacing.width(20), ...spacing.height(20) }} />} labelSize='xl' labelColor={isDark ? Colors.white : ''} backgroundColor={isDark ? Colors.dark.secondary_light : Colors.light.secondary} />
                             </View>

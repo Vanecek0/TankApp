@@ -12,46 +12,7 @@ import { Tanking, TankingModel } from '@/models/Tanking';
 import { useDatabase } from '@/database/databaseContext';
 import Dropdown from '@/components/other/dropdown';
 import Icon from '@/components/ui/Icon';
-
-const Input = ({ name, control, placeholder }: any) => {
-  const { isDark } = useTheme();
-
-  const { field } = useController({
-    control,
-    defaultValue: '',
-    name,
-  })
-
-  return (
-    <TextInput placeholder={placeholder} placeholderTextColor={isDark ? Colors.dark.secondary_lighter : Colors.light.text} style={{ ...spacing.borderRadius(12), ...spacing.borderWidth(0.5), ...spacing.px(12), ...spacing.py(12), borderColor: isDark ? Colors.dark.secondary_lighter : Colors.light.secondary, backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.secondary, color: isDark ? Colors.dark.text : Colors.light.text }} value={field.value} onChangeText={field.onChange} />
-  )
-}
-
-const NumberInput = ({ name, control, placeholder, defaultValue, onBlur }: any) => {
-  const { isDark } = useTheme();
-
-  const { field } = useController({
-    control,
-    defaultValue: '',
-    name,
-  })
-
-  const handleChange = (text: string) => {
-    let cleaned = text.replace(',', '.');
-
-    if (/^\d*\.?\d*$/.test(cleaned)) {
-      field.onChange(cleaned);
-    }
-  };
-
-  return (
-    <TextInput keyboardType="decimal-pad" placeholder={placeholder} placeholderTextColor={isDark ? Colors.dark.secondary_lighter : Colors.light.text} style={{ ...spacing.borderRadius(12), ...spacing.borderWidth(0.5), ...spacing.px(12), ...spacing.py(12), borderColor: isDark ? Colors.dark.secondary_lighter : Colors.light.secondary, backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.secondary, color: isDark ? Colors.dark.text : Colors.light.text }} value={field.value}
-      onBlur={() => {
-        field.onBlur();
-        if (onBlur) onBlur();
-      }} onChangeText={handleChange} />
-  )
-}
+import FormNumberInput from '@/components/other/form/formNumberInput';
 
 export default function AddTankRecordModal({ onSubmit }: any) {
   const { hideModal } = useModal();
@@ -113,7 +74,7 @@ export default function AddTankRecordModal({ onSubmit }: any) {
             <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Stav tachometru</ScaledText>
           </View>
 
-          <NumberInput name="tachometer" control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></NumberInput>
+          <FormNumberInput name="tachometer" control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></FormNumberInput>
         </View>
 
         <View>
@@ -187,7 +148,7 @@ export default function AddTankRecordModal({ onSubmit }: any) {
               <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Cena za jednotku</ScaledText>
             </View>
 
-            <NumberInput name="price_per_litre" control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></NumberInput>
+            <FormNumberInput name="price_per_litre" control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></FormNumberInput>
           </View>
         </View>
 
@@ -197,7 +158,7 @@ export default function AddTankRecordModal({ onSubmit }: any) {
             <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Cena (bez slev)</ScaledText>
           </View>
 
-          <NumberInput name="price" control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></NumberInput>
+          <FormNumberInput name="price" control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></FormNumberInput>
         </View>
 
         <View>
@@ -205,7 +166,7 @@ export default function AddTankRecordModal({ onSubmit }: any) {
             <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Počet litrů</ScaledText>
           </View>
 
-          <NumberInput name="amount" control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></NumberInput>
+          <FormNumberInput name="amount" control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></FormNumberInput>
         </View>
 
       </View>
