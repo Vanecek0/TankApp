@@ -304,8 +304,12 @@ export class TankingModel {
       s.id AS station_id,
         s.name AS station_name,
           s.address AS station_address,
+          s.phone AS station_phone.
+          s.opening_hrs as station_opening_hrs,
+          s.closing_hrs as station_closing_hrs,
             s.last_visit AS station_last_visit,
               s.provider AS station_provider,
+              s.note AS station_note,
                 s.created_at AS station_created_at,
                   s.updated_at AS station_updated_at,
                     f.id AS fuel_id,
@@ -320,7 +324,7 @@ export class TankingModel {
     INNER JOIN fuel f ON sf.id_fuel = f.id
     WHERE car_id = 1
     ORDER BY t.tank_date DESC
-    ${ limit != null ? 'LIMIT ?' : '' } `,
+    ${limit != null ? 'LIMIT ?' : ''} `,
       [limit!],
     )
 
@@ -340,8 +344,12 @@ export class TankingModel {
         id: row.station_id,
         name: row.station_name,
         address: row.station_address,
+        phone: row.station_phone,
+        opening_hrs: row.opening_hrs,
+        closing_hrs: row.closing_hrs,
         last_visit: row.station_last_visit,
         provider: row.station_provider,
+        note: row.station_note,
         created_at: row.station_created_at,
         updated_at: row.station_updated_at
       },
@@ -369,14 +377,18 @@ export class TankingModel {
       s.id AS station_id,
         s.name AS station_name,
           s.address AS station_address,
+          s.phone AS station_phone.
+          s.opening_hrs as station_opening_hrs,
+          s.closing_hrs as station_closing_hrs,
             s.last_visit AS station_last_visit,
               s.provider AS station_provider,
+              s.note AS station_note,
                 s.created_at AS station_created_at,
                   s.updated_at AS station_updated_at
        FROM tanking t
        INNER JOIN station s ON t.station_id = s.id
        ORDER BY t.tank_date DESC 
-    ${ limit != null ? 'LIMIT ?' : '' } `,
+    ${limit != null ? 'LIMIT ?' : ''} `,
       [limit!],
     )
 
@@ -396,10 +408,14 @@ export class TankingModel {
         id: row.station_id,
         name: row.station_name,
         address: row.station_address,
+        phone: row.station_phone,
+        opening_hrs: row.opening_hrs,
+        closing_hrs: row.closing_hrs,
         fuel_id: row.station_fuel_id,
         price_per_unit: row.station_price_per_unit,
         last_visit: row.station_last_visit,
         provider: row.station_provider,
+        note: row.station_note,
         created_at: row.station_created_at,
         updated_at: row.station_updated_at
       },

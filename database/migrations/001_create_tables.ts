@@ -9,9 +9,12 @@ export async function createTables(db: SQLite.SQLiteDatabase) {
         "id"	INTEGER PRIMARY KEY AUTOINCREMENT,
         "name"	TEXT,
         "address"	TEXT,
-        "price_per_unit"	NUMERIC,
+        "phone" TEXT,
+        "opening_hrs" NUMERIC,
+        "closing_hrs" NUMERIC,
         "last_visit"	NUMERIC,
         "provider"	TEXT,
+        "note" TEXT,
         "created_at"	NUMERIC,
         "updated_at"	NUMERIC
       );

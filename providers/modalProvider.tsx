@@ -1,13 +1,19 @@
-
 import { Colors } from "@/constants/Colors"
 import { useTheme } from "@/theme/ThemeProvider"
 import { spacing } from "@/utils/SizeScaling"
 import type React from "react"
 import { createContext, useContext, useState } from "react"
-import { Modal, View, StyleSheet, KeyboardAvoidingView, Platform, TouchableWithoutFeedback } from "react-native"
+import {
+  Modal,
+  View,
+  StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableWithoutFeedback,
+} from "react-native"
 
 type ModalContextType = {
-  showModal: (component: React.ReactNode) => void
+  showModal: (Component: React.FC<any>, props?: Record<string, any>) => void
   hideModal: () => void
 }
 
@@ -21,18 +27,26 @@ export const useModal = () => {
   return context
 }
 
-export const ModalProvider = ({ children }: any) => {
-  const [modalContent, setModalContent] = useState<React.ReactNode>(null)
+export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
+  const [ModalComponent, setModalComponent] = useState<React.FC<any> | null>(null)
+  const [modalProps, setModalProps] = useState<Record<string, any>>({})
   const { isDark } = useTheme()
 
-  const showModal = (component: React.ReactNode) => setModalContent(component)
-  const hideModal = () => setModalContent(null)
+  const showModal = (Component: React.FC<any>, props: Record<string, any> = {}) => {
+    setModalComponent(() => Component) // wrap in arrow function to preserve React identity
+    setModalProps(props)
+  }
+
+  const hideModal = () => {
+    setModalComponent(null)
+    setModalProps({})
+  }
 
   return (
     <ModalContext.Provider value={{ showModal, hideModal }}>
       {children}
-      {modalContent && (
-        <Modal animationType="fade" transparent={true} visible={!!modalContent} onRequestClose={hideModal}>
+      {ModalComponent && (
+        <Modal animationType="fade" transparent={true} visible={!!ModalComponent} onRequestClose={hideModal}>
           <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}>
             <TouchableWithoutFeedback onPress={hideModal}>
               <View
@@ -53,7 +67,7 @@ export const ModalProvider = ({ children }: any) => {
                   },
                 ]}
               >
-                {modalContent}
+                <ModalComponent {...modalProps} />
               </View>
             </View>
           </KeyboardAvoidingView>
