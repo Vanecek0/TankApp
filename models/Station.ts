@@ -1,5 +1,6 @@
 import { Database } from "@/database/database";
 import { Fuel } from "./Fuel";
+import { StationFuel, StationFuelModel } from "./StationFuel";
 
 export type Station = {
     id?: number;
@@ -36,6 +37,32 @@ export class StationModel {
         const db = await Database.getConnection();
         const rows = await db.getAllAsync<Station>('SELECT * FROM station');
         return rows;
+    }
+
+    static async updateStation(id: number, stationData: Partial<Station>): Promise<void> {
+        const db = await Database.getConnection();
+        const fields: string[] = [];
+        const values: any[] = [];
+
+        for (const key in stationData) {
+            if (stationData[key as keyof Station] !== undefined) {
+                fields.push(`${key} = ?`);
+                values.push(stationData[key as keyof Station]);
+            }
+        }
+
+        if (fields.length === 0) {
+            return;
+        }
+
+        const updateQuery = `
+        UPDATE station
+        SET ${fields.join(", ")}, updated_at = CURRENT_TIMESTAMP
+        WHERE id = ?
+    `;
+        values.push(id);
+
+        await db.runAsync(updateQuery, values);
     }
 
     static async getAllStationsWithFuels(): Promise<(Station & { fuels: (Fuel & { last_price_per_unit: number | null })[] })[]> {
@@ -102,6 +129,45 @@ export class StationModel {
 
         return Array.from(stationsMap.values())
     }
+
+    static async updateStationWithFuels(
+        id: number,
+        stationData: Partial<Station>,
+        fuels: { id: number; last_price_per_unit?: number | null }[]
+    ): Promise<void> {
+        const db = await Database.getConnection();
+        const fields: string[] = [];
+        const values: any[] = [];
+
+        for (const key in stationData) {
+            if (stationData[key as keyof Station] !== undefined) {
+                fields.push(`${key} = ?`);
+                values.push(stationData[key as keyof Station]);
+            }
+        }
+
+        if (fields.length > 0) {
+            const updateQuery = `
+      UPDATE station
+      SET ${fields.join(", ")}, updated_at = CURRENT_TIMESTAMP
+      WHERE id = ?
+    `;
+            values.push(id);
+            await db.runAsync(updateQuery, values);
+        }
+
+        await StationFuelModel.delete(id);
+
+        for (const fuel of fuels) {
+            const stationFuel: StationFuel = {
+                id_station: id,
+                id_fuel: fuel.id,
+                last_price_per_unit: fuel.last_price_per_unit!,
+            };
+            await StationFuelModel.create(stationFuel)
+        }
+    }
+
     static async count(): Promise<any> {
         const db = await Database.getConnection();
         const promiseThen = new Promise((resolve, reject) => {

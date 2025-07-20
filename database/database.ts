@@ -44,22 +44,23 @@ export class Database {
   }
 
   static async init() {
-    const db = await this.getConnection()
+    const db = await this.getConnection();
 
     try {
-      console.log("Initializing database...")
-      await db.execAsync(`PRAGMA foreign_keys = OFF;`)
-      await db.execAsync(`BEGIN TRANSACTION;`)
+      console.log("Initializing database...");
 
-      await this.createTables()
+      await db.execAsync(`PRAGMA foreign_keys = ON;`);   // FK musí být zapnuté VŽDY před transakcí
+      await db.execAsync(`BEGIN TRANSACTION;`);
 
-      await db.execAsync(`COMMIT;`)
-      await db.execAsync(`PRAGMA foreign_keys = ON;`)
-      console.log("Database init complete")
+      await this.createTables();
+
+      await db.execAsync(`COMMIT;`);
+
+      console.log("Database init complete");
     } catch (error) {
-      await db.execAsync(`ROLLBACK;`)
-      console.error("Database init failed:", error)
-      throw error
+      await db.execAsync(`ROLLBACK;`);
+      console.error("Database init failed:", error);
+      throw error;
     }
   }
 

@@ -7,7 +7,7 @@ import contrastHexColor from "@/utils/colorContrast";
 import { useTheme } from "@/theme/ThemeProvider";
 import { Colors } from "@/constants/Colors";
 
-export default function Badge({ className, textClassName, style, size = "base", value, badgeColor, textColor, isThemed }: {
+export default function Badge({ className, textClassName, style, size = "base", value, badgeColor, textColor, isThemed, isCheckable = false, isChecked = false }: {
     className?: string;
     textClassName?: string;
     size?: FontSizeKey;
@@ -16,18 +16,43 @@ export default function Badge({ className, textClassName, style, size = "base", 
     badgeColor?: string;
     textColor?: string;
     isThemed?: boolean;
+    isCheckable?: boolean;
+    isChecked?: boolean;
 }) {
     const { isDark } = useTheme();
 
-    const themedColor = isThemed
-        ? { color: isDark ? Colors.dark.text : Colors.light.text }
-        : textColor != null ? { color: textColor } : {};
-
-
+    const themedColor = {
+        color:
+            isThemed
+                ? isDark
+                    ? isCheckable && !isChecked
+                        ? Colors.dark.secondary_lighter
+                        : Colors.dark.text
+                    : isCheckable && !isChecked
+                        ? Colors.hidden_text
+                        : Colors.light.text
+                : textColor ?? undefined,
+    };
 
     return (
         <View style={style} className={`${className} items-baseline`}>
-            <ScaledText className={`${textClassName} rounded-full font-bold`} style={[{ backgroundColor: badgeColor, color: contrastHexColor(badgeColor ?? "#ffffff"), ...spacing.px(8), ...spacing.py(4) }, themedColor]} size={size}>{value}</ScaledText>
+            <ScaledText
+                className={`${textClassName} font-bold`}
+                size={size}
+                style={
+                    [
+                        {
+                            backgroundColor: badgeColor,
+                            borderRadius: style?.borderRadius,
+                            color: contrastHexColor(badgeColor ?? "#ffffff"),
+                            ...spacing.px(8),
+                            ...spacing.py(4)
+                        },
+                        themedColor
+                    ]}
+            >
+                {value}
+            </ScaledText>
         </View>
     )
 }

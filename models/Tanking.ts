@@ -236,9 +236,9 @@ export class TankingModel {
         sf.id_fuel,
         sf.last_price_per_unit AS last_price_per_unit
       FROM tanking t
-      INNER JOIN station_fuel sf ON t.station_fuel_id = sf.id
-      INNER JOIN station s ON sf.id_station = s.id
-      INNER JOIN fuel f ON sf.id_fuel = f.id
+      LEFT JOIN station_fuel sf ON t.station_fuel_id = sf.id
+      LEFT JOIN station s ON sf.id_station = s.id
+      LEFT JOIN fuel f ON sf.id_fuel = f.id
       WHERE t.car_id = 1
       ORDER BY t.tank_date 
       ${order != null ? order : ''}`,
@@ -265,7 +265,7 @@ export class TankingModel {
         tank_date: row.tank_date,
         created_at: row.created_at,
         updated_at: row.updated_at,
-        station: {
+        station: row.station_id != null ? {
           id: row.station_id,
           name: row.station_name,
           address: row.station_address,
@@ -273,20 +273,22 @@ export class TankingModel {
           provider: row.station_provider,
           created_at: row.station_created_at,
           updated_at: row.station_updated_at
-        },
-        fuel: {
+        } : null,
+
+        fuel: row.fuel_id != null ? {
           id: row.fuel_id,
           name: row.fuel_name,
           code: row.fuel_code,
           trademark: row.fuel_trademark,
           unit: row.fuel_unit
-        },
-        station_fuel: {
+        } : null,
+
+        station_fuel: row.station_fuel_id != null ? {
           id: row.station_fuel_id,
           id_station: row.id_station,
           id_fuel: row.id_fuel,
           last_price_per_unit: row.last_price_per_unit
-        }
+        } : null
       });
     })
 

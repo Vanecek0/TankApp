@@ -26,7 +26,9 @@ export class StationFuelModel {
 
     static async all(): Promise<StationFuel[]> {
         const db = await Database.getConnection();
-        const rows = await db.getAllAsync<StationFuel>('SELECT sf.* FROM station_fuel sf INNER JOIN station s ON sf.station_id = s.id INNER JOIN fuel f ON sf.fuel_id = f.id');
+        const rows = await db.getAllAsync<StationFuel>(
+            'SELECT sf.* FROM station_fuel sf INNER JOIN station s ON sf.id_station = s.id INNER JOIN fuel f ON sf.id_fuel = f.id'
+        );
         return rows;
     }
 
@@ -44,7 +46,35 @@ export class StationFuelModel {
             .catch((err) => console.log(err));
     }
 
+    static async exists(id_station: number, id_fuel: number): Promise<boolean> {
+        const db = await Database.getConnection();
+        const rows = await db.getAllAsync(
+            'SELECT 1 FROM station_fuel WHERE id_station = ? AND id_fuel = ? LIMIT 1',
+            [id_station, id_fuel]
+        );
+        return rows.length > 0;
+    }
+
     static async delete(id: number) {
         await Database.executeSql('DELETE FROM station_fuel WHERE id = ?', [id]);
+    }
+
+    static async deleteByFuel(id_fuel: number) {
+        await Database.executeSql('DELETE FROM station_fuel WHERE id_fuel = ?', [id_fuel]);
+    }
+
+    static async deleteByStation(id_station: number) {
+        await Database.executeSql('DELETE FROM station_fuel WHERE id_station = ?', [id_station]);
+    }
+
+    static async deleteByFuelAndStation(id_station: number, id_fuel: number) {
+        await Database.executeSql('DELETE FROM station_fuel WHERE id_station = ? AND id_fuel = ?', [id_station, id_fuel]);
+    }
+
+    static async deleteByStationAndFuel(id_station: number, id_fuel: number) {
+        await Database.executeSql(
+            'DELETE FROM station_fuel WHERE id_station = ? AND id_fuel = ?',
+            [id_station, id_fuel]
+        );
     }
 }

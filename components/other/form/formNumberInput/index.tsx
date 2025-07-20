@@ -22,7 +22,20 @@ export default function FormNumberInput({ name, control, placeholder, defaultVal
     };
 
     return (
-        <TextInput keyboardType="decimal-pad" placeholder={placeholder} placeholderTextColor={isDark ? Colors.dark.secondary_lighter : Colors.light.text} style={{ ...spacing.borderRadius(12), ...spacing.borderWidth(0.5), ...spacing.px(12), ...spacing.py(12), borderColor: isDark ? Colors.dark.secondary_lighter : Colors.light.secondary, backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.secondary, color: isDark ? Colors.dark.text : Colors.light.text }} value={field.value}
+        <TextInput
+            keyboardType="decimal-pad"
+            placeholder={placeholder}
+            placeholderTextColor={isDark ? Colors.dark.secondary_lighter : Colors.light.text}
+            style={{
+                ...spacing.borderRadius(12),
+                ...spacing.borderWidth(1),
+                ...spacing.px(12),
+                ...spacing.py(12),
+                borderColor: isDark ? Colors.dark.secondary_lighter : Colors.hidden_text,
+                backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.secondary,
+                color: isDark ? Colors.white : Colors.dark.secondary
+            }}
+            value={field.value}
             onBlur={() => {
                 field.onBlur();
                 if (onBlur) onBlur();

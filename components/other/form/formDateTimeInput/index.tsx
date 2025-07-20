@@ -1,9 +1,9 @@
 import { View, Text, Pressable } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import { useState } from 'react';
 import { useController } from 'react-hook-form';
 import { useTheme } from '@/theme/ThemeProvider';
 import { Colors } from '@/constants/Colors';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 export default function FormDateTimeInput({ name, control, defaultValue }: any) {
     const { field } = useController({ name, control, defaultValue });
@@ -26,30 +26,32 @@ export default function FormDateTimeInput({ name, control, defaultValue }: any) 
                     padding: 12,
                     borderWidth: 1,
                     borderRadius: 12,
-                    borderColor: isDark ? Colors.dark.secondary_lighter : Colors.light.secondary,
+                    borderColor: isDark ? Colors.dark.secondary_lighter : Colors.hidden_text,
                     backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.secondary,
                 }}
             >
-                <Text style={{ color: isDark ? Colors.white : Colors.dark.text }}>
+                <Text style={{
+                    color: isDark ? Colors.white : Colors.dark.secondary
+                }}>
                     {field.value ? formatTime(new Date(field.value)) : 'Vyber čas'}
                 </Text>
             </Pressable>
 
             {show && (
-                <DateTimePicker
+                <DateTimePickerModal
                     mode="time"
                     focusable
-                    design='material'
-                    themeVariant={isDark ? 'dark' : 'light'}
-                    value={initialDate}
+                    isDarkModeEnabled={isDark}
                     is24Hour={true}
+                    isVisible={show}
                     display="default"
-                    onChange={(_, selectedDate) => {
+                    onConfirm={(selectedDate) => {
                         setShow(false);
                         if (selectedDate) {
                             field.onChange(selectedDate.toISOString());
                         }
                     }}
+                    onCancel={() => setShow(false)}
                 />
             )}
         </View>

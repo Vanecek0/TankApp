@@ -36,8 +36,8 @@ export async function createTables(db: SQLite.SQLiteDatabase) {
         "id_station"	INTEGER NOT NULL,
         "id_fuel"	INTEGER NOT NULL,
         "last_price_per_unit" NUMERIC,
-        FOREIGN KEY("id_fuel") REFERENCES "fuel"("id") ON DELETE CASCADE,
-        FOREIGN KEY("id_station") REFERENCES "station"("id") ON DELETE CASCADE
+        FOREIGN KEY("id_fuel") REFERENCES "fuel"("id") ON DELETE SET NULL,
+        FOREIGN KEY("id_station") REFERENCES "station"("id") ON DELETE SET NULL
       );
     `)
 
@@ -95,8 +95,8 @@ export async function createTables(db: SQLite.SQLiteDatabase) {
         "tank_date" NUMERIC,
         "created_at"	NUMERIC,
         "updated_at"	NUMERIC,
-        FOREIGN KEY("car_id") REFERENCES "car"("id"),
-        FOREIGN KEY("station_fuel_id") REFERENCES "station_fuel"("id")
+        FOREIGN KEY("car_id") REFERENCES "car"("id") ON DELETE SET NULL,
+        FOREIGN KEY("station_fuel_id") REFERENCES "station_fuel"("id") ON DELETE SET NULL
       );
     `)
 
@@ -114,7 +114,7 @@ export async function createTables(db: SQLite.SQLiteDatabase) {
         "id_badge"	INTEGER NOT NULL,
         "id_tanking"	INTEGER NOT NULL,
         FOREIGN KEY("id_badge") REFERENCES "badge"("id") ON DELETE CASCADE,
-        FOREIGN KEY("id_tanking") REFERENCES "tanking"("id") ON DELETE CASCADE
+        FOREIGN KEY("id_tanking") REFERENCES "tanking"("id") ON DELETE SET NULL
       );
     `)
 
