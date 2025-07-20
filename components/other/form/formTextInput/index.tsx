@@ -14,6 +14,19 @@ export default function FormTextInput({ name, control, placeholder, defaultValue
     })
 
     return (
-        <TextInput placeholder={placeholder} placeholderTextColor={isDark ? Colors.dark.secondary_lighter : Colors.light.text} style={{ ...spacing.borderRadius(12), ...spacing.borderWidth(0.5), ...spacing.px(12), ...spacing.py(12), borderColor: isDark ? Colors.dark.secondary_lighter : Colors.light.secondary, backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.secondary, color: isDark ? Colors.dark.text : Colors.light.text }} value={field.value !== undefined ? field.value : defaultValue} onChangeText={field.onChange} />
+        <TextInput
+            placeholder={placeholder}
+            placeholderTextColor={isDark ? Colors.dark.secondary_lighter : Colors.light.text}
+            style={{
+                ...spacing.borderRadius(12),
+                ...spacing.borderWidth(1),
+                ...spacing.px(12),
+                ...spacing.py(12),
+                borderColor: isDark ? Colors.dark.secondary_lighter : Colors.hidden_text,
+                backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.secondary,
+                color: isDark ? Colors.white : Colors.dark.secondary
+            }}
+            value={field.value !== undefined ? field.value : defaultValue}
+            onChangeText={field.onChange} />
     )
 }

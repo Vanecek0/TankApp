@@ -4,7 +4,7 @@ import ScaledText from '@/components/other/scaledText';
 import Icon from '@/components/ui/Icon';
 import Badge from '@/components/ui/badge';
 import { Station, StationModel } from '@/models/Station';
-import { Fuel } from '@/models/Fuel';
+import { Fuel, FuelModel } from '@/models/Fuel';
 import { Colors } from '@/constants/Colors';
 import { useModal } from '@/providers/modalProvider';
 import { useTheme } from '@/theme/ThemeProvider';
@@ -16,6 +16,9 @@ import FormTextInput from '@/components/other/form/formTextInput';
 import FormTimeInput from '@/components/other/form/formTextInput';
 import FormDateTimeInput from '@/components/other/form/formDateTimeInput';
 import FormTextAreaInput from '@/components/other/form/formTextAreaInput';
+import FormCheckboxItem from '@/components/other/form/formCheckBoxItem';
+import Dropdown from '@/components/other/dropdown';
+import { StationFuelModel } from '@/models/StationFuel';
 
 type StationWithFuels = Station & {
     fuels: (Fuel & { last_price_per_unit: number | null })[];
@@ -108,9 +111,7 @@ const StationItem = React.memo(({ item, isDark, onPress }: { item: StationWithFu
 export default function StationsModal() {
     const { hideModal, showModal } = useModal();
     const { isDark } = useTheme();
-
     const [stations, setStations] = useState<StationWithFuels[]>([]);
-    const [selectedStation, setSelectedStation] = useState<StationWithFuels | null>(null);
 
     useEffect(() => {
         (async () => {
@@ -195,12 +196,59 @@ export function AddStationRecordModal({ station }: { station: StationWithFuels }
     const { hideModal, showModal } = useModal();
     const { isDark } = useTheme();
     const { control, handleSubmit, setValue, getValues, formState: { errors } } = useForm();
+    const [fuels, setFuels] = useState<Fuel[]>([]);
+    const [selectedFuels, setSelectedFuels] = useState<number[]>([]);
 
+    const loadAllFuels = async () => {
+        const allFuels = await FuelModel.all();
+        setFuels(allFuels);
+        setSelectedFuels(station.fuels.map(fuel => fuel.id!));
+    };
+
+    useEffect(() => {
+        loadAllFuels();
+    }, []);
 
     const onFormSubmit = async (data: any) => {
         try {
-            const myModel = DTO<Station, typeof data>(data);
-            const result = await StationModel.create(myModel);
+            const result = await StationModel.updateStation(station.id!, {
+                name: data.name,
+                address: data.address,
+                phone: data.phone,
+                opening_hrs: data.opening,
+                closing_hrs: data.closing,
+                note: data.note,
+            });
+
+            const existingFuels = await StationFuelModel.all();
+
+            const existingFuelIds = existingFuels.map(sf => sf.id_fuel);
+
+            for (const fuelId of existingFuelIds) {
+                if (!selectedFuels.includes(fuelId)) {
+                    await StationFuelModel.deleteByFuelAndStation(station.id!, fuelId);
+                    console.log(station.id)
+                }
+            }
+
+            for (const fuelId of selectedFuels) {
+                if (!existingFuelIds.includes(fuelId)) {
+                    await StationFuelModel.create({
+                        id_station: station.id!,
+                        id_fuel: fuelId,
+                        last_price_per_unit: 0,
+                    });
+                }
+            }
+
+            /*for (const fuelId of selectedFuels) {
+                await StationFuelModel.create({
+                    id_station: station.id!,
+                    id_fuel: fuelId,
+                    last_price_per_unit: 0,
+                });
+            }*/
+
             console.log('Záznam úspěšně uložen:', result);
             return result;
         } catch (error) {
@@ -250,7 +298,7 @@ export function AddStationRecordModal({ station }: { station: StationWithFuels }
             </View>
 
             <ScrollView style={{ ...spacing.p(24) }} className="">
-                <View style={{...spacing.gap(12), ...spacing.pb(52)}}>
+                <View style={{ ...spacing.gap(12), ...spacing.pb(52) }}>
                     <View>
                         <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
                             <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Název stanice</ScaledText>
@@ -292,18 +340,61 @@ export function AddStationRecordModal({ station }: { station: StationWithFuels }
 
                     <View>
                         <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
+                            <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Typy paliv</ScaledText>
+                        </View>
+
+                        <View className="flex-row flex-wrap" style={{ ...spacing.gap(8) }}>
+                            {
+                                fuels.map((fuel, index) => (
+                                    <FormCheckboxItem
+                                        name="fuels"
+                                        key={index}
+                                        control={control}
+                                        value={fuel.id!}
+                                        onChange={(checked: boolean) => {
+                                            setSelectedFuels((prev) =>
+                                                checked
+                                                    ? [...prev, fuel.id!]
+                                                    : prev.filter((id) => id !== fuel.id!)
+                                            );
+                                        }}
+                                        render={() => (
+                                            <Badge
+                                                value={fuel.trademark}
+                                                className="uppercase"
+                                                style={{
+                                                    ...spacing.borderRadius(12),
+                                                    ...spacing.borderWidth(0.5),
+                                                    borderColor: selectedFuels.includes(fuel.id!) ? Colors.primary : Colors.hidden_text,
+                                                }}
+                                                badgeColor={selectedFuels.includes(fuel.id!) ? Colors.primary : Colors.transparent}
+                                                isCheckable
+                                                isChecked={selectedFuels.includes(fuel.id!)}
+                                                isThemed
+                                            />
+                                        )}
+                                    />
+                                ))
+                            }
+                        </View>
+
+
+                    </View>
+
+                    <View>
+                        <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
                             <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Poznámka</ScaledText>
                         </View>
 
-                        <FormTextAreaInput name="provider" defaultValue={station.note} control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></FormTextAreaInput>
+                        <FormTextAreaInput name="note" defaultValue={station.note} control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></FormTextAreaInput>
                     </View>
                 </View>
             </ScrollView>
 
 
             <View style={{ ...spacing.p(20), ...spacing.gap(8), ...spacing.borderBottomRadius(12), backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.background }} className='flex-row justify-between'>
-                <CustomButton className='flex-1' onPress={() => showModal(StationsModal)} label="Zpět" labelSize='base' labelClassName='text-center' labelColor={isDark ? Colors.white : ''} style={{ ...spacing.p(12), ...spacing.borderWidth(0.5), borderColor: isDark ? Colors.dark.secondary_lighter : Colors.light.secondary, ...spacing.borderRadius(12) }} backgroundColor={isDark ? Colors.dark.secondary_light : Colors.light.secondary} />
-                <CustomButton className='flex-1' onPress={handleSubmit((data) => { onFormSubmit(data); hideModal() })} label="Uložit změny" labelSize='base' labelClassName='text-center' labelColor={isDark ? Colors.white : ''} style={{ ...spacing.p(12), ...spacing.borderRadius(12) }} backgroundColor={Colors.primary} />
+                <CustomButton className='flex-1' onPress={() => showModal(StationsModal)} label="Zpět" labelSize='base' labelClassName='text-center' labelColor={isDark ? Colors.white : ''} style={{ ...spacing.p(12), ...spacing.borderWidth(1), borderColor: isDark ? Colors.dark.secondary_lighter : Colors.hidden_text, ...spacing.borderRadius(12) }} backgroundColor={isDark ? Colors.dark.secondary_light : Colors.light.secondary} />
+                <CustomButton className='flex-1' onPress={handleSubmit((data) => { onFormSubmit(data); hideModal(); showModal(StationsModal) })} label="Uložit změny" labelSize='base' labelClassName='text-center' labelColor={Colors.white} style={{ ...spacing.p(12), ...spacing.borderRadius(12), ...spacing.borderWidth(1), borderColor: Colors.primary }} backgroundColor={Colors.primary} />
             </View>
         </View>
     );

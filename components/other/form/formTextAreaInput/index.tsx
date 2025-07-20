@@ -21,14 +21,14 @@ export default function FormTextArea({ name, control, placeholder, defaultValue,
             placeholderTextColor={isDark ? Colors.dark.secondary_lighter : Colors.light.text}
             style={{
                 ...spacing.borderRadius(12),
-                ...spacing.borderWidth(0.5),
+                ...spacing.borderWidth(1),
                 ...spacing.px(12),
                 ...spacing.py(12),
                 height,
                 textAlignVertical: 'top',
-                borderColor: isDark ? Colors.dark.secondary_lighter : Colors.light.secondary,
+                borderColor: isDark ? Colors.dark.secondary_lighter : Colors.hidden_text,
                 backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.secondary,
-                color: isDark ? Colors.dark.text : Colors.light.text,
+                color: isDark ? Colors.white : Colors.dark.secondary,
             }}
             value={field.value !== undefined ? field.value : defaultValue}
             onChangeText={field.onChange}

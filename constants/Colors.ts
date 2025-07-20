@@ -3,6 +3,7 @@ export const Colors = {
     white: "#fff",
     inactive_icon: "#999",
     hidden_text: "#aaa",
+    transparent: "#FFFFFF00",
   
     dark: {
       background: "#0D0D0D",
