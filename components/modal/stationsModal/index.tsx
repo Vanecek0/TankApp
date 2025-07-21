@@ -19,6 +19,7 @@ import FormTextAreaInput from '@/components/other/form/formTextAreaInput';
 import FormCheckboxItem from '@/components/other/form/formCheckBoxItem';
 import Dropdown from '@/components/other/dropdown';
 import { StationFuelModel } from '@/models/StationFuel';
+import { TankingModel } from '@/models/Tanking';
 
 type StationWithFuels = Station & {
     fuels: (Fuel & { last_price_per_unit: number | null })[];
