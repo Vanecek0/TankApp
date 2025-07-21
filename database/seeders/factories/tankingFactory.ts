@@ -37,6 +37,7 @@ export async function getTankingSeeds() {
             created_at: 1609545600000,
             updated_at: 1609545600000,
         }),
+
         createTankingSeed({
             car_id: 1,
             station_fuel_id: 2,
@@ -49,6 +50,6 @@ export async function getTankingSeeds() {
             snapshot: undefined,
             created_at: 1609804800000,
             updated_at: 1609804800000,
-        }),
+        })
     ];
 }

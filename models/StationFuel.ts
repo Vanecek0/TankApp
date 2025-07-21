@@ -1,4 +1,6 @@
 import { Database } from "@/database/database";
+import { Station } from "./Station";
+import { Fuel } from "./Fuel";
 
 export type StationFuel = {
     id?: number;
@@ -53,6 +55,40 @@ export class StationFuelModel {
             [id_station, id_fuel]
         );
         return rows.length > 0;
+    }
+
+    static async getStationWithFuelsById(stationFuelId: number) {
+        const db = await Database.getConnection();
+
+        const stationFuel = await db.getFirstAsync<StationFuel>(
+            `SELECT * FROM station_fuel WHERE id = ?`,
+            [stationFuelId]
+        );
+
+        if (!stationFuel) {
+            throw new Error(`Záznam station_fuel s ID ${stationFuelId} nebyl nalezen.`);
+        }
+
+        const station = await db.getFirstAsync<Station>(
+            `SELECT * FROM station WHERE id = ?`,
+            [stationFuel.id_station]
+        );
+
+        if (!station) {
+            throw new Error(`Stanice s ID ${stationFuel.id_station} nebyla nalezena.`);
+        }
+
+        const fuels = await db.getAllAsync<Fuel>(
+            `SELECT fuel.* FROM fuel
+     INNER JOIN station_fuel ON fuel.id = station_fuel.id_fuel
+     WHERE station_fuel.id_station = ?`,
+            [stationFuel.id_station]
+        );
+
+        return {
+            station,
+            fuels
+        };
     }
 
     static async delete(id: number) {

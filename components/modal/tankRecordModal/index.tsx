@@ -25,16 +25,6 @@ export default function AddTankRecordModal({ onSubmit }: any) {
   const amount = useWatch({ control, name: 'amount' });
   const pricePerLtr = useWatch({ control, name: 'price_per_litre' });
 
-  /*useEffect(() => {
-    const p = parseFloat(price);
-    const ppl = parseFloat(pricePerLtr);
-
-    if (!isNaN(p) && !isNaN(ppl) && ppl !== 0 && amount === '') {
-      setValue('amount', (p / ppl).toString());
-    }
-  }, [price, pricePerLtr, amount, setValue]);*/
-
-
   useEffect(() => {
     const ppl = parseFloat(pricePerLtr);
     const p = parseFloat(price);
@@ -45,12 +35,11 @@ export default function AddTankRecordModal({ onSubmit }: any) {
     }
   }, [pricePerLtr, price, setValue]);
 
-
   const onFormSubmit = async (data: any) => {
     try {
       const myModel = DTO<Tanking, typeof data>(data);
       const result = await TankingModel.create(myModel);
-      await TankingModel.updateSnapshot(myModel);
+      await TankingModel.updateSnapshot(1);
       console.log('Záznam úspěšně uložen:', result);
       await initTankings();
       return result;
@@ -59,7 +48,6 @@ export default function AddTankRecordModal({ onSubmit }: any) {
       throw error;
     }
   };
-
 
   return (
     <ScrollView style={{ ...spacing.borderBottomRadius(12) }}>

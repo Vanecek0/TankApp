@@ -41,7 +41,7 @@ export const DatabaseProvider = ({ children }: { children: React.ReactNode }) =>
     setIsLoading(false);
   }
 
-  const initTankings = async (order?:string) => {
+  const initTankings = async (order?: string) => {
     setIsLoading(true);
     const db = await Database.getConnection();
     if (db) {
