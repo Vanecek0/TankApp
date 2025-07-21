@@ -1,7 +1,7 @@
 import { Database } from "@/database/database";
 import { Station } from "./Station";
 import { Fuel } from "./Fuel";
-import { StationFuel } from "./StationFuel";
+import { StationFuel, StationFuelModel } from "./StationFuel";
 import { Badge, BadgeModel } from "./Badge";
 
 export type Tanking = {
@@ -40,6 +40,22 @@ export class TankingModel {
     const db = await Database.getConnection();
     const rows = await db.getAllAsync<Tanking>('SELECT * FROM tanking');
     return rows;
+  }
+
+  static async allFromSnapshot(): Promise<Tanking[]> {
+    const db = await Database.getConnection();
+    const rows = await db.getAllAsync<{ snapshot: string }>('SELECT snapshot FROM tanking WHERE snapshot IS NOT NULL');
+
+    return rows
+      .map(row => {
+        try {
+          return JSON.parse(row.snapshot) as Tanking;
+        } catch (e) {
+          console.warn('Chyba při parsování snapshotu:', e);
+          return null;
+        }
+      })
+      .filter((item): item is Tanking => item !== null);
   }
 
   static async count(): Promise<any> {
@@ -84,38 +100,67 @@ export class TankingModel {
   }
 
   static async getPriceMileageSumByDate(fromDate?: Date, toDate?: Date, limit?: number): Promise<{ month: string; total_price: number; total_mileage: number }[]> {
-    const db = await Database.getConnection()
+    const db = await Database.getConnection();
 
     const from = fromDate?.getTime() ?? 0;
     const to = toDate?.getTime() ?? Date.now();
 
     try {
-      const result = await db.getAllAsync<{
-        month: string
-        total_price: number
-        total_mileage: number
+      const rows = await db.getAllAsync<{
+        tank_date: number;
+        snapshot: string;
       }>(`
-        SELECT 
-          strftime('%Y-%m', tank_date / 1000, 'unixepoch') AS month,
-          SUM(price) AS total_price,
-          SUM(mileage) AS total_mileage
-        FROM tanking
-        WHERE car_id = 1
-        AND tank_date >= ?
-        AND tank_date < ?
-        GROUP BY month
-        ORDER BY month DESC
-        ${limit ? `LIMIT ?` : ''}
-          `, [from, to, limit!]);
+      SELECT tank_date, snapshot
+      FROM tanking
+      WHERE car_id = 1
+      AND tank_date >= ?
+      AND tank_date < ?
+      ORDER BY tank_date DESC
+    `, [from, to]);
 
-      return result
+      const monthlyMap = new Map<string, { total_price: number; total_mileage: number }>();
+
+      for (const row of rows) {
+        if (!row.snapshot) continue;
+
+        let snapshot: any;
+        try {
+          snapshot = JSON.parse(row.snapshot);
+        } catch (e) {
+          console.warn('Invalid snapshot JSON:', row.snapshot);
+          continue;
+        }
+
+        const month = new Date(row.tank_date).toISOString().slice(0, 7); // 'YYYY-MM'
+
+        if (!monthlyMap.has(month)) {
+          monthlyMap.set(month, { total_price: 0, total_mileage: 0 });
+        }
+
+        const monthData = monthlyMap.get(month)!;
+        monthData.total_price += snapshot.price ?? 0;
+        monthData.total_mileage += snapshot.mileage ?? 0;
+      }
+
+
+      const result = Array.from(monthlyMap.entries())
+        .sort((a, b) => b[0].localeCompare(a[0])) // Descending by month
+        .slice(0, limit)
+        .map(([month, data]) => ({
+          month,
+          total_price: data.total_price,
+          total_mileage: data.total_mileage
+        }));
+
+      return result;
     } catch (error) {
-      console.error("Failed to get monthly price/mileage sums:", error)
-      throw error
+      console.error("Failed to get snapshot-based price/mileage sums:", error);
+      throw error;
     }
   }
 
-  static async getGroupedTankingsWithBadgesByMonth(): Promise<{
+
+  static async getGroupedTankingsByMonth(order: string = 'DESC'): Promise<{
     month: string,
     tankings: (Tanking & {
       station: Station,
@@ -126,174 +171,84 @@ export class TankingModel {
   }[]> {
     const db = await Database.getConnection();
 
-    const rows = await db.getAllAsync(
-      `SELECT 
-        t.*,
-        strftime('%Y-%m', datetime(t.tank_date / 1000, 'unixepoch')) AS tank_month,
-        s.id AS station_id,
-        s.name AS station_name,
-        s.address AS station_address,
-        s.last_visit AS station_last_visit,
-        s.provider AS station_provider,
-        s.created_at AS station_created_at,
-        s.updated_at AS station_updated_at,
-        f.id AS fuel_id,
-        f.name AS fuel_name,
-        f.code AS fuel_code,
-        f.trademark AS fuel_trademark,
-        f.unit AS fuel_unit,
-        sf.id_station,
-        sf.id_fuel,
-        sf.last_price_per_unit AS last_price_per_unit
-      FROM tanking t
-      INNER JOIN station_fuel sf ON t.station_fuel_id = sf.id
-      INNER JOIN station s ON sf.id_station = s.id
-      INNER JOIN fuel f ON sf.id_fuel = f.id
-      WHERE t.car_id = 1
-      ORDER BY t.tank_date DESC
-      `
-    );
-    const tankingIds = rows.map((row: any) => row.id);
+    // 1) Načteme základní tanking záznamy
+    const rows = await db.getAllAsync<{
+      id: number;
+      snapshot: string;
+      tank_date: number;
+      tank_month: string;
+    }>(`
+    SELECT 
+      id, snapshot, tank_date,
+      strftime('%Y-%m', datetime(tank_date / 1000, 'unixepoch')) AS tank_month
+    FROM tanking
+    WHERE car_id = 1
+    ORDER BY tank_date ${order}
+  `);
 
+    // 2) Získáme všechny ID pro načtení badges
+    const tankingIds = rows.map(r => r.id);
     let badgesData: { [key: number]: Badge[] } = {};
     if (tankingIds.length > 0) {
       badgesData = await BadgeModel.getBadgesByTanking(tankingIds);
     }
 
-    const grouped = new Map<string, any[]>();
+    // 3) Seskupíme tankingy podle měsíce
+    const grouped = new Map<string, (Tanking & {
+      station: Station,
+      fuel: Fuel,
+      station_fuel: StationFuel,
+      badges: Badge[]
+    })[]>();
 
-    rows.map((row: any) => {
-      const month = row.tank_month;
-      if (!grouped.has(month)) {
-        grouped.set(month, []);
+    for (const row of rows) {
+      if (!row.snapshot) continue;
+
+      let parsed: any;
+      try {
+        parsed = JSON.parse(row.snapshot);
+      } catch {
+        continue;
       }
 
-      grouped.get(month)!.push({
-        id: row.id,
-        car_id: row.car_id,
-        station_fuel_id: row.station_fuel_id,
-        price_per_unit: row.price_per_unit,
-        price: row.price,
-        amount: row.amount,
-        mileage: row.mileage,
-        tachometer: row.tachometer,
-        tank_date: row.tank_date,
+      if (!parsed.station || !parsed.fuels || !Array.isArray(parsed.fuels)) continue;
+
+      // Vybereme správné palivo podle station_fuel_id
+      const selectedFuel = parsed.fuels.find((f: Fuel) => f.id === parsed.station_fuel_id);
+
+      const tanking: Tanking & {
+        station: Station;
+        fuel: Fuel;
+        station_fuel: StationFuel;
+        badges: Badge[];
+      } = {
+        id: parsed.id,
+        car_id: parsed.car_id,
+        station_fuel_id: parsed.station_fuel_id,
+        price_per_unit: parsed.price_per_unit,
+        price: parsed.price,
+        amount: parsed.amount,
+        mileage: parsed.mileage,
+        tachometer: parsed.tachometer,
+        tank_date: parsed.tank_date,
+        created_at: parsed.created_at,
+        updated_at: parsed.updated_at,
         snapshot: row.snapshot,
-        created_at: row.created_at,
-        updated_at: row.updated_at,
-        station: {
-          id: row.station_id,
-          name: row.station_name,
-          address: row.station_address,
-          last_visit: row.station_last_visit,
-          provider: row.station_provider,
-          created_at: row.station_created_at,
-          updated_at: row.station_updated_at
-        },
-        fuel: {
-          id: row.fuel_id,
-          name: row.fuel_name,
-          code: row.fuel_code,
-          trademark: row.fuel_trademark,
-          unit: row.fuel_unit
-        },
+        station: parsed.station,
+        fuel: selectedFuel,
         station_fuel: {
-          id: row.station_fuel_id,
-          id_station: row.id_station,
-          id_fuel: row.id_fuel,
-          last_price_per_unit: row.last_price_per_unit
+          id: parsed.station_fuel_id,
+          id_station: parsed.station?.id,
+          id_fuel: selectedFuel?.id,
+          last_price_per_unit: parsed.price_per_unit,
         },
         badges: badgesData[row.id] || []
-      });
-    })
+      };
 
-    return Array.from(grouped.entries()).map(([month, tankings]) => ({
-      month,
-      tankings
-    }));
-  }
-
-  static async getGroupedTankingsByMonth(order?: string): Promise<{
-    month: string,
-    tankings: (Tanking & { station: Station, fuel: Fuel, station_fuel: StationFuel })[]
-  }[]> {
-    const db = await Database.getConnection();
-    const rows = await db.getAllAsync(
-      `SELECT 
-        t.*,
-        strftime('%Y-%m', datetime(t.tank_date / 1000, 'unixepoch')) AS tank_month,
-        s.id AS station_id,
-        s.name AS station_name,
-        s.address AS station_address,
-        s.last_visit AS station_last_visit,
-        s.provider AS station_provider,
-        s.created_at AS station_created_at,
-        s.updated_at AS station_updated_at,
-        f.id AS fuel_id,
-        f.name AS fuel_name,
-        f.code AS fuel_code,
-        f.trademark AS fuel_trademark,
-        f.unit AS fuel_unit,
-        sf.id_station,
-        sf.id_fuel,
-        sf.last_price_per_unit AS last_price_per_unit
-      FROM tanking t
-      LEFT JOIN station_fuel sf ON t.station_fuel_id = sf.id
-      LEFT JOIN station s ON sf.id_station = s.id
-      LEFT JOIN fuel f ON sf.id_fuel = f.id
-      WHERE t.car_id = 1
-      ORDER BY t.tank_date 
-      ${order != null ? order : ''}`,
-      [order!],
-    );
-
-    const grouped = new Map<string, any[]>();
-
-    rows.map((row: any) => {
       const month = row.tank_month;
-      if (!grouped.has(month)) {
-        grouped.set(month, []);
-      }
-
-      grouped.get(month)!.push({
-        id: row.id,
-        car_id: row.car_id,
-        station_fuel_id: row.station_fuel_id,
-        price_per_unit: row.price_per_unit,
-        price: row.price,
-        amount: row.amount,
-        mileage: row.mileage,
-        tachometer: row.tachometer,
-        tank_date: row.tank_date,
-        snapshot: row.snapshot,
-        created_at: row.created_at,
-        updated_at: row.updated_at,
-        station: row.station_id != null ? {
-          id: row.station_id,
-          name: row.station_name,
-          address: row.station_address,
-          last_visit: row.station_last_visit,
-          provider: row.station_provider,
-          created_at: row.station_created_at,
-          updated_at: row.station_updated_at
-        } : null,
-
-        fuel: row.fuel_id != null ? {
-          id: row.fuel_id,
-          name: row.fuel_name,
-          code: row.fuel_code,
-          trademark: row.fuel_trademark,
-          unit: row.fuel_unit
-        } : null,
-
-        station_fuel: row.station_fuel_id != null ? {
-          id: row.station_fuel_id,
-          id_station: row.id_station,
-          id_fuel: row.id_fuel,
-          last_price_per_unit: row.last_price_per_unit
-        } : null
-      });
-    })
+      if (!grouped.has(month)) grouped.set(month, []);
+      grouped.get(month)!.push(tanking);
+    }
 
     return Array.from(grouped.entries()).map(([month, tankings]) => ({
       month,
@@ -429,10 +384,34 @@ export class TankingModel {
     }))
   }
 
-  static async updateSnapshot(tanking: Tanking) {
+
+  static async updateSnapshot(id: number) {
     const db = await Database.getConnection();
-    await db.runAsync('UPDATE tanking SET snapshot=? WHERE id = ?', [JSON.stringify(tanking), 2]);
+
+    const tanking = await this.findById(id);
+    if (!tanking) {
+      throw new Error(`Tanking záznam s ID ${id} nebyl nalezen.`);
+    }
+
+    const stationFuel = await StationFuelModel.getStationWithFuelsById(tanking.station_fuel_id);
+
+    if (!stationFuel) {
+      throw new Error(`StationFuel s ID ${tanking.station_fuel_id} nebyl nalezen.`);
+    }
+
+    const { snapshot, ...tankingWithoutSnapshot } = tanking;
+
+    const snapshotObject = {
+      ...tankingWithoutSnapshot,
+      station: stationFuel.station,
+      fuels: stationFuel.fuels
+    };
+
+    const snapshotJson = JSON.stringify(snapshotObject);
+
+    await db.runAsync('UPDATE tanking SET snapshot = ? WHERE id = ?', [snapshotJson, id]);
   }
+
 
   static async findById(id: number): Promise<Tanking | null> {
     const db = await Database.getConnection();

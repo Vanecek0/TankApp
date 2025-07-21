@@ -36,7 +36,7 @@ export default function TankScreen() {
   const loadTankings = useCallback(async () => {
     setIsLoading(true);
     try {
-      const tankingsBadges = await TankingModel.getGroupedTankingsWithBadgesByMonth();
+      const tankingsBadges = await TankingModel.getGroupedTankingsByMonth();
       setTanking(tankingsBadges);
     } catch (error) {
       console.error('Chyba při načítání tankings:', error);
