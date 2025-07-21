@@ -93,6 +93,7 @@ export async function createTables(db: SQLite.SQLiteDatabase) {
         "mileage"	NUMERIC,
         "tachometer" NUMERIC,
         "tank_date" NUMERIC,
+        "snapshot" TEXT,
         "created_at"	NUMERIC,
         "updated_at"	NUMERIC,
         FOREIGN KEY("car_id") REFERENCES "car"("id") ON DELETE SET NULL,

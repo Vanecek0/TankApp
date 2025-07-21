@@ -14,6 +14,7 @@ export type Tanking = {
   mileage: number;
   tachometer: number;
   tank_date: number;
+  snapshot?: string;
   created_at: number;
   updated_at: number;
 };
@@ -23,8 +24,8 @@ export class TankingModel {
   static async create(tanking: Tanking) {
     try {
       const result = await Database.executeSql(
-        'INSERT INTO tanking (car_id, station_fuel_id, price_per_unit, price, amount, mileage, tachometer, tank_date, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-        [tanking.car_id, tanking.station_fuel_id, tanking.price_per_unit, tanking.price, tanking.amount, tanking.mileage, tanking.tachometer, tanking.tank_date, tanking.created_at, tanking.updated_at]
+        'INSERT INTO tanking (car_id, station_fuel_id, price_per_unit, price, amount, mileage, tachometer, tank_date, snapshot, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        [tanking.car_id, tanking.station_fuel_id, tanking.price_per_unit, tanking.price, tanking.amount, tanking.mileage, tanking.tachometer, tanking.tank_date, null, tanking.created_at, tanking.updated_at]
       );
 
       return result;
@@ -177,6 +178,7 @@ export class TankingModel {
         mileage: row.mileage,
         tachometer: row.tachometer,
         tank_date: row.tank_date,
+        snapshot: row.snapshot,
         created_at: row.created_at,
         updated_at: row.updated_at,
         station: {
@@ -263,6 +265,7 @@ export class TankingModel {
         mileage: row.mileage,
         tachometer: row.tachometer,
         tank_date: row.tank_date,
+        snapshot: row.snapshot,
         created_at: row.created_at,
         updated_at: row.updated_at,
         station: row.station_id != null ? {
@@ -340,6 +343,7 @@ export class TankingModel {
       mileage: row.mileage,
       tachometer: row.tachometer,
       tank_date: row.tank_date,
+      snapshot: row.snapshot,
       created_at: row.created_at,
       updated_at: row.updated_at,
       station: {
@@ -404,6 +408,7 @@ export class TankingModel {
       mileage: row.mileage,
       tachometer: row.tachometer,
       tank_date: row.tank_date,
+      snapshot: row.snapshot,
       created_at: row.created_at,
       updated_at: row.updated_at,
       station: {
@@ -422,6 +427,11 @@ export class TankingModel {
         updated_at: row.station_updated_at
       },
     }))
+  }
+
+  static async updateSnapshot(tanking: Tanking) {
+    const db = await Database.getConnection();
+    await db.runAsync('UPDATE tanking SET snapshot=? WHERE id = ?', [JSON.stringify(tanking), 2]);
   }
 
   static async findById(id: number): Promise<Tanking | null> {

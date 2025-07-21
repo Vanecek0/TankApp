@@ -29,6 +29,7 @@ export default function HomeScreen() {
   }
   const onRefresh = useCallback(async () => {
     await loadTankings(orderTankings);
+    console.log(tankings[0].tankings[0].snapshot);
   }, []);
 
   useEffect(() => {

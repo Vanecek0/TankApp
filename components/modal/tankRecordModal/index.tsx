@@ -50,6 +50,7 @@ export default function AddTankRecordModal({ onSubmit }: any) {
     try {
       const myModel = DTO<Tanking, typeof data>(data);
       const result = await TankingModel.create(myModel);
+      await TankingModel.updateSnapshot(myModel);
       console.log('Záznam úspěšně uložen:', result);
       await initTankings();
       return result;
