@@ -14,7 +14,8 @@ import Dropdown from '@/components/other/dropdown';
 import Icon from '@/components/ui/Icon';
 import FormNumberInput from '@/components/other/form/formNumberInput';
 import { Station, StationModel } from '@/models/Station';
-import { Fuel } from '@/models/Fuel';
+import { Fuel, FuelModel } from '@/models/Fuel';
+import { StationFuelModel } from '@/models/StationFuel';
 
 export default function AddTankRecordModal({ onSubmit }: any) {
   const { hideModal } = useModal();
@@ -22,20 +23,32 @@ export default function AddTankRecordModal({ onSubmit }: any) {
   const { initTankings } = useDatabase();
   const { control, handleSubmit, setValue, getValues, formState: { errors } } = useForm();
   const { touchedFields } = useFormState({ control });
-  const [stationsFuels, setStationsFuels] = useState<(Station & { fuels: (Fuel & { last_price_per_unit: number | null })[]})[]>([]);
+  const [stations, setStations] = useState<Station[]>([]);
+  const [selectedStation, setSelectedStation] = useState<Station>();
+
+  const [fuels, setFuels] = useState<Fuel[]>([]);
 
   const price = useWatch({ control, name: 'price' });
   const amount = useWatch({ control, name: 'amount' });
   const pricePerLtr = useWatch({ control, name: 'price_per_litre' });
 
   const loadAllStationsFuels = async () => {
-    const allStationsFuels = await StationModel.getAllStationsWithFuels();
-    setStationsFuels(allStationsFuels);
+    const allStations = await StationModel.all();
+    setStations(allStations);
   };
+
+  const loadSelectedStationFuels = async (stationID: number) => {
+    const selectedStationFuels = await StationFuelModel.getFuelsByStationId(stationID)
+    setFuels(selectedStationFuels);
+  }
 
   useEffect(() => {
     loadAllStationsFuels();
   }, []);
+
+  useEffect(() => {
+    loadSelectedStationFuels(selectedStation?.id ?? 0);
+  },[selectedStation])
 
   useEffect(() => {
     const ppl = parseFloat(pricePerLtr);
@@ -61,6 +74,61 @@ export default function AddTankRecordModal({ onSubmit }: any) {
     }
   };
 
+  type StationItemProps = {
+    item: Station;
+    isSelected: boolean;
+  };
+
+  const StationItem = ({ item, isSelected }: StationItemProps) => (
+    <View
+      style={{
+        ...spacing.borderRadius(6),
+        ...spacing.gap(8),
+        ...spacing.p(12),
+        ...spacing.px(17),
+        backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.background,
+      }}
+    >
+      <View className="flex-row justify-between" style={{ ...spacing.gap(32) }}>
+        <View className="flex-1" style={{ ...spacing.gap(4) }}>
+          <View className="flex-row items-center" style={{ ...spacing.gap(8) }}>
+            <ScaledText size="lg" className="flex-initial font-bold text-ellipsis overflow-visible" numberOfLines={1} ellipsizeMode="tail" isThemed>
+              {item.name}
+            </ScaledText>
+          </View>
+          {item.address && (
+            <View style={{ ...spacing.gap(4) }} className="flex-row items-center">
+              <Icon name="map_pin" color={Colors.hidden_text} size={getScaleFactor() * 15} />
+              <ScaledText numberOfLines={1} ellipsizeMode="tail" className="text-ellipsis overflow-visible" isThemed size="sm">
+                {item.address}
+              </ScaledText>
+            </View>
+          )}
+        </View>
+      </View>
+
+      {item.phone && (
+        <View style={{ ...spacing.gap(4) }} className="w-4/5 flex-row items-center">
+          <Icon name="phone" color={Colors.hidden_text} size={getScaleFactor() * 15} />
+          <ScaledText numberOfLines={1} ellipsizeMode="tail" className="text-ellipsis overflow-visible" isThemed size="sm">
+            {item.phone}
+          </ScaledText>
+        </View>
+      )}
+
+      {item.opening_hrs && item.closing_hrs && (
+        <View style={{ ...spacing.gap(4) }} className="w-4/5 flex-row items-center">
+          <Icon name="clock" color={Colors.hidden_text} size={getScaleFactor() * 15} />
+          <ScaledText numberOfLines={1} ellipsizeMode="tail" className="text-ellipsis overflow-visible" isThemed size="sm">
+            {new Date(item.opening_hrs).toLocaleTimeString('cs-CZ', { hour: '2-digit', minute: '2-digit' })} -{' '}
+            {new Date(item.closing_hrs).toLocaleTimeString('cs-CZ', { hour: '2-digit', minute: '2-digit' })}
+          </ScaledText>
+        </View>
+      )}
+
+    </View>
+  )
+
   return (
     <ScrollView style={{ ...spacing.borderBottomRadius(12) }}>
       <View className='flex-row items-center' style={{ ...spacing.mb(12), ...spacing.px(20), ...spacing.py(16), ...spacing.gap(8), ...spacing.borderTopRadius(12), backgroundColor: Colors.primary }}>
@@ -84,11 +152,13 @@ export default function AddTankRecordModal({ onSubmit }: any) {
             <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Stanice</ScaledText>
           </View>
 
-          <Dropdown
+          <Dropdown<Station>
             placeholder='Vyberte stanici'
-            data={[]}
-            onChange={console.log}
-            dropdownStyle={{ ...spacing.borderRadius(12), ...spacing.borderWidth(0.5), ...spacing.px(12), borderColor: isDark ? Colors.dark.secondary_lighter : Colors.light.secondary, backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.secondary }}
+            data={stations}
+            onChange={(station) => setSelectedStation(station)}
+            getItemLabel={(station) => station.name}
+            getItemValue={(station) => station.id?.toString() ?? ''}
+            renderItem={(item, isSelected) => (<StationItem item={item} isSelected={isSelected} />)}
           ></Dropdown>
         </View>
 
@@ -100,30 +170,14 @@ export default function AddTankRecordModal({ onSubmit }: any) {
               <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Palivo</ScaledText>
             </View>
 
-            <Dropdown
+            <Dropdown<Fuel>
               placeholder='Typ paliva'
-              name='fuel_type'
-              data={[
-                { value: 'test1', label: 'test' },
-                { value: 'test2', label: 'test' },
-                { value: 'test3', label: 'test' },
-                { value: 'test4', label: 'test' },
-                { value: 'test5', label: 'test' },
-                { value: 'test6', label: 'test' },
-                { value: 'test7', label: 'test' },
-                { value: 'test8', label: 'test' },
-                { value: 'test9', label: 'test' },
-                { value: 'test10', label: 'test' },
-                { value: 'test11', label: 'test' },
-                { value: 'test12', label: 'test' },
-                { value: 'test13', label: 'test' },
-                { value: 'test14', label: 'test' },
-                { value: 'test15', label: 'test' },
-                { value: 'test16', label: 'test' },
-              ]}
+              data={fuels}
               onChange={console.log}
-              dropdownStyle={{ ...spacing.borderRadius(12), ...spacing.borderWidth(0.5), ...spacing.px(12), borderColor: isDark ? Colors.dark.secondary_lighter : Colors.light.secondary, backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.secondary }}
+              getItemLabel={(fuel) => fuel.trademark}
+              getItemValue={(fuel) => fuel.id?.toString() ?? ''}
             ></Dropdown>
+
           </View>
 
           <View className='w-[48%]'>
