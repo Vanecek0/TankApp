@@ -187,6 +187,7 @@ export default function TankScreen() {
               keyExtractor={(item, index) => tanking[index].month ?? index.toString()}
               getItemCount={(_data: unknown) => tanking.length}
               getItem={(_data: unknown, index: number) => tanking[index]}
+              ListEmptyComponent={<ScaledText style={{ ...spacing.p(28) }} className="text-center font-bold" color={Colors.inactive_icon} size="base">Žádné další záznamy</ScaledText>}
             />
           ) : (
             <>
