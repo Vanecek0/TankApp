@@ -91,6 +91,20 @@ export class StationFuelModel {
         };
     }
 
+    static async getFuelsByStationId(stationId: number): Promise<Fuel[]> {
+        const db = await Database.getConnection();
+
+        const fuels = await db.getAllAsync<Fuel>(
+            `SELECT fuel.*
+         FROM fuel
+         INNER JOIN station_fuel ON fuel.id = station_fuel.id_fuel
+         WHERE station_fuel.id_station = ?`,
+            [stationId]
+        );
+
+        return fuels;
+    }
+
     static async delete(id: number) {
         await Database.executeSql('DELETE FROM station_fuel WHERE id = ?', [id]);
     }

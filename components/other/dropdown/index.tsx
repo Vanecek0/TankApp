@@ -6,42 +6,41 @@ import getScaleFactor, { spacing } from '@/utils/SizeScaling';
 import { Colors } from '@/constants/Colors';
 import { useTheme } from '@/theme/ThemeProvider';
 
-type OptionItem = {
-    value: string;
-    label: string;
-}
-
-export type CustomButtonProps = TouchableOpacityProps & {
+type DropdownProps<T> = TouchableOpacityProps & {
     placeholder?: string;
     defaultIndex?: number;
-    data?: OptionItem[];
+    data?: T[];
     dropdownStyle?: ViewStyle;
     dropdownTextStyle?: TextStyle;
-    onChange: (item: OptionItem) => void;
-    renderItem?: (item: OptionItem, isSelected: boolean) => React.ReactNode;
+    onChange: (item: T) => void;
+    renderItem?: (item: T, isSelected: boolean) => React.ReactNode;
+    getItemLabel?: (item: T) => string;
+    getItemValue?: (item: T) => string;
 };
 
-export default function Dropdown({
+export default function Dropdown<T>({
     placeholder,
     defaultIndex = 0,
     data = [],
     onChange,
     dropdownStyle,
     dropdownTextStyle,
-    renderItem
-}: CustomButtonProps) {
+    renderItem,
+    getItemLabel = (item) => (item as any).label,
+    getItemValue = (item) => (item as any).value
+}: DropdownProps<T>) {
     const [expanded, setExpanded] = useState(false);
     const toggleExpanded = useCallback(() => setExpanded((e) => !e), []);
-    const [value, setValue] = useState(!placeholder ? data[defaultIndex].value : '');
-    const [label, setLabel] = useState(!placeholder ? data[defaultIndex].label : '');
+    const [selectedItem, setSelectedItem] = useState<T | null>(
+        !placeholder ? data[defaultIndex] : null
+    );
     const [buttonHeight, setButtonHeight] = useState(0);
     const { isDark } = useTheme();
 
     const onSelect = useCallback(
-        (item: OptionItem) => {
+        (item: T) => {
             onChange(item);
-            setValue(item.value);
-            setLabel(item.label);
+            setSelectedItem(item);
             setExpanded(false);
         },
         [onChange]
@@ -54,16 +53,20 @@ export default function Dropdown({
                 onPress={toggleExpanded}
                 activeOpacity={0.8}
                 style={[{
-                    ...spacing.px(16),
+                    ...spacing.px(12),
                     ...spacing.py(11),
-                    ...spacing.borderRadius(12)
+                    ...spacing.borderRadius(12),
+                    ...spacing.borderWidth(1),
+                    borderColor: isDark ? Colors.dark.secondary_lighter : Colors.inactive_icon,
+                    backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.secondary
                 }, dropdownStyle]}
                 className="flex-row items-center justify-between"
             >
                 <ScaledText
                     size="base"
-                    style={[{ color: isDark ? Colors.white : Colors.light.text }, dropdownTextStyle]}>
-                    {label || placeholder}
+                    style={[{ color: isDark ? Colors.white : Colors.light.text }, dropdownTextStyle]}
+                >
+                    {selectedItem ? getItemLabel(selectedItem) : placeholder}
                 </ScaledText>
                 <Icon
                     name="chevron_down"
@@ -91,33 +94,48 @@ export default function Dropdown({
                         ...spacing.maxHeight(280)
                     }]}>
                         <ScrollView>
-                            {data.map((item) => {
-                                const isSelected = value === item.value;
-                                return (
-                                    <TouchableOpacity
-                                        key={item.value}
-                                        style={{ ...spacing.p(0), ...spacing.m(0) }}
-                                        activeOpacity={0.8}
-                                        onPress={() => onSelect(item)}
-                                    >
-                                        {renderItem ? (
-                                            renderItem(item, isSelected)
-                                        ) : (
-                                            <ScaledText
-                                                size="base"
-                                                style={{
-                                                    ...spacing.p(8),
-                                                    ...spacing.borderRadius(8),
-                                                    color: isDark ? Colors.white : '',
-                                                    backgroundColor: isSelected ? Colors.dark.secondary_lighter : ''
-                                                }}
-                                            >
-                                                {item.label}
-                                            </ScaledText>
-                                        )}
-                                    </TouchableOpacity>
-                                );
-                            })}
+                            {data.length === 0 ? (
+                                <ScaledText
+                                    size="base"
+                                    style={{
+                                        ...spacing.p(8),
+                                        textAlign: 'center',
+                                        color: Colors.inactive_icon
+                                    }}
+                                >
+                                    Žádné položky k dispozici
+                                </ScaledText>
+                            ) : (
+                                data.map((item, index) => {
+                                    const isSelected = selectedItem && getItemValue(item) === getItemValue(selectedItem);
+                                    return (
+                                        <TouchableOpacity
+                                            key={getItemValue(item) ?? `item-${index}`}
+                                            style={[{
+                                                ...spacing.p(0),
+                                                ...spacing.mx(0)},
+                                                index !== data.length - 1 && { borderBottomWidth: 1, borderColor: Colors.inactive_icon }
+                                            ]}
+                                            activeOpacity={0.8}
+                                            onPress={() => onSelect(item)}
+                                        >
+                                            {renderItem ? renderItem(item, isSelected!) : (
+                                                <ScaledText
+                                                    size="base"
+                                                    style={{
+                                                        ...spacing.p(8),
+                                                        ...spacing.borderRadius(8),
+                                                        color: isDark ? Colors.white : '',
+                                                        backgroundColor: isSelected ? Colors.dark.secondary_lighter : ''
+                                                    }}
+                                                >
+                                                    {getItemLabel(item)}
+                                                </ScaledText>
+                                            )}
+                                        </TouchableOpacity>
+                                    );
+                                })
+                            )}
                         </ScrollView>
                     </View>
                 </>
