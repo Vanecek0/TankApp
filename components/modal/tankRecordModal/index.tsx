@@ -3,7 +3,7 @@ import { Colors } from '@/constants/Colors';
 import { useModal } from '@/providers/modalProvider';
 import { useTheme } from '@/theme/ThemeProvider';
 import getScaleFactor, { spacing } from '@/utils/SizeScaling';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, TextInput, ScrollView } from 'react-native';
 import { useForm, useController, useWatch, useFormState } from 'react-hook-form';
 import ScaledText from '@/components/other/scaledText';
@@ -13,6 +13,8 @@ import { useDatabase } from '@/database/databaseContext';
 import Dropdown from '@/components/other/dropdown';
 import Icon from '@/components/ui/Icon';
 import FormNumberInput from '@/components/other/form/formNumberInput';
+import { Station, StationModel } from '@/models/Station';
+import { Fuel } from '@/models/Fuel';
 
 export default function AddTankRecordModal({ onSubmit }: any) {
   const { hideModal } = useModal();
@@ -20,10 +22,20 @@ export default function AddTankRecordModal({ onSubmit }: any) {
   const { initTankings } = useDatabase();
   const { control, handleSubmit, setValue, getValues, formState: { errors } } = useForm();
   const { touchedFields } = useFormState({ control });
+  const [stationsFuels, setStationsFuels] = useState<(Station & { fuels: (Fuel & { last_price_per_unit: number | null })[]})[]>([]);
 
   const price = useWatch({ control, name: 'price' });
   const amount = useWatch({ control, name: 'amount' });
   const pricePerLtr = useWatch({ control, name: 'price_per_litre' });
+
+  const loadAllStationsFuels = async () => {
+    const allStationsFuels = await StationModel.getAllStationsWithFuels();
+    setStationsFuels(allStationsFuels);
+  };
+
+  useEffect(() => {
+    loadAllStationsFuels();
+  }, []);
 
   useEffect(() => {
     const ppl = parseFloat(pricePerLtr);
@@ -74,24 +86,7 @@ export default function AddTankRecordModal({ onSubmit }: any) {
 
           <Dropdown
             placeholder='Vyberte stanici'
-            data={[
-              { value: 'test1', label: 'test' },
-              { value: 'test2', label: 'test' },
-              { value: 'test3', label: 'test' },
-              { value: 'test4', label: 'test' },
-              { value: 'test5', label: 'test' },
-              { value: 'test6', label: 'test' },
-              { value: 'test7', label: 'test' },
-              { value: 'test8', label: 'test' },
-              { value: 'test9', label: 'test' },
-              { value: 'test10', label: 'test' },
-              { value: 'test11', label: 'test' },
-              { value: 'test12', label: 'test' },
-              { value: 'test13', label: 'test' },
-              { value: 'test14', label: 'test' },
-              { value: 'test15', label: 'test' },
-              { value: 'test16', label: 'test' },
-            ]}
+            data={[]}
             onChange={console.log}
             dropdownStyle={{ ...spacing.borderRadius(12), ...spacing.borderWidth(0.5), ...spacing.px(12), borderColor: isDark ? Colors.dark.secondary_lighter : Colors.light.secondary, backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.secondary }}
           ></Dropdown>
