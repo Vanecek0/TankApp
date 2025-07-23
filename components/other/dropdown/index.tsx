@@ -57,6 +57,7 @@ export default function Dropdown<T>({
                     ...spacing.py(11),
                     ...spacing.borderRadius(12),
                     ...spacing.borderWidth(1),
+                    ...spacing.borderBottomRadius(expanded ? 0 : 12),
                     borderColor: isDark ? Colors.dark.secondary_lighter : Colors.inactive_icon,
                     backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.secondary
                 }, dropdownStyle]}
@@ -83,14 +84,16 @@ export default function Dropdown<T>({
 
                     <View style={[{
                         position: 'absolute',
-                        top: buttonHeight + 2,
+                        top: buttonHeight,
                         left: 0,
                         right: 0,
                         zIndex: 10,
                         backgroundColor: isDark ? Colors.dark.secondary_light : Colors.white,
                         ...spacing.borderRadius(12),
+                        ...spacing.borderTopRadius(0), 
+                        ...spacing.borderTopWidth(0),
                         ...spacing.borderWidth(1),
-                        borderColor: isDark ? Colors.dark.secondary_lighter : Colors.white,
+                        borderColor: Colors.hidden_text,
                         ...spacing.maxHeight(280)
                     }]}>
                         <ScrollView>

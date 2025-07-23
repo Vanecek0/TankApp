@@ -7,7 +7,7 @@ import contrastHexColor from "@/utils/colorContrast";
 import { useTheme } from "@/theme/ThemeProvider";
 import { Colors } from "@/constants/Colors";
 
-export default function Badge({ className, textClassName, style, size = "base", value, badgeColor, textColor, isThemed, isCheckable = false, isChecked = false }: {
+export default function Badge({ className, textClassName, style, size = "base", value, badgeColor = "#ffffff", textColor, isThemed, isCheckable = false, isChecked = false }: {
     className?: string;
     textClassName?: string;
     size?: FontSizeKey;
@@ -30,7 +30,7 @@ export default function Badge({ className, textClassName, style, size = "base", 
                         : Colors.dark.text
                     : isCheckable && !isChecked
                         ? Colors.hidden_text
-                        : Colors.light.text
+                        : contrastHexColor(badgeColor)
                 : textColor ?? undefined,
     };
 
@@ -44,7 +44,7 @@ export default function Badge({ className, textClassName, style, size = "base", 
                         {
                             backgroundColor: badgeColor,
                             borderRadius: style?.borderRadius,
-                            color: contrastHexColor(badgeColor ?? "#ffffff"),
+                            color: contrastHexColor(badgeColor),
                             ...spacing.px(8),
                             ...spacing.py(4)
                         },
