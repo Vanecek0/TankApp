@@ -8,6 +8,7 @@ import ScaledText from '@/components/other/scaledText';
 import Icon from '../Icon';
 import { useModal } from '@/providers/modalProvider';
 import AddTankRecordModal from '@/components/modal/tankRecordModal';
+import { AddStationRecordModal } from '@/components/modal/stationsModal';
 
 export type CustomButtonProps = TouchableOpacityProps & {
     label?: string;
@@ -30,7 +31,8 @@ export default function ActionButton({ label, ...props }: CustomButtonProps) {
                                 <ScaledText size={'base'} color={isDark ? Colors.white : ''} className='font-bold'>Přidat tankování</ScaledText>
                                 <CustomButton labelClassName='aspect text-center' style={{ ...spacing.borderRadius(90), ...spacing.p(16), ...spacing.width(60) }} className={`flex shadow-md justify-center items-center aspect-square`} label={<Icon name="tank" color={Colors.primary} style={{ ...spacing.width(20), ...spacing.height(20) }} />} labelSize='xl' labelColor={isDark ? Colors.white : ''} backgroundColor={isDark ? Colors.dark.secondary_light : Colors.light.secondary} />
                             </View>
-                            <View style={{...spacing.right(10)}} className='flex-row items-center gap-3'>
+                            <View onTouchEnd={
+                                () => {showModal(AddStationRecordModal); setIsOpen(!isOpen)}} style={{...spacing.right(10)}} className='flex-row items-center gap-3'>
                                 <ScaledText size={'base'} color={isDark ? Colors.white : ''} className='font-bold'>Přidat stanici</ScaledText>
                                 <CustomButton labelClassName='aspect-square text-center' style={{ ...spacing.borderRadius(90), ...spacing.p(16), ...spacing.width(60) }} className={`flex shadow-md justify-center items-center aspect-square`} label={<Icon name="map_pin" color={Colors.primary} style={{ ...spacing.width(20), ...spacing.height(20) }} />} labelSize='xl' labelColor={isDark ? Colors.white : ''} backgroundColor={isDark ? Colors.dark.secondary_light : Colors.light.secondary} />
                             </View>
