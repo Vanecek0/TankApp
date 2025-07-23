@@ -48,7 +48,7 @@ export default function AddTankRecordModal({ onSubmit }: any) {
 
   useEffect(() => {
     loadSelectedStationFuels(selectedStation?.id ?? 0);
-  },[selectedStation])
+  }, [selectedStation])
 
   useEffect(() => {
     const ppl = parseFloat(pricePerLtr);
@@ -82,11 +82,9 @@ export default function AddTankRecordModal({ onSubmit }: any) {
   const StationItem = ({ item, isSelected }: StationItemProps) => (
     <View
       style={{
-        ...spacing.borderRadius(6),
-        ...spacing.gap(8),
+        ...spacing.gap(4),
         ...spacing.p(12),
-        ...spacing.px(17),
-        backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.background,
+        ...spacing.px(12)
       }}
     >
       <View className="flex-row justify-between" style={{ ...spacing.gap(32) }}>
@@ -130,89 +128,124 @@ export default function AddTankRecordModal({ onSubmit }: any) {
   )
 
   return (
-    <ScrollView style={{ ...spacing.borderBottomRadius(12) }}>
-      <View className='flex-row items-center' style={{ ...spacing.mb(12), ...spacing.px(20), ...spacing.py(16), ...spacing.gap(8), ...spacing.borderTopRadius(12), backgroundColor: Colors.primary }}>
-        <Icon name='tank' color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor() * 20} />
-        <ScaledText size='lg' style={{ color: isDark ? Colors.white : '' }}>Nové tankování</ScaledText>
+
+    <View className="max-h-full h-full" style={{ ...spacing.borderRadius(12) }}>
+      <View
+        className="border-b-[1px] sticky flex-row justify-between items-center"
+        style={{
+          ...spacing.borderTopRadius(12),
+          borderColor: isDark ? Colors.dark.secondary_light : Colors.light.background,
+          backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.background,
+          ...spacing.p(24),
+        }}
+      >
+        <View className="flex-row items-center relative w-3/4" style={{ ...spacing.gap(8) }}>
+          <View
+            style={{
+              ...spacing.borderRadius(8),
+              ...spacing.width(48),
+              ...spacing.height(48),
+              backgroundColor: Colors.primary,
+            }}
+            className="flex items-center justify-center"
+          >
+            <Icon name="tank" color={Colors.dark.text} size={getScaleFactor() * 20} />
+          </View>
+          <View>
+            <ScaledText size="xl" isThemed className="text-xl font-semibold">
+              Přidat tankování
+            </ScaledText>
+            <ScaledText size="sm" isThemed>
+              Vyplňte údaje o tankování
+            </ScaledText>
+          </View>
+        </View>
+        <View
+          onTouchEnd={() => hideModal()}
+          style={{ ...spacing.p(36), ...spacing.me(-12) }}
+          className="justify-center items-center absolute right-0"
+        >
+          <Icon name="cross" color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor() * 20} />
+        </View>
       </View>
-
-      <View style={{ ...spacing.px(20), ...spacing.mt(12), ...spacing.mb(20), ...spacing.gap(12) }} className='flex'>
-        <View>
-          <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
-            <Icon name='speedometer' color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor() * 16} />
-            <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Stav tachometru</ScaledText>
-          </View>
-
-          <FormNumberInput name="tachometer" control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></FormNumberInput>
-        </View>
-
-        <View>
-          <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
-            <Icon name='map_pin' color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor() * 16} />
-            <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Stanice</ScaledText>
-          </View>
-
-          <Dropdown<Station>
-            placeholder='Vyberte stanici'
-            data={stations}
-            onChange={(station) => setSelectedStation(station)}
-            getItemLabel={(station) => station.name}
-            getItemValue={(station) => station.id?.toString() ?? ''}
-            renderItem={(item, isSelected) => (<StationItem item={item} isSelected={isSelected} />)}
-          ></Dropdown>
-        </View>
-
-
-        <View className='flex-row justify-between'>
-          <View className='w-[48%]'>
+      <ScrollView style={{ ...spacing.p(24) }} className="">
+        <View style={{ ...spacing.gap(12), ...spacing.pb(52) }}>
+          <View>
             <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
-              <Icon name='tank' color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor() * 16} />
-              <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Palivo</ScaledText>
+              <Icon name='speedometer' color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor() * 16} />
+              <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Stav tachometru</ScaledText>
             </View>
 
-            <Dropdown<Fuel>
-              placeholder='Typ paliva'
-              data={fuels}
-              onChange={console.log}
-              getItemLabel={(fuel) => fuel.trademark}
-              getItemValue={(fuel) => fuel.id?.toString() ?? ''}
+            <FormNumberInput name="tachometer" control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></FormNumberInput>
+          </View>
+
+          <View>
+            <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
+              <Icon name='map_pin' color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor() * 16} />
+              <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Stanice</ScaledText>
+            </View>
+
+            <Dropdown<Station>
+              placeholder='Vyberte stanici'
+              data={stations}
+              onChange={(station) => setSelectedStation(station)}
+              getItemLabel={(station) => station.name}
+              getItemValue={(station) => station.id?.toString() ?? ''}
+              renderItem={(item, isSelected) => (<StationItem item={item} isSelected={isSelected} />)}
             ></Dropdown>
-
           </View>
 
-          <View className='w-[48%]'>
-            <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
-              <Icon name='calc' color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor() * 16} />
-              <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Cena za jednotku</ScaledText>
+
+          <View className='flex-row justify-between'>
+            <View className='w-[48%]'>
+              <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
+                <Icon name='tank' color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor() * 16} />
+                <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Palivo</ScaledText>
+              </View>
+
+              <Dropdown<Fuel>
+                placeholder='Typ paliva'
+                data={fuels}
+                onChange={console.log}
+                getItemLabel={(fuel) => fuel.trademark}
+                getItemValue={(fuel) => fuel.id?.toString() ?? ''}
+              ></Dropdown>
+
             </View>
 
-            <FormNumberInput name="price_per_litre" control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></FormNumberInput>
-          </View>
-        </View>
+            <View className='w-[48%]'>
+              <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
+                <Icon name='calc' color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor() * 16} />
+                <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Cena za jednotku</ScaledText>
+              </View>
 
-        <View>
-          <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
-            <Icon name='dollar' color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor() * 16} />
-            <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Cena (bez slev)</ScaledText>
-          </View>
-
-          <FormNumberInput name="price" control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></FormNumberInput>
-        </View>
-
-        <View>
-          <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
-            <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Počet litrů</ScaledText>
+              <FormNumberInput name="price_per_litre" control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></FormNumberInput>
+            </View>
           </View>
 
-          <FormNumberInput name="amount" control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></FormNumberInput>
-        </View>
+          <View>
+            <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
+              <Icon name='dollar' color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor() * 16} />
+              <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Cena (bez slev)</ScaledText>
+            </View>
 
+            <FormNumberInput name="price" control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></FormNumberInput>
+          </View>
+
+          <View>
+            <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
+              <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Počet litrů</ScaledText>
+            </View>
+
+            <FormNumberInput name="amount" control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></FormNumberInput>
+          </View>
+
+        </View>
+      </ScrollView>
+      <View style={{ ...spacing.p(20), ...spacing.gap(8), ...spacing.borderBottomRadius(12), backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.background }} className='flex-row justify-between'>
+        <CustomButton className='w-[48%]' onPress={() => hideModal()} label="Zrušit" labelSize='base' labelClassName='text-center' labelColor={isDark ? Colors.white : ''} style={{ ...spacing.p(12), ...spacing.borderWidth(1), borderColor: isDark ? Colors.dark.secondary_lighter : Colors.hidden_text, ...spacing.borderRadius(12) }} backgroundColor={isDark ? Colors.dark.secondary_light : Colors.light.secondary} />
+        <CustomButton className='w-[48%]' onPress={handleSubmit((data) => { onFormSubmit(data); hideModal() })} label="Přidat záznam" labelSize='base' labelClassName='text-center' labelColor={Colors.white} style={{ ...spacing.p(12), ...spacing.borderRadius(12), ...spacing.borderWidth(1), borderColor: Colors.primary }} backgroundColor={Colors.primary} />
       </View>
-
-      <View style={{ ...spacing.p(20), ...spacing.gap(8), backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.background, borderTopColor: isDark ? Colors.dark.secondary_lighter : Colors.light.secondary, ...spacing.borderWidth(0.5) }} className='flex-row justify-between'>
-        <CustomButton className='w-[48%]' onPress={() => hideModal()} label="Zrušit" labelSize='base' labelClassName='text-center' labelColor={isDark ? Colors.white : ''} style={{ ...spacing.p(12), ...spacing.borderWidth(0.5), borderColor: isDark ? Colors.dark.secondary_lighter : Colors.light.secondary, ...spacing.borderRadius(12) }} backgroundColor={isDark ? Colors.dark.secondary_light : Colors.light.secondary} />
-        <CustomButton className='w-[48%]' onPress={handleSubmit((data) => { onFormSubmit(data); hideModal() })} label="Přidat záznam" labelSize='base' labelClassName='text-center' labelColor={isDark ? Colors.white : ''} style={{ ...spacing.p(12), ...spacing.borderRadius(12) }} backgroundColor={Colors.primary} />
-      </View>
-    </ScrollView>
+    </View>
   );
 }

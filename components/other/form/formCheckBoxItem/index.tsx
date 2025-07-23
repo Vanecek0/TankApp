@@ -2,24 +2,26 @@ import { useController } from "react-hook-form";
 import { Pressable, Text } from "react-native";
 import { Colors } from "@/constants/Colors";
 import { useTheme } from "@/theme/ThemeProvider";
-import { spacing } from "@/utils/SizeScaling";
+import { useEffect } from "react";
 
 type FormCheckboxItemProps = {
     name: string;
     control: any;
     value: string | number;
+    defaultValue?: (string | number)[];
     label?: string;
     render?: (checked: boolean) => React.ReactNode;
-    onChange?: (checked: boolean, newValues: (string | number)[]) => void; // <- přidaný prop
+    onChange?: (checked: boolean, newValues: (string | number)[]) => void;
 };
 
 export default function FormCheckboxItem({
     name,
     control,
     value,
+    defaultValue = [],
     label,
     render,
-    onChange, // <- destructure
+    onChange,
 }: FormCheckboxItemProps) {
     const { isDark } = useTheme();
 
@@ -31,13 +33,23 @@ export default function FormCheckboxItem({
 
     const isChecked = field.value?.includes(value);
 
+    useEffect(() => {
+        if (
+            Array.isArray(field.value) &&
+            field.value.length === 0 &&
+            defaultValue.length > 0
+        ) {
+            field.onChange(defaultValue);
+        }
+    }, [field.value, defaultValue]);
+
     const toggle = () => {
         const newValue = isChecked
             ? field.value.filter((v: any) => v !== value)
             : [...field.value, value];
 
         field.onChange(newValue);
-        onChange?.(!isChecked, newValue); // <- zavolá se callback, pokud byl předán
+        onChange?.(!isChecked, newValue);
     };
 
     return (
