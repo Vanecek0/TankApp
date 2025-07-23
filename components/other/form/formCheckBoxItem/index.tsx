@@ -41,7 +41,7 @@ export default function FormCheckboxItem({
         ) {
             field.onChange(defaultValue);
         }
-    }, [field.value, defaultValue]);
+    }, []);
 
     const toggle = () => {
         const newValue = isChecked

@@ -18,7 +18,7 @@ import FormDateTimeInput from '@/components/other/form/formDateTimeInput';
 import FormTextAreaInput from '@/components/other/form/formTextAreaInput';
 import FormCheckboxItem from '@/components/other/form/formCheckBoxItem';
 import Dropdown from '@/components/other/dropdown';
-import { StationFuelModel } from '@/models/StationFuel';
+import { StationFuel, StationFuelModel } from '@/models/StationFuel';
 import { TankingModel } from '@/models/Tanking';
 
 type StationWithFuels = Station & {
@@ -199,15 +199,13 @@ export default function StationsModal() {
 export function AddStationRecordModal({ station }: { station: StationWithFuels }) {
     const { hideModal, showModal } = useModal();
     const { isDark } = useTheme();
-    const { control, handleSubmit, setValue, getValues, formState: { errors } } = useForm();
+    const { control, handleSubmit, formState } = useForm();
     const [fuels, setFuels] = useState<Fuel[]>([]);
-    //const [selectedFuels, setSelectedFuels] = useState<number[]>([]);
     const selectedFuels = useWatch({ control, name: 'fuels' }) ?? [];
 
     const loadAllFuels = async () => {
         const allFuels = await FuelModel.all();
         setFuels(allFuels);
-        //setSelectedFuels(station.fuels.map(fuel => fuel.id!));
     };
 
     useEffect(() => {
@@ -216,31 +214,48 @@ export function AddStationRecordModal({ station }: { station: StationWithFuels }
 
     const onFormSubmit = async (data: any) => {
         try {
-            const result = await StationModel.updateStation(station.id!, {
-                name: data.name,
-                address: data.address,
-                phone: data.phone,
-                opening_hrs: data.opening,
-                closing_hrs: data.closing,
-                note: data.note,
-            });
 
-            const existingFuels = await StationFuelModel.all();
-            const existingFuelIds = existingFuels.map(sf => sf.id_fuel);
+            if (station) {
+                const result = await StationModel.updateStation(station.id!, {
+                    name: data.name,
+                    address: data.address,
+                    phone: data.phone,
+                    opening_hrs: data.opening,
+                    closing_hrs: data.closing,
+                    note: data.note,
+                });
 
-            for (const fuelId of existingFuelIds) {
-                await StationFuelModel.deleteByFuelAndStation(station.id!, fuelId);
-            }
+                const existingFuels = await StationFuelModel.all();
+                const existingFuelIds = existingFuels.map(sf => sf.id_fuel);
 
-            for (const fuelId of selectedFuels) {
+                for (const fuelId of existingFuelIds) {
+                    await StationFuelModel.deleteByFuelAndStation(station.id!, fuelId);
+                }
 
+                for (const fuelId of selectedFuels) {
+
+                    await StationFuelModel.create({
+                        id_station: station.id!,
+                        id_fuel: fuelId,
+                        last_price_per_unit: 0,
+                    });
+                }
+                return result;
+            } else {
+
+                const stationDTO = DTO<Station, typeof data>(data);
+                await StationModel.create(stationDTO);
+
+                //Namapovat fuels
                 await StationFuelModel.create({
-                    id_station: station.id!,
-                    id_fuel: fuelId,
+                    id_station: data.id,
+                    id_fuel: data.fuel,
                     last_price_per_unit: 0,
                 });
+
+                return true;
             }
-            return result;
+
         } catch (error) {
             console.error('Chyba při ukládání záznamu:', error);
             throw error;
@@ -272,10 +287,10 @@ export function AddStationRecordModal({ station }: { station: StationWithFuels }
                     </View>
                     <View>
                         <ScaledText size="xl" isThemed className="text-xl font-semibold">
-                            Úprava stanice
+                            {station ? 'Úprava stanice' : 'Přidat stanici'}
                         </ScaledText>
                         <ScaledText size="sm" isThemed>
-                            Níže upravte vybranou stanici
+                            {station ? 'Níže upravte vybranou stanici' : 'Vyplňte údaje o stanici'}
                         </ScaledText>
                     </View>
                 </View>
@@ -295,7 +310,7 @@ export function AddStationRecordModal({ station }: { station: StationWithFuels }
                             <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Název stanice</ScaledText>
                         </View>
 
-                        <FormTextInput name="name" defaultValue={station.name} control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></FormTextInput>
+                        <FormTextInput name="name" defaultValue={station?.name ?? ''} control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></FormTextInput>
                     </View>
 
                     <View>
@@ -303,7 +318,7 @@ export function AddStationRecordModal({ station }: { station: StationWithFuels }
                             <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Adresa</ScaledText>
                         </View>
 
-                        <FormTextInput name="address" defaultValue={station.address} control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></FormTextInput>
+                        <FormTextInput name="address" defaultValue={station?.address ?? ''} control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></FormTextInput>
                     </View>
 
                     <View>
@@ -311,7 +326,7 @@ export function AddStationRecordModal({ station }: { station: StationWithFuels }
                             <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Telefonní číslo</ScaledText>
                         </View>
 
-                        <FormTextInput name="phone" defaultValue={station.phone} control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></FormTextInput>
+                        <FormTextInput name="phone" defaultValue={station?.phone ?? ''} control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></FormTextInput>
                     </View>
 
                     <View>
@@ -321,10 +336,10 @@ export function AddStationRecordModal({ station }: { station: StationWithFuels }
                         <View style={{ ...spacing.gap(8) }} className='flex-row justify-between'>
                             <View style={{ ...spacing.gap(8) }} className='flex-row flex-1 items-center'>
                                 <ScaledText size='base' isThemed>od</ScaledText>
-                                <FormDateTimeInput name="opening" defaultValue={station.opening_hrs} control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></FormDateTimeInput>
+                                <FormDateTimeInput name="opening" defaultValue={station?.opening_hrs ?? ''} control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></FormDateTimeInput>
                             </View>
                             <View style={{ ...spacing.gap(8) }} className='flex-row flex-1 items-center'>
-                                <ScaledText size='base' isThemed>do</ScaledText><FormDateTimeInput name="closing" defaultValue={station.closing_hrs} control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></FormDateTimeInput>
+                                <ScaledText size='base' isThemed>do</ScaledText><FormDateTimeInput name="closing" defaultValue={station?.closing_hrs ?? ''} control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></FormDateTimeInput>
                             </View>
                         </View>
                     </View>
@@ -342,7 +357,7 @@ export function AddStationRecordModal({ station }: { station: StationWithFuels }
                                         key={index}
                                         control={control}
                                         value={fuel.id!}
-                                        defaultValue={station.fuels.map(f => f.id!)}
+                                        defaultValue={station?.fuels.map(f => f.id!) ?? []}
                                         render={() => (
                                             <Badge
                                                 value={fuel.trademark}
@@ -374,19 +389,19 @@ export function AddStationRecordModal({ station }: { station: StationWithFuels }
                             <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Poznámka</ScaledText>
                         </View>
 
-                        <FormTextAreaInput name="note" defaultValue={station.note} control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></FormTextAreaInput>
+                        <FormTextAreaInput name="note" defaultValue={station?.note ?? ''} control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></FormTextAreaInput>
                     </View>
                 </View>
             </ScrollView>
 
 
             <View style={{ ...spacing.p(20), ...spacing.gap(8), ...spacing.borderBottomRadius(12), backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.background }} className='flex-row justify-between'>
-                <CustomButton className='flex-1' onPress={() => showModal(StationsModal)} label="Zpět" labelSize='base' labelClassName='text-center' labelColor={isDark ? Colors.white : ''} style={{ ...spacing.p(12), ...spacing.borderWidth(1), borderColor: isDark ? Colors.dark.secondary_lighter : Colors.hidden_text, ...spacing.borderRadius(12) }} backgroundColor={isDark ? Colors.dark.secondary_light : Colors.light.secondary} />
+                <CustomButton className='flex-1' onPress={() => showModal(StationsModal)} label="Zrušit" labelSize='base' labelClassName='text-center' labelColor={isDark ? Colors.white : ''} style={{ ...spacing.p(12), ...spacing.borderWidth(1), borderColor: isDark ? Colors.dark.secondary_lighter : Colors.hidden_text, ...spacing.borderRadius(12) }} backgroundColor={isDark ? Colors.dark.secondary_light : Colors.light.secondary} />
                 <CustomButton className='flex-1' onPress={handleSubmit(async (data) => {
                     await onFormSubmit(data);
                     hideModal();
                     showModal(StationsModal);
-                })} label="Uložit změny" labelSize='base' labelClassName='text-center' labelColor={Colors.white} style={{ ...spacing.p(12), ...spacing.borderRadius(12), ...spacing.borderWidth(1), borderColor: Colors.primary }} backgroundColor={Colors.primary} />
+                })} label={station ? "Uložit změny" : "Přidat stanici"} labelSize='base' labelClassName='text-center' labelColor={Colors.white} style={{ ...spacing.p(12), ...spacing.borderRadius(12), ...spacing.borderWidth(1), borderColor: Colors.primary }} backgroundColor={Colors.primary} />
             </View>
         </View>
     );

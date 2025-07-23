@@ -9,7 +9,6 @@ export type StationFuel = {
     last_price_per_unit: number;
 };
 
-
 export class StationFuelModel {
 
     static async create(station_fuel: StationFuel) {
@@ -24,6 +23,14 @@ export class StationFuelModel {
             console.error('Chyba při vkládání station_fuel:', error);
             throw new Error('Nepodařilo se vytvořit nový záznam.');
         }
+    }
+
+    static async createFromIds(id_station: number, id_fuel: number, last_price_per_unit: number = 0) {
+        return await this.create({
+            id_station,
+            id_fuel,
+            last_price_per_unit,
+        });
     }
 
     static async all(): Promise<StationFuel[]> {
