@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState, useMemo } from 'react';
-import { View, VirtualizedList, RefreshControl, TextInput, ScrollView } from 'react-native';
+import { View, VirtualizedList, RefreshControl, TextInput, ScrollView, Modal } from 'react-native';
 import ScaledText from '@/components/other/scaledText';
 import Icon from '@/components/ui/Icon';
 import Badge from '@/components/ui/badge';
@@ -34,9 +34,8 @@ const StationItem = React.memo(({ item, isDark, onPress }: { item: StationWithFu
             ...spacing.px(17),
             backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.background,
         }}
-        onTouchEnd={() => onPress(item)}
     >
-        <View className="flex-row justify-between" style={{ ...spacing.gap(32) }}>
+        <View className="flex-row justify-between items-start" style={{ ...spacing.gap(32) }}>
             <View className="flex-1" style={{ ...spacing.gap(4) }}>
                 <View className="flex-row items-center" style={{ ...spacing.gap(8) }}>
                     <ScaledText size="lg" className="flex-initial font-bold text-ellipsis overflow-visible" numberOfLines={1} ellipsizeMode="tail" isThemed>
@@ -52,8 +51,13 @@ const StationItem = React.memo(({ item, isDark, onPress }: { item: StationWithFu
                     </View>
                 )}
             </View>
-            <View className="flex-row" style={{ ...spacing.gap(12) }}>
-                <Icon name="edit" color={Colors.hidden_text} size={getScaleFactor() * 20} />
+            <View className='flex-row items-center' style={{ ...spacing.gap(4) }}>
+                <View className="flex-row" style={{ ...spacing.gap(12), ...spacing.py(5), ...spacing.px(5) }} onTouchEnd={() => onPress(item)}>
+                    <Icon name="edit" color={Colors.hidden_text} size={getScaleFactor() * 20} />
+                </View>
+                <View className="flex-row" style={{ ...spacing.gap(12), ...spacing.py(5), ...spacing.px(5) }} onTouchEnd={() => onPress(item)}>
+                    <Icon name="bin" color={Colors.hidden_text} size={getScaleFactor() * 20} />
+                </View>
             </View>
         </View>
 
@@ -124,7 +128,7 @@ export default function StationsModal() {
     }, []);
 
     const renderItem = useCallback(
-        ({ item }: { item: StationWithFuels }) => <StationItem item={item} isDark={isDark} onPress={() => showModal(AddStationRecordModal, { station: item })} />,
+        ({ item }: { item: StationWithFuels }) => <StationItem item={item} isDark={isDark} onPress={() => showModal(AddStationRecordModal, { station: item, previousModal: StationsModal })} />,
         [isDark]
     );
 
@@ -196,7 +200,7 @@ export default function StationsModal() {
     );
 }
 
-export function AddStationRecordModal({ station }: { station: StationWithFuels }) {
+export function AddStationRecordModal({ station, previousModal }: { station: StationWithFuels, previousModal?: React.FC<any> }) {
     const { hideModal, showModal } = useModal();
     const { isDark } = useTheme();
     const { control, handleSubmit, formState } = useForm();
@@ -396,7 +400,7 @@ export function AddStationRecordModal({ station }: { station: StationWithFuels }
 
 
             <View style={{ ...spacing.p(20), ...spacing.gap(8), ...spacing.borderBottomRadius(12), backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.background }} className='flex-row justify-between'>
-                <CustomButton className='flex-1' onPress={() => showModal(StationsModal)} label="Zrušit" labelSize='base' labelClassName='text-center' labelColor={isDark ? Colors.white : ''} style={{ ...spacing.p(12), ...spacing.borderWidth(1), borderColor: isDark ? Colors.dark.secondary_lighter : Colors.hidden_text, ...spacing.borderRadius(12) }} backgroundColor={isDark ? Colors.dark.secondary_light : Colors.light.secondary} />
+                <CustomButton className='flex-1' onPress={() => showModal(previousModal!)} label="Zrušit" labelSize='base' labelClassName='text-center' labelColor={isDark ? Colors.white : ''} style={{ ...spacing.p(12), ...spacing.borderWidth(1), borderColor: isDark ? Colors.dark.secondary_lighter : Colors.hidden_text, ...spacing.borderRadius(12) }} backgroundColor={isDark ? Colors.dark.secondary_light : Colors.light.secondary} />
                 <CustomButton className='flex-1' onPress={handleSubmit(async (data) => {
                     await onFormSubmit(data);
                     hideModal();
