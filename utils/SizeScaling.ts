@@ -70,6 +70,12 @@ export const spacing = {
     paddingLeft: scaled(v),
     paddingRight: scaled(v),
   }),
+  ps: (v: number) => ({
+    paddingStart: scaled(v),
+  }),
+  pe: (v: number) => ({
+    paddingEnd: scaled(v),
+  }),
   py: (v: number) => ({
     paddingTop: scaled(v),
     paddingBottom: scaled(v),
