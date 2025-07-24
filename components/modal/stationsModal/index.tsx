@@ -20,12 +20,13 @@ import FormCheckboxItem from '@/components/other/form/formCheckBoxItem';
 import Dropdown from '@/components/other/dropdown';
 import { StationFuel, StationFuelModel } from '@/models/StationFuel';
 import { TankingModel } from '@/models/Tanking';
+import DeleteConfirmationModal from '../superModals/deleteConfirmationModal';
 
 type StationWithFuels = Station & {
     fuels: (Fuel & { last_price_per_unit: number | null })[];
 };
 
-const StationItem = React.memo(({ item, isDark, onPress }: { item: StationWithFuels; isDark: boolean, onPress: (station: StationWithFuels) => void }) => (
+const StationItem = React.memo(({ item, isDark, onPress, showDeleteConfirm }: { item: StationWithFuels; isDark: boolean, onPress: (station: StationWithFuels) => void, showDeleteConfirm: (station: StationWithFuels) => void }) => (
     <View
         style={{
             ...spacing.borderRadius(6),
@@ -55,7 +56,7 @@ const StationItem = React.memo(({ item, isDark, onPress }: { item: StationWithFu
                 <View className="flex-row" style={{ ...spacing.gap(12), ...spacing.py(5), ...spacing.px(5) }} onTouchEnd={() => onPress(item)}>
                     <Icon name="edit" color={Colors.hidden_text} size={getScaleFactor() * 20} />
                 </View>
-                <View className="flex-row" style={{ ...spacing.gap(12), ...spacing.py(5), ...spacing.px(5) }} onTouchEnd={() => onPress(item)}>
+                <View className="flex-row" style={{ ...spacing.gap(12), ...spacing.py(5), ...spacing.px(5), ...spacing.me(-5) }} onTouchEnd={() => showDeleteConfirm(item)}>
                     <Icon name="bin" color={Colors.hidden_text} size={getScaleFactor() * 20} />
                 </View>
             </View>
@@ -114,7 +115,7 @@ const StationItem = React.memo(({ item, isDark, onPress }: { item: StationWithFu
 ));
 
 export default function StationsModal() {
-    const { hideModal, showModal } = useModal();
+    const { hideModal, showModal, showSuperModal } = useModal();
     const { isDark } = useTheme();
     const [stations, setStations] = useState<StationWithFuels[]>([]);
 
@@ -128,7 +129,22 @@ export default function StationsModal() {
     }, []);
 
     const renderItem = useCallback(
-        ({ item }: { item: StationWithFuels }) => <StationItem item={item} isDark={isDark} onPress={() => showModal(AddStationRecordModal, { station: item, previousModal: StationsModal })} />,
+        ({ item }: { item: StationWithFuels }) =>
+            <StationItem
+                item={item}
+                isDark={isDark}
+                showDeleteConfirm={() => showSuperModal(DeleteConfirmationModal, {
+                    message: "Opravdu chcete smazat tuto stanici?",
+                    deleteIcon: <Icon name="bin" color={Colors.primary} size={getScaleFactor() * 45} />,
+                    onConfirm: async () => {
+                        await StationModel.delete(item.id!);
+                        //OPRAVIT
+                         hideModal();
+                         showModal(StationsModal);
+                    },
+                })}
+                onPress={() => showModal(AddStationRecordModal, { station: item, previousModal: StationsModal })}
+            />,
         [isDark]
     );
 

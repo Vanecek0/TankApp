@@ -15,6 +15,8 @@ import {
 type ModalContextType = {
   showModal: (Component: React.FC<any>, props?: Record<string, any>) => void
   hideModal: () => void
+  showSuperModal: (Component: React.FC<any>, props?: Record<string, any>) => void
+  hideSuperModal: () => void
 }
 
 const ModalContext = createContext<ModalContextType | undefined>(undefined)
@@ -30,10 +32,13 @@ export const useModal = () => {
 export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
   const [ModalComponent, setModalComponent] = useState<React.FC<any> | null>(null)
   const [modalProps, setModalProps] = useState<Record<string, any>>({})
+  const [SuperModalComponent, setSuperModalComponent] = useState<React.FC<any> | null>(null)
+  const [superModalProps, setSuperModalProps] = useState<Record<string, any>>({})
+
   const { isDark } = useTheme()
 
   const showModal = (Component: React.FC<any>, props: Record<string, any> = {}) => {
-    setModalComponent(() => Component) // wrap in arrow function to preserve React identity
+    setModalComponent(() => Component)
     setModalProps(props)
   }
 
@@ -42,32 +47,57 @@ export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
     setModalProps({})
   }
 
+  const showSuperModal = (Component: React.FC<any>, props: Record<string, any> = {}) => {
+    setSuperModalComponent(() => Component)
+    setSuperModalProps(props)
+  }
+
+  const hideSuperModal = () => {
+    setSuperModalComponent(null)
+    setSuperModalProps({})
+  }
+
   return (
-    <ModalContext.Provider value={{ showModal, hideModal }}>
+    <ModalContext.Provider value={{ showModal, hideModal, showSuperModal, hideSuperModal }}>
       {children}
+
+      {/* Normální modal */}
       {ModalComponent && (
-        <Modal animationType="fade" transparent={true} visible={!!ModalComponent} onRequestClose={hideModal}>
+        <Modal animationType="fade" transparent visible onRequestClose={hideModal}>
           <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}>
             <TouchableWithoutFeedback onPress={hideModal}>
-              <View
-                style={[
-                  styles.backdrop,
-                  { backgroundColor: isDark ? "rgba(0, 0, 0, 0.75)" : "rgba(0, 0, 0, 0.5)" },
-                ]}
-              />
+              <View style={[
+                styles.backdrop,
+                { backgroundColor: isDark ? "rgba(0,0,0,0.75)" : "rgba(0,0,0,0.5)" }
+              ]} />
             </TouchableWithoutFeedback>
 
             <View style={styles.modalContainer}>
-              <View
-                style={[
-                  styles.modalContent,
-                  {
-                    backgroundColor: isDark ? Colors.dark.secondary : Colors.light.secondary,
-                    ...spacing.borderRadius(12),
-                  },
-                ]}
-              >
+              <View style={[
+                styles.modalContent,
+                { backgroundColor: isDark ? Colors.dark.secondary : Colors.light.secondary, ...spacing.borderRadius(12) }
+              ]}>
                 <ModalComponent {...modalProps} />
+              </View>
+            </View>
+          </KeyboardAvoidingView>
+        </Modal>
+      )}
+
+      {/* Supermodal navrchu */}
+      {SuperModalComponent && (
+        <Modal animationType="fade" transparent visible onRequestClose={hideSuperModal}>
+          <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={StyleSheet.absoluteFill}>
+            <TouchableWithoutFeedback onPress={hideSuperModal}>
+              <View style={[styles.backdrop, { backgroundColor: "rgba(0,0,0,0.85)", zIndex: 9999 }]} />
+            </TouchableWithoutFeedback>
+
+            <View style={[styles.modalContainer, { zIndex: 10000 }]}>
+              <View style={[
+                styles.modalContent,
+                { backgroundColor: isDark ? Colors.dark.secondary : Colors.light.secondary, ...spacing.borderRadius(12) }
+              ]}>
+                <SuperModalComponent {...superModalProps} />
               </View>
             </View>
           </KeyboardAvoidingView>
