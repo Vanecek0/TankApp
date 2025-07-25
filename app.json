@@ -15,7 +15,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.vanecek0.TankApp"
     },
     "web": {
       "bundler": "metro",
@@ -77,6 +78,12 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "cab8238d-e7e1-449a-ac52-deed69d00e68"
+      }
     }
   }
 }
