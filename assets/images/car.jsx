@@ -6,6 +6,8 @@ function SvgComponent(props) {
     <Svg
       fill={props.color}
       viewBox="0 0 24 24"
+      width={props.width ?? 60}
+      height={props.height ?? 60}
       xmlSpace="preserve"
       xmlns="http://www.w3.org/2000/svg"
       {...props}
