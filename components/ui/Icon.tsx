@@ -1,5 +1,5 @@
-import { ImageStyle, OpaqueColorValue, StyleProp, View } from 'react-native';
-import { Theme} from '@/constants/Colors';
+import { ImageStyle, OpaqueColorValue, StyleProp, View, ViewStyle } from 'react-native';
+import { Theme } from '@/constants/Colors';
 import CarRepair from "@/assets/images/car_repair.jsx";
 import Home from "@/assets/images/home.jsx";
 import MapPin from "@/assets/images/map_pin.jsx";
@@ -70,22 +70,33 @@ export type IconSrc = keyof typeof MAPPING;
 
 export default function Icon({
     name,
-    className,
     color,
     style,
+    className,
+    wrapperStyle,
+    wrapperClassname,
     size
 }: {
     name: IconSrc;
     color?: string | OpaqueColorValue | Theme;
     style?: StyleProp<ImageStyle>;
     className?: string;
+    wrapperStyle?: ViewStyle;
+    wrapperClassname?: string;
     size?: number;
 }) {
     const SvgIcon = MAPPING[name];
 
     return (
-        <View>
-            <SvgIcon color={color} style={[{width: size, height: size}, style]} className={className}  />
+        <View
+            style={[{ justifyContent: 'center', alignItems: 'center' }, wrapperStyle]}
+            className={wrapperClassname}
+        >
+            <SvgIcon
+                color={color}
+                style={[{ width: size, height: size }, style]}
+                className={className}
+            />
         </View>
     );
 }

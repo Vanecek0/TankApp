@@ -10,6 +10,7 @@ export default function Welcome() {
             <Text style={{ textAlign: 'center', marginBottom: 20 }}>
                 Aplikace ti pomůže sledovat výdaje na palivo. Nejprve si vytvoříme profil.
             </Text>
+            <Button title="Pokračovat" onPress={() => router.push('/onboarding/create-profile')} />
         </View>
     );
 }
