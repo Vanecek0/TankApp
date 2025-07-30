@@ -1,4 +1,4 @@
-import { Database } from "@/database/database";
+import type { SQLiteDatabase } from 'expo-sqlite';
 import { Station } from "./Station";
 import { Fuel } from "./Fuel";
 import { StationFuel, StationFuelModel } from "./StationFuel";
@@ -21,11 +21,11 @@ export type Tanking = {
 
 export class TankingModel {
 
-  static async create(tanking: Tanking) {
+  static async create(db: SQLiteDatabase, tanking: Tanking) {
     try {
-      const result = await Database.executeSql(
+      const result = await db.getAllAsync(
         'INSERT INTO tanking (car_id, station_fuel_id, price_per_unit, price, amount, mileage, tachometer, tank_date, snapshot, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-        [tanking.car_id, tanking.station_fuel_id, tanking.price_per_unit, tanking.price, tanking.amount, tanking.mileage, tanking.tachometer, tanking.tank_date, null, tanking.created_at, tanking.updated_at]
+        [tanking.car_id, tanking.station_fuel_id, tanking.price_per_unit, tanking.price, tanking.amount, tanking.mileage, tanking.tachometer, tanking.tank_date, tanking.snapshot!, tanking.created_at, tanking.updated_at]
       );
 
       return result;
@@ -36,14 +36,12 @@ export class TankingModel {
     }
   }
 
-  static async all(): Promise<Tanking[]> {
-    const db = await Database.getConnection();
+  static async all(db: SQLiteDatabase): Promise<Tanking[]> {
     const rows = await db.getAllAsync<Tanking>('SELECT * FROM tanking');
     return rows;
   }
 
-  static async allFromSnapshot(): Promise<Tanking[]> {
-    const db = await Database.getConnection();
+  static async allFromSnapshot(db: SQLiteDatabase): Promise<Tanking[]> {
     const rows = await db.getAllAsync<{ snapshot: string }>('SELECT snapshot FROM tanking WHERE snapshot IS NOT NULL');
 
     return rows
@@ -58,8 +56,7 @@ export class TankingModel {
       .filter((item): item is Tanking => item !== null);
   }
 
-  static async count(): Promise<any> {
-    const db = await Database.getConnection();
+  static async count(db: SQLiteDatabase): Promise<any> {
     const promiseThen = new Promise((resolve, reject) => {
       const count = db.getAllAsync('SELECT COUNT(*) FROM tanking')
       resolve(count);
@@ -72,8 +69,7 @@ export class TankingModel {
       .catch((err) => console.log(err));
   }
 
-  static async getTotalPriceAndMileage(): Promise<{ total_price: number; total_mileage: number }> {
-    const db = await Database.getConnection();
+  static async getTotalPriceAndMileage(db: SQLiteDatabase): Promise<{ total_price: number; total_mileage: number }> {
 
     const query = `
     SELECT 
@@ -99,8 +95,7 @@ export class TankingModel {
     }
   }
 
-  static async getPriceMileageSumByDate(fromDate?: Date, toDate?: Date, limit?: number): Promise<{ month: string; total_price: number; total_mileage: number }[]> {
-    const db = await Database.getConnection();
+  static async getPriceMileageSumByDate(db: SQLiteDatabase, fromDate?: Date, toDate?: Date, limit?: number): Promise<{ month: string; total_price: number; total_mileage: number }[]> {
 
     const from = fromDate?.getTime() ?? 0;
     const to = toDate?.getTime() ?? Date.now();
@@ -159,8 +154,7 @@ export class TankingModel {
     }
   }
 
-
-  static async getGroupedTankingsByMonth(order: string = 'DESC'): Promise<{
+  static async getGroupedTankingsByMonth(db: SQLiteDatabase, order: string = 'DESC'): Promise<{
     month: string,
     tankings: (Tanking & {
       station?: Station,
@@ -169,8 +163,8 @@ export class TankingModel {
       badges?: Badge[]
     })[]
   }[]> {
-    const db = await Database.getConnection();
 
+    console.log(db);
     const rows = await db.getAllAsync<{
       id: number;
       snapshot: string;
@@ -188,7 +182,7 @@ export class TankingModel {
     const tankingIds = rows.map(r => r.id);
     let badgesData: { [key: number]: Badge[] } = {};
     if (tankingIds.length > 0) {
-      badgesData = await BadgeModel.getBadgesByTanking(tankingIds);
+      badgesData = await BadgeModel.getBadgesByTanking(db, tankingIds);
     }
 
     const grouped = new Map<string, (Tanking & {
@@ -252,8 +246,7 @@ export class TankingModel {
     }));
   }
 
-  static async getAllTankingsWithStationFuel(limit?: number): Promise<(Tanking & { station: Station, fuel: Fuel, station_fuel: StationFuel })[]> {
-    const db = await Database.getConnection();
+  static async getAllTankingsWithStationFuel(db: SQLiteDatabase, limit?: number): Promise<(Tanking & { station: Station, fuel: Fuel, station_fuel: StationFuel })[]> {
     const rows = await db.getAllAsync(
       `SELECT
     t.*,
@@ -326,8 +319,7 @@ export class TankingModel {
     }));
   }
 
-  static async getAllTankingsWithStation(limit?: number): Promise<(Tanking & { station: Station })[]> {
-    const db = await Database.getConnection();
+  static async getAllTankingsWithStation(db: SQLiteDatabase, limit?: number): Promise<(Tanking & { station: Station })[]> {
     const rows = await db.getAllAsync(
       `SELECT
     t.*,
@@ -381,10 +373,8 @@ export class TankingModel {
   }
 
 
-  static async updateSnapshot(id: number) {
-    const db = await Database.getConnection();
-
-    const tanking = await this.findById(id);
+  static async updateSnapshot(db: SQLiteDatabase, id: number) {
+    const tanking = await this.findById(db, id);
     if (!tanking) {
       throw new Error(`Tanking záznam s ID ${id} nebyl nalezen.`);
     }
@@ -409,13 +399,12 @@ export class TankingModel {
   }
 
 
-  static async findById(id: number): Promise<Tanking | null> {
-    const db = await Database.getConnection();
+  static async findById(db: SQLiteDatabase, id: number): Promise<Tanking | null> {
     const row = await db.getFirstAsync<Tanking>('SELECT * FROM tanking WHERE id = ?', [id]);
     return row;
   }
 
-  static async delete(id: number) {
-    await Database.executeSql('DELETE FROM tanking WHERE id = ?', [id]);
+  static async delete(db: SQLiteDatabase, id: number) {
+    await db.runAsync('DELETE FROM tanking WHERE id = ?', [id]);
   }
 }

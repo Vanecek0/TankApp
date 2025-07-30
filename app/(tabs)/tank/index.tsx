@@ -17,11 +17,13 @@ import { Station } from '@/models/Station';
 import { Fuel } from '@/models/Fuel';
 import { StationFuel } from '@/models/StationFuel';
 import { getDate } from '@/utils/getDate';
+import { useDatabase } from '@/database/databaseContext';
 
 export default function TankScreen() {
   const { isDark } = useTheme();
   const pathname = usePathname();
   const [isLoading, setIsLoading] = useState(true);
+  const {db} = useDatabase();
   const [tanking, setTanking] = useState<{
     month: string,
     tankings: (Tanking & {
@@ -35,7 +37,7 @@ export default function TankScreen() {
   const loadTankings = useCallback(async () => {
     setIsLoading(true);
     try {
-      const tankingsBadges = await TankingModel.getGroupedTankingsByMonth();
+      const tankingsBadges = await TankingModel.getGroupedTankingsByMonth(db);
       setTanking(tankingsBadges);
     } catch (error) {
       console.error('Chyba při načítání tankings:', error);

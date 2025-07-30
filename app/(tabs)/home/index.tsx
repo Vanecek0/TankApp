@@ -13,10 +13,12 @@ import { Tanking, TankingModel } from '@/models/Tanking';
 import ActionButton from '@/components/ui/actionButton';
 import { Station } from '@/models/Station';
 import Dropdown from '@/components/other/dropdown';
+import { useDatabase } from '@/database/databaseContext';
 
 export default function HomeScreen() {
   const { isDark } = useTheme();
   const pathname = usePathname();
+  const { db } = useDatabase();
   const [orderTankings, setOrderTankings] = useState('DESC');
   const [tanking, setTanking] = useState<{
     month: string,
@@ -29,7 +31,7 @@ export default function HomeScreen() {
   const loadTankings = useCallback(async (orderTankings: string) => {
     setIsLoading(true);
     try {
-      const tankingsBadges = await TankingModel.getGroupedTankingsByMonth(orderTankings);
+      const tankingsBadges = await TankingModel.getGroupedTankingsByMonth(db, orderTankings);
       setTanking(tankingsBadges);
     } catch (error) {
       console.error('Chyba při načítání tankings:', error);
@@ -40,6 +42,7 @@ export default function HomeScreen() {
 
   const onRefresh = useCallback(async () => {
     await loadTankings(orderTankings);
+    console.log(tanking);
   }, []);
 
   useEffect(() => {

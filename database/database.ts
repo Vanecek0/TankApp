@@ -10,36 +10,26 @@ export class Database {
   static dbOpeningPromise: Promise<SQLite.SQLiteDatabase> | null = null
 
   static async getConnection(): Promise<SQLite.SQLiteDatabase> {
-
-    if (this.dbInstance && typeof this.dbInstance.execAsync === "function") {
-      console.log("Returning existing DB instance");
-      return this.dbInstance;
+    if (this.dbInstance) {
+      return this.dbInstance
     }
 
     if (!this.dbOpeningPromise) {
-      console.log("Opening new DB connection...");
+      console.log("Opening new DB connection...")
       this.dbOpeningPromise = SQLite.openDatabaseAsync(DB_NAME)
         .then((db) => {
-          if (typeof db.execAsync !== "function") {
-            throw new Error("Invalid DB object returned from openDatabaseAsync");
-          }
-          this.dbInstance = db;
-          return db;
+          this.dbInstance = db
+          return db
         })
         .catch((err) => {
-          this.dbOpeningPromise = null;
-          console.error("Failed to open DB:", err);
-          throw err;
-        });
+          this.dbOpeningPromise = null
+          console.error("Failed to open DB:", err)
+          throw err
+        })
     }
 
-    const db = await this.dbOpeningPromise;
-
-    if (!db || typeof db.execAsync !== "function") {
-      throw new Error("DB instance is invalid.");
-    }
-
-    return db;
+    const db = await this.dbOpeningPromise
+    return db
   }
 
   static async executeSql(query: string, params?: SQLite.SQLiteBindParams) {
@@ -56,13 +46,13 @@ export class Database {
     const db = await this.getConnection();
 
     try {
-      console.log("Initializing database...");
-
       await db.execAsync(`PRAGMA foreign_keys = ON;`);
       await db.execAsync(`BEGIN TRANSACTION;`);
+
+      await this.createTables();
+
       await db.execAsync(`COMMIT;`);
 
-      console.log("Database init complete");
     } catch (error) {
       await db.execAsync(`ROLLBACK;`);
       console.error("Database init failed:", error);
@@ -82,16 +72,10 @@ export class Database {
 
       const tables = await db.getAllAsync<{ name: string }>(`
         SELECT name FROM sqlite_master 
-        WHERE type='table' AND name IN ('station', 'tanking', 'fuel_prices');
+        WHERE type='table' AND name IN ('station', 'tanking', 'fuel', 'station_fuel', 'badge_tanking', 'badge', 'car', 'part', 'servicing', 'autoservice', 'servicing_part');
       `)
 
-      console.log(
-        "Available tables:",
-        tables.map((t) => t.name),
-      )
-
       await seed(db)
-      console.log("Database seeding completed successfully")
     } catch (error) {
       console.error("Failed to seed database:", error)
       throw error
@@ -110,7 +94,6 @@ export class Database {
         WHERE type = 'view' AND name NOT LIKE 'sqlite_%';
       `);
       for (const { name } of views) {
-        console.log(`Dropping view: ${name}`);
         await db.execAsync(`DROP VIEW IF EXISTS "${name}";`);
       }
 
@@ -119,14 +102,12 @@ export class Database {
         WHERE type = 'table' AND name NOT LIKE 'sqlite_%';
       `);
       for (const { name } of tables) {
-        console.log(`Dropping table: ${name}`);
         await db.execAsync(`DROP TABLE IF EXISTS "${name}";`);
       }
 
       await db.execAsync(`COMMIT;`);
       await db.execAsync(`PRAGMA foreign_keys = ON;`);
 
-      console.log("Database reset complete");
     } catch (error) {
       console.error("Database reset failed, rolling back:", error);
       try {

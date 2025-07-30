@@ -2,7 +2,6 @@ import type * as SQLite from "expo-sqlite"
 
 export async function createTables(db: SQLite.SQLiteDatabase) {
   try {
-    console.log("Creating tables...")
 
     await db.execAsync(`
       CREATE TABLE IF NOT EXISTS "station" (
@@ -157,7 +156,6 @@ export async function createTables(db: SQLite.SQLiteDatabase) {
       GROUP BY period;
     `);
 
-    console.log("Tables created successfully")
   } catch (error) {
     console.error("Error creating tables:", error)
     throw error

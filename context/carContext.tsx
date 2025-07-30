@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Car, CarModel } from '@/models/Car';
+import { useDatabase } from '@/database/databaseContext';
+import { SQLiteDatabase } from 'expo-sqlite';
 
 // --- Kontext typy ---
 type CarContextType = {
@@ -19,16 +21,16 @@ export const useCar = (): CarContextType => {
     return ctx;
 };
 
-async function getCarById(id: number): Promise<Car | null> {
-    const car = await CarModel.findById(id);
+async function getCarById(db: SQLiteDatabase, id: number): Promise<Car | null> {
+    const car = await CarModel.findById(db, id);
     if (car) {
         return car;
     }
     return null;
 }
 
-async function getFirstAvailableCar(): Promise<Car | null> {
-    const car = await CarModel.first();
+async function getFirstAvailableCar(db: SQLiteDatabase): Promise<Car | null> {
+    const car = await CarModel.first(db);
     if (car) {
         return car;
     }
@@ -38,6 +40,7 @@ async function getFirstAvailableCar(): Promise<Car | null> {
 // --- Provider komponenta ---
 export const CarProvider = ({ children }: { children: React.ReactNode }) => {
     const [car, setCarState] = useState<Car | null>(null);
+    const { db } = useDatabase();
 
     const setCar = async (car: Car | null) => {
         if (car?.id !== undefined) {
@@ -55,9 +58,9 @@ export const CarProvider = ({ children }: { children: React.ReactNode }) => {
 
             if (idStr) {
                 const id = parseInt(idStr, 10);
-                car = await getCarById(id);
+                car = await getCarById(db, id);
             } else {
-                car = await getFirstAvailableCar();
+                car = await getFirstAvailableCar(db);
                 if(car) {
                     await AsyncStorage.setItem('selected_car_id', String(car.id));
                 }
