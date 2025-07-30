@@ -189,6 +189,7 @@ export class StationModel {
 
     static async delete(id: number) {
         await Database.executeSql('DELETE FROM station WHERE id = ?', [id]);
+        console.log("done");
     }
 
 }

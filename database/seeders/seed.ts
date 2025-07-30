@@ -31,112 +31,74 @@ export async function seed(db: SQLite.SQLiteDatabase) {
         await db.execAsync("BEGIN TRANSACTION;")
 
         try {
-            /*await db.execAsync("DELETE FROM tanking;")
-            await db.execAsync("DELETE FROM station;")
-            await db.execAsync("DELETE FROM fuel;")
-            await db.execAsync("DELETE FROM servicing;")
-            await db.execAsync("DELETE FROM autoservice;")
-            await db.execAsync("DELETE FROM profile;")
-            await db.execAsync("DELETE FROM part;")
-            await db.execAsync("DELETE FROM car;")
-            await db.execAsync("DELETE FROM badge;")
-            await db.execAsync("DELETE FROM badge_tanking;")
-            await db.execAsync("DELETE FROM station_fuel;")
-            await db.execAsync("DELETE FROM servicing_part;")
-            await db.execAsync("DELETE FROM sqlite_sequence WHERE name IN ('station', 'tanking', 'fuel', 'servicing', 'autoservice', 'profile', 'part', 'car', 'badge', 'badge_tanking', 'station_fuel', 'servicing_part');")*/
-
-
+    
             const fuelSeeds = await getFuelSeeds()
-            console.log(`Seeding ${fuelSeeds.length} fuels...`)
 
             for (const fuel of fuelSeeds) {
-                const create = await FuelModel.create(fuel)
-                console.log(`Inserted fuel: ${create}`)
+                await FuelModel.create(fuel)
             }
 
             const stationSeeds = await getStationSeeds()
-            console.log(`Seeding ${stationSeeds.length} stations...`)
-
             for (const station of stationSeeds) {
-                const create = await StationModel.create(station)
-                console.log(`Inserted station: ${create}`)
+                await StationModel.create(station)
             }
 
             const stationFuelSeeds = await getStationFuelSeeds()
-            console.log(`Seeding ${stationFuelSeeds.length} join table station_fuel...`)
 
             for (const stationFuel of stationFuelSeeds) {
-                const create = await StationFuelModel.create(stationFuel)
-                console.log(`Inserted station_fuel: ${create}`)
+                await StationFuelModel.create(stationFuel)
             }
 
             const autoserviceSeeds = await getAutoserviceSeeds()
-            console.log(`Seeding ${autoserviceSeeds.length} autoservice...`)
 
             for (const autoservice of autoserviceSeeds) {
-                const create = await AutoserviceModel.create(autoservice)
-                console.log(`Inserted autoservice: ${create}`)
+                await AutoserviceModel.create(autoservice)
             }
 
             const partSeeds = await getPartSeeds()
-            console.log(`Seeding ${partSeeds.length} part...`)
 
             for (const part of partSeeds) {
-                const create = await PartModel.create(part)
-                console.log(`Inserted part: ${create}`)
+                await PartModel.create(part)
             }
 
             const carSeeds = await getCarSeeds()
-            console.log(`Seeding ${partSeeds.length} car...`)
 
             for (const car of carSeeds) {
-                const create = await CarModel.create(car)
-                console.log(`Inserted car: ${create}`)
+                await CarModel.create(db, car)
             }
 
             const servicingSeeds = await getServicingSeeds()
-            console.log(`Seeding ${servicingSeeds.length} servicing...`)
 
             for (const servicing of servicingSeeds) {
-                const create = await ServicingModel.create(servicing)
-                console.log(`Inserted servicing: ${create}`)
+                await ServicingModel.create(servicing)
             }
 
             const servicingPartSeeds = await getServicingPartSeeds()
-            console.log(`Seeding ${fuelSeeds.length} join table servicing_part...`)
 
             for (const servicingPart of servicingPartSeeds) {
-                const create = await ServicingPartModel.create(servicingPart)
-                console.log(`Inserted servicing_part: ${create}`)
+                await ServicingPartModel.create(servicingPart)
             }
 
             const tankingSeeds = await getTankingSeeds()
-            console.log(`Seeding ${tankingSeeds.length} tankings...`)
 
             for (const tanking of tankingSeeds) {
-                const create = await TankingModel.create(tanking)
-                console.log(`Inserted tanking: ${create}`)
+                await TankingModel.create(db, tanking)
             }
 
             const badgeSeeds = await getBadgeSeeds()
-            console.log(`Seeding ${badgeSeeds.length} join table badge...`)
 
             for (const badge of badgeSeeds) {
-                const create = await BadgeModel.create(badge)
-                console.log(`Inserted badge: ${create}`)
+                await BadgeModel.create(db, badge)
             }
 
             const badgeTankingSeeds = await getBadgeTankingSeeds()
-            console.log(`Seeding ${badgeTankingSeeds.length} join table badge_tanking...`)
 
             for (const badgeTanking of badgeTankingSeeds) {
-                const create = await BadgeTankingModel.create(badgeTanking)
-                console.log(`Inserted badge_tanking: ${create}`)
+                await BadgeTankingModel.create(badgeTanking)
             }
 
 
             await db.execAsync("COMMIT;")
-            console.log("Seeding complete")
         } catch (error) {
             await db.execAsync("ROLLBACK;")
             throw error

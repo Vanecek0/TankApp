@@ -5,6 +5,7 @@ import { spacing } from "@/utils/SizeScaling";
 import { useEffect, useState } from "react";
 import { TankingModel } from "@/models/Tanking";
 import { TankingStatistics, TankingStatisticsModel } from "@/models/TankingStatistics";
+import { useDatabase } from "@/database/databaseContext";
 
 export default function TankDashboard({ routePathName, className }: {
     routePathName?: string;
@@ -12,14 +13,15 @@ export default function TankDashboard({ routePathName, className }: {
 }) {
     const [tankingSumsDate, setTankingSumsDate] = useState<({ month: string; total_price: number; total_mileage: number })[]>([])
     const [tankingStatistics, setTankingStatistics] = useState<Omit<TankingStatistics, 'period'>>()
+    const { db } = useDatabase();
 
     useEffect(() => {
-        const getTankingSums = async() => {
-            const tankingSums = await TankingModel.getPriceMileageSumByDate();
+        const getTankingSums = async () => {
+            const tankingSums = await TankingModel.getPriceMileageSumByDate(db);
             setTankingSumsDate(tankingSums)
         }
 
-        const getTankingStatistics = async() => {
+        const getTankingStatistics = async () => {
             const tankingStatisticsDate = await TankingStatisticsModel.getSumOfMonthlyTankingStatsByDate();
             setTankingStatistics(tankingStatisticsDate)
         }
@@ -27,7 +29,7 @@ export default function TankDashboard({ routePathName, className }: {
         getTankingStatistics();
         getTankingSums();
 
-    },[])
+    }, [])
     return (
         <>
             <View style={{ ...spacing.p(20), ...spacing.borderRadius(12) }} className={`${className} flex-col bg-primary`}>
@@ -45,6 +47,6 @@ export default function TankDashboard({ routePathName, className }: {
                 <Graph data={tankingSumsDate} routePathName={routePathName} />
             </View>
         </>
-        
+
     )
 }

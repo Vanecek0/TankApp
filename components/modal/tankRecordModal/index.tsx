@@ -15,6 +15,7 @@ import FormNumberInput from '@/components/other/form/formNumberInput';
 import { Station, StationModel } from '@/models/Station';
 import { Fuel, FuelModel } from '@/models/Fuel';
 import { StationFuelModel } from '@/models/StationFuel';
+import { useDatabase } from '@/database/databaseContext';
 
 export default function AddTankRecordModal({ onSubmit }: any) {
   const { hideModal } = useModal();
@@ -23,6 +24,7 @@ export default function AddTankRecordModal({ onSubmit }: any) {
   const { touchedFields } = useFormState({ control });
   const [stations, setStations] = useState<Station[]>([]);
   const [selectedStation, setSelectedStation] = useState<Station>();
+  const {db} = useDatabase();
 
   const [fuels, setFuels] = useState<Fuel[]>([]);
 
@@ -61,8 +63,8 @@ export default function AddTankRecordModal({ onSubmit }: any) {
   const onFormSubmit = async (data: any) => {
     try {
       const myModel = DTO<Tanking, typeof data>(data);
-      const result = await TankingModel.create(myModel);
-      await TankingModel.updateSnapshot(1);
+      const result = await TankingModel.create(db,myModel);
+      await TankingModel.updateSnapshot(db,1);
       console.log('Záznam úspěšně uložen:', result);
       return result;
     } catch (error) {

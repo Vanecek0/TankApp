@@ -30,14 +30,13 @@ const StationItem = React.memo(({ item, isDark, onPress, showDeleteConfirm }: { 
     <View
         style={{
             ...spacing.borderRadius(6),
-            ...spacing.gap(8),
             ...spacing.p(12),
             ...spacing.px(17),
             backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.background,
         }}
     >
         <View className="flex-row justify-between items-start" style={{ ...spacing.gap(32) }}>
-            <View className="flex-1" style={{ ...spacing.gap(4) }}>
+            <View className="flex-1" style={{ ...spacing.gap(4) }} onTouchEnd={() => onPress(item)}>
                 <View className="flex-row items-center" style={{ ...spacing.gap(8) }}>
                     <ScaledText size="lg" className="flex-initial font-bold text-ellipsis overflow-visible" numberOfLines={1} ellipsizeMode="tail" isThemed>
                         {item.name}
@@ -61,79 +60,93 @@ const StationItem = React.memo(({ item, isDark, onPress, showDeleteConfirm }: { 
                 </View>
             </View>
         </View>
-
-        {item.phone && (
-            <View style={{ ...spacing.gap(4) }} className="w-4/5 flex-row items-center">
-                <Icon name="phone" color={Colors.hidden_text} size={getScaleFactor() * 15} />
-                <ScaledText numberOfLines={1} ellipsizeMode="tail" className="text-ellipsis overflow-visible" isThemed size="sm">
-                    {item.phone}
-                </ScaledText>
-            </View>
-        )}
-
-        {item.opening_hrs && item.closing_hrs && (
-            <View style={{ ...spacing.gap(4) }} className="w-4/5 flex-row items-center">
-                <Icon name="clock" color={Colors.hidden_text} size={getScaleFactor() * 15} />
-                <ScaledText numberOfLines={1} ellipsizeMode="tail" className="text-ellipsis overflow-visible" isThemed size="sm">
-                    {new Date(item.opening_hrs).toLocaleTimeString('cs-CZ', { hour: '2-digit', minute: '2-digit' })} -{' '}
-                    {new Date(item.closing_hrs).toLocaleTimeString('cs-CZ', { hour: '2-digit', minute: '2-digit' })}
-                </ScaledText>
-            </View>
-        )}
-
-        {item.fuels.length > 0 && (
-            <View style={{ ...spacing.gap(8) }}>
-                <ScaledText size="base" className="font-bold" isThemed>
-                    Typy paliv
-                </ScaledText>
-                <View className="flex-row flex-wrap" style={{ ...spacing.gap(8) }}>
-                    {item.fuels.map((fuel) => (
-                        <Badge
-                            key={fuel.id}
-                            size="sm"
-                            value={fuel.trademark}
-                            className="uppercase border-[1px]"
-                            isThemed
-                            style={{
-                                ...spacing.borderRadius(12),
-                                borderColor: Colors.hidden_text,
-                            }}
-                            badgeColor=""
-                        />
-                    ))}
+        <View style={{ ...spacing.pt(8), ...spacing.gap(8) }} onTouchEnd={() => onPress(item)}>
+            {item.phone && (
+                <View style={{ ...spacing.gap(4) }} className="w-4/5 flex-row items-center">
+                    <Icon name="phone" color={Colors.hidden_text} size={getScaleFactor() * 15} />
+                    <ScaledText numberOfLines={1} ellipsizeMode="tail" className="text-ellipsis overflow-visible" isThemed size="sm">
+                        {item.phone}
+                    </ScaledText>
                 </View>
-            </View>
-        )}
+            )}
 
-        {item.note?.trim() && (
-            <View>
-                <ScaledText size="base" className="font-bold" isThemed>Poznámka</ScaledText>
-                <ScaledText size="sm" isThemed>{item.note}</ScaledText>
-            </View>
-        )}
+            {item.opening_hrs && item.closing_hrs && (
+                <View style={{ ...spacing.gap(4) }} className="w-4/5 flex-row items-center">
+                    <Icon name="clock" color={Colors.hidden_text} size={getScaleFactor() * 15} />
+                    <ScaledText numberOfLines={1} ellipsizeMode="tail" className="text-ellipsis overflow-visible" isThemed size="sm">
+                        {new Date(item.opening_hrs).toLocaleTimeString('cs-CZ', { hour: '2-digit', minute: '2-digit' })} -{' '}
+                        {new Date(item.closing_hrs).toLocaleTimeString('cs-CZ', { hour: '2-digit', minute: '2-digit' })}
+                    </ScaledText>
+                </View>
+            )}
+
+            {item.fuels.length > 0 && (
+                <View style={{ ...spacing.gap(8) }}>
+                    <ScaledText size="base" className="font-bold" isThemed>
+                        Typy paliv
+                    </ScaledText>
+                    <View className="flex-row flex-wrap" style={{ ...spacing.gap(8) }}>
+                        {item.fuels.map((fuel) => (
+                            <Badge
+                                key={fuel.id}
+                                size="sm"
+                                value={fuel.trademark}
+                                className="uppercase border-[1px]"
+                                isThemed
+                                style={{
+                                    ...spacing.borderRadius(12),
+                                    borderColor: Colors.hidden_text,
+                                }}
+                                badgeColor=""
+                            />
+                        ))}
+                    </View>
+                </View>
+            )}
+
+            {item.note?.trim() && (
+                <View>
+                    <ScaledText size="base" className="font-bold" isThemed>Poznámka</ScaledText>
+                    <ScaledText size="sm" isThemed>{item.note}</ScaledText>
+                </View>
+            )}
+        </View>
     </View>
 ));
 
 export default function StationsModal() {
-    const { hideModal, showModal } = useModal();
+    const { hideModal, showModal, showSuperModal } = useModal();
     const { isDark } = useTheme();
     const [stations, setStations] = useState<StationWithFuels[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
 
-    const loadStations = useCallback(async () => {
+    const loadStations = async () => {
+        setIsLoading(true);
         const data = await StationModel.getAllStationsWithFuels();
         setStations(data);
-    }, []);
+        setIsLoading(false);
+    };
 
     useEffect(() => {
         loadStations();
-    }, [loadStations]);
+    }, []);
+
+    const onRefresh = loadStations;
 
     const renderItem = useCallback(
         ({ item }: { item: StationWithFuels }) =>
             <StationItem
                 item={item}
                 isDark={isDark}
-                showDeleteConfirm={() => console.log("ok")}
+                showDeleteConfirm={() => showSuperModal(DeleteConfirmationModal, {
+                    message: "Opravdu chcete smazat tuto stanici?",
+                    deleteIcon: <Icon name="bin" color={Colors.primary} size={getScaleFactor() * 45} />,
+                    onConfirm: async () => {
+                        //REPAIR: Records not deleting when have station_fuel relations
+                        await StationModel.delete(item.id!);
+                        onRefresh();
+                    },
+                })}
                 onPress={() => showModal(AddStationRecordModal, { station: item, previousModal: StationsModal })}
             />,
         [isDark]
@@ -183,6 +196,9 @@ export default function StationsModal() {
             <View className="flex-1">
                 <VirtualizedList
                     initialNumToRender={1}
+                    refreshControl={
+                        <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
+                    }
                     maxToRenderPerBatch={1}
                     windowSize={2}
                     renderItem={renderItem}
