@@ -7,7 +7,6 @@ import Dashboard from '@/components/ui/dashboard';
 import CustomButton from '@/components/other/customButton';
 import { TankStatistics } from './tabs/statistics';
 import getScaleFactor, { spacing } from '@/utils/SizeScaling';
-import { useDatabase } from '@/database/databaseContext';
 import { Tanking, TankingModel } from '@/models/Tanking';
 import ScaledText from '@/components/other/scaledText';
 import Icon from '@/components/ui/Icon';
@@ -26,10 +25,10 @@ export default function TankScreen() {
   const [tanking, setTanking] = useState<{
     month: string,
     tankings: (Tanking & {
-      station: Station,
-      fuel: Fuel,
-      station_fuel: StationFuel,
-      badges: BadgeType[]
+      station?: Station,
+      fuel?: Fuel,
+      station_fuel?: StationFuel,
+      badges?: BadgeType[]
     })[]
   }[]>([])
 
@@ -55,10 +54,10 @@ export default function TankScreen() {
     item: {
       month: string,
       tankings: (Tanking & {
-        station: Station,
-        fuel: Fuel,
-        station_fuel: StationFuel,
-        badges: BadgeType[]
+        station?: Station,
+        fuel?: Fuel,
+        station_fuel?: StationFuel,
+        badges?: BadgeType[]
       })[]
     }
   }) => {
@@ -71,13 +70,13 @@ export default function TankScreen() {
               <View key={item.id} style={{ backgroundColor: isDark ? Colors.dark.secondary_light : Colors.white, ...spacing.p(20), ...spacing.borderRadius(8) }}>
                 <View key={item.id} style={{ ...spacing.gap(20) }}>
                   <View style={{ ...spacing.gap(12) }} className=' flex-row items-center w-full'>
-                    <ScaledText className='rounded-full' style={{ backgroundColor: "lightgray", fontWeight: "bold", ...spacing.p(16) }} size='base'>{item.id} {item.station.provider.slice(0, 2).toUpperCase()}</ScaledText>
+                    <ScaledText className='rounded-full' style={{ backgroundColor: "lightgray", fontWeight: "bold", ...spacing.p(16) }} size='base'>{item.id} {item.station?.provider.slice(0, 2).toUpperCase()}</ScaledText>
                     <View className='flex-row justify-between flex-1'>
                       <View style={{ ...spacing.gap(4) }} className='flex items-start w-2/3'>
-                        <ScaledText isThemed={true} size="lg" className='font-bold'>{item.station.name}</ScaledText>
+                        <ScaledText isThemed={true} size="lg" className='font-bold'>{item.station?.name}</ScaledText>
                         <View style={{ ...spacing.gap(2) }} className='flex-row justify-center items-center'>
                           <Icon name="map_pin" color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor() * 15} />
-                          <ScaledText numberOfLines={1} ellipsizeMode="tail" className='text-ellipsis overflow-visible w-2/3' isThemed={true} size="sm">{item.station.address}</ScaledText>
+                          <ScaledText numberOfLines={1} ellipsizeMode="tail" className='text-ellipsis overflow-visible w-2/3' isThemed={true} size="sm">{item.station?.address}</ScaledText>
                         </View>
                       </View>
                       <View style={{ ...spacing.gap(4) }} className='flex items-end'>
@@ -98,7 +97,7 @@ export default function TankScreen() {
                       </View>
                       <View className='basis-1/3'>
                         <ScaledText isThemed={true} size="sm" className='font-bold'>Typ paliva</ScaledText>
-                        <ScaledText isThemed={true} size="xs" >{item.fuel.trademark}</ScaledText>
+                        <ScaledText isThemed={true} size="xs" >{item.fuel?.trademark}</ScaledText>
                       </View>
                     </View>
                     <View style={{ ...spacing.gap(12) }} className='flex-row'>
@@ -117,7 +116,7 @@ export default function TankScreen() {
                     </View>
                   </View>
                   <View style={{ ...spacing.gap(8) }} className='flex-row'>
-                    {item.badges.map((badge: BadgeType) => (
+                    {item.badges?.map((badge: BadgeType) => (
                       <Badge
                         key={badge.id}
                         badgeColor={badge.color}
@@ -141,10 +140,10 @@ export default function TankScreen() {
       item: {
         month: string,
         tankings: (Tanking & {
-          station: Station,
-          fuel: Fuel,
-          station_fuel: StationFuel,
-          badges: BadgeType[]
+          station?: Station,
+          fuel?: Fuel,
+          station_fuel?: StationFuel,
+          badges?: BadgeType[]
         })[]
       }
     }) => <TankingItem item={item} />,

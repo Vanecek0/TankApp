@@ -64,7 +64,7 @@ export default function Welcome() {
                 </View>
 
                 <View className='flex-1 justify-end' style={{ ...spacing.pb(20), ...spacing.gap(12) }}>
-                    <ScaledText size='sm' className='text-center' style={{ color: Colors.inactive_icon }}>Začněte nastavením aplikace v dalším kroku</ScaledText>
+                    <ScaledText size='sm' className='text-center' style={{ color: Colors.inactive_icon }}>Začněte nastavením profilu v dalším kroku</ScaledText>
                     <CustomButton
                         onPress={() => router.push('/onboarding/create-profile')}
                         label={"Začínáme"}

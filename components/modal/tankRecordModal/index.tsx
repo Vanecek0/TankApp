@@ -9,7 +9,6 @@ import { useForm, useController, useWatch, useFormState } from 'react-hook-form'
 import ScaledText from '@/components/other/scaledText';
 import { DTO } from '@/DTO/mapper';
 import { Tanking, TankingModel } from '@/models/Tanking';
-import { useDatabase } from '@/database/databaseContext';
 import Dropdown from '@/components/other/dropdown';
 import Icon from '@/components/ui/Icon';
 import FormNumberInput from '@/components/other/form/formNumberInput';
@@ -20,7 +19,6 @@ import { StationFuelModel } from '@/models/StationFuel';
 export default function AddTankRecordModal({ onSubmit }: any) {
   const { hideModal } = useModal();
   const { isDark } = useTheme();
-  const { initTankings } = useDatabase();
   const { control, handleSubmit, setValue, getValues, formState: { errors } } = useForm();
   const { touchedFields } = useFormState({ control });
   const [stations, setStations] = useState<Station[]>([]);
@@ -66,7 +64,6 @@ export default function AddTankRecordModal({ onSubmit }: any) {
       const result = await TankingModel.create(myModel);
       await TankingModel.updateSnapshot(1);
       console.log('Záznam úspěšně uložen:', result);
-      await initTankings();
       return result;
     } catch (error) {
       console.error('Chyba při ukládání záznamu:', error);

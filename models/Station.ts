@@ -67,7 +67,6 @@ export class StationModel {
 
     static async getAllStationsWithFuels(): Promise<(Station & { fuels: (Fuel & { last_price_per_unit: number | null })[] })[]> {
         const db = await Database.getConnection()
-
         const rows = await db.getAllAsync(`
       SELECT
           s.id AS station_id,
