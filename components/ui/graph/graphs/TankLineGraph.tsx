@@ -1,10 +1,11 @@
 import ScaledText from "@/components/other/scaledText";
 import { Colors } from "@/constants/Colors";
 import { FontSizes } from "@/constants/FontSizes";
-import { useDatabase } from "@/database/databaseContext";
+import { Station } from "@/models/Station";
+import { Tanking, TankingModel } from "@/models/Tanking";
 import { useTheme } from "@/theme/ThemeProvider";
 import getScaleFactor, { spacing } from "@/utils/SizeScaling";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Text, View } from "react-native";
 import { BarChart, CurveType, LineChart } from "react-native-gifted-charts";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -14,14 +15,35 @@ export default function TankLineGraph({ className }: {
     data?: any[];
 }) {
     const { isDark } = useTheme();
-    const { tankings, initTankings, isLoading } = useDatabase();
-
+    const [tankings, setTankings] = useState<{
+        month: string,
+        tankings: (Tanking & {
+            station?: Station,
+        })[]
+    }[]>([])
     const [parentWidth, setParentWidth] = useState(0);
+    const [isLoading, setIsLoading] = useState(true);
 
     const onLayout = (event: any) => {
         const { width } = event.nativeEvent.layout;
         setParentWidth(width);
     };
+
+    const loadTankings = useCallback(async () => {
+        setIsLoading(true);
+        try {
+            const tankingsBadges = await TankingModel.getGroupedTankingsByMonth();
+            setTankings(tankingsBadges);
+        } catch (error) {
+            console.error('Chyba při načítání tankings:', error);
+        } finally {
+            setIsLoading(false);
+        }
+    }, []);
+
+    useEffect(() => {
+        loadTankings();
+    }, [loadTankings])
 
     const weight = 1;
 

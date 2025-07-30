@@ -115,34 +115,25 @@ const StationItem = React.memo(({ item, isDark, onPress, showDeleteConfirm }: { 
 ));
 
 export default function StationsModal() {
-    const { hideModal, showModal, showSuperModal } = useModal();
+    const { hideModal, showModal } = useModal();
     const { isDark } = useTheme();
     const [stations, setStations] = useState<StationWithFuels[]>([]);
 
-    const loadStations = async () => {
+    const loadStations = useCallback(async () => {
         const data = await StationModel.getAllStationsWithFuels();
         setStations(data);
-    };
+    }, []);
 
     useEffect(() => {
         loadStations();
-    }, []);
+    }, [loadStations]);
 
     const renderItem = useCallback(
         ({ item }: { item: StationWithFuels }) =>
             <StationItem
                 item={item}
                 isDark={isDark}
-                showDeleteConfirm={() => showSuperModal(DeleteConfirmationModal, {
-                    message: "Opravdu chcete smazat tuto stanici?",
-                    deleteIcon: <Icon name="bin" color={Colors.primary} size={getScaleFactor() * 45} />,
-                    onConfirm: async () => {
-                        await StationModel.delete(item.id!);
-                        //OPRAVIT
-                         hideModal();
-                         showModal(StationsModal);
-                    },
-                })}
+                showDeleteConfirm={() => console.log("ok")}
                 onPress={() => showModal(AddStationRecordModal, { station: item, previousModal: StationsModal })}
             />,
         [isDark]

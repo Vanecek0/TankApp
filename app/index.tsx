@@ -14,7 +14,8 @@ export default function Index() {
             //await initDatabase();
 
             if (true) {
-                router.replace('/onboarding/welcome');
+                //router.replace('/onboarding/welcome');
+                router.replace('/(tabs)/home');
             } else {
                 router.replace('/(tabs)/home');
             }

@@ -163,15 +163,14 @@ export class TankingModel {
   static async getGroupedTankingsByMonth(order: string = 'DESC'): Promise<{
     month: string,
     tankings: (Tanking & {
-      station: Station,
-      fuel: Fuel,
-      station_fuel: StationFuel,
-      badges: Badge[]
+      station?: Station,
+      fuel?: Fuel,
+      station_fuel?: StationFuel,
+      badges?: Badge[]
     })[]
   }[]> {
     const db = await Database.getConnection();
 
-    // 1) Načteme základní tanking záznamy
     const rows = await db.getAllAsync<{
       id: number;
       snapshot: string;
@@ -186,14 +185,12 @@ export class TankingModel {
     ORDER BY tank_date ${order}
   `);
 
-    // 2) Získáme všechny ID pro načtení badges
     const tankingIds = rows.map(r => r.id);
     let badgesData: { [key: number]: Badge[] } = {};
     if (tankingIds.length > 0) {
       badgesData = await BadgeModel.getBadgesByTanking(tankingIds);
     }
 
-    // 3) Seskupíme tankingy podle měsíce
     const grouped = new Map<string, (Tanking & {
       station: Station,
       fuel: Fuel,
@@ -213,7 +210,6 @@ export class TankingModel {
 
       if (!parsed.station || !parsed.fuels || !Array.isArray(parsed.fuels)) continue;
 
-      // Vybereme správné palivo podle station_fuel_id
       const selectedFuel = parsed.fuels.find((f: Fuel) => f.id === parsed.station_fuel_id);
 
       const tanking: Tanking & {
