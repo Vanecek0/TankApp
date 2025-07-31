@@ -31,7 +31,7 @@ export default function HomeScreen() {
   const loadTankings = useCallback(async (orderTankings: string) => {
     setIsLoading(true);
     try {
-      const tankingsBadges = await TankingModel.getGroupedTankingsByMonth(db, orderTankings);
+      const tankingsBadges = await TankingModel.getGroupedTankingsByMonth(orderTankings);
       setTanking(tankingsBadges);
     } catch (error) {
       console.error('Chyba při načítání tankings:', error);

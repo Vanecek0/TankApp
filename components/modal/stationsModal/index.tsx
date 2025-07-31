@@ -19,8 +19,9 @@ import FormTextAreaInput from '@/components/other/form/formTextAreaInput';
 import FormCheckboxItem from '@/components/other/form/formCheckBoxItem';
 import Dropdown from '@/components/other/dropdown';
 import { StationFuel, StationFuelModel } from '@/models/StationFuel';
-import { TankingModel } from '@/models/Tanking';
 import DeleteConfirmationModal from '../superModals/deleteConfirmationModal';
+import { stationFuelRepository } from '@/repositories/stationFuelRepository';
+import { stationRepository } from '@/repositories/stationRepository';
 
 type StationWithFuels = Station & {
     fuels: (Fuel & { last_price_per_unit: number | null })[];
@@ -122,7 +123,7 @@ export default function StationsModal() {
 
     const loadStations = async () => {
         setIsLoading(true);
-        const data = await StationModel.getAllStationsWithFuels();
+        const data = await stationFuelRepository.getAllStationsWithFuels();
         setStations(data);
         setIsLoading(false);
     };
@@ -143,7 +144,7 @@ export default function StationsModal() {
                     deleteIcon: <Icon name="bin" color={Colors.primary} size={getScaleFactor() * 45} />,
                     onConfirm: async () => {
                         //REPAIR: Records not deleting when have station_fuel relations
-                        await StationModel.delete(item.id!);
+                        await stationRepository.delete(item.id!);
                         onRefresh();
                     },
                 })}
@@ -243,7 +244,7 @@ export function AddStationRecordModal({ station, previousModal }: { station: Sta
         try {
 
             if (station) {
-                const result = await StationModel.updateStation(station.id!, {
+                const result = await stationRepository.update(station.id!, {
                     name: data.name,
                     address: data.address,
                     phone: data.phone,
@@ -256,7 +257,7 @@ export function AddStationRecordModal({ station, previousModal }: { station: Sta
                 const existingFuelIds = existingFuels.map(sf => sf.id_fuel);
 
                 for (const fuelId of existingFuelIds) {
-                    await StationFuelModel.deleteByFuelAndStation(station.id!, fuelId);
+                    await stationFuelRepository.deleteByFuelAndStation(station.id!, fuelId);
                 }
 
                 for (const fuelId of selectedFuels) {
@@ -271,14 +272,17 @@ export function AddStationRecordModal({ station, previousModal }: { station: Sta
             } else {
 
                 const stationDTO = DTO<Station, typeof data>(data);
-                await StationModel.create(stationDTO);
+                const station = await StationModel.create(stationDTO);
 
                 //Namapovat fuels
-                await StationFuelModel.create({
-                    id_station: data.id,
-                    id_fuel: data.fuel,
-                    last_price_per_unit: 0,
-                });
+                for (const fuelId of selectedFuels) {
+
+                    await StationFuelModel.create({
+                        id_station: station.lastInsertRowId,
+                        id_fuel: fuelId,
+                        last_price_per_unit: 0,
+                    });
+                }
 
                 return true;
             }

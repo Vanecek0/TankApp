@@ -3,6 +3,9 @@ import { Badge, BadgeModel } from './Badge';
 import { StationFuelModel } from './StationFuel';
 import { Station } from './Station';
 import { Fuel } from './Fuel';
+import { badgeTankingRepository } from '@/repositories/badgeTankingRepository';
+import { stationFuelRepository } from '@/repositories/stationFuelRepository';
+import BaseModel from '@/database/base-model';
 
 export type Tanking = {
   id?: number;
@@ -24,7 +27,7 @@ type Snapshot = Tanking & {
   fuels?: Fuel[];
 };
 
-export class TankingModel {
+export class TankingModel extends BaseModel {
   static async create(db: SQLiteDatabase, t: Tanking) {
     return db.runAsync(
       `INSERT INTO tanking (car_id, station_fuel_id, price_per_unit, price, amount, mileage, tachometer, tank_date, snapshot, created_at, updated_at)
@@ -33,8 +36,8 @@ export class TankingModel {
     );
   }
 
-  static async all(db: SQLiteDatabase): Promise<Tanking[]> {
-    return db.getAllAsync<Tanking>('SELECT * FROM tanking');
+  static async all(): Promise<Tanking[]> {
+    return this.query<Tanking>('SELECT * FROM tanking');
   }
 
   static async allFromSnapshot(db: SQLiteDatabase): Promise<Tanking[]> {
@@ -95,12 +98,13 @@ export class TankingModel {
       .map(([month, data]) => ({ month, ...data }));
   }
 
-  static async getGroupedTankingsByMonth(db: SQLiteDatabase, order: string = 'DESC') {
+  static async getGroupedTankingsByMonth( order: string = 'DESC') {
+    const db = await this.getDb();
     const rows = await db.getAllAsync<{ id: number; snapshot: string; tank_date: number }>(
       `SELECT id, snapshot, tank_date FROM tanking WHERE car_id = 1 ORDER BY tank_date ${order}`
     );
 
-    const badgesMap = await BadgeModel.getBadgesByTanking(db, rows.map(r => r.id));
+    const badgesMap = await badgeTankingRepository.getBadgesByTanking(rows.map(r => r.id));
     const grouped = new Map<string, (Snapshot & { badges: Badge[] })[]>();
 
     for (const row of rows) {
@@ -118,7 +122,7 @@ export class TankingModel {
     const tanking = await this.findById(db, id);
     if (!tanking) throw new Error(`Tanking ${id} not found`);
 
-    const stationFuel = await StationFuelModel.getStationWithFuelsById(tanking.station_fuel_id);
+    const stationFuel = await stationFuelRepository.getStationWithFuelsById(tanking.station_fuel_id);
     if (!stationFuel) throw new Error(`StationFuel ${tanking.station_fuel_id} not found`);
 
     const snapshotJson = JSON.stringify({

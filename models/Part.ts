@@ -1,63 +1,62 @@
-import Database from "@/database/database";
+import BaseModel from "@/database/base-model";
 
 export type Part = {
-  id?: number;
-  name: string;
-  manufacturer: string;
-  oem_code: string;
-  description: string;
-  price: number;
-  count: number;
-  unit: string;
-  created_at: number;
-  updated_at: number;
+    id?: number;
+    name: string;
+    manufacturer: string;
+    oem_code: string;
+    description: string;
+    price: number;
+    count: number;
+    unit: string;
+    created_at: number;
+    updated_at: number;
 };
 
-export class PartModel {
+const partColumns: (keyof Omit<Part, "id">)[] = [
+    "name",
+    "manufacturer",
+    "oem_code",
+    "description",
+    "price",
+    "count",
+    "unit",
+    "created_at",
+    "updated_at",
+];
 
-    static async create(part: Part) {
-        try {
-            const result = await Database.executeSql(
-                'INSERT INTO part (name, manufacturer, oem_code, description, price, count, unit, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
-                [part.name, part.manufacturer, part.oem_code, part.description, part.price, part.count, part.unit, part.created_at, part.updated_at]
-            );
+export class PartModel extends BaseModel {
 
-            return result;
-        }
-        catch (error) {
-            console.error('Chyba při vkládání part:', error);
-            throw new Error('Nepodařilo se vytvořit nový záznam.');
-        }
+    static async create(part: Omit<Part, "id">) {
+        const columns = partColumns.join(", ");
+        const placeholders = partColumns.map(() => "?").join(", ");
+        const values = partColumns.map((key) => part[key]);
+
+        const sql = `INSERT INTO part (${columns}) VALUES (${placeholders})`;
+        return this.execute(sql, values);
     }
 
-    static async all(): Promise<Part[]> {
-        const db = await Database.getConnection();
-        const rows = await db.getAllAsync<Part>('SELECT * FROM part');
-        return rows;
+    static all(): Promise<Part[]> {
+        return this.query<Part>("SELECT * FROM part");
     }
 
-    static async count(): Promise<any> {
-        const db = await Database.getConnection();
-        const promiseThen = new Promise((resolve, reject) => {
-            const count = db.getAllAsync('SELECT COUNT(*) FROM part')
-            resolve(count);
-        });
-
-        return promiseThen
-            .then((val: any) => {
-                return val[0]["COUNT(*)"];
-            })
-            .catch((err) => console.log(err));
+    static count(): Promise<number> {
+        return super.count("part");
     }
 
-    static async findById(id: number): Promise<Part | null> {
-        const db = await Database.getConnection();
-        const row = await db.getFirstAsync<Part>('SELECT * FROM part WHERE id = ?', [id]);
-        return row;
+    static findById(id: number): Promise<Part | null> {
+        return this.queryFirst<Part>("SELECT * FROM part WHERE id = ?", [id]);
     }
 
-    static async delete(id: number) {
-        await Database.executeSql('DELETE FROM part WHERE id = ?', [id]);
+    static update(id: number, part: Partial<Omit<Part, "id">>) {
+        const fields = Object.keys(part);
+        const values = Object.values(part);
+        const setClause = fields.map((field) => `${field} = ?`).join(", ");
+        return this.execute(`UPDATE part SET ${setClause} WHERE id = ?`, [...values, id]);
+    }
+
+    static delete(id: number) {
+        return this.execute("DELETE FROM part WHERE id = ?", [id]);
     }
 
 }

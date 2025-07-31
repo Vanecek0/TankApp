@@ -21,6 +21,14 @@ class CarRepository extends BaseRepository<Car> {
         }
         return result.data
     }
+
+    async findByManufacturer(manufacturer: string): Promise<Car[]> {
+        const result = await this.findBy({ manufacturer })
+        if (!result.success || !result.data) {
+            throw new Error(result.error || "Nepodařilo se načíst auta podle manufacturer")
+        }
+        return result.data
+    }
 }
 
 export const carRepository = new CarRepository()

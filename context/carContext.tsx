@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Car, CarModel } from '@/models/Car';
+import { carRepository } from '@/repositories/carRepository';
 
 type CarContextType = {
     car: Car | null;
@@ -18,17 +19,17 @@ export const useCar = (): CarContextType => {
 };
 
 async function getCarById(id: number): Promise<Car | null> {
-    const car = await CarModel.findById(id);
-    if (car) {
-        return car;
+    const result = await carRepository.findById(id);
+    if (result.success && result.data) {
+        return result.data;
     }
     return null;
 }
 
 async function getFirstAvailableCar(): Promise<Car | null> {
-    const car = await CarModel.first();
-    if (car) {
-        return car;
+    const result = await carRepository.findFirst();
+    if (result.success && result.data) {
+        return result.data;
     }
     return null;
 }
@@ -55,7 +56,7 @@ export const CarProvider = ({ children }: { children: React.ReactNode }) => {
                 car = await getCarById(id);
             } else {
                 car = await getFirstAvailableCar();
-                if(car) {
+                if (car) {
                     await AsyncStorage.setItem('selected_car_id', String(car.id));
                 }
             }

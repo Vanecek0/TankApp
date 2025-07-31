@@ -1,5 +1,5 @@
 import React from "react"
-import { View, Text } from "react-native"
+import { View } from "react-native"
 import { Colors } from "@/constants/Colors"
 import getScaleFactor, { spacing } from "@/utils/SizeScaling"
 import { useTheme } from "@/theme/ThemeProvider"

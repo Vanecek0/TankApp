@@ -21,8 +21,6 @@ import { getBadgeSeeds } from "./factories/badgeFactory"
 import { BadgeModel } from "@/models/Badge"
 import { getBadgeTankingSeeds } from "./factories/badgeTankingFactory"
 import { BadgeTankingModel } from "@/models/BadgeTanking"
-import { TestModel } from "@/models/TestModel"
-import { getTestSeeds } from "./factories/testFactory"
 
 export async function seed(db: SQLite.SQLiteDatabase) {
     try {
@@ -69,12 +67,6 @@ export async function seed(db: SQLite.SQLiteDatabase) {
                 await CarModel.create(car)
             }
 
-            const testSeeds = await getTestSeeds()
-
-            for (const test of testSeeds) {
-                await TestModel.create(test)
-            }
-
             const servicingSeeds = await getServicingSeeds()
 
             for (const servicing of servicingSeeds) {
@@ -96,7 +88,7 @@ export async function seed(db: SQLite.SQLiteDatabase) {
             const badgeSeeds = await getBadgeSeeds()
 
             for (const badge of badgeSeeds) {
-                await BadgeModel.create(db, badge)
+                await BadgeModel.create(badge)
             }
 
             const badgeTankingSeeds = await getBadgeTankingSeeds()

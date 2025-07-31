@@ -1,58 +1,52 @@
-import Database from "@/database/database";
+import BaseModel from "@/database/base-model";
 
 export type Fuel = {
-  id?: number;
-  name: string;
-  code: string;
-  trademark: string;
-  unit: string;
+    id?: number;
+    name: string;
+    code: string;
+    trademark: string;
+    unit: string;
 };
 
-export class FuelModel {
+const fuelColumns: (keyof Omit<Fuel, "id">)[] = [
+    "name",
+    "code",
+    "trademark",
+    "unit",
+]
 
-    static async create(fuel: Fuel) {
-        try {
-            const result = await Database.executeSql(
-                'INSERT INTO fuel (name, code, trademark, unit) VALUES (?, ?, ?, ?)',
-                [fuel.name, fuel.code, fuel.trademark, fuel.unit]
-            );
+export class FuelModel extends BaseModel {
 
-            return result;
-        }
-        catch (error) {
-            console.error('Chyba při vkládání fuel:', error);
-            throw new Error('Nepodařilo se vytvořit nový záznam.');
-        }
+    static async create(fuel: Omit<Fuel, "id">) {
+        const columns = fuelColumns.join(", ")
+        const placeholders = fuelColumns.map(() => "?").join(", ")
+        const values = fuelColumns.map((key) => fuel[key])
+
+        const sql = `INSERT INTO fuel (${columns}) VALUES (${placeholders})`
+        return this.execute(sql, values)
     }
 
-    static async all(): Promise<Fuel[]> {
-        const db = await Database.getConnection();
-        const rows = await db.getAllAsync<Fuel>('SELECT * FROM fuel');
-        return rows;
+    static all(): Promise<Fuel[]> {
+        return this.query<Fuel>("SELECT * FROM fuel")
     }
 
-    static async count(): Promise<any> {
-        const db = await Database.getConnection();
-        const promiseThen = new Promise((resolve, reject) => {
-            const count = db.getAllAsync('SELECT COUNT(*) FROM fuel')
-            resolve(count);
-        });
-
-        return promiseThen
-            .then((val: any) => {
-                return val[0]["COUNT(*)"];
-            })
-            .catch((err) => console.log(err));
+    static update(id: number, fuel: Partial<Omit<Fuel, "id">>) {
+        const fields = Object.keys(fuel)
+        const values = Object.values(fuel)
+        const setClause = fields.map((field) => `${field} = ?`).join(", ")
+        return this.execute(`UPDATE fuel SET ${setClause} WHERE id = ?`, [...values, id])
     }
 
-    static async findById(id: number): Promise<Fuel | null> {
-        const db = await Database.getConnection();
-        const row = await db.getFirstAsync<Fuel>('SELECT * FROM fuel WHERE id = ?', [id]);
-        return row;
+    static count(): Promise<number> {
+        return super.count("fuel")
     }
 
-    static async delete(id: number) {
-        await Database.executeSql('DELETE FROM fuel WHERE id = ?', [id]);
+    static delete(id: number) {
+        return this.execute("DELETE FROM fuel WHERE id = ?", [id])
+    }
+
+    static findById(id: number): Promise<Fuel | null> {
+        return this.queryFirst<Fuel>("SELECT * FROM fuel WHERE id = ?", [id])
     }
 
 }
