@@ -5,7 +5,7 @@ import { usePathname } from 'expo-router';
 import { Colors } from '@/constants/Colors';
 import Dashboard from '@/components/ui/dashboard';
 import CustomButton from '@/components/other/customButton';
-import { TankStatistics } from './tabs/statistics';
+import TankStatistics from './tabs/statistics';
 import getScaleFactor, { spacing } from '@/utils/SizeScaling';
 import { Tanking, TankingModel } from '@/models/Tanking';
 import ScaledText from '@/components/other/scaledText';

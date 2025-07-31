@@ -1,6 +1,7 @@
-import { Database } from "@/database/database";
+import Database from "@/database/database";
 import { Fuel } from "./Fuel";
 import { StationFuel, StationFuelModel } from "./StationFuel";
+import BaseModel from "@/database/base-model";
 
 export type Station = {
     id?: number;
@@ -189,7 +190,6 @@ export class StationModel {
 
     static async delete(id: number) {
         await Database.executeSql('DELETE FROM station WHERE id = ?', [id]);
-        console.log("done");
     }
 
 }

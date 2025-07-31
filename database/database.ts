@@ -1,13 +1,12 @@
 import Config from "react-native-config"
-import * as SQLite from "expo-sqlite"
 import { createTables } from "./migrations/001_create_tables"
-import { seed } from "./seeders/seed"
+import * as SQLite from "expo-sqlite"
 
 const DB_NAME = Config.DB_NAME ?? "database.db"
 
-export class Database {
-  static dbInstance: SQLite.SQLiteDatabase | null = null
-  static dbOpeningPromise: Promise<SQLite.SQLiteDatabase> | null = null
+export default abstract class Database {
+  private static dbInstance: SQLite.SQLiteDatabase | null = null
+  private static dbOpeningPromise: Promise<SQLite.SQLiteDatabase> | null = null
 
   static async getConnection(): Promise<SQLite.SQLiteDatabase> {
     if (this.dbInstance) {
@@ -28,95 +27,29 @@ export class Database {
         })
     }
 
-    const db = await this.dbOpeningPromise
-    return db
+    return await this.dbOpeningPromise
   }
 
-  static async executeSql(query: string, params?: SQLite.SQLiteBindParams) {
-    const db = await this.getConnection()
-
-    if (params === undefined) {
-      return db.execAsync(query)
-    } else {
-      return db.runAsync(query, params)
-    }
-  }
-
-  static async init() {
+  static async executeSql(sql: string, params: any[] = []): Promise<SQLite.SQLiteRunResult> {
     const db = await this.getConnection();
 
     try {
-      await db.execAsync(`PRAGMA foreign_keys = ON;`);
-      await db.execAsync(`BEGIN TRANSACTION;`);
-
-      await this.createTables();
-
-      await db.execAsync(`COMMIT;`);
-
+      return await db.runAsync(sql, params);
     } catch (error) {
-      await db.execAsync(`ROLLBACK;`);
-      console.error("Database init failed:", error);
+      console.error("Execute failed:", error);
       throw error;
     }
   }
 
-  static async createTables() {
-    const db = await this.getConnection()
-    await createTables(db)
+  static async query<T = any>(sql: string, params: any[] = []): Promise<T[]> {
+    if (!this.dbInstance) throw new Error("Database not initialized")
+    return this.dbInstance.getAllAsync<T>(sql, params)
   }
 
-  static async seedData() {
-    try {
-      const db = await this.getConnection()
-      await db.runAsync('PRAGMA foreign_keys = ON;')
-
-      const tables = await db.getAllAsync<{ name: string }>(`
-        SELECT name FROM sqlite_master 
-        WHERE type='table' AND name IN ('station', 'tanking', 'fuel', 'station_fuel', 'badge_tanking', 'badge', 'car', 'part', 'servicing', 'autoservice', 'servicing_part');
-      `)
-
-      await seed(db)
-    } catch (error) {
-      console.error("Failed to seed database:", error)
-      throw error
-    }
+  static async queryFirst<T = any>(sql: string, params: any[] = []): Promise<T | null> {
+    if (!this.dbInstance) throw new Error("Database not initialized")
+    const result = await this.dbInstance.getFirstAsync<T>(sql, params)
+    return result ?? null
   }
 
-  static async resetDatabase() {
-    try {
-      const db = await this.getConnection();
-
-      await db.execAsync(`PRAGMA foreign_keys = OFF;`);
-      await db.execAsync(`BEGIN IMMEDIATE TRANSACTION;`);
-
-      const views = await db.getAllAsync<{ name: string }>(`
-        SELECT name FROM sqlite_master
-        WHERE type = 'view' AND name NOT LIKE 'sqlite_%';
-      `);
-      for (const { name } of views) {
-        await db.execAsync(`DROP VIEW IF EXISTS "${name}";`);
-      }
-
-      const tables = await db.getAllAsync<{ name: string }>(`
-        SELECT name FROM sqlite_master
-        WHERE type = 'table' AND name NOT LIKE 'sqlite_%';
-      `);
-      for (const { name } of tables) {
-        await db.execAsync(`DROP TABLE IF EXISTS "${name}";`);
-      }
-
-      await db.execAsync(`COMMIT;`);
-      await db.execAsync(`PRAGMA foreign_keys = ON;`);
-
-    } catch (error) {
-      console.error("Database reset failed, rolling back:", error);
-      try {
-        const db = await this.getConnection();
-        await db.execAsync("ROLLBACK;");
-      } catch (rollbackError) {
-        console.error("Rollback failed:", rollbackError);
-      }
-      throw error;
-    }
-  }
 }

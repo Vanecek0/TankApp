@@ -1,5 +1,5 @@
-import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react';
-import { Database } from './database';
+import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
+import Database from './database';
 import { SQLiteDatabase } from 'expo-sqlite';
 
 type DatabaseContextType = {

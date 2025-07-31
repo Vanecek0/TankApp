@@ -10,7 +10,7 @@ import Graph from '@/components/ui/graph/Graph';
 import { spacing } from '@/utils/SizeScaling';
 import { TankingStatistics, TankingStatisticsModel } from '@/models/TankingStatistics';
 
-export function TankStatistics() {
+export default function TankStatistics() {
   const { isDark } = useTheme();
   const pathname = usePathname();
 

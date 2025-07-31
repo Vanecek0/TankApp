@@ -1,4 +1,4 @@
-import { Database } from "@/database/database";
+import Database from "@/database/database";
 import { Station } from "./Station";
 import { Fuel } from "./Fuel";
 
