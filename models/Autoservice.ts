@@ -1,58 +1,53 @@
-import Database from "@/database/database";
+import BaseModel from "@/database/base-model"
 
 export type Autoservice = {
-  id?: number;
-  name: string;
-  address: string;
-  created_at: number;
-  updated_at: number;
-};
+    id?: number
+    name: string
+    address: string
+    created_at: number
+    updated_at: number
+}
 
-export class AutoserviceModel {
+export const autoserviceColumns: (keyof Omit<Autoservice, "id">)[] = [
+    "name",
+    "address",
+    "created_at",
+    "updated_at"
+]
 
-    static async create(autoservice: Autoservice) {
-        try {
-            const result = await Database.executeSql(
-                'INSERT INTO autoservice (name, address, created_at, updated_at) VALUES (?, ?, ?, ?)',
-                [autoservice.name, autoservice.address, autoservice.created_at, autoservice.updated_at]
-            );
+export class AutoserviceModel extends BaseModel {
+    static async create(autoservice: Omit<Autoservice, "id">) {
+        const columns = autoserviceColumns.join(", ")
+        const placeholders = autoserviceColumns.map(() => "?").join(", ")
+        const values = autoserviceColumns.map((key) => autoservice[key])
 
-            return result;
-        }
-        catch (error) {
-            console.error('Chyba při vkládání autoservice:', error);
-            throw new Error('Nepodařilo se vytvořit nový záznam.');
-        }
+        const sql = `INSERT INTO autoservice (${columns}) VALUES (${placeholders})`
+        return this.execute(sql, values)
     }
 
-    static async all(): Promise<Autoservice[]> {
-        const db = await Database.getConnection();
-        const rows = await db.getAllAsync<Autoservice>('SELECT * FROM autoservice');
-        return rows;
+    static all(): Promise<Autoservice[]> {
+        return this.query<Autoservice>("SELECT * FROM autoservice")
     }
 
-    static async count(): Promise<any> {
-        const db = await Database.getConnection();
-        const promiseThen = new Promise((resolve, reject) => {
-            const count = db.getAllAsync('SELECT COUNT(*) FROM autoservice')
-            resolve(count);
-        });
-
-        return promiseThen
-            .then((val: any) => {
-                return val[0]["COUNT(*)"];
-            })
-            .catch((err) => console.log(err));
+    static findById(id: number): Promise<Autoservice | null> {
+        return this.queryFirst<Autoservice>("SELECT * FROM autoservice WHERE id = ?", [id])
     }
 
-    static async findById(id: number): Promise<Autoservice | null> {
-        const db = await Database.getConnection();
-        const row = await db.getFirstAsync<Autoservice>('SELECT * FROM autoservice WHERE id = ?', [id]);
-        return row;
+    static async update(id: number, autoservice: Partial<Omit<Autoservice, "id">>) {
+        const fields = Object.keys(autoservice)
+        const values = Object.values(autoservice)
+        if (fields.length === 0) return Promise.resolve()
+
+        const setClause = fields.map((field) => `${field} = ?`).join(", ")
+        const sql = `UPDATE autoservice SET ${setClause}, updated_at = CURRENT_TIMESTAMP WHERE id = ?`
+        return this.execute(sql, [...values, id])
     }
 
-    static async delete(id: number) {
-        await Database.executeSql('DELETE FROM autoservice WHERE id = ?', [id]);
+    static delete(id: number) {
+        return this.execute("DELETE FROM autoservice WHERE id = ?", [id])
     }
 
+    static count(): Promise<number> {
+        return super.count("autoservice")
+    }
 }

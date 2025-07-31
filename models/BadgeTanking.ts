@@ -1,49 +1,45 @@
-import Database from "@/database/database";
+import BaseModel from "@/database/base-model"
 
 export type BadgeTanking = {
-    id?: number;
-    id_badge: number;
-    id_tanking: number;
-};
+    id?: number
+    id_badge: number
+    id_tanking: number
+}
 
+export const badgeTankingColumns: (keyof Omit<BadgeTanking, "id">)[] = [
+    "id_badge",
+    "id_tanking"
+]
 
-export class BadgeTankingModel {
+export class BadgeTankingModel extends BaseModel {
+    static async create(badgeTanking: Omit<BadgeTanking, "id">) {
+        const columns = badgeTankingColumns.join(", ")
+        const placeholders = badgeTankingColumns.map(() => "?").join(", ")
+        const values = badgeTankingColumns.map((key) => badgeTanking[key])
 
-    static async create(badge_tanking: BadgeTanking) {
-        try {
-            const result = await Database.executeSql(
-                'INSERT OR REPLACE INTO badge_tanking (id_badge, id_tanking) VALUES (?, ?)',
-                [badge_tanking.id_badge, badge_tanking.id_tanking]
-            );
-            return result;
-        }
-        catch (error) {
-            console.error('Chyba při vkládání badge_tanking:', error);
-            throw new Error('Nepodařilo se vytvořit nový záznam.');
-        }
+        const sql = `INSERT OR REPLACE INTO badge_tanking (${columns}) VALUES (${placeholders})`
+        return this.execute(sql, values)
     }
 
-    static async all(): Promise<BadgeTanking[]> {
-        const db = await Database.getConnection();
-        const rows = await db.getAllAsync<BadgeTanking>('SELECT bt.* FROM badge_tanking bt INNER JOIN badge b ON bt.id_badge = b.id INNER JOIN tanking t ON bt.id_tanking = t.id');
-        return rows;
+    static all(): Promise<BadgeTanking[]> {
+        const sql = `
+      SELECT bt.*
+      FROM badge_tanking bt
+      INNER JOIN badge b ON bt.id_badge = b.id
+      INNER JOIN tanking t ON bt.id_tanking = t.id
+    `
+        return this.query<BadgeTanking>(sql)
     }
 
-    static async count(): Promise<any> {
-        const db = await Database.getConnection();
-        const promiseThen = new Promise((resolve, reject) => {
-            const count = db.getAllAsync('SELECT COUNT(*) FROM badge_tanking')
-            resolve(count);
-        });
-
-        return promiseThen
-            .then((val: any) => {
-                return val[0]["COUNT(*)"];
-            })
-            .catch((err) => console.log(err));
+    static findById(id: number): Promise<BadgeTanking | null> {
+        return this.queryFirst<BadgeTanking>("SELECT * FROM badge_tanking WHERE id = ?", [id])
     }
 
-    static async delete(id: number) {
-        await Database.executeSql('DELETE FROM badge_tanking WHERE id = ?', [id]);
+    static delete(id: number) {
+        return this.execute("DELETE FROM badge_tanking WHERE id = ?", [id])
+    }
+
+    static count(): Promise<number> {
+        return super.count("badge_tanking")
     }
 }

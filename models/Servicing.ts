@@ -1,59 +1,58 @@
-import Database from "@/database/database";
+import BaseModel from "@/database/base-model";
 
 export type Servicing = {
-  id?: number;
-  car_id: number;
-  name: string;
-  description: string;
-  autoservice_id: number;
-  service_date: number;
-  created_at: number;
-  updated_at: number;
+    id?: number;
+    car_id: number;
+    name: string;
+    description: string;
+    autoservice_id: number;
+    service_date: number;
+    created_at: number;
+    updated_at: number;
 };
 
-export class ServicingModel {
+const servicingColumns: (keyof Omit<Servicing, "id">)[] = [
+    "car_id",
+    "name",
+    "description",
+    "autoservice_id",
+    "service_date",
+    "created_at",
+    "updated_at",
+];
 
-    static async create(servicing: Servicing) {
-        try {
-            const result = await Database.executeSql(
-                'INSERT INTO servicing (car_id, name, description, autoservice_id, service_date, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)',
-                [servicing.car_id, servicing.name, servicing.description, servicing.autoservice_id, servicing.service_date, servicing.created_at, servicing.updated_at]
-            );
-            return result;
-        }
-        catch (error) {
-            console.error('Chyba při vkládání servicing:', error);
-            throw new Error('Nepodařilo se vytvořit nový záznam.');
-        }
+export class ServicingModel extends BaseModel {
+
+    static async create(servicing: Omit<Servicing, "id">) {
+        const columns = servicingColumns.join(", ");
+        const placeholders = servicingColumns.map(() => "?").join(", ");
+        const values = servicingColumns.map((key) => servicing[key]);
+
+        const sql = `INSERT INTO servicing (${columns}) VALUES (${placeholders})`;
+        return this.execute(sql, values);
     }
 
-    static async all(): Promise<Servicing[]> {
-        const db = await Database.getConnection();
-        const rows = await db.getAllAsync<Servicing>('SELECT * FROM servicing');
-        return rows;
+    static all(): Promise<Servicing[]> {
+        return this.query<Servicing>("SELECT * FROM servicing");
     }
 
-    static async count(): Promise<any> {
-        const db = await Database.getConnection();
-        const promiseThen = new Promise((resolve, reject) => {
-            const count = db.getAllAsync('SELECT COUNT(*) FROM servicing')
-            resolve(count);
-        });
-
-        return promiseThen
-            .then((val: any) => {
-                return val[0]["COUNT(*)"];
-            })
-            .catch((err) => console.log(err));
+    static count(): Promise<number> {
+        return super.count("servicing");
     }
 
-    static async findById(id: number): Promise<Servicing | null> {
-        const db = await Database.getConnection();
-        const row = await db.getFirstAsync<Servicing>('SELECT * FROM servicing WHERE id = ?', [id]);
-        return row;
+    static findById(id: number): Promise<Servicing | null> {
+        return this.queryFirst<Servicing>("SELECT * FROM servicing WHERE id = ?", [id]);
     }
 
-    static async delete(id: number) {
-        await Database.executeSql('DELETE FROM servicing WHERE id = ?', [id]);
+    static update(id: number, servicing: Partial<Omit<Servicing, "id">>) {
+        const fields = Object.keys(servicing);
+        const values = Object.values(servicing);
+        const setClause = fields.map((field) => `${field} = ?`).join(", ");
+        return this.execute(`UPDATE servicing SET ${setClause} WHERE id = ?`, [...values, id]);
     }
+
+    static delete(id: number) {
+        return this.execute("DELETE FROM servicing WHERE id = ?", [id]);
+    }
+
 }

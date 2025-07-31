@@ -16,6 +16,7 @@ import { Station, StationModel } from '@/models/Station';
 import { Fuel, FuelModel } from '@/models/Fuel';
 import { StationFuelModel } from '@/models/StationFuel';
 import { useDatabase } from '@/database/databaseContext';
+import { stationFuelRepository } from '@/repositories/stationFuelRepository';
 
 export default function AddTankRecordModal({ onSubmit }: any) {
   const { hideModal } = useModal();
@@ -38,7 +39,7 @@ export default function AddTankRecordModal({ onSubmit }: any) {
   };
 
   const loadSelectedStationFuels = async (stationID: number) => {
-    const selectedStationFuels = await StationFuelModel.getFuelsByStationId(stationID)
+    const selectedStationFuels = await stationFuelRepository.getFuelsByStationId(stationID)
     setFuels(selectedStationFuels);
   }
 

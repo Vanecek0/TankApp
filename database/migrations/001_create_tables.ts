@@ -36,7 +36,7 @@ export async function createTables(db: SQLite.SQLiteDatabase) {
         "id_fuel"	INTEGER NOT NULL,
         "last_price_per_unit" NUMERIC,
         FOREIGN KEY("id_fuel") REFERENCES "fuel"("id") ON DELETE SET NULL,
-        FOREIGN KEY("id_station") REFERENCES "station"("id") ON DELETE SET NULL
+        FOREIGN KEY("id_station") REFERENCES "station"("id") ON DELETE CASCADE
       );
     `)
 

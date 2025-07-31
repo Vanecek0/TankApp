@@ -2,8 +2,8 @@ import dbInstance from "./database"
 
 export interface DatabaseModel {
     id?: number
-    created_at?: string
-    updated_at?: string
+    created_at?: number
+    updated_at?: number
 }
 
 export interface QueryOptions {
@@ -108,6 +108,29 @@ export default abstract class BaseRepository<T extends DatabaseModel> {
             return { success: true, data: data || undefined }
         } catch (error) {
             return { success: false, error: error instanceof Error ? error.message : "Unknown error" }
+        }
+    }
+
+    async findFirst(filters?: Partial<Record<keyof T, any>>): Promise<DatabaseResult<T>> {
+        try {
+            let whereClause = ""
+            let values: any[] = []
+
+            if (filters && Object.keys(filters).length > 0) {
+                const keys = Object.keys(filters)
+                whereClause = "WHERE " + keys.map((key) => `${key} = ?`).join(" AND ")
+                values = keys.map((key) => filters[key as keyof T])
+            }
+
+            const sql = `SELECT ${this.columns.join(", ")} FROM ${this.tableName} ${whereClause} LIMIT 1`
+            const row = await dbInstance.queryFirst<T>(sql, values)
+
+            return { success: true, data: row ?? undefined }
+        } catch (error) {
+            return {
+                success: false,
+                error: error instanceof Error ? error.message : "Unknown error"
+            }
         }
     }
 
