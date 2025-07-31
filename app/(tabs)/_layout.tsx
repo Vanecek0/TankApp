@@ -77,6 +77,12 @@ export default function TabsLayout() {
                         }}
                     />
                     <Tabs.Screen
+                        name="tank/tabs/statistics"
+                        options={{
+                            href: null,
+                        }}
+                    />
+                    <Tabs.Screen
                         name="service/index"
                         options={{
                             title: 'Servis',

@@ -1,6 +1,6 @@
 import BaseModel from "@/database/base-model"
 
-export type Car = {
+export type Test = {
   id?: number
   manufacturer: string
   model: string
@@ -11,8 +11,8 @@ export type Car = {
   tachometer: number
 }
 
-export class CarModel extends BaseModel {
-  static async create(car: Omit<Car, "id">): Promise<any> {
+export class TestModel extends BaseModel {
+  static async create(car: Omit<Test, "id">): Promise<any> {
     try {
       const result = await this.execute(
         `INSERT INTO car (manufacturer, model, manufacture_year, registration_date, fuel_id, car_nickname, tachometer)
@@ -34,23 +34,23 @@ export class CarModel extends BaseModel {
     }
   }
 
-  static async first(): Promise<Car | null> {
-    return this.queryFirst<Car>("SELECT * FROM car ORDER BY id ASC LIMIT 1")
+  static async first(): Promise<Test | null> {
+    return this.queryFirst<Test>("SELECT * FROM car ORDER BY id ASC LIMIT 1")
   }
 
-  static async all(): Promise<Car[]> {
-    return this.query<Car>("SELECT * FROM car")
+  static async all(): Promise<Test[]> {
+    return this.query<Test>("SELECT * FROM car")
   }
 
   static async count(): Promise<number> {
     return super.count("car")
   }
 
-  static async findById(id: number): Promise<Car | null> {
-    return this.queryFirst<Car>("SELECT * FROM car WHERE id = ?", [id])
+  static async findById(id: number): Promise<Test | null> {
+    return this.queryFirst<Test>("SELECT * FROM car WHERE id = ?", [id])
   }
 
-  static async update(id: number, car: Partial<Omit<Car, "id">>): Promise<void> {
+  static async update(id: number, car: Partial<Omit<Test, "id">>): Promise<void> {
     const fields = Object.keys(car)
     const values = Object.values(car)
     const setClause = fields.map((field) => `${field} = ?`).join(", ")
@@ -62,16 +62,16 @@ export class CarModel extends BaseModel {
     await this.execute("DELETE FROM car WHERE id = ?", [id])
   }
 
-  static async findByManufacturer(manufacturer: string): Promise<Car[]> {
-    return this.query<Car>("SELECT * FROM car WHERE manufacturer = ?", [manufacturer])
+  static async findByManufacturer(manufacturer: string): Promise<Test[]> {
+    return this.query<Test>("SELECT * FROM car WHERE manufacturer = ?", [manufacturer])
   }
 
-  static async findByFuelId(fuelId: number): Promise<Car[]> {
-    return this.query<Car>("SELECT * FROM car WHERE fuel_id = ?", [fuelId])
+  static async findByFuelId(fuelId: number): Promise<Test[]> {
+    return this.query<Test>("SELECT * FROM car WHERE fuel_id = ?", [fuelId])
   }
 
-  static async search(searchTerm: string): Promise<Car[]> {
-    return this.query<Car>(
+  static async search(searchTerm: string): Promise<Test[]> {
+    return this.query<Test>(
       `SELECT * FROM car 
        WHERE manufacturer LIKE ? 
        OR model LIKE ? 

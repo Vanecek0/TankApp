@@ -6,13 +6,13 @@ import React from 'react';
 import "@/app/globals.css"
 import { Colors } from '@/constants/Colors';
 import { FontSizes } from "@/constants/FontSizes";
-import { Database } from "@/database/database";
 import { SQLiteProvider } from "expo-sqlite";
 import { CarProvider } from "@/context/carContext";
 import { Drawer } from 'expo-router/drawer';
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import SettingsBarDrawer from "@/components/ui/settingsBar/settingsBarDrawer";
 import { DatabaseProvider } from "@/database/databaseContext";
+import { initializeDemoDatabase } from "@/database/init";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -34,22 +34,6 @@ export default function RootLayout() {
             }
         }
 
-        const initializeDemoDatabase = async () => {
-            try {
-                console.log("Resetting database...");
-                await Database.resetDatabase();
-
-                console.log("Initializing database...");
-                await Database.init();
-
-                console.log("Seeding demo data...");
-                await Database.seedData();
-
-                console.log("Demo database ready.");
-            } catch (error) {
-                console.error("Failed to initialize demo database:", error);
-            }
-        };
         initializeDemoDatabase();
         prepare();
     }, []);
