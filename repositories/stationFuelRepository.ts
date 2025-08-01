@@ -49,13 +49,13 @@ class StationFuelRepository {
                     name: row.station_name,
                     address: row.station_address,
                     phone: row.station_phone,
-                    opening_hrs: row.opening_hrs,
-                    closing_hrs: row.closing_hrs,
-                    last_visit: row.last_visit,
-                    provider: row.provider,
-                    note: row.note,
-                    created_at: row.created_at,
-                    updated_at: row.updated_at,
+                    opening_hrs: row.station_opening_hrs,
+                    closing_hrs: row.station_closing_hrs,
+                    last_visit: row.station_last_visit,
+                    provider: row.station_provider,
+                    note: row.station_note,
+                    created_at: row.station_created_at,
+                    updated_at: row.station_updated_at,
                     fuels: [],
                 })
             }
@@ -81,7 +81,6 @@ class StationFuelRepository {
     ): Promise<void> {
         const db = await Database.getConnection()
 
-        // Update station
         const fields: string[] = []
         const values: any[] = []
         for (const key in stationData) {
@@ -101,10 +100,8 @@ class StationFuelRepository {
             await db.runAsync(updateSql, values)
         }
 
-        // Delete existing fuels for station
         await db.runAsync("DELETE FROM station_fuel WHERE id_station = ?", [stationId])
 
-        // Insert new fuels for station
         for (const fuel of fuels) {
             await db.runAsync(
                 `INSERT INTO station_fuel (id_station, id_fuel, last_price_per_unit) VALUES (?, ?, ?)`,

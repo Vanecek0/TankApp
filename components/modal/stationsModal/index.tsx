@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState, useMemo } from 'react';
-import { View, VirtualizedList, RefreshControl, TextInput, ScrollView, Modal } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { View, VirtualizedList, RefreshControl, ScrollView } from 'react-native';
 import ScaledText from '@/components/other/scaledText';
 import Icon from '@/components/ui/Icon';
 import Badge from '@/components/ui/badge';
@@ -11,14 +11,12 @@ import { useTheme } from '@/theme/ThemeProvider';
 import getScaleFactor, { spacing } from '@/utils/SizeScaling';
 import { DTO } from '@/DTO/mapper';
 import CustomButton from '@/components/other/customButton';
-import { useController, useForm, useWatch } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import FormTextInput from '@/components/other/form/formTextInput';
-import FormTimeInput from '@/components/other/form/formTextInput';
 import FormDateTimeInput from '@/components/other/form/formDateTimeInput';
 import FormTextAreaInput from '@/components/other/form/formTextAreaInput';
 import FormCheckboxItem from '@/components/other/form/formCheckBoxItem';
-import Dropdown from '@/components/other/dropdown';
-import { StationFuel, StationFuelModel } from '@/models/StationFuel';
+import { StationFuelModel } from '@/models/StationFuel';
 import DeleteConfirmationModal from '../superModals/deleteConfirmationModal';
 import { stationFuelRepository } from '@/repositories/stationFuelRepository';
 import { stationRepository } from '@/repositories/stationRepository';
@@ -136,6 +134,7 @@ export default function StationsModal() {
 
     const renderItem = useCallback(
         ({ item }: { item: StationWithFuels }) =>
+            <>
             <StationItem
                 item={item}
                 isDark={isDark}
@@ -143,13 +142,15 @@ export default function StationsModal() {
                     message: "Opravdu chcete smazat tuto stanici?",
                     deleteIcon: <Icon name="bin" color={Colors.primary} size={getScaleFactor() * 45} />,
                     onConfirm: async () => {
-                        //REPAIR: Records not deleting when have station_fuel relations
                         await stationRepository.delete(item.id!);
                         onRefresh();
                     },
                 })}
                 onPress={() => showModal(AddStationRecordModal, { station: item, previousModal: StationsModal })}
-            />,
+            />
+            {console.log(item)}
+            </>,
+            
         [isDark]
     );
 
@@ -419,7 +420,6 @@ export function AddStationRecordModal({ station, previousModal }: { station: Sta
                         <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
                             <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Poznámka</ScaledText>
                         </View>
-
                         <FormTextAreaInput name="note" defaultValue={station?.note ?? ''} control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></FormTextAreaInput>
                     </View>
                 </View>
