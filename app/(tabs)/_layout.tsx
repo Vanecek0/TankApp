@@ -10,8 +10,8 @@ import SettingsBar from '@/components/ui/settingsBar';
 import { StatusBar } from 'expo-status-bar';
 import { ModalProvider } from '@/providers/modalProvider';
 
+
 export const unstable_settings = {
-    // Ensure any route can link back to `/`
     initialRouteName: 'home/index',
 };
 
