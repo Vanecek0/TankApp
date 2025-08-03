@@ -16,13 +16,13 @@ export function createCarSeed(overrides: Partial<Car> = {}): Car {
 export async function getCarSeeds() {
     return [
         createCarSeed({
-            manufacturer: 'Škoda',
-            model: 'Octavia',
-            manufacture_year: 2015,
-            registration_date: 2016,
+            manufacturer: 'Audi',
+            model: 'TT',
+            manufacture_year: 2006,
+            registration_date: 2009,
             fuel_id: 3,
-            car_nickname: 'Rodinná Octa',
-            tachometer: 128000,
+            car_nickname: 'TéTéčko',
+            tachometer: 140000,
         }),
 
         createCarSeed({

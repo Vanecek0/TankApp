@@ -86,8 +86,6 @@ export default abstract class BaseRepository<T extends DatabaseModel> {
       `.trim()
 
             const data = await dbInstance.query<T>(sql, params)
-
-            // Get total count if needed
             let count: number | undefined
             if (options.limit) {
                 const countSql = `SELECT COUNT(*) as count FROM ${this.tableName} ${whereClause}`
