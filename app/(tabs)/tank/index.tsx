@@ -80,7 +80,7 @@ export default function TankScreen() {
                       </View>
                       <View style={{ ...spacing.gap(4) }} className='flex items-end'>
                         <ScaledText isThemed={true} size="lg" className='font-bold'>{item.price} Kč</ScaledText>
-                        <ScaledText isThemed={true} size="sm" className='text-xs'>{item.amount}l</ScaledText>
+                        <ScaledText isThemed={true} size="sm" className='text-xs'>{item.amount} l</ScaledText>
                       </View>
                     </View>
                   </View>

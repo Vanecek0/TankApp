@@ -11,15 +11,21 @@ import { ModalProvider, useModal } from "@/providers/modalProvider";
 import AboutAppModal from "@/components/modal/aboutAppModal";
 import StationsModal from "@/components/modal/stationsModal";
 import { useSegments } from 'expo-router';
+import { SafeAreaView } from "react-native-safe-area-context";
+import { ScrollView } from "react-native-gesture-handler";
 
 export default function SettingsBarDrawer({ ...props }) {
 
     return (
-        <DrawerContentScrollView {...props} contentContainerStyle={{ marginHorizontal: getScaleFactor() * -12, flexGrow: 1 }}>
-            <ModalProvider>
-                <TestDrawerContent></TestDrawerContent>
-            </ModalProvider>
-        </DrawerContentScrollView>
+
+        <SafeAreaView>
+            <ScrollView {...props}>
+                <ModalProvider>
+                    <TestDrawerContent />
+                </ModalProvider>
+            </ScrollView>
+        </SafeAreaView>
+
     );
 }
 
@@ -44,22 +50,21 @@ function TestDrawerContent() {
                     </View>
                 </View>
                 <View className="justify-center">
-                    <Link href={"/tank"}>
+                    <Link href={"/cars"}>
                         <View className="justify-center items-center" style={{ width: getScaleFactor() * 30, height: getScaleFactor() * 30 }}>
-                            <Icon name="users" color={Colors.inactive_icon} size={getScaleFactor() * 20} />
+                            <Icon name="users" color={Colors.inactive_icon} size={getScaleFactor() * 25} />
                         </View>
                     </Link>
                 </View>
             </View>
-            <View className="flex-1 flex-col justify-between">
+            <View>
                 <View >
-                    TODO
                     <View style={{ ...spacing.gap(8) }}>
-                        <View style={{ ...spacing.gap(8), borderBottomWidth: 1 }}>
+                        <View>
                             <Link
                                 href="/home"
                                 style={{
-                                    ...spacing.py(8),
+                                    ...spacing.py(12),
                                     ...spacing.px(16),
                                     backgroundColor:
                                         currentTabIndex() === "home"
@@ -79,9 +84,9 @@ function TestDrawerContent() {
                                         size={getScaleFactor() * 20}
                                     />
                                 </View>
-                                <View style={{ ...spacing.px(5) }} className="h-full justify-center">
+                                <View style={{ ...spacing.px(10) }} className="h-full justify-center">
                                     <ScaledText
-                                        size="base"
+                                        size="lg"
                                         style={{ color: currentTabIndex() === "home" ? Colors.white : Colors.inactive_icon }}
                                         className="font-medium"
                                         isThemed={true}
@@ -94,7 +99,7 @@ function TestDrawerContent() {
                             <Link
                                 href="/tank"
                                 style={{
-                                    ...spacing.py(8),
+                                    ...spacing.py(12),
                                     ...spacing.px(16),
                                     backgroundColor:
                                         currentTabIndex() === "tank"
@@ -114,9 +119,9 @@ function TestDrawerContent() {
                                         size={getScaleFactor() * 20}
                                     />
                                 </View>
-                                <View style={{ ...spacing.px(5) }} className="h-full justify-center">
+                                <View style={{ ...spacing.px(10) }} className="h-full justify-center">
                                     <ScaledText
-                                        size="base"
+                                        size="lg"
                                         style={{ color: currentTabIndex() === "tank" ? Colors.white : Colors.inactive_icon }}
                                         className="font-medium"
                                         isThemed={true}
@@ -129,7 +134,7 @@ function TestDrawerContent() {
                             <Link
                                 href="/(tabs)/service"
                                 style={{
-                                    ...spacing.py(8),
+                                    ...spacing.py(12),
                                     ...spacing.px(16),
                                     backgroundColor:
                                         currentTabIndex() === "service"
@@ -149,9 +154,9 @@ function TestDrawerContent() {
                                         size={getScaleFactor() * 20}
                                     />
                                 </View>
-                                <View style={{ ...spacing.px(5) }} className="h-full justify-center">
+                                <View style={{ ...spacing.px(10) }} className="h-full justify-center">
                                     <ScaledText
-                                        size="base"
+                                        size="lg"
                                         style={{ color: currentTabIndex() === "service" ? Colors.white : Colors.inactive_icon }}
                                         className="font-medium"
                                         isThemed={true}
@@ -160,50 +165,59 @@ function TestDrawerContent() {
                                     </ScaledText>
                                 </View>
                             </Link>
+                            <View style={{ ...spacing.mx(16), borderBottomWidth: 1, borderColor: isDark ? Colors.dark.secondary_light : Colors.light.background, ...spacing.py(6) }}></View>
                         </View>
-                        <View onTouchEnd={() => { showModal(StationsModal) }} className="flex-row" style={{ ...spacing.py(6) }}>
-                            <View className="justify-center items-center" style={{ width: getScaleFactor() * 30, height: getScaleFactor() * 30 }}>
-                                <Icon name="map_pin" color={Colors.inactive_icon} size={getScaleFactor() * 25} />
+                        <View>
+                            <View
+                                onTouchEnd={() => { showModal(StationsModal) }}
+                                className="flex-row"
+                                style={{
+                                    ...spacing.py(12),
+                                    ...spacing.px(16)
+                                }}>
+                                <View className="justify-center items-center" style={{ width: getScaleFactor() * 30, height: getScaleFactor() * 30 }}>
+                                    <Icon name="map_pin" color={Colors.inactive_icon} size={getScaleFactor() * 25} />
+                                </View>
+                                <View style={{ ...spacing.px(10) }} className="justify-center">
+                                    <ScaledText size='lg' style={{ color: Colors.inactive_icon }} className="font-medium" isThemed={true}>Stanice</ScaledText>
+                                </View>
                             </View>
-                            <View style={{ ...spacing.px(5) }} className="justify-center">
-                                <ScaledText size='base' style={{ color: Colors.inactive_icon }} className="font-medium" isThemed={true}>Stanice</ScaledText>
-                            </View>
+                            <Link
+                                href={"/tank"}
+                                style={{
+                                    ...spacing.py(12),
+                                    ...spacing.px(16)
+                                }}>
+                                <View className="justify-center items-center" style={{ width: getScaleFactor() * 30, height: getScaleFactor() * 30 }}>
+                                    <Icon name="document" color={Colors.inactive_icon} size={getScaleFactor() * 25} />
+                                </View>
+                                <View style={{ ...spacing.px(10) }} className="h-full justify-center">
+                                    <ScaledText size='lg' style={{ color: Colors.inactive_icon }} className="font-medium" isThemed={true}>Dokumenty vozidla</ScaledText>
+                                </View>
+                            </Link>
                         </View>
-                        <Link href={"/tank"} style={{ ...spacing.py(6) }}>
-                            <View className="justify-center items-center" style={{ width: getScaleFactor() * 30, height: getScaleFactor() * 30 }}>
-                                <Icon name="document" color={Colors.inactive_icon} size={getScaleFactor() * 25} />
-                            </View>
-                            <View style={{ ...spacing.px(5) }} className="h-full justify-center">
-                                <ScaledText size='base' style={{ color: Colors.inactive_icon }} className="font-medium" isThemed={true}>Dokumenty vozidla</ScaledText>
-                            </View>
-                        </Link>
+
                     </View>
                 </View>
 
+                
+
                 <View className="border-t-[1px]" style={{ borderColor: isDark ? Colors.dark.secondary_light : Colors.light.background, marginHorizontal: getScaleFactor() * 16, marginVertical: getScaleFactor() * 12, paddingVertical: getScaleFactor() * 16 }} >
-                    <ScaledText size="lg" style={{ color: Colors.inactive_icon, ...spacing.mb(6) }} className="font-bold uppercase" isThemed={true}>Aplikace</ScaledText>
-                    <Link href={"/tank"} style={{ ...spacing.py(6) }}>
-                        <View className="justify-center items-center" style={{ width: getScaleFactor() * 30, height: getScaleFactor() * 30 }}>
-                            <Icon name="palette" color={Colors.inactive_icon} size={getScaleFactor() * 25} />
-                        </View>
-                        <View style={{ ...spacing.px(5) }} className="h-full justify-center">
-                            <ScaledText size='base' style={{ color: Colors.inactive_icon }} className="font-medium" isThemed={true}>Vzhled</ScaledText>
-                        </View>
-                    </Link>
+                   
                     <Link href={"/tank"} style={{ ...spacing.py(6) }}>
                         <View className="justify-center items-center" style={{ width: getScaleFactor() * 30, height: getScaleFactor() * 30 }}>
                             <Icon name="settings" color={Colors.inactive_icon} size={getScaleFactor() * 30} />
                         </View>
-                        <View style={{ ...spacing.px(5) }} className="h-full justify-center">
-                            <ScaledText size='base' style={{ color: Colors.inactive_icon }} className="font-medium" isThemed={true}>Nastavení</ScaledText>
+                        <View style={{ ...spacing.px(10) }} className="h-full justify-center">
+                            <ScaledText size='lg' style={{ color: Colors.inactive_icon }} className="font-medium" isThemed={true}>Nastavení</ScaledText>
                         </View>
                     </Link>
                     <View onTouchEnd={() => { showModal(AboutAppModal) }} className="flex-row" style={{ ...spacing.py(6) }}>
                         <View className="justify-center items-center" style={{ width: getScaleFactor() * 30, height: getScaleFactor() * 30 }}>
                             <Icon name="info" color={Colors.inactive_icon} size={getScaleFactor() * 30} />
                         </View>
-                        <View style={{ ...spacing.px(5) }} className="justify-center">
-                            <ScaledText size='base' style={{ color: Colors.inactive_icon }} className="font-medium" isThemed={true}>O aplikaci</ScaledText>
+                        <View style={{ ...spacing.px(10) }} className="justify-center">
+                            <ScaledText size='lg' style={{ color: Colors.inactive_icon }} className="font-medium" isThemed={true}>O aplikaci</ScaledText>
                         </View>
                     </View>
                 </View>

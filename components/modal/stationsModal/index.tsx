@@ -135,22 +135,21 @@ export default function StationsModal() {
     const renderItem = useCallback(
         ({ item }: { item: StationWithFuels }) =>
             <>
-            <StationItem
-                item={item}
-                isDark={isDark}
-                showDeleteConfirm={() => showSuperModal(DeleteConfirmationModal, {
-                    message: "Opravdu chcete smazat tuto stanici?",
-                    deleteIcon: <Icon name="bin" color={Colors.primary} size={getScaleFactor() * 45} />,
-                    onConfirm: async () => {
-                        await stationRepository.delete(item.id!);
-                        onRefresh();
-                    },
-                })}
-                onPress={() => showModal(AddStationRecordModal, { station: item, previousModal: StationsModal })}
-            />
-            {console.log(item)}
+                <StationItem
+                    item={item}
+                    isDark={isDark}
+                    showDeleteConfirm={() => showSuperModal(DeleteConfirmationModal, {
+                        message: "Opravdu chcete smazat tuto stanici?",
+                        deleteIcon: <Icon name="bin" color={Colors.primary} size={getScaleFactor() * 45} />,
+                        onConfirm: async () => {
+                            await stationRepository.delete(item.id!);
+                            onRefresh();
+                        },
+                    })}
+                    onPress={() => showModal(AddStationRecordModal, { station: item, previousModal: StationsModal })}
+                />
             </>,
-            
+
         [isDark]
     );
 
