@@ -1,5 +1,6 @@
+const primary = "#B80019";
 export const Colors = {
-    primary: "#B80019", //F54505 B80019 198754
+    primary: primary, //F54505 B80019 198754
     white: "#fff",
     inactive_icon: "#999",
     hidden_text: "#aaa",
@@ -23,6 +24,8 @@ export const Colors = {
       orange: "#F54505",
       red: "#B80019",
       green: "#198754",
+      white: "#fff",
+      primary: primary
     }
     
   };
