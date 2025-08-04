@@ -10,10 +10,13 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useCar } from '@/context/carContext';
 import { Car } from '@/models/Car';
 import { carRepository } from '@/repositories/carRepository';
+import Badge from '@/components/ui/badge';
+import contrastHexColor from '@/utils/colorContrast';
+import ActionButton from '@/components/ui/actionButton';
 
 export default function CarSelect() {
     const { isDark } = useTheme();
-    const car = useCar();
+    const { car } = useCar();
     const [containerWidth, setContainerWidth] = useState(0);
     const [cars, setCars] = useState<Car[]>([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -48,15 +51,21 @@ export default function CarSelect() {
 
         return (
             <View style={{ ...spacing.mx(26) }}>
-                <Image
-                    style={{
-                        width: imageWidth,
-                        height: imageHeight,
-                        ...spacing.borderTopRadius(8),
-                    }}
-                    resizeMode='cover'
-                    source={require('@/assets/images/car_default.png')}
-                />
+                <View className='relative'>
+                    {item.id == car?.id ? (
+                        <Badge className='absolute z-10 top-0 left-0' value='Vybráno' textColor={contrastHexColor(Colors.badge.primary)} badgeColor={Colors.badge.primary}></Badge>
+                    ) : undefined}
+
+                    <Image
+                        style={{
+                            width: imageWidth,
+                            height: imageHeight,
+                            ...spacing.borderTopRadius(8),
+                        }}
+                        resizeMode='cover'
+                        source={require('@/assets/images/car_default.png')}
+                    />
+                </View>
 
                 <View
                     style={{
