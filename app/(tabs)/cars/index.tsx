@@ -19,7 +19,7 @@ export default function CarSelect() {
     const { car } = useCar();
     const [cars, setCars] = useState<Car[]>([]);
     const [isLoading, setIsLoading] = useState(true);
-    const { hideModal, showModal, showSuperModal } = useModal();
+    const { showPlainModal, hidePlainModal } = useModal();
 
     const loadCars = useCallback(async () => {
         setIsLoading(true);
@@ -92,7 +92,7 @@ export default function CarSelect() {
                             </ScaledText>
 
                         </View>
-                        <View style={{...spacing.p(8)}} onTouchEnd={() => showModal(ActionCarItemOptions, { car: item })}>
+                        <View style={{...spacing.p(8)}} onTouchEnd={() => showPlainModal(ActionCarItemOptions, { car: item })}>
                             <Icon name="more" color={Colors.hidden_text} size={getScaleFactor() * 25} />
                         </View>
                     </View>

@@ -78,9 +78,9 @@ export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
       {PlainModalComponent && (
         <Modal animationType="fade" transparent visible onRequestClose={hideModal}>
           <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}>
-            <TouchableWithoutFeedback onPress={hideModal}>
+            <TouchableWithoutFeedback onPress={hidePlainModal}>
               <View style={[
-                styles.backdrop,
+                styles.backdrop
               ]} />
             </TouchableWithoutFeedback>
 
