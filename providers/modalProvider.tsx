@@ -15,6 +15,8 @@ import {
 type ModalContextType = {
   showModal: (Component: React.FC<any>, props?: Record<string, any>) => void
   hideModal: () => void
+  showPlainModal: (Component: React.FC<any>, props?: Record<string, any>) => void
+  hidePlainModal: () => void
   showSuperModal: (Component: React.FC<any>, props?: Record<string, any>) => void
   hideSuperModal: () => void
 }
@@ -30,6 +32,8 @@ export const useModal = () => {
 }
 
 export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
+  const [PlainModalComponent, setPlainModalComponent] = useState<React.FC<any> | null>(null)
+  const [plainModalProps, setPlainModalProps] = useState<Record<string, any>>({})
   const [ModalComponent, setModalComponent] = useState<React.FC<any> | null>(null)
   const [modalProps, setModalProps] = useState<Record<string, any>>({})
   const [SuperModalComponent, setSuperModalComponent] = useState<React.FC<any> | null>(null)
@@ -42,9 +46,19 @@ export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
     setModalProps(props)
   }
 
+  const showPlainModal = (Component: React.FC<any>, props: Record<string, any> = {}) => {
+    setPlainModalComponent(() => Component)
+    setPlainModalProps(props)
+  }
+
   const hideModal = () => {
     setModalComponent(null)
     setModalProps({})
+  }
+
+  const hidePlainModal = () => {
+    setPlainModalComponent(null)
+    setPlainModalProps({})
   }
 
   const showSuperModal = (Component: React.FC<any>, props: Record<string, any> = {}) => {
@@ -58,10 +72,25 @@ export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
-    <ModalContext.Provider value={{ showModal, hideModal, showSuperModal, hideSuperModal }}>
+    <ModalContext.Provider value={{ showModal, hideModal, showPlainModal, hidePlainModal, showSuperModal, hideSuperModal }}>
       {children}
 
-      {/* Normální modal */}
+      {PlainModalComponent && (
+        <Modal animationType="fade" transparent visible onRequestClose={hideModal}>
+          <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}>
+            <TouchableWithoutFeedback onPress={hideModal}>
+              <View style={[
+                styles.backdrop,
+              ]} />
+            </TouchableWithoutFeedback>
+
+            <View style={styles.modalContainer}>
+              <PlainModalComponent {...plainModalProps} />
+            </View>
+          </KeyboardAvoidingView>
+        </Modal>
+      )}
+
       {ModalComponent && (
         <Modal animationType="fade" transparent visible onRequestClose={hideModal}>
           <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}>
@@ -84,7 +113,6 @@ export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
         </Modal>
       )}
 
-      {/* Supermodal navrchu */}
       {SuperModalComponent && (
         <Modal animationType="fade" transparent visible onRequestClose={hideSuperModal}>
           <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={StyleSheet.absoluteFill}>

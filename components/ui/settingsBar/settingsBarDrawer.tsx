@@ -50,7 +50,7 @@ function TestDrawerContent() {
                     </View>
                 </View>
                 <View className="justify-center">
-                    <Link href={"/cars"}>
+                    <Link href={"/(tabs)/cars"}>
                         <View className="justify-center items-center" style={{ width: getScaleFactor() * 30, height: getScaleFactor() * 30 }}>
                             <Icon name="users" color={Colors.inactive_icon} size={getScaleFactor() * 25} />
                         </View>
