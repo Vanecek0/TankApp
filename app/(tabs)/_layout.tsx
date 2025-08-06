@@ -92,6 +92,12 @@ export default function TabsLayout() {
                             tabBarIcon: ({ color }: { color: string }) => <Icon name="car_repair" color={color} style={{ ...spacing.width(24), ...spacing.height(24) }} />,
                         }}
                     />
+                    <Tabs.Screen
+                        name="cars/index"
+                        options={{
+                            href: null,
+                        }}
+                    />
                 </Tabs>
                 <StatusBar style={isDark ? "light" : "dark"} />
             </ModalProvider>

@@ -113,13 +113,25 @@ export const spacing = {
   borderRadius: (v: number) => ({
     borderRadius: scaled(v),
   }),
-  borderTopRadius: (v: number) => ({
+  borderTopLeftRadius: (v: number) => ({
     borderTopLeftRadius: scaled(v),
+  }),
+  borderTopRightRadius: (v: number) => ({
     borderTopRightRadius: scaled(v),
   }),
-  borderBottomRadius: (v: number) => ({
+  borderTopRadius: (v: number) => ({
+    ...spacing.borderTopLeftRadius(v),
+    ...spacing.borderTopRightRadius(v),
+  }),
+  borderBottomLeftRadius: (v: number) => ({
     borderBottomLeftRadius: scaled(v),
+  }),
+  borderBottomRightRadius: (v: number) => ({
     borderBottomRightRadius: scaled(v),
+  }),
+  borderBottomRadius: (v: number) => ({
+    ...spacing.borderBottomLeftRadius(v),
+    ...spacing.borderBottomRightRadius(v),
   }),
   borderWidth: (v: number) => ({
     borderWidth: scaled(v),

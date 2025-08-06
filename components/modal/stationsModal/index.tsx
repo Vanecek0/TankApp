@@ -424,7 +424,6 @@ export function AddStationRecordModal({ station, previousModal }: { station: Sta
                 </View>
             </ScrollView>
 
-
             <View style={{ ...spacing.p(20), ...spacing.gap(8), ...spacing.borderBottomRadius(12), backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.background }} className='flex-row justify-between'>
                 <CustomButton className='flex-1' onPress={() => showModal(previousModal!)} label="Zrušit" labelSize='base' labelClassName='text-center' labelColor={isDark ? Colors.white : ''} style={{ ...spacing.p(12), ...spacing.borderWidth(1), borderColor: isDark ? Colors.dark.secondary_lighter : Colors.hidden_text, ...spacing.borderRadius(12) }} backgroundColor={isDark ? Colors.dark.secondary_light : Colors.light.secondary} />
                 <CustomButton className='flex-1' onPress={handleSubmit(async (data) => {
