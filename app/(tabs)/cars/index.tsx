@@ -3,8 +3,6 @@ import ScaledText from '@/components/other/scaledText';
 import getScaleFactor, { spacing } from '@/utils/SizeScaling';
 import { Colors } from '@/constants/Colors';
 import { useTheme } from '@/theme/ThemeProvider';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import SettingsBar from '@/components/ui/settingsBar';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useCar } from '@/context/carContext';
 import { Car } from '@/models/Car';
@@ -13,13 +11,29 @@ import Badge from '@/components/ui/badge';
 import contrastHexColor from '@/utils/colorContrast';
 import { ModalProvider, useModal } from '@/providers/modalProvider';
 import Icon from '@/components/ui/Icon';
+import CustomButton from '@/components/other/customButton';
+import DeleteConfirmationModal from '@/components/modal/superModals/deleteConfirmationModal';
+import { navigate } from 'expo-router/build/global-state/routing';
+import { router, useFocusEffect, useNavigation } from 'expo-router';
+
+let onRefresh: null | (() => void | Promise<void>) = null;
+
+export const setOnRefresh = (fn: () => void | Promise<void>) => {
+    onRefresh = fn;
+};
+
+export const callOnRefresh = async () => {
+    if (onRefresh) {
+        await onRefresh();
+    }
+};
 
 export default function CarSelect() {
     const { isDark } = useTheme();
     const { car } = useCar();
     const [cars, setCars] = useState<Car[]>([]);
     const [isLoading, setIsLoading] = useState(true);
-    const { showPlainModal, hidePlainModal } = useModal();
+    const { showPlainModal } = useModal();
 
     const loadCars = useCallback(async () => {
         setIsLoading(true);
@@ -37,9 +51,11 @@ export default function CarSelect() {
 
     const onRefresh = useCallback(async () => {
         await loadCars();
+        console.log("refreshed")
     }, []);
 
     useEffect(() => {
+        setOnRefresh(onRefresh);
         loadCars();
     }, [loadCars])
 
@@ -52,7 +68,10 @@ export default function CarSelect() {
         return (
             <>
                 <View style={{ ...spacing.mx(26) }}>
-                    <View className='relative'>
+                    <View
+                        className='relative'
+                        onTouchEnd={() => item.id && router.push({ pathname: "/(tabs)/cars/edit/[carId]", params: { carId: item.id?.toString() } })}
+                    >
                         {item.id == car?.id ? (
                             <Badge className='absolute z-10 top-0 left-0' style={{ ...spacing.borderTopLeftRadius(8) }} value='Vybráno' textColor={contrastHexColor(Colors.badge.primary)} badgeColor={Colors.badge.primary}></Badge>
                         ) : undefined}
@@ -69,7 +88,7 @@ export default function CarSelect() {
                     </View>
 
                     <View
-                        className='flex-row justify-between items-center'
+                        className='flex-row justify-between items-center relative'
                         style={{
                             backgroundColor: isDark
                                 ? Colors.dark.secondary
@@ -78,25 +97,27 @@ export default function CarSelect() {
                         <View
                             style={{
                                 ...spacing.borderBottomRadius(8),
-                                ...spacing.p(8),
                             }}
+                            className='w-full'
+                            onTouchEnd={() => item.id && router.push({ pathname: "/(tabs)/cars/edit/[carId]", params: { carId: item.id?.toString() } })}
                         >
-                            <ScaledText size='lg' className='font-bold' isThemed>
-                                {item.car_nickname ?? `${item.manufacturer} ${item.model}`}
-                            </ScaledText>
-                            <ScaledText size='base' color={Colors.hidden_text} >
-                                {`${item.manufacturer} ${item.model}`}
-                            </ScaledText>
-                            <ScaledText size='base' color={Colors.hidden_text} >
-                                {`Rok výroby: ${item.manufacture_year}\nTachometr: ${item.tachometer} km`}
-                            </ScaledText>
+                            <View style={{ ...spacing.me(48), ...spacing.p(8) }}>
+                                <ScaledText size='lg' className='font-bold' isThemed>
+                                    {item.car_nickname ?? `${item.manufacturer} ${item.model}`}
+                                </ScaledText>
+                                <ScaledText size='base' color={Colors.hidden_text} >
+                                    {`${item.manufacturer} ${item.model}`}
+                                </ScaledText>
+                                <ScaledText size='base' color={Colors.hidden_text} >
+                                    {`Rok výroby: ${item.manufacture_year}\nTachometr: ${item.tachometer} km`}
+                                </ScaledText>
+                            </View>
 
                         </View>
-                        <View style={{...spacing.p(8)}} onTouchEnd={() => showPlainModal(ActionCarItemOptions, { car: item })}>
+                        <View className='absolute top-0 bottom-0 right-0 justify-center' style={{ ...spacing.p(12) }} onTouchEnd={() => showPlainModal(ActionCarItemOptions, { car: item })}>
                             <Icon name="more" color={Colors.hidden_text} size={getScaleFactor() * 25} />
                         </View>
                     </View>
-
                 </View>
             </>
         );
@@ -141,20 +162,35 @@ export default function CarSelect() {
 
 export function ActionCarItemOptions({ car }: { car: Car }) {
     const { isDark } = useTheme();
+    const { hidePlainModal, showSuperModal, hideSuperModal } = useModal();
 
     return (
-        <View className="max-h-full h-full" style={{ ...spacing.borderRadius(12) }}>
+        <View className="w-full h-full flex justify-center" style={{ ...spacing.borderRadius(12), ...spacing.px(24), backgroundColor: isDark ? "rgba(0,0,0,0.75)" : "rgba(0,0,0,0.5)" }}>
             <View
-                className="border-b-[1px] sticky flex-row justify-between items-center"
+                className="border-b-[1px] sticky flex justify-between items-center"
                 style={{
-                    ...spacing.borderTopRadius(12),
+                    ...spacing.borderRadius(12),
+                    ...spacing.py(12),
+                    zIndex: 2,
                     borderColor: isDark ? Colors.dark.secondary_light : Colors.light.background,
                     backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.background,
-                    ...spacing.p(24),
                 }}
             >
-                <ScaledText size='base'>Test</ScaledText>
+
+                <CustomButton onPress={() => car.id && router.push({ pathname: "/(tabs)/cars/edit/[carId]", params: { carId: car.id?.toString() } })} className='w-full' labelClassName='text-center' style={{ ...spacing.px(24), ...spacing.py(12) }} labelSize='xl' label="Upravit" backgroundColor='transparent' isThemed></CustomButton>
+                <CustomButton onPress={() => showSuperModal(DeleteConfirmationModal, {
+                    message: "Opravdu chcete smazat tento profil?",
+                    deleteIcon: <Icon name="bin" color={Colors.primary} size={getScaleFactor() * 45} />,
+                    onConfirm: async () => {
+                        hidePlainModal();
+                        await carRepository.delete(car.id!);
+                        callOnRefresh()
+                    },
+                })}
+                    className='w-full'
+                    labelClassName='text-center'
+                    style={{ ...spacing.px(24), ...spacing.py(12) }} labelSize='xl' label="Smazat" backgroundColor='transparent' labelColor='red'></CustomButton>
             </View>
-        </View>
+        </View >
     );
 }

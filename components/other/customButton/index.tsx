@@ -8,6 +8,7 @@ export type CustomButtonProps = TouchableOpacityProps & {
     label: string | ReactNode;
     labelSize: FontSizeKey;
     labelColor?: string;
+    className?: string;
     labelStyle?: TextStyle;
     labelClassName?: string;
     backgroundColor?: string;
@@ -18,9 +19,9 @@ export type CustomButtonProps = TouchableOpacityProps & {
     style?: ViewStyle;
 };
 
-export default function CustomButton({ label, labelSize, labelStyle, labelClassName, labelColor, backgroundColor = 'black', borderWidth = 0, borderColor, roundedRadius, isThemed = false, style, children, ...props }: CustomButtonProps) {
+export default function CustomButton({ label, labelSize, className, labelStyle, labelClassName, labelColor, backgroundColor = 'black', borderWidth = 0, borderColor, roundedRadius, isThemed = false, style, children, ...props }: CustomButtonProps) {
     return (
-        <TouchableHighlight onPress={() => null} underlayColor={darkenHexColor(backgroundColor, 30)} style={[{ borderRadius: roundedRadius, borderWidth: borderWidth, borderColor: borderColor, backgroundColor: backgroundColor }, style]} {...props}>
+        <TouchableHighlight className={`${className}`} onPress={() => null} underlayColor={darkenHexColor(backgroundColor, 30)} style={[{ borderRadius: roundedRadius, borderWidth: borderWidth, borderColor: borderColor, backgroundColor: backgroundColor }, style]} {...props}>
             <ScaledText color={labelColor} size={labelSize} isThemed={isThemed} style={labelStyle} className={`${labelClassName}`}>{label}</ScaledText>
         </TouchableHighlight>
     );
