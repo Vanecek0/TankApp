@@ -9,7 +9,7 @@ export default function Index() {
     const router = useRouter();
 
     return(
-        <Redirect href="/service"></Redirect>
+        <Redirect href="/(tabs)/cars"></Redirect>
     )
    
 }

@@ -80,11 +80,11 @@ export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
           <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}>
             <TouchableWithoutFeedback onPress={hidePlainModal}>
               <View style={[
-                styles.backdrop
+                styles.backdrop,
+                {zIndex: 1}
               ]} />
             </TouchableWithoutFeedback>
-
-            <View style={styles.modalContainer}>
+            <View>
               <PlainModalComponent {...plainModalProps} />
             </View>
           </KeyboardAvoidingView>
