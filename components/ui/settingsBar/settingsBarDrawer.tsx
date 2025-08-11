@@ -13,6 +13,7 @@ import StationsModal from "@/components/modal/stationsModal";
 import { useSegments } from 'expo-router';
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView } from "react-native-gesture-handler";
+import ProfileModal from "@/components/modal/profileModal";
 
 export default function SettingsBarDrawer({ ...props }) {
 
@@ -49,12 +50,10 @@ function TestDrawerContent() {
                         <ScaledText size="base" className="font-medium" style={{ color: Colors.inactive_icon }}>{car?.manufacturer} {car?.model}</ScaledText>
                     </View>
                 </View>
-                <View className="justify-center">
-                    <Link href={"/(tabs)/cars"}>
-                        <View className="justify-center items-center" style={{ width: getScaleFactor() * 30, height: getScaleFactor() * 30 }}>
-                            <Icon name="users" color={Colors.inactive_icon} size={getScaleFactor() * 25} />
-                        </View>
-                    </Link>
+                <View onTouchEnd={() => { showModal(ProfileModal) }} className="justify-center">
+                    <View className="justify-center items-center" style={{ width: getScaleFactor() * 30, height: getScaleFactor() * 30 }}>
+                        <Icon name="users" color={Colors.inactive_icon} size={getScaleFactor() * 25} />
+                    </View>
                 </View>
             </View>
             <View>
@@ -200,10 +199,10 @@ function TestDrawerContent() {
                     </View>
                 </View>
 
-                
+
 
                 <View className="border-t-[1px]" style={{ borderColor: isDark ? Colors.dark.secondary_light : Colors.light.background, marginHorizontal: getScaleFactor() * 16, marginVertical: getScaleFactor() * 12, paddingVertical: getScaleFactor() * 16 }} >
-                   
+
                     <Link href={"/tank"} style={{ ...spacing.py(6) }}>
                         <View className="justify-center items-center" style={{ width: getScaleFactor() * 30, height: getScaleFactor() * 30 }}>
                             <Icon name="settings" color={Colors.inactive_icon} size={getScaleFactor() * 30} />
