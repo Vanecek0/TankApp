@@ -57,9 +57,12 @@ export async function createTables(db: SQLite.SQLiteDatabase) {
         "model"	TEXT,
         "manufacture_year"	NUMERIC,
         "registration_date"	NUMERIC,
+        "license_plate" TEXT,
+        "vin" TEXT,
         "fuel_id"	INTEGER,
         "car_nickname"	TEXT,
-        "tachometer" INTEGER,
+        "odometer" INTEGER,
+        "tank_capacity" NUMERIC,
         "created_at" NUMERIC,
         "updated_at" NUMERIC,
         FOREIGN KEY("fuel_id") REFERENCES "fuel"("id")

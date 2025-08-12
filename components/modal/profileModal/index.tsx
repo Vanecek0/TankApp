@@ -4,7 +4,7 @@ import Badge from "@/components/ui/badge";
 import Icon from "@/components/ui/Icon";
 import { Colors } from "@/constants/Colors";
 import { useCar } from "@/context/carContext";
-import { Car } from "@/models/Car";
+import { Car, CarModel } from "@/models/Car";
 import { useModal } from "@/providers/modalProvider";
 import { carRepository } from "@/repositories/carRepository";
 import { useTheme } from "@/theme/ThemeProvider";
@@ -12,9 +12,14 @@ import contrastHexColor from "@/utils/colorContrast";
 import getScaleFactor, { spacing } from "@/utils/SizeScaling";
 import { router } from "expo-router";
 import React, { useCallback, useEffect, useState } from "react";
-import { Image, useWindowDimensions, View, VirtualizedList } from "react-native";
+import { Image, ScrollView, useWindowDimensions, View, VirtualizedList } from "react-native";
 import DeleteConfirmationModal from "../superModals/deleteConfirmationModal";
 import { FlatList, RefreshControl } from "react-native-gesture-handler";
+import { useForm, useWatch } from "react-hook-form";
+import { Fuel, FuelModel } from "@/models/Fuel";
+import { DTO } from "@/DTO/mapper";
+import FormTextInput from "@/components/other/form/formTextInput";
+import FormCheckboxItem from "@/components/other/form/formCheckBoxItem";
 
 export default function ProfileModal() {
     const { hideModal, showModal, showSuperModal, showPlainModal } = useModal();
@@ -45,72 +50,90 @@ export default function ProfileModal() {
         loadCars();
     }, [loadCars])
 
-    const CarItem = React.memo(({ item }: { item: Car }) => {
+    const CarItem = React.memo(({ item, isDark, onPress, showDeleteConfirm }: { item: Car, isDark: boolean, onPress: (car: Car) => void, showDeleteConfirm: (car: Car) => void }) => {
         const { width: screenWidth } = useWindowDimensions();
         const horizontalMargin = 27 / (9 / 16);
         const imageWidth = screenWidth - horizontalMargin;
         const imageHeight = imageWidth * (9 / 16);
 
         return (
-            <>
-                <View style={{ ...spacing.mx(0) }}>
-                    <View
-                        className='relative'
-                        onTouchEnd={() => item.id && router.push({ pathname: "/(tabs)/cars/edit/[carId]", params: { carId: item.id?.toString() } })}
-                    >
-                        {item.id == car?.id ? (
-                            <Badge className='absolute z-10 top-0 left-0' style={{ ...spacing.borderTopLeftRadius(8) }} value='Vybráno' textColor={contrastHexColor(Colors.badge.primary)} badgeColor={Colors.badge.primary}></Badge>
-                        ) : undefined}
+            <View>
+                <View
+                    className='relative'
+                    onTouchEnd={() => onPress(item)}
+                >
+                    {item.id == car?.id ? (
+                        <Badge className='absolute z-10 top-0 left-0' style={{ ...spacing.borderTopLeftRadius(8) }} value='Vybráno' textColor={contrastHexColor(Colors.badge.primary)} badgeColor={Colors.badge.primary}></Badge>
+                    ) : undefined}
 
-                        <Image
-                            style={{
-                                width: imageWidth,
-                                height: imageHeight,
-                                ...spacing.borderTopRadius(8),
-                            }}
-                            resizeMode='cover'
-                            source={require('@/assets/images/car_default.png')}
-                        />
-                    </View>
-
-                    <View
-                        className='flex-row justify-between items-center relative'
+                    <Image
                         style={{
-                            backgroundColor: isDark
-                                ? Colors.dark.secondary
-                                : Colors.light.secondary,
-                        }}>
-                        <View
-                            style={{
-                                ...spacing.borderBottomRadius(8),
-                            }}
-                            className='w-full'
-                            onTouchEnd={() => item.id && router.push({ pathname: "/(tabs)/cars/edit/[carId]", params: { carId: item.id?.toString() } })}
-                        >
-                            <View style={{ ...spacing.me(48), ...spacing.p(8) }}>
-                                <ScaledText size='lg' className='font-bold' isThemed>
-                                    {item.car_nickname ?? `${item.manufacturer} ${item.model}`}
-                                </ScaledText>
-                                <ScaledText size='base' color={Colors.hidden_text} >
-                                    {`${item.manufacturer} ${item.model}`}
-                                </ScaledText>
-                                <ScaledText size='base' color={Colors.hidden_text} >
-                                    {`Rok výroby: ${item.manufacture_year}\nTachometr: ${item.tachometer} km`}
-                                </ScaledText>
-                            </View>
+                            width: imageWidth,
+                            height: imageHeight,
+                            ...spacing.borderTopRadius(8),
+                        }}
+                        resizeMode='cover'
+                        source={require('@/assets/images/car_default.png')}
+                    />
+                </View>
 
+                <View
+                    className='flex-row justify-between items-center relative'
+                    style={{
+                        backgroundColor: isDark
+                            ? Colors.dark.secondary_light
+                            : Colors.light.secondary,
+                        ...spacing.borderBottomRadius(8),
+                    }}>
+                    <View
+                        className='w-full'
+                        onTouchEnd={() => onPress(item)}
+                    >
+                        <View style={{ ...spacing.me(48), ...spacing.p(16) }}>
+                            <ScaledText size='lg' className='font-bold' isThemed>
+                                {item.car_nickname ?? `${item.manufacturer} ${item.model}`}
+                            </ScaledText>
+                            <ScaledText size='base' color={Colors.hidden_text} >
+                                {`${item.manufacturer} ${item.model}`}
+                            </ScaledText>
+                            <ScaledText size='base' color={Colors.hidden_text} >
+                                {`Rok výroby: ${item.manufacture_year}\nTachometr: ${item.odometer} km`}
+                            </ScaledText>
                         </View>
-                        <View className='absolute top-0 bottom-0 right-0 justify-center' style={{ ...spacing.p(12) }} onTouchEnd={() => showPlainModal(ActionCarItemOptions, { car: item })}>
-                            <Icon name="more" color={Colors.hidden_text} size={getScaleFactor() * 25} />
+
+                    </View>
+                    <View className='absolute top-0 bottom-0 right-3 flex-row items-center' style={{ ...spacing.gap(4) }}>
+                        <View className="flex-row" style={{ ...spacing.gap(12), ...spacing.py(5), ...spacing.px(5) }} onTouchEnd={() => onPress(item)}>
+                            <Icon name="edit" color={Colors.hidden_text} size={getScaleFactor() * 20} />
                         </View>
+                        {item.id != car?.id ?
+                            (<View className="flex-row" style={{ ...spacing.gap(12), ...spacing.py(5), ...spacing.px(5) }} onTouchEnd={() => showDeleteConfirm(item)}>
+                                <Icon name="bin" color={Colors.hidden_text} size={getScaleFactor() * 20} />
+                            </View>) : undefined
+                        }
                     </View>
                 </View>
-            </>
+            </View>
+
         );
     });
 
     const renderItem = useCallback(
-        ({ item }: { item: Car }) => <CarItem item={item} />,
+        ({ item }: { item: Car }) =>
+            <CarItem
+                item={item}
+                isDark={isDark}
+                showDeleteConfirm={() => showSuperModal(DeleteConfirmationModal, {
+                    message: "Opravdu chcete smazat tento profil?",
+                    deleteIcon: <Icon name="bin" color={Colors.primary} size={getScaleFactor() * 45} />,
+                    onConfirm: async () => {
+                        await carRepository.delete(item.id!);
+                        onRefresh();
+                    },
+                })}
+                onPress={() => showSuperModal(ProfileActionModal, { car: item, previousModal: ProfileModal })}
+            />,
+
         [isDark]
     );
 
@@ -155,7 +178,7 @@ export default function ProfileModal() {
                 </View>
             </View>
 
-            <View className="flex-1">
+            <View className="flex-1" style={{ ...spacing.mx(24) }}>
                 <VirtualizedList
                     initialNumToRender={1}
                     refreshControl={
@@ -166,8 +189,9 @@ export default function ProfileModal() {
                     renderItem={renderItem}
                     getItemCount={() => cars.length}
                     getItem={(_, index) => cars[index]}
+                    keyExtractor={(item) => item.id!.toString()}
                     ListHeaderComponentStyle={{ zIndex: 50 }}
-                    contentContainerStyle={{ ...spacing.gap(24), ...spacing.p(24) }}
+                    contentContainerStyle={{ ...spacing.gap(24), ...spacing.mt(24), ...spacing.pb(48) }}
                     horizontal={false}
                     ListEmptyComponent={
                         <ScaledText
@@ -180,6 +204,155 @@ export default function ProfileModal() {
                         </ScaledText>
                     }
                 />
+            </View>
+        </View>
+    );
+}
+
+export function ProfileActionModal({ car, previousModal }: { car: Car, previousModal?: React.FC<any> }) {
+    const { hideModal, showModal, showSuperModal, hideSuperModal } = useModal();
+    const { isDark } = useTheme();
+    const [fuels, setFuels] = useState<Fuel[]>([]);
+    const { control, handleSubmit, formState } = useForm();
+
+    const loadAllFuels = async () => {
+        const allFuels = await FuelModel.all();
+        setFuels(allFuels);
+    };
+
+    useEffect(() => {
+        loadAllFuels();
+    }, []);
+
+    const onFormSubmit = async (data: any) => {
+        try {
+            const carDTO = DTO<Car, typeof data>(data);
+
+            if (car) {
+                const result = await carRepository.update(car.id!, carDTO);
+                return result;
+            } else {
+                const result = await CarModel.create(carDTO);
+                return result;
+            }
+
+        } catch (error) {
+            console.error('Chyba při ukládání záznamu:', error);
+            throw error;
+        }
+    };
+
+    return (
+        <View className="max-h-full h-full" style={{ ...spacing.borderRadius(12) }}>
+            <View
+                className="border-b-[1px] sticky flex-row justify-between items-center"
+                style={{
+                    ...spacing.borderTopRadius(12),
+                    borderColor: isDark ? Colors.dark.secondary_light : Colors.light.background,
+                    backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.background,
+                    ...spacing.p(24),
+                }}
+            >
+                <View className="flex-row items-center relative w-3/4" style={{ ...spacing.gap(8) }}>
+                    <View
+                        style={{
+                            ...spacing.borderRadius(8),
+                            ...spacing.width(48),
+                            ...spacing.height(48),
+                            backgroundColor: Colors.primary,
+                        }}
+                        className="flex items-center justify-center"
+                    >
+                        <Icon name="edit" color={Colors.dark.text} size={getScaleFactor() * 20} />
+                    </View>
+                    <View>
+                        <ScaledText size="xl" isThemed className="text-xl font-semibold">
+                            {car ? 'Úprava stanice' : 'Přidat stanici'}
+                        </ScaledText>
+                        <ScaledText size="sm" isThemed>
+                            {car ? 'Níže upravte vybranou stanici' : 'Vyplňte údaje o stanici'}
+                        </ScaledText>
+                    </View>
+                </View>
+                <View
+                    onTouchEnd={() => hideModal()}
+                    style={{ ...spacing.p(36), ...spacing.me(-12) }}
+                    className="justify-center items-center absolute right-0"
+                >
+                    <Icon name="cross" color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor() * 20} />
+                </View>
+            </View>
+
+            <ScrollView style={{ ...spacing.p(24) }} className="">
+                <View style={{ ...spacing.gap(12), ...spacing.pb(52) }}>
+                    <View>
+                        <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
+                            <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Výrobce</ScaledText>
+                        </View>
+
+                        <FormTextInput name="name" defaultValue={car?.manufacturer ?? ''} control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></FormTextInput>
+                    </View>
+
+                    <View>
+                        <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
+                            <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Model</ScaledText>
+                        </View>
+
+                        <FormTextInput name="address" defaultValue={car?.model ?? ''} control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></FormTextInput>
+                    </View>
+
+
+
+                    <View>
+                        <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
+                            <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Typy paliv</ScaledText>
+                        </View>
+
+                        <View className="flex-row flex-wrap" style={{}}>
+                            {
+                                fuels.map((fuel, index) => (
+                                    <FormCheckboxItem
+                                        name="fuels"
+                                        key={index}
+                                        control={control}
+                                        value={fuel.id!}
+                                        render={() => (
+                                            <Badge
+                                                value={fuel.trademark}
+                                                className="uppercase"
+                                                style={{
+                                                    ...spacing.borderRadius(12),
+                                                    ...spacing.borderWidth(1),
+                                                    ...spacing.m(4),
+                                                    ...spacing.ms(-4),
+                                                    ...spacing.me(12),
+                                                    borderColor: car.fuel_id == fuel.id! ? Colors.transparent : Colors.hidden_text,
+                                                }}
+                                                badgeColor={car.fuel_id == fuel.id! ? Colors.primary : Colors.transparent}
+                                                isCheckable
+                                                isChecked={car.fuel_id == fuel.id!}
+                                                isThemed
+                                            />
+                                        )}
+                                    />
+                                ))
+                            }
+                        </View>
+
+
+                    </View>
+
+                </View>
+            </ScrollView>
+
+            <View style={{ ...spacing.p(20), ...spacing.gap(8), ...spacing.borderBottomRadius(12), backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.background }} className='flex-row justify-between'>
+                <CustomButton className='flex-1' onPress={() => hideSuperModal()} label="Zrušit" labelSize='base' labelClassName='text-center' labelColor={isDark ? Colors.white : ''} style={{ ...spacing.p(12), ...spacing.borderWidth(1), borderColor: isDark ? Colors.dark.secondary_lighter : Colors.hidden_text, ...spacing.borderRadius(12) }} backgroundColor={isDark ? Colors.dark.secondary_light : Colors.light.secondary} />
+                <CustomButton className='flex-1' onPress={handleSubmit(async (data) => {
+                    await onFormSubmit(data);
+                    hideSuperModal();
+                    hideModal();
+                    showModal(ProfileModal);
+                })} label={car ? "Uložit změny" : "Přidat stanici"} labelSize='base' labelClassName='text-center' labelColor={Colors.white} style={{ ...spacing.p(12), ...spacing.borderRadius(12), ...spacing.borderWidth(1), borderColor: Colors.primary }} backgroundColor={Colors.primary} />
             </View>
         </View>
     );

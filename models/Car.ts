@@ -6,26 +6,34 @@ export type Car = {
   model: string
   manufacture_year: number
   registration_date: number
+  license_plate: string
+  vin: string
   fuel_id: number
   car_nickname: string
-  tachometer: number
+  tank_capacity: number
+  odometer: number
 }
 
-const carColumns: (keyof Omit<Car, "id">)[] = [
+export const carColumns: (keyof Car)[] = [
+  "id",
   "manufacturer",
   "model",
   "manufacture_year",
   "registration_date",
+  "license_plate",
+  "vin",
   "fuel_id",
   "car_nickname",
-  "tachometer"
+  "tank_capacity",
+  "odometer"
 ]
 
 export class CarModel extends BaseModel {
   static async create(car: Omit<Car, "id">) {
-    const columns = carColumns.join(", ")
-    const placeholders = carColumns.map(() => "?").join(", ")
-    const values = carColumns.map((key) => car[key])
+    const carInsertColumns = carColumns.filter(col => col !== "id")
+    const columns = carInsertColumns.join(", ")
+    const placeholders = carInsertColumns.map(() => "?").join(", ")
+    const values = carInsertColumns.map((key) => car[key])
 
     const sql = `INSERT INTO car (${columns}) VALUES (${placeholders})`
     return this.execute(sql, values)

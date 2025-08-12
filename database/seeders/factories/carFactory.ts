@@ -6,9 +6,12 @@ export function createCarSeed(overrides: Partial<Car> = {}): Car {
         model: '',
         manufacture_year: Date.now(),
         registration_date: Date.now(),
+        license_plate: '1US2738',
+        vin: "XYZ0000000001",
         fuel_id: 1,
         car_nickname: '',
-        tachometer: 50000,
+        tank_capacity: 50,
+        odometer: 50000,
         ...overrides,
     };
 }
@@ -20,9 +23,12 @@ export async function getCarSeeds() {
             model: 'TT',
             manufacture_year: 2006,
             registration_date: 2009,
+            license_plate: '1AU1234',
+            vin: 'WAUZZZ8JX6A000001',
             fuel_id: 3,
             car_nickname: 'TéTéčko',
-            tachometer: 140000,
+            tank_capacity: 55,
+            odometer: 140000,
         }),
 
         createCarSeed({
@@ -30,9 +36,12 @@ export async function getCarSeeds() {
             model: 'Golf',
             manufacture_year: 2012,
             registration_date: 2013,
+            license_plate: '2VW5678',
+            vin: 'WVWZZZ1KZDW000002',
             fuel_id: 7,
             car_nickname: 'Golfík',
-            tachometer: 142300,
+            tank_capacity: 50,
+            odometer: 142300,
         }),
 
         createCarSeed({
@@ -40,9 +49,12 @@ export async function getCarSeeds() {
             model: 'Corolla',
             manufacture_year: 2019,
             registration_date: 2020,
+            license_plate: '3TO9876',
+            vin: 'JTDBR32E520000003',
             fuel_id: 3,
             car_nickname: 'Korela',
-            tachometer: 65300,
+            tank_capacity: 55,
+            odometer: 65300,
         }),
 
         createCarSeed({
@@ -50,9 +62,12 @@ export async function getCarSeeds() {
             model: 'Duster',
             manufacture_year: 2018,
             registration_date: 2019,
+            license_plate: '4DC3456',
+            vin: 'UU1HSDHN000000004',
             fuel_id: 7,
             car_nickname: 'Dusterka',
-            tachometer: 104500,
+            tank_capacity: 50,
+            odometer: 104500,
         }),
 
         createCarSeed({
@@ -60,9 +75,12 @@ export async function getCarSeeds() {
             model: '208',
             manufacture_year: 2020,
             registration_date: 2021,
+            license_plate: '5PG7890',
+            vin: 'VF3CUHMR000000005',
             fuel_id: 4,
             car_nickname: 'Pěťule',
-            tachometer: 34500,
+            tank_capacity: 44,
+            odometer: 34500,
         }),
 
         createCarSeed({
@@ -70,9 +88,12 @@ export async function getCarSeeds() {
             model: 'Focus',
             manufacture_year: 2016,
             registration_date: 2016,
+            license_plate: '6FO4567',
+            vin: 'WF0AXXWPDA0000006',
             fuel_id: 8,
             car_nickname: 'Modrák',
-            tachometer: 98500,
+            tank_capacity: 55,
+            odometer: 98500,
         }),
 
         createCarSeed({
@@ -80,9 +101,12 @@ export async function getCarSeeds() {
             model: 'i30',
             manufacture_year: 2017,
             registration_date: 2018,
+            license_plate: '7HY7891',
+            vin: 'KMHD741DBHU000007',
             fuel_id: 5,
             car_nickname: 'Hájíčko',
-            tachometer: 76800,
+            tank_capacity: 53,
+            odometer: 76800,
         }),
 
         createCarSeed({
@@ -90,9 +114,12 @@ export async function getCarSeeds() {
             model: 'Clio',
             manufacture_year: 2013,
             registration_date: 2014,
+            license_plate: '8RN6543',
+            vin: 'VF15R040000000008',
             fuel_id: 2,
             car_nickname: 'Klijo',
-            tachometer: 119200,
+            tank_capacity: 45,
+            odometer: 119200,
         }),
 
         createCarSeed({
@@ -100,9 +127,12 @@ export async function getCarSeeds() {
             model: 'Astra',
             manufacture_year: 2014,
             registration_date: 2015,
+            license_plate: '9OP1239',
+            vin: 'W0L0ZCF6840000009',
             fuel_id: 1,
             car_nickname: 'Astrička',
-            tachometer: 133000,
+            tank_capacity: 52,
+            odometer: 133000,
         }),
 
         createCarSeed({
@@ -110,9 +140,12 @@ export async function getCarSeeds() {
             model: 'Model 3',
             manufacture_year: 2021,
             registration_date: 2022,
+            license_plate: '1TS5678',
+            vin: '5YJ3E1EA5MF000010',
             fuel_id: 13,
             car_nickname: 'Teslička',
-            tachometer: 25300,
+            tank_capacity: 0, // EV
+            odometer: 25300,
         })
     ];
 }
