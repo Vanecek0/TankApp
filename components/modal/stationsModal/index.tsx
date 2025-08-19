@@ -103,13 +103,14 @@ const StationItem = React.memo(({ item, isDark, onPress, showDeleteConfirm }: { 
                                 key={fuel.id}
                                 size="sm"
                                 value={fuel.trademark}
-                                className="uppercase border-[1px]"
+                                className="uppercase"
                                 isThemed
                                 style={{
                                     ...spacing.borderRadius(12),
-                                    borderColor: Colors.hidden_text,
+                                    ...spacing.borderWidth(1),
+                                    borderColor: Colors.transparent,
                                 }}
-                                badgeColor=""
+                                badgeColor={Colors.primary}
                             />
                         ))}
                     </View>
@@ -298,7 +299,6 @@ export function AddStationRecordModal({ station, previousModal }: { station: Sta
                 const stationDTO = DTO<Station, typeof data>(data);
                 const station = await StationModel.create(stationDTO);
 
-                //Namapovat fuels
                 for (const fuelId of selectedFuels) {
 
                     await StationFuelModel.create({

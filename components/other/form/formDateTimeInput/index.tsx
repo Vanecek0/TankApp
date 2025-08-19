@@ -1,13 +1,14 @@
-import { View, Text, Pressable } from 'react-native';
+import { Pressable, View } from 'react-native';
 import { useState } from 'react';
 import { useController } from 'react-hook-form';
 import { useTheme } from '@/theme/ThemeProvider';
 import { Colors } from '@/constants/Colors';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { spacing } from '@/utils/SizeScaling';
 import ScaledText from '../../scaledText';
 
-export default function FormDateTimeInput({ name, control, mode = "time", defaultValue }: any) {
-    const { field } = useController({ name, control, defaultValue });
+export default function FormDateTimeInput({ name, control, fieldHeight = 46, mode = "time", defaultValue }: any) {
+    const { field } = useController({ name, control, defaultValue: defaultValue ?? '' });
     const [show, setShow] = useState(false);
     const { isDark } = useTheme();
 
@@ -38,42 +39,48 @@ export default function FormDateTimeInput({ name, control, mode = "time", defaul
         : "Vyber čas";
 
     return (
-        <View className='flex-1'>
-
+        <View
+            style={{
+                flex: 1,
+                ...spacing.height(fieldHeight)
+            }}
+        >
             <Pressable
                 onPress={() => setShow(true)}
                 style={{
-                    padding: 12,
-                    borderWidth: 1,
-                    borderRadius: 12,
+                    ...spacing.p(12),
+                    ...spacing.borderWidth(1),
+                    ...spacing.borderRadius(12),
                     borderColor: isDark ? Colors.dark.secondary_lighter : Colors.hidden_text,
                     backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.secondary,
                 }}
             >
-                <ScaledText size='base' style={{
-                    color: isDark ? Colors.white : Colors.dark.secondary
-                }}>
-                    {displayValue}
+                <ScaledText
+                    size='base'
+                    style={{
+                        color: isDark ? Colors.white : Colors.dark.secondary
+                    }}
+                >
+                    {field.value !== undefined ? displayValue : defaultValue}
                 </ScaledText>
             </Pressable>
 
-            {show && (
-                <DateTimePickerModal
-                    mode={mode}
-                    focusable
-                    isDarkModeEnabled={isDark}
-                    is24Hour={true}
-                    isVisible={show}
-                    display="default"
-                    onConfirm={(selectedDate) => {
-                        setShow(false);
-                        if (selectedDate) {
-                            field.onChange(selectedDate.toISOString());
-                        }
-                    }}
-                    onCancel={() => setShow(false)}
-                />
-            )}
+            <DateTimePickerModal
+                mode={mode}
+                focusable
+                isDarkModeEnabled={isDark}
+                is24Hour={true}
+                isVisible={show}
+                display="default"
+                onConfirm={(selectedDate) => {
+                    setShow(false);
+                    if (selectedDate) {
+                        field.onChange(selectedDate.toISOString());
+                    }
+                }}
+                onCancel={() => setShow(false)}
+            />
         </View>
+
     );
 }
