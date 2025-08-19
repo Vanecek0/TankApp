@@ -20,9 +20,11 @@ import { Fuel, FuelModel } from "@/models/Fuel";
 import { DTO } from "@/DTO/mapper";
 import FormTextInput from "@/components/other/form/formTextInput";
 import FormCheckboxItem from "@/components/other/form/formCheckBoxItem";
+import FormNumberInput from "@/components/other/form/formNumberInput";
+import FormDateTimeInput from "@/components/other/form/formDateTimeInput";
 
 export default function ProfileModal() {
-    const { hideModal, showModal, showSuperModal, showPlainModal } = useModal();
+    const { hideModal, showModal, showSuperModal } = useModal();
     const { isDark } = useTheme();
     const { car } = useCar();
     const [cars, setCars] = useState<Car[]>([]);
@@ -42,13 +44,15 @@ export default function ProfileModal() {
         }
     }, []);
 
+    useEffect(() => {
+        loadCars();
+    },[])
+
     const onRefresh = useCallback(async () => {
         await loadCars();
     }, []);
 
-    useEffect(() => {
-        loadCars();
-    }, [loadCars])
+    
 
     const CarItem = React.memo(({ item, isDark, onPress, showDeleteConfirm }: { item: Car, isDark: boolean, onPress: (car: Car) => void, showDeleteConfirm: (car: Car) => void }) => {
         const { width: screenWidth } = useWindowDimensions();
@@ -131,7 +135,7 @@ export default function ProfileModal() {
                         onRefresh();
                     },
                 })}
-                onPress={() => showSuperModal(ProfileActionModal, { car: item, previousModal: ProfileModal })}
+                onPress={() => showModal(ProfileActionModal, { car: item, previousModal: ProfileModal })}
             />,
 
         [isDark]
@@ -210,7 +214,7 @@ export default function ProfileModal() {
 }
 
 export function ProfileActionModal({ car, previousModal }: { car: Car, previousModal?: React.FC<any> }) {
-    const { hideModal, showModal, showSuperModal, hideSuperModal } = useModal();
+    const { hideModal, showModal } = useModal();
     const { isDark } = useTheme();
     const [fuels, setFuels] = useState<Fuel[]>([]);
     const { control, handleSubmit, formState } = useForm();
@@ -267,10 +271,10 @@ export function ProfileActionModal({ car, previousModal }: { car: Car, previousM
                     </View>
                     <View>
                         <ScaledText size="xl" isThemed className="text-xl font-semibold">
-                            {car ? 'Úprava stanice' : 'Přidat stanici'}
+                            {car ? 'Úprava vozidla' : 'Přidat vozidlo'}
                         </ScaledText>
                         <ScaledText size="sm" isThemed>
-                            {car ? 'Níže upravte vybranou stanici' : 'Vyplňte údaje o stanici'}
+                            {car ? 'Níže upravte vybrané vozidlo' : 'Vyplňte údaje o vozidle'}
                         </ScaledText>
                     </View>
                 </View>
@@ -290,7 +294,7 @@ export function ProfileActionModal({ car, previousModal }: { car: Car, previousM
                             <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Výrobce</ScaledText>
                         </View>
 
-                        <FormTextInput name="name" defaultValue={car?.manufacturer ?? ''} control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></FormTextInput>
+                        <FormTextInput name="manufacturer" defaultValue={car?.manufacturer ?? ''} control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></FormTextInput>
                     </View>
 
                     <View>
@@ -298,7 +302,25 @@ export function ProfileActionModal({ car, previousModal }: { car: Car, previousM
                             <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Model</ScaledText>
                         </View>
 
-                        <FormTextInput name="address" defaultValue={car?.model ?? ''} control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></FormTextInput>
+                        <FormTextInput name="model" defaultValue={car?.model ?? ''} control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></FormTextInput>
+                    </View>
+
+                    <View>
+                        <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
+                            <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Rok výroby</ScaledText>
+                        </View>
+
+                        <FormNumberInput name="manufacture_year" defaultValue={car?.manufacture_year ?? ''} control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></FormNumberInput>
+                    </View>
+
+                    <View>
+                        <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
+                            <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Datum registrace</ScaledText>
+                        </View>
+                        <>
+                        {console.log(car?.registration_date)}
+                        </>
+                        <FormDateTimeInput mode="date" name="registration_date" defaultValue={car?.registration_date ?? ''} control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></FormDateTimeInput>
                     </View>
 
 
@@ -346,49 +368,13 @@ export function ProfileActionModal({ car, previousModal }: { car: Car, previousM
             </ScrollView>
 
             <View style={{ ...spacing.p(20), ...spacing.gap(8), ...spacing.borderBottomRadius(12), backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.background }} className='flex-row justify-between'>
-                <CustomButton className='flex-1' onPress={() => hideSuperModal()} label="Zrušit" labelSize='base' labelClassName='text-center' labelColor={isDark ? Colors.white : ''} style={{ ...spacing.p(12), ...spacing.borderWidth(1), borderColor: isDark ? Colors.dark.secondary_lighter : Colors.hidden_text, ...spacing.borderRadius(12) }} backgroundColor={isDark ? Colors.dark.secondary_light : Colors.light.secondary} />
+                <CustomButton className='flex-1' onPress={() => showModal(previousModal!)} label="Zrušit" labelSize='base' labelClassName='text-center' labelColor={isDark ? Colors.white : ''} style={{ ...spacing.p(12), ...spacing.borderWidth(1), borderColor: isDark ? Colors.dark.secondary_lighter : Colors.hidden_text, ...spacing.borderRadius(12) }} backgroundColor={isDark ? Colors.dark.secondary_light : Colors.light.secondary} />
                 <CustomButton className='flex-1' onPress={handleSubmit(async (data) => {
                     await onFormSubmit(data);
-                    hideSuperModal();
                     hideModal();
                     showModal(ProfileModal);
                 })} label={car ? "Uložit změny" : "Přidat stanici"} labelSize='base' labelClassName='text-center' labelColor={Colors.white} style={{ ...spacing.p(12), ...spacing.borderRadius(12), ...spacing.borderWidth(1), borderColor: Colors.primary }} backgroundColor={Colors.primary} />
             </View>
         </View>
-    );
-}
-
-
-export function ActionCarItemOptions({ car }: { car: Car }) {
-    const { isDark } = useTheme();
-    const { hidePlainModal, showSuperModal, hideSuperModal } = useModal();
-
-    return (
-        <View className="w-full h-full flex justify-center" style={{ ...spacing.borderRadius(12), ...spacing.px(24), backgroundColor: isDark ? "rgba(0,0,0,0.75)" : "rgba(0,0,0,0.5)" }}>
-            <View
-                className="border-b-[1px] sticky flex justify-between items-center"
-                style={{
-                    ...spacing.borderRadius(12),
-                    ...spacing.py(12),
-                    zIndex: 2,
-                    borderColor: isDark ? Colors.dark.secondary_light : Colors.light.background,
-                    backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.background,
-                }}
-            >
-
-                <CustomButton onPress={() => car.id && router.push({ pathname: "/(tabs)/cars/edit/[carId]", params: { carId: car.id?.toString() } })} className='w-full' labelClassName='text-center' style={{ ...spacing.px(24), ...spacing.py(12) }} labelSize='xl' label="Upravit" backgroundColor='transparent' isThemed></CustomButton>
-                <CustomButton onPress={() => showSuperModal(DeleteConfirmationModal, {
-                    message: "Opravdu chcete smazat tento profil?",
-                    deleteIcon: <Icon name="bin" color={Colors.primary} size={getScaleFactor() * 45} />,
-                    onConfirm: async () => {
-                        hidePlainModal();
-                        await carRepository.delete(car.id!);
-                    },
-                })}
-                    className='w-full'
-                    labelClassName='text-center'
-                    style={{ ...spacing.px(24), ...spacing.py(12) }} labelSize='xl' label="Smazat" backgroundColor='transparent' labelColor='red'></CustomButton>
-            </View>
-        </View >
-    );
+    )
 }

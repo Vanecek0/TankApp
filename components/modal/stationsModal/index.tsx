@@ -127,16 +127,25 @@ const StationItem = React.memo(({ item, isDark, onPress, showDeleteConfirm }: { 
 ));
 
 export default function StationsModal() {
-    const { hideModal, showModal, showSuperModal, hideSuperModal } = useModal();
+    const { hideModal, showModal, showSuperModal } = useModal();
     const { isDark } = useTheme();
     const [stations, setStations] = useState<StationWithFuels[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
     const loadStations = async () => {
         setIsLoading(true);
-        const data = await stationFuelRepository.getAllStationsWithFuels();
-        setStations(data);
-        setIsLoading(false);
+        try {
+            const result = await stationFuelRepository.getAllStationsWithFuels();
+            if (result) {
+                setStations(result);
+            }
+        }
+        catch (error) {
+            console.error('Chyba při načítání stations:', error);
+        } finally {
+            setIsLoading(false);
+        }
+
     };
 
     useEffect(() => {
@@ -161,7 +170,7 @@ export default function StationsModal() {
                             onRefresh();
                         },
                     })}
-                    onPress={() => showSuperModal(AddStationRecordModal, { station: item, previousModal: StationsModal })}
+                    onPress={() => showModal(AddStationRecordModal, { station: item, previousModal: StationsModal })}
                 />
             </>,
 
@@ -240,7 +249,7 @@ export default function StationsModal() {
 }
 
 export function AddStationRecordModal({ station, previousModal }: { station: StationWithFuels, previousModal?: React.FC<any> }) {
-    const { hideModal, showModal, hideSuperModal } = useModal();
+    const { hideModal, showModal } = useModal();
     const { isDark } = useTheme();
     const { control, handleSubmit, formState } = useForm();
     const [fuels, setFuels] = useState<Fuel[]>([]);
@@ -440,11 +449,11 @@ export function AddStationRecordModal({ station, previousModal }: { station: Sta
             </ScrollView>
 
             <View style={{ ...spacing.p(20), ...spacing.gap(8), ...spacing.borderBottomRadius(12), backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.background }} className='flex-row justify-between'>
-                <CustomButton className='flex-1' onPress={() => hideSuperModal()} label="Zrušit" labelSize='base' labelClassName='text-center' labelColor={isDark ? Colors.white : ''} style={{ ...spacing.p(12), ...spacing.borderWidth(1), borderColor: isDark ? Colors.dark.secondary_lighter : Colors.hidden_text, ...spacing.borderRadius(12) }} backgroundColor={isDark ? Colors.dark.secondary_light : Colors.light.secondary} />
+                <CustomButton className='flex-1' onPress={() => showModal(previousModal!)} label="Zrušit" labelSize='base' labelClassName='text-center' labelColor={isDark ? Colors.white : ''} style={{ ...spacing.p(12), ...spacing.borderWidth(1), borderColor: isDark ? Colors.dark.secondary_lighter : Colors.hidden_text, ...spacing.borderRadius(12) }} backgroundColor={isDark ? Colors.dark.secondary_light : Colors.light.secondary} />
                 <CustomButton className='flex-1' onPress={handleSubmit(async (data) => {
                     await onFormSubmit(data);
-                    await callOnRefresh();
-                    hideSuperModal();
+                    hideModal();
+                    showModal(StationsModal);
                 })} label={station ? "Uložit změny" : "Přidat stanici"} labelSize='base' labelClassName='text-center' labelColor={Colors.white} style={{ ...spacing.p(12), ...spacing.borderRadius(12), ...spacing.borderWidth(1), borderColor: Colors.primary }} backgroundColor={Colors.primary} />
             </View>
         </View>
