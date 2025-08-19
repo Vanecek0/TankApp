@@ -69,7 +69,7 @@ export default function TankScreen() {
               <View key={item.id} style={{ backgroundColor: isDark ? Colors.dark.secondary_light : Colors.white, ...spacing.p(20), ...spacing.borderRadius(8) }}>
                 <View key={item.id} style={{ ...spacing.gap(20) }}>
                   <View style={{ ...spacing.gap(12) }} className=' flex-row items-center w-full'>
-                    <ScaledText className='rounded-full' style={{ backgroundColor: "lightgray", fontWeight: "bold", ...spacing.p(16) }} size='base'>{item.id} {item.station?.provider.slice(0, 2).toUpperCase()}</ScaledText>
+                    <ScaledText className='rounded-full' style={{ backgroundColor: "lightgray", fontWeight: "bold", ...spacing.p(16) }} size='base'>{item.station?.provider.slice(0, 2).toUpperCase()}</ScaledText>
                     <View className='flex-row justify-between flex-1'>
                       <View style={{ ...spacing.gap(4) }} className='flex items-start w-2/3'>
                         <ScaledText isThemed={true} size="lg" className='font-bold'>{item.station?.name}</ScaledText>
@@ -121,6 +121,9 @@ export default function TankScreen() {
                         badgeColor={badge.color}
                         textColor={Colors.white}
                         size='xs'
+                        style={{
+                          ...spacing.borderRadius(12),
+                        }}
                         value={badge.name}
                       />
                     ))}

@@ -4,7 +4,7 @@ import { spacing } from "@/utils/SizeScaling";
 import { useController } from "react-hook-form";
 import { TextInput } from "react-native-gesture-handler";
 
-export default function FormTextArea({ name, control, placeholder, defaultValue, numberOfLines = 4, height = 70 }: any) {
+export default function FormTextArea({ name, control, placeholder, defaultValue, numberOfLines = 4, fieldHeight = 90 }: any) {
     const { isDark } = useTheme();
 
     const { field } = useController({
@@ -24,7 +24,7 @@ export default function FormTextArea({ name, control, placeholder, defaultValue,
                 ...spacing.borderWidth(1),
                 ...spacing.px(12),
                 ...spacing.py(12),
-                height,
+                ...spacing.height(fieldHeight),
                 textAlignVertical: 'top',
                 borderColor: isDark ? Colors.dark.secondary_lighter : Colors.hidden_text,
                 backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.secondary,

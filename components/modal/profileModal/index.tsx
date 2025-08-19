@@ -10,18 +10,18 @@ import { carRepository } from "@/repositories/carRepository";
 import { useTheme } from "@/theme/ThemeProvider";
 import contrastHexColor from "@/utils/colorContrast";
 import getScaleFactor, { spacing } from "@/utils/SizeScaling";
-import { router } from "expo-router";
-import React, { useCallback, useEffect, useState } from "react";
-import { Image, ScrollView, useWindowDimensions, View, VirtualizedList } from "react-native";
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { Image, LayoutChangeEvent, ScrollView, useWindowDimensions, View, VirtualizedList } from "react-native";
 import DeleteConfirmationModal from "../superModals/deleteConfirmationModal";
-import { FlatList, RefreshControl } from "react-native-gesture-handler";
-import { useForm, useWatch } from "react-hook-form";
+import { RefreshControl } from "react-native-gesture-handler";
+import { useForm } from "react-hook-form";
 import { Fuel, FuelModel } from "@/models/Fuel";
 import { DTO } from "@/DTO/mapper";
 import FormTextInput from "@/components/other/form/formTextInput";
 import FormCheckboxItem from "@/components/other/form/formCheckBoxItem";
 import FormNumberInput from "@/components/other/form/formNumberInput";
 import FormDateTimeInput from "@/components/other/form/formDateTimeInput";
+import ResponsiveImage from "@/components/other/ResponsiveImage";
 
 export default function ProfileModal() {
     const { hideModal, showModal, showSuperModal } = useModal();
@@ -46,19 +46,14 @@ export default function ProfileModal() {
 
     useEffect(() => {
         loadCars();
-    },[])
+    }, [])
 
     const onRefresh = useCallback(async () => {
         await loadCars();
     }, []);
 
-    
 
     const CarItem = React.memo(({ item, isDark, onPress, showDeleteConfirm }: { item: Car, isDark: boolean, onPress: (car: Car) => void, showDeleteConfirm: (car: Car) => void }) => {
-        const { width: screenWidth } = useWindowDimensions();
-        const horizontalMargin = 27 / (9 / 16);
-        const imageWidth = screenWidth - horizontalMargin;
-        const imageHeight = imageWidth * (9 / 16);
 
         return (
             <View>
@@ -70,15 +65,15 @@ export default function ProfileModal() {
                         <Badge className='absolute z-10 top-0 left-0' style={{ ...spacing.borderTopLeftRadius(8) }} value='Vybráno' textColor={contrastHexColor(Colors.badge.primary)} badgeColor={Colors.badge.primary}></Badge>
                     ) : undefined}
 
-                    <Image
+                    <ResponsiveImage
+                        source={require('@/assets/images/car_default.png')}
                         style={{
-                            width: imageWidth,
-                            height: imageHeight,
                             ...spacing.borderTopRadius(8),
                         }}
-                        resizeMode='cover'
-                        source={require('@/assets/images/car_default.png')}
+                        ratio={9/16}
                     />
+
+                    
                 </View>
 
                 <View
@@ -317,13 +312,8 @@ export function ProfileActionModal({ car, previousModal }: { car: Car, previousM
                         <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
                             <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Datum registrace</ScaledText>
                         </View>
-                        <>
-                        {console.log(car?.registration_date)}
-                        </>
                         <FormDateTimeInput mode="date" name="registration_date" defaultValue={car?.registration_date ?? ''} control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></FormDateTimeInput>
                     </View>
-
-
 
                     <View>
                         <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>

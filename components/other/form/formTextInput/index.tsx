@@ -4,7 +4,7 @@ import { spacing } from "@/utils/SizeScaling";
 import { useController } from "react-hook-form";
 import { TextInput } from "react-native-gesture-handler";
 
-export default function FormTextInput({ name, control, placeholder, defaultValue }: any) {
+export default function FormTextInput({ name, control, fieldHeight = 46, placeholder, defaultValue }: any) {
     const { isDark } = useTheme();
 
     const { field } = useController({
@@ -22,6 +22,7 @@ export default function FormTextInput({ name, control, placeholder, defaultValue
                 ...spacing.borderWidth(1),
                 ...spacing.px(12),
                 ...spacing.py(12),
+                ...spacing.height(fieldHeight),
                 borderColor: isDark ? Colors.dark.secondary_lighter : Colors.hidden_text,
                 backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.secondary,
                 color: isDark ? Colors.white : Colors.dark.secondary
