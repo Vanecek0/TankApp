@@ -4,22 +4,42 @@ import { useController } from 'react-hook-form';
 import { useTheme } from '@/theme/ThemeProvider';
 import { Colors } from '@/constants/Colors';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import ScaledText from '../../scaledText';
 
-export default function FormDateTimeInput({ name, control, defaultValue }: any) {
+export default function FormDateTimeInput({ name, control, mode = "time", defaultValue }: any) {
     const { field } = useController({ name, control, defaultValue });
     const [show, setShow] = useState(false);
     const { isDark } = useTheme();
 
-    const initialDate = field.value ? new Date(field.value) : new Date();
-
-    const formatTime = (date: Date) => {
-        const hours = date.getHours().toString().padStart(2, '0');
-        const minutes = date.getMinutes().toString().padStart(2, '0');
-        return `${hours}:${minutes}`;
+    const formatters: Record<string, (value: Date) => string> = {
+        time: (value) =>
+            value.toLocaleTimeString("cs-CZ", {
+                hour: "2-digit",
+                minute: "2-digit",
+            }),
+        date: (value) =>
+            value.toLocaleDateString("cs-CZ", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
+            }),
+        datetime: (value) =>
+            value.toLocaleString("cs-CZ", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+            }),
     };
+
+    const displayValue = field.value
+        ? formatters[mode]?.(new Date(field.value)) ?? "Neznámý formát"
+        : "Vyber čas";
 
     return (
         <View className='flex-1'>
+
             <Pressable
                 onPress={() => setShow(true)}
                 style={{
@@ -30,16 +50,16 @@ export default function FormDateTimeInput({ name, control, defaultValue }: any) 
                     backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.secondary,
                 }}
             >
-                <Text style={{
+                <ScaledText size='base' style={{
                     color: isDark ? Colors.white : Colors.dark.secondary
                 }}>
-                    {field.value ? formatTime(new Date(field.value)) : 'Vyber čas'}
-                </Text>
+                    {displayValue}
+                </ScaledText>
             </Pressable>
 
             {show && (
                 <DateTimePickerModal
-                    mode="time"
+                    mode={mode}
                     focusable
                     isDarkModeEnabled={isDark}
                     is24Hour={true}
