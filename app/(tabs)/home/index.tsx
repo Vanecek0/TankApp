@@ -3,17 +3,17 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useTheme } from '@/theme/ThemeProvider';
 import { Link, useNavigation, usePathname } from 'expo-router';
 import { Colors } from '@/constants/Colors';
-import Dashboard from '@/components/ui/dashboard';
-import ScaledText from '@/components/other/scaledText';
-import Icon from '@/components/ui/Icon';
+import ScaledText from '@/components/common/ScaledText';
+import Icon from '@/components/Icon';
 import getScaleFactor, { scaled } from '@/utils/SizeScaling';
 import { spacing } from '@/utils/SizeScaling';
 import { getDate } from '@/utils/getDate';
 import { Tanking, TankingModel } from '@/models/Tanking';
-import ActionButton from '@/components/ui/actionButton';
 import { Station } from '@/models/Station';
-import Dropdown from '@/components/other/dropdown';
+import Dropdown from '@/components/common/Dropdown';
 import { useDatabase } from '@/database/databaseContext';
+import { ActionButton } from '@/components/common/Buttons';
+import Dashboard from '@/components/dashboards';
 
 export default function HomeScreen() {
   const { isDark } = useTheme();

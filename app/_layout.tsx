@@ -10,7 +10,7 @@ import { SQLiteProvider } from "expo-sqlite";
 import { CarProvider } from "@/context/carContext";
 import { Drawer } from 'expo-router/drawer';
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import SettingsBarDrawer from "@/components/ui/settingsBar/settingsBarDrawer";
+import SettingsBarDrawer from "@/components/common/Drawer";
 import { DatabaseProvider } from "@/database/databaseContext";
 import { initializeDemoDatabase } from "@/database/init";
 
@@ -20,8 +20,6 @@ export type FontSizeKey = keyof typeof FontSizes;
 
 export default function RootLayout() {
     const [isReady, setIsReady] = useState(false);
-    const [dbReady, setDbReady] = useState(false);
-
 
     useEffect(() => {
         async function prepare() {
@@ -33,7 +31,6 @@ export default function RootLayout() {
                 setIsReady(true);
             }
         }
-
         initializeDemoDatabase();
         prepare();
     }, []);
@@ -49,7 +46,6 @@ export default function RootLayout() {
     }
 
     return (
-
         <SQLiteProvider databaseName="database.db">
             <DatabaseProvider>
                 <ThemeProvider>
@@ -61,7 +57,6 @@ export default function RootLayout() {
                 </ThemeProvider>
             </DatabaseProvider>
         </SQLiteProvider>
-
     )
 }
 

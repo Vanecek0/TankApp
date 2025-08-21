@@ -1,13 +1,13 @@
-import ScaledText from '@/components/other/scaledText';
-import ActionButton from '@/components/ui/actionButton';
-import Badge from '@/components/ui/badge';
-import Icon from '@/components/ui/Icon';
+import ScaledText from '@/components/common/ScaledText';
+import Badge from '@/components/Badge';
+import Icon from '@/components/Icon';
 import { Colors } from '@/constants/Colors';
 import { useTheme } from '@/theme/ThemeProvider';
 import getScaleFactor, { spacing } from '@/utils/SizeScaling';
 import { usePathname } from 'expo-router';
 import { useState } from 'react';
 import { Image, StyleSheet, Platform, View, ScrollView } from 'react-native';
+import { ActionButton } from '@/components/common/Buttons';
 
 export default function HomeScreen() {
   const { isDark } = useTheme();

@@ -6,12 +6,12 @@ export default abstract class BaseModel {
     return Database.getConnection()
   }
 
-  protected static async query<T = any>(sql: string, params: any[] = []): Promise<T[]> {
+  protected static async query<T>(sql: string, params: any[] = []): Promise<T[]> {
     const db = await this.getDb()
     return db.getAllAsync<T>(sql, params)
   }
 
-  protected static async queryFirst<T = any>(sql: string, params: any[] = []): Promise<T | null> {
+  protected static async queryFirst<T>(sql: string, params: any[] = []): Promise<T | null> {
     const db = await this.getDb()
     const result = await db.getFirstAsync<T>(sql, params)
     return result ?? null
