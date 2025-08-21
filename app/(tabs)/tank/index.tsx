@@ -14,13 +14,17 @@ import { Station } from '@/models/Station';
 import { Fuel } from '@/models/Fuel';
 import { StationFuel } from '@/models/StationFuel';
 import { getDate } from '@/utils/getDate';
-import { ActionButton } from '@/components/common/Buttons';
+import CustomButton, { ActionButton } from '@/components/common/Buttons';
 import Dashboard from '@/components/dashboards';
+import AddTankRecordModal from '@/components/modals/tankRecordModal';
+import { AddStationRecordModal } from '@/components/modals/stationsModal';
+import { useModal } from '@/providers/modalProvider';
 
 export default function TankScreen() {
   const { isDark } = useTheme();
   const pathname = usePathname();
   const [isLoading, setIsLoading] = useState(true);
+  const { showModal } = useModal();
   const [tanking, setTanking] = useState<{
     month: string,
     tankings: (Tanking & {
@@ -211,7 +215,18 @@ export default function TankScreen() {
             </>
           )}
         </View>
-        <ActionButton />
+        <ActionButton>
+          <View onTouchEnd={
+            () => { showModal(AddTankRecordModal) }} style={{ ...spacing.right(10) }} className='flex-row items-center gap-3'>
+            <ScaledText size={'base'} color={isDark ? Colors.white : ''} className='font-bold'>Přidat tankování</ScaledText>
+            <CustomButton labelClassName='aspect text-center' style={{ ...spacing.borderRadius(90), ...spacing.p(16), ...spacing.width(60) }} className={`flex shadow-md justify-center items-center aspect-square`} label={<Icon name="tank" color={Colors.primary} style={{ ...spacing.width(20), ...spacing.height(20) }} />} labelSize='xl' labelColor={isDark ? Colors.white : ''} backgroundColor={isDark ? Colors.dark.secondary_light : Colors.light.secondary} />
+          </View>
+          <View onTouchEnd={
+            () => { showModal(AddStationRecordModal) }} style={{ ...spacing.right(10) }} className='flex-row items-center gap-3'>
+            <ScaledText size={'base'} color={isDark ? Colors.white : ''} className='font-bold'>Přidat stanici</ScaledText>
+            <CustomButton labelClassName='aspect-square text-center' style={{ ...spacing.borderRadius(90), ...spacing.p(16), ...spacing.width(60) }} className={`flex shadow-md justify-center items-center aspect-square`} label={<Icon name="map_pin" color={Colors.primary} style={{ ...spacing.width(20), ...spacing.height(20) }} />} labelSize='xl' labelColor={isDark ? Colors.white : ''} backgroundColor={isDark ? Colors.dark.secondary_light : Colors.light.secondary} />
+          </View>
+        </ActionButton>
       </View>
     </>
   );

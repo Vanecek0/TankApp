@@ -1,6 +1,6 @@
 import ScaledText from "@/components/common/ScaledText";
 import { Colors } from "@/constants/Colors";
-import { FontSizes } from "@/constants/FontSizes";
+import { FontSizes } from "@/utils/fontScaling";
 import { Station } from "@/models/Station";
 import { Tanking, TankingModel } from "@/models/Tanking";
 import { useTheme } from "@/theme/ThemeProvider";

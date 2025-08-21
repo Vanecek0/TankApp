@@ -1,6 +1,6 @@
 const primary = "#B80019";
 export const Colors = {
-    primary: primary, //F54505 B80019 198754
+    primary: primary,
     white: "#fff",
     inactive_icon: "#999",
     hidden_text: "#aaa",

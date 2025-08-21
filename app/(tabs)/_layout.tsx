@@ -4,7 +4,7 @@ import { useTheme } from '@/theme/ThemeProvider';
 import { Colors } from '@/constants/Colors';
 import getScaleFactor, { spacing } from '@/utils/SizeScaling';
 import Icon from '../../components/Icon';
-import { FontSizes } from '@/constants/FontSizes';
+import { FontSizes } from '@/utils/fontScaling';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import SettingsBar from '@/components/SettingsBar';
 import { StatusBar } from 'expo-status-bar';

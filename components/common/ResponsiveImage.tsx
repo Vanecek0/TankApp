@@ -9,7 +9,7 @@ import {
     View,
 } from "react-native";
 
-type Props = {
+export type ResponsiveImageProps = {
     source: ImageSourcePropType | { uri: string };
     width?: number | null;
     height?: number | null;
@@ -29,7 +29,7 @@ export default function ResponsiveImage({
     onLoad,
     onLoadEnd,
     onLoadStart,
-}: Props) {
+}: ResponsiveImageProps) {
     const [width, setWidth] = useState<number | null>(initialWidth);
     const [height, setHeight] = useState<number | null>(initialHeight);
 

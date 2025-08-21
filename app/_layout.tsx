@@ -5,7 +5,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import React from 'react';
 import "@/app/globals.css"
 import { Colors } from '@/constants/Colors';
-import { FontSizes } from "@/constants/FontSizes";
+import { FontSizes } from "@/utils/fontScaling";
 import { SQLiteProvider } from "expo-sqlite";
 import { CarProvider } from "@/context/carContext";
 import { Drawer } from 'expo-router/drawer';
