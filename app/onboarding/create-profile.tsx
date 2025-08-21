@@ -1,13 +1,12 @@
-import FormTextInput from '@/components/other/form/formTextInput';
-import ScaledText from '@/components/other/scaledText';
-import Icon from '@/components/ui/Icon';
+import FormTextInput from '@/components/forms/FormTextInput';
+import ScaledText from '@/components/common/ScaledText';
 import { Colors } from '@/constants/Colors';
 import { useTheme } from '@/theme/ThemeProvider';
-import getScaleFactor, { spacing } from '@/utils/SizeScaling';
+import { spacing } from '@/utils/SizeScaling';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { View, Text, TextInput, Button } from 'react-native';
+import { View, Button } from 'react-native';
 
 export default function CreateProfile() {
     const [name, setName] = useState('');
@@ -15,11 +14,6 @@ export default function CreateProfile() {
     const { isDark } = useTheme();
     const { control, handleSubmit, formState } = useForm();
 
-    const handleSave = async () => {
-        /*if (!name) return;
-        await insertProfile(name);
-        router.push('/onboarding/create-station');*/
-    };
 
     return (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}>

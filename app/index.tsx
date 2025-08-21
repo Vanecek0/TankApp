@@ -1,13 +1,6 @@
-import { useEffect, useState } from 'react';
-import { Redirect, useRouter } from 'expo-router';
-//import { isFirstLaunch } from '../lib/storage';
-//import { initDatabase } from '../lib/database';
-import { ActivityIndicator, View } from 'react-native';
+import { Redirect } from 'expo-router';
 
 export default function Index() {
-    const [loading, setLoading] = useState(true);
-    const router = useRouter();
-
     return(
         <Redirect href="/(tabs)/home"></Redirect>
     )

@@ -1,10 +1,10 @@
-import { View, Text, Button } from 'react-native';
+import { View } from 'react-native';
 import { useRouter } from 'expo-router';
-import ScaledText from '@/components/other/scaledText';
+import ScaledText from '@/components/common/ScaledText';
 import getScaleFactor, { spacing } from '@/utils/SizeScaling';
-import Icon from '@/components/ui/Icon';
+import Icon from '@/components/Icon';
 import { Colors } from '@/constants/Colors';
-import CustomButton from '@/components/other/customButton';
+import CustomButton from '@/components/common/Buttons';
 import { useTheme } from '@/theme/ThemeProvider';
 import { SafeAreaView } from 'react-native-safe-area-context';
 

@@ -3,19 +3,19 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useTheme } from '@/theme/ThemeProvider';
 import { usePathname } from 'expo-router';
 import { Colors } from '@/constants/Colors';
-import Dashboard from '@/components/ui/dashboard';
 import TankStatistics from './tabs/statistics';
 import getScaleFactor, { spacing } from '@/utils/SizeScaling';
 import { Tanking, TankingModel } from '@/models/Tanking';
-import ScaledText from '@/components/other/scaledText';
-import Icon from '@/components/ui/Icon';
-import Badge from '@/components/ui/badge';
-import ActionButton from '@/components/ui/actionButton';
+import ScaledText from '@/components/common/ScaledText';
+import Icon from '@/components/Icon';
+import Badge from '@/components/Badge';
 import { Badge as BadgeType, BadgeModel } from '@/models/Badge';
 import { Station } from '@/models/Station';
 import { Fuel } from '@/models/Fuel';
 import { StationFuel } from '@/models/StationFuel';
 import { getDate } from '@/utils/getDate';
+import { ActionButton } from '@/components/common/Buttons';
+import Dashboard from '@/components/dashboards';
 
 export default function TankScreen() {
   const { isDark } = useTheme();

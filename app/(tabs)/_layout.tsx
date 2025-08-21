@@ -3,10 +3,10 @@ import { Platform, Text } from 'react-native';
 import { useTheme } from '@/theme/ThemeProvider';
 import { Colors } from '@/constants/Colors';
 import getScaleFactor, { spacing } from '@/utils/SizeScaling';
-import Icon from '../../components/ui/Icon';
+import Icon from '../../components/Icon';
 import { FontSizes } from '@/constants/FontSizes';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import SettingsBar from '@/components/ui/settingsBar';
+import SettingsBar from '@/components/SettingsBar';
 import { StatusBar } from 'expo-status-bar';
 import { ModalProvider } from '@/providers/modalProvider';
 

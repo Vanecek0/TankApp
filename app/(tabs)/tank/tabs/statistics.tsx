@@ -1,12 +1,12 @@
-import { View, ScrollView, Text } from 'react-native';
+import { View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 
 import { useTheme } from '@/theme/ThemeProvider';
-import { Link, usePathname } from 'expo-router';
+import { usePathname } from 'expo-router';
 import { Colors } from '@/constants/Colors';
-import ScaledText from '@/components/other/scaledText';
-import Icon from '@/components/ui/Icon';
-import Graph from '@/components/ui/graph/Graph';
+import ScaledText from '@/components/common/ScaledText';
+import Icon from '@/components/Icon';
+import Graph from '@/components/common/Graph';
 import { spacing } from '@/utils/SizeScaling';
 import { TankingStatistics, TankingStatisticsModel } from '@/models/TankingStatistics';
 
@@ -25,7 +25,6 @@ export default function TankStatistics() {
   }, []);
 
   if (!statistics.length) return null;
-
 
   return (
     <>
