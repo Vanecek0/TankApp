@@ -1,5 +1,5 @@
 import { Colors, ColorsKey } from '@/constants/Colors';
-import { FontSizes } from '@/constants/FontSizes';
+import { FontSizes } from '@/utils/fontScaling';
 import { useTheme } from '@/theme/ThemeProvider';
 import getScaleFactor from '@/utils/SizeScaling';
 import { Text, TextProps } from 'react-native';

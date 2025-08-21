@@ -1,6 +1,6 @@
 import ScaledText from "@/components/common/ScaledText";
 import { Colors } from "@/constants/Colors";
-import { FontSizes } from "@/constants/FontSizes";
+import { FontSizes } from "@/utils/fontScaling";
 import darkenHexColor from "@/utils/colorDarken";
 import getScaleFactor, { spacing } from "@/utils/SizeScaling";
 import { useState } from "react";
