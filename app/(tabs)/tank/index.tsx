@@ -67,7 +67,7 @@ export default function TankScreen() {
     return (
       <>
         <View style={{ ...spacing.gap(12) }}>
-          <ScaledText size='lg' className='font-bold capitalize' style={{ color: Colors.text.primary }}>{getDate(item.month).monthLong} {getDate(item.month).year}</ScaledText>
+          <ScaledText size='lg' className='font-bold capitalize' style={{ color: isDark ? Colors.text.primary_dark : Colors.text.primary }}>{getDate(item.month).monthLong} {getDate(item.month).year}</ScaledText>
           <View style={{ ...spacing.gap(12) }}>
             {item.tankings.map((item) => (
               <View key={item.id} style={{ backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light, ...spacing.p(20), ...spacing.borderRadius(8) }}>
@@ -159,7 +159,7 @@ export default function TankScreen() {
 
   return (
     <>
-      <View style={{ backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light, flex: 1, position: 'relative' }}>
+      <View style={{ backgroundColor: isDark ? Colors.background.dark : Colors.background.light, flex: 1, position: 'relative' }}>
         <View style={{ ...spacing.mx(20) }}>
           {tab === 'list' ? (
             <VirtualizedList

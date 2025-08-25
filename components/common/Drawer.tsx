@@ -41,7 +41,7 @@ function TestDrawerContent() {
 
     return (
         <>
-            <View className="border-b-[1px] flex-row justify-between" style={{ borderColor: isDark ? Colors.background.dark : Colors.background.light, marginHorizontal: getScaleFactor() * 16, ...spacing.mb(16), ...spacing.py(16) }}>
+            <View className="border-b-[1px] flex-row justify-between" style={{ borderColor: isDark ? Colors.text.primary : Colors.text.primary_dark, marginHorizontal: getScaleFactor() * 16, ...spacing.mb(16), ...spacing.py(16) }}>
                 <View style={{ ...spacing.gap(12) }} className="flex-row items-center">
                     <ScaledText className='rounded-full text-center flex justify-center items-center align-middle aspect-square' style={{ backgroundColor: "lightgray", fontWeight: "bold", ...spacing.width(60), ...spacing.height(60) }} size='xl'>{car?.car_nickname.slice(0, 2).toUpperCase()}</ScaledText>
                     <View>
@@ -67,8 +67,8 @@ function TestDrawerContent() {
                                     backgroundColor:
                                         currentTabIndex() === "home"
                                             ? isDark
-                                                ? Colors.text.primary_dark
-                                                : Colors.text.primary
+                                                ? Colors.text.primary
+                                                : Colors.text.primary_dark
                                             : undefined,
                                 }}
                             >
@@ -78,14 +78,14 @@ function TestDrawerContent() {
                                 >
                                     <Icon
                                         name="home"
-                                        color={currentTabIndex() === "home" ? Colors.white : Colors.icon.disabled}
+                                        color={currentTabIndex() === "home" ? Colors.text.secondary : Colors.icon.disabled}
                                         size={getScaleFactor() * 20}
                                     />
                                 </View>
                                 <View style={{ ...spacing.px(10) }} className="h-full justify-center">
                                     <ScaledText
                                         size="lg"
-                                        style={{ color: currentTabIndex() === "home" ? Colors.white : Colors.text.muted }}
+                                        style={{ color: currentTabIndex() === "home" ? Colors.text.secondary : Colors.text.muted }}
                                         className="font-medium"
                                         isThemed={true}
                                     >
@@ -102,8 +102,8 @@ function TestDrawerContent() {
                                     backgroundColor:
                                         currentTabIndex() === "tank"
                                             ? isDark
-                                                ? Colors.text.primary_dark
-                                                : Colors.text.primary
+                                                ? Colors.text.primary
+                                                : Colors.text.primary_dark
                                             : undefined,
                                 }}
                             >
@@ -113,14 +113,14 @@ function TestDrawerContent() {
                                 >
                                     <Icon
                                         name="tank"
-                                        color={currentTabIndex() === "tank" ? Colors.white : Colors.icon.disabled}
+                                        color={currentTabIndex() === "tank" ? Colors.text.secondary : Colors.icon.disabled}
                                         size={getScaleFactor() * 20}
                                     />
                                 </View>
                                 <View style={{ ...spacing.px(10) }} className="h-full justify-center">
                                     <ScaledText
                                         size="lg"
-                                        style={{ color: currentTabIndex() === "tank" ? Colors.white : Colors.text.muted }}
+                                        style={{ color: currentTabIndex() === "tank" ? Colors.text.secondary : Colors.text.muted }}
                                         className="font-medium"
                                         isThemed={true}
                                     >
@@ -137,8 +137,8 @@ function TestDrawerContent() {
                                     backgroundColor:
                                         currentTabIndex() === "service"
                                             ? isDark
-                                                ? Colors.text.primary_dark
-                                                : Colors.text.primary
+                                                ? Colors.text.primary
+                                                : Colors.text.primary_dark
                                             : undefined,
                                 }}
                             >
@@ -148,14 +148,14 @@ function TestDrawerContent() {
                                 >
                                     <Icon
                                         name="car_repair"
-                                        color={currentTabIndex() === "service" ? Colors.white : Colors.icon.disabled}
+                                        color={currentTabIndex() === "service" ? Colors.text.secondary : Colors.icon.disabled}
                                         size={getScaleFactor() * 20}
                                     />
                                 </View>
                                 <View style={{ ...spacing.px(10) }} className="h-full justify-center">
                                     <ScaledText
                                         size="lg"
-                                        style={{ color: currentTabIndex() === "service" ? Colors.white : Colors.text.muted }}
+                                        style={{ color: currentTabIndex() === "service" ? Colors.text.secondary : Colors.text.muted }}
                                         className="font-medium"
                                         isThemed={true}
                                     >
@@ -163,7 +163,7 @@ function TestDrawerContent() {
                                     </ScaledText>
                                 </View>
                             </Link>
-                            <View style={{ ...spacing.mx(16), borderBottomWidth: 1, borderColor: isDark ? Colors.background.dark : Colors.background.light, ...spacing.py(6) }}></View>
+                            <View style={{ ...spacing.mx(16), borderBottomWidth: 1, borderColor: isDark ? Colors.text.primary : Colors.text.primary_dark, ...spacing.py(6) }}></View>
                         </View>
                         <View>
                             <View
@@ -174,7 +174,7 @@ function TestDrawerContent() {
                                     ...spacing.px(16)
                                 }}>
                                 <View className="justify-center items-center" style={{ width: getScaleFactor() * 30, height: getScaleFactor() * 30 }}>
-                                    <Icon name="map_pin" color={Colors.icon.disabled} size={getScaleFactor() * 25} />
+                                    <Icon name="map_pin" color={isDark ? Colors.text.secondary : Colors.icon.disabled} size={getScaleFactor() * 25} />
                                 </View>
                                 <View style={{ ...spacing.px(10) }} className="justify-center">
                                     <ScaledText size='lg' style={{ color: Colors.text.muted }} className="font-medium" isThemed={true}>Stanice</ScaledText>
@@ -187,7 +187,7 @@ function TestDrawerContent() {
                                     ...spacing.px(16)
                                 }}>
                                 <View className="justify-center items-center" style={{ width: getScaleFactor() * 30, height: getScaleFactor() * 30 }}>
-                                    <Icon name="document" color={Colors.icon.disabled} size={getScaleFactor() * 25} />
+                                    <Icon name="document" color={isDark ? Colors.text.secondary : Colors.icon.disabled} size={getScaleFactor() * 25} />
                                 </View>
                                 <View style={{ ...spacing.px(10) }} className="h-full justify-center">
                                     <ScaledText size='lg' style={{ color: Colors.text.muted }} className="font-medium" isThemed={true}>Dokumenty vozidla</ScaledText>
@@ -200,11 +200,11 @@ function TestDrawerContent() {
 
 
 
-                <View className="border-t-[1px]" style={{ borderColor: isDark ? Colors.background.dark : Colors.background.light, marginHorizontal: getScaleFactor() * 16, marginVertical: getScaleFactor() * 12, paddingVertical: getScaleFactor() * 16 }} >
+                <View className="border-t-[1px]" style={{ borderColor: isDark ? Colors.text.primary : Colors.text.primary_dark, marginHorizontal: getScaleFactor() * 16, marginVertical: getScaleFactor() * 12, paddingVertical: getScaleFactor() * 16 }} >
 
                     <Link href={"/tank"} style={{ ...spacing.py(6) }}>
                         <View className="justify-center items-center" style={{ width: getScaleFactor() * 30, height: getScaleFactor() * 30 }}>
-                            <Icon name="settings" color={Colors.icon.disabled} size={getScaleFactor() * 30} />
+                            <Icon name="settings" color={isDark ? Colors.text.secondary : Colors.icon.disabled} size={getScaleFactor() * 30} />
                         </View>
                         <View style={{ ...spacing.px(10) }} className="h-full justify-center">
                             <ScaledText size='lg' style={{ color: Colors.text.muted }} className="font-medium" isThemed={true}>Nastavení</ScaledText>
@@ -212,7 +212,7 @@ function TestDrawerContent() {
                     </Link>
                     <View onTouchEnd={() => { showModal(AboutAppModal) }} className="flex-row" style={{ ...spacing.py(6) }}>
                         <View className="justify-center items-center" style={{ width: getScaleFactor() * 30, height: getScaleFactor() * 30 }}>
-                            <Icon name="info" color={Colors.icon.disabled} size={getScaleFactor() * 30} />
+                            <Icon name="info" color={isDark ? Colors.text.secondary : Colors.icon.disabled} size={getScaleFactor() * 30} />
                         </View>
                         <View style={{ ...spacing.px(10) }} className="justify-center">
                             <ScaledText size='lg' style={{ color: Colors.text.muted }} className="font-medium" isThemed={true}>O aplikaci</ScaledText>

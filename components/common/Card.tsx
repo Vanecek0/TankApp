@@ -8,7 +8,7 @@ export default function Card({ children, className }: { children: React.ReactNod
     return (
         <View
             style={{
-                backgroundColor: Colors.background.surface.light,
+                backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light,
                 ...spacing.p(20),
                 ...spacing.mb(12),
                 ...spacing.borderRadius(8),

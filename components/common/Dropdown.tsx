@@ -59,7 +59,7 @@ export default function Dropdown<T>({
                     ...spacing.borderWidth(1),
                     ...spacing.borderBottomRadius(expanded ? 0 : 12),
                     borderColor: isDark ? Colors.text.secondary : Colors.text.muted,
-                    backgroundColor: Colors.text.secondary
+                    backgroundColor: Colors.background.dark
                 }, dropdownStyle]}
                 className="flex-row items-center justify-between"
             >
@@ -89,11 +89,15 @@ export default function Dropdown<T>({
                         right: 0,
                         zIndex: 10,
                         backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light,
-                        ...spacing.borderRadius(12),
-                        ...spacing.borderTopRadius(0), 
-                        ...spacing.borderTopWidth(0),
-                        ...spacing.borderWidth(1),
-                        borderColor: Colors.text.muted,
+                        ...spacing.borderBottomRadius(12),
+                        shadowColor: Colors.black,
+                        shadowOffset: {
+                            width: 0,
+                            height: 5,
+                        },
+                        shadowOpacity: 0.34,
+                        shadowRadius: 6.27,
+                        elevation: 10,
                         ...spacing.maxHeight(280)
                     }]}>
                         <ScrollView>
@@ -116,8 +120,8 @@ export default function Dropdown<T>({
                                             key={getItemValue(item) ?? `item-${index}`}
                                             style={[{
                                                 ...spacing.p(0),
-                                                ...spacing.mx(0)},
-                                                index !== data.length - 1 && { borderBottomWidth: 1, borderColor: Colors.text.muted }
+                                                ...spacing.mx(0)
+                                            }
                                             ]}
                                             activeOpacity={0.8}
                                             onPress={() => onSelect(item)}
@@ -129,7 +133,7 @@ export default function Dropdown<T>({
                                                         ...spacing.p(8),
                                                         ...spacing.borderRadius(8),
                                                         color: isDark ? Colors.white : '',
-                                                        backgroundColor: isSelected ? Colors.text.secondary : ''
+                                                        backgroundColor: isSelected ? isDark ? Colors.text.primary : Colors.text.primary_dark : ''
                                                     }}
                                                 >
                                                     {getItemLabel(item)}
