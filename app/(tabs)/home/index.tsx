@@ -58,7 +58,7 @@ export default function HomeScreen() {
         <View style={{ ...spacing.gap(12) }}>
           {item.tankings.map((item) => (
             <>
-            <Card key={item.id}>
+              <Card key={item.id}>
                 <View style={{ ...spacing.gap(12) }} className='flex-row items-center'>
                   <ScaledText className='rounded-full' style={{ backgroundColor: "lightgray", fontWeight: "bold", ...spacing.p(16) }} size='base'>{item.station?.provider?.slice(0, 2).toUpperCase() ?? '-'}</ScaledText>
                   <View className='flex-row justify-between flex-1'>
@@ -82,36 +82,36 @@ export default function HomeScreen() {
                       <ScaledText isThemed={true} size="sm">{item.tachometer} km</ScaledText>
                     </View>
                   </View>
-              </View>
-            </Card >
-            <Card key={item.id}>
-              <View style={{ ...spacing.gap(12) }} className='flex'>
-                <View style={{ ...spacing.gap(12) }} className='flex-row items-center w-full'>
-                  <ScaledText className='rounded-full' style={{ backgroundColor: "lightgray", fontWeight: "bold", ...spacing.p(16) }} size='base'>{item.station?.provider?.slice(0, 2).toUpperCase() ?? '-'}</ScaledText>
-                  <View className='flex-row justify-between flex-1'>
-                    <View style={{ ...spacing.gap(4) }} className='flex items-start w-2/3'>
-                      <ScaledText isThemed={true} size="lg" className='font-bold'>{item.id} {item.station?.name ?? 'Neznámá stanice'}</ScaledText>
-                      <View style={{ ...spacing.gap(2) }} className='flex-row items-center justify-start'>
-                        <Icon name="map_pin" color={Colors.text.muted} size={getScaleFactor() * 15} />
-                        <ScaledText numberOfLines={1} ellipsizeMode="tail" className='text-ellipsis overflow-visible' isThemed={true} size="sm">{item.station?.address ?? 'Bez adresy'}</ScaledText>
-                      </View>
-                      <View style={{ ...spacing.gap(12) }} className='flex-col'>
+                </View>
+              </Card >
+              <Card key={item.id}>
+                <View style={{ ...spacing.gap(12) }} className='flex'>
+                  <View style={{ ...spacing.gap(12) }} className='flex-row items-center w-full'>
+                    <ScaledText className='rounded-full' style={{ backgroundColor: "lightgray", fontWeight: "bold", ...spacing.p(16) }} size='base'>{item.station?.provider?.slice(0, 2).toUpperCase() ?? '-'}</ScaledText>
+                    <View className='flex-row justify-between flex-1'>
+                      <View style={{ ...spacing.gap(4) }} className='flex items-start w-2/3'>
+                        <ScaledText isThemed={true} size="lg" className='font-bold'>{item.id} {item.station?.name ?? 'Neznámá stanice'}</ScaledText>
                         <View style={{ ...spacing.gap(2) }} className='flex-row items-center justify-start'>
-                          <Icon name="calendar" color={Colors.text.muted} size={getScaleFactor() * 15} />
-                          <ScaledText isThemed={true} size="sm">{new Date(item.tank_date).toLocaleDateString("cs-CZ")}, {new Date(item.created_at).toLocaleTimeString("cs-CZ", { hour: "2-digit", minute: "2-digit" })}</ScaledText>
+                          <Icon name="map_pin" color={Colors.text.muted} size={getScaleFactor() * 15} />
+                          <ScaledText numberOfLines={1} ellipsizeMode="tail" className='text-ellipsis overflow-visible' isThemed={true} size="sm">{item.station?.address ?? 'Bez adresy'}</ScaledText>
+                        </View>
+                        <View style={{ ...spacing.gap(12) }} className='flex-col'>
+                          <View style={{ ...spacing.gap(2) }} className='flex-row items-center justify-start'>
+                            <Icon name="calendar" color={Colors.text.muted} size={getScaleFactor() * 15} />
+                            <ScaledText isThemed={true} size="sm">{new Date(item.tank_date).toLocaleDateString("cs-CZ")}, {new Date(item.created_at).toLocaleTimeString("cs-CZ", { hour: "2-digit", minute: "2-digit" })}</ScaledText>
+                          </View>
                         </View>
                       </View>
-                    </View>
 
-                    <View style={{ ...spacing.gap(4) }} className='flex items-end'>
-                      <ScaledText isThemed={true} size="lg" className='font-bold'>{item.price} Kč</ScaledText>
-                      <ScaledText isThemed={true} size="sm">{item.amount}l</ScaledText>
-                      <ScaledText isThemed={true} size="sm">{item.tachometer} km</ScaledText>
+                      <View style={{ ...spacing.gap(4) }} className='flex items-end'>
+                        <ScaledText isThemed={true} size="lg" className='font-bold'>{item.price} Kč</ScaledText>
+                        <ScaledText isThemed={true} size="sm">{item.amount}l</ScaledText>
+                        <ScaledText isThemed={true} size="sm">{item.tachometer} km</ScaledText>
+                      </View>
                     </View>
                   </View>
                 </View>
-              </View>
-            </Card >
+              </Card >
             </>
           ))}
         </View>
@@ -140,7 +140,14 @@ export default function HomeScreen() {
                     { value: 'ASC', label: 'Nejstarší' }
                   ]}
                   onChange={(item) => setOrderTankings(item.value)}
-                  dropdownStyle={{ ...spacing.borderRadius(12), ...spacing.width(150), ...spacing.borderWidth(0.5), ...spacing.px(12), borderColor: isDark ? Colors.text.secondary : Colors.white, backgroundColor: isDark ? Colors.text.secondary : Colors.white }}
+                  dropdownStyle={{
+                    ...spacing.borderRadius(12),
+                    ...spacing.width(150),
+                    ...spacing.borderWidth(0.5),
+                    ...spacing.px(12),
+                    borderColor: Colors.transparent,
+                    backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light
+                  }}
                 ></Dropdown>
               </View>
             </View>

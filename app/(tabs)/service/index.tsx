@@ -18,7 +18,7 @@ export default function HomeScreen() {
 
   return (
     <>
-      <ScrollView style={{ backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light }}>
+      <ScrollView style={{ backgroundColor: isDark ? Colors.background.dark : Colors.background.light }}>
         <View style={{ ...spacing.mx(20), ...spacing.mb(96), ...spacing.mt(12) }}>
           <Card>
             <View style={{ ...spacing.mb(8) }} className='flex-row justify-between'>

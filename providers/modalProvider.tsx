@@ -104,7 +104,7 @@ export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
             <View style={styles.modalContainer}>
               <View style={[
                 styles.modalContent,
-                { backgroundColor: isDark ? Colors.dark.secondary : Colors.light.secondary, ...spacing.borderRadius(12) }
+                { backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light, ...spacing.borderRadius(12) }
               ]}>
                 <ModalComponent {...modalProps} />
               </View>
@@ -123,7 +123,7 @@ export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
             <View style={[styles.modalContainer, { zIndex: 10000 }]}>
               <View style={[
                 styles.modalContent,
-                { backgroundColor: isDark ? Colors.dark.secondary : Colors.light.secondary, ...spacing.borderRadius(12) }
+                { backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light, ...spacing.borderRadius(12) }
               ]}>
                 <SuperModalComponent {...superModalProps} />
               </View>
