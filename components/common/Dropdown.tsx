@@ -58,20 +58,20 @@ export default function Dropdown<T>({
                     ...spacing.borderRadius(12),
                     ...spacing.borderWidth(1),
                     ...spacing.borderBottomRadius(expanded ? 0 : 12),
-                    borderColor: isDark ? Colors.dark.secondary_lighter : Colors.inactive_icon,
-                    backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.secondary
+                    borderColor: isDark ? Colors.text.secondary : Colors.text.muted,
+                    backgroundColor: Colors.text.secondary
                 }, dropdownStyle]}
                 className="flex-row items-center justify-between"
             >
                 <ScaledText
                     size="base"
-                    style={[{ color: isDark ? Colors.white : Colors.light.text }, dropdownTextStyle]}
+                    style={[{ color: isDark ? Colors.white : Colors.text.primary }, dropdownTextStyle]}
                 >
                     {selectedItem ? getItemLabel(selectedItem) : placeholder}
                 </ScaledText>
                 <Icon
                     name="chevron_down"
-                    color={isDark ? Colors.dark.secondary_lighter : Colors.light.text}
+                    color={Colors.text.secondary}
                     size={getScaleFactor() * 20}
                 />
             </TouchableOpacity>
@@ -88,12 +88,12 @@ export default function Dropdown<T>({
                         left: 0,
                         right: 0,
                         zIndex: 10,
-                        backgroundColor: isDark ? Colors.dark.secondary_light : Colors.white,
+                        backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light,
                         ...spacing.borderRadius(12),
                         ...spacing.borderTopRadius(0), 
                         ...spacing.borderTopWidth(0),
                         ...spacing.borderWidth(1),
-                        borderColor: Colors.hidden_text,
+                        borderColor: Colors.text.muted,
                         ...spacing.maxHeight(280)
                     }]}>
                         <ScrollView>
@@ -103,7 +103,7 @@ export default function Dropdown<T>({
                                     style={{
                                         ...spacing.p(8),
                                         textAlign: 'center',
-                                        color: Colors.inactive_icon
+                                        color: Colors.text.muted
                                     }}
                                 >
                                     Žádné položky k dispozici
@@ -117,7 +117,7 @@ export default function Dropdown<T>({
                                             style={[{
                                                 ...spacing.p(0),
                                                 ...spacing.mx(0)},
-                                                index !== data.length - 1 && { borderBottomWidth: 1, borderColor: Colors.inactive_icon }
+                                                index !== data.length - 1 && { borderBottomWidth: 1, borderColor: Colors.text.muted }
                                             ]}
                                             activeOpacity={0.8}
                                             onPress={() => onSelect(item)}
@@ -129,7 +129,7 @@ export default function Dropdown<T>({
                                                         ...spacing.p(8),
                                                         ...spacing.borderRadius(8),
                                                         color: isDark ? Colors.white : '',
-                                                        backgroundColor: isSelected ? Colors.dark.secondary_lighter : ''
+                                                        backgroundColor: isSelected ? Colors.text.secondary : ''
                                                     }}
                                                 >
                                                     {getItemLabel(item)}

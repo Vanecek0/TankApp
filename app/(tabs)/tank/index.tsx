@@ -67,10 +67,10 @@ export default function TankScreen() {
     return (
       <>
         <View style={{ ...spacing.gap(12) }}>
-          <ScaledText size='lg' className='font-bold capitalize' style={{ color: isDark ? Colors.dark.text : '' }}>{getDate(item.month).monthLong} {getDate(item.month).year}</ScaledText>
+          <ScaledText size='lg' className='font-bold capitalize' style={{ color: Colors.text.primary }}>{getDate(item.month).monthLong} {getDate(item.month).year}</ScaledText>
           <View style={{ ...spacing.gap(12) }}>
             {item.tankings.map((item) => (
-              <View key={item.id} style={{ backgroundColor: isDark ? Colors.dark.secondary_light : Colors.white, ...spacing.p(20), ...spacing.borderRadius(8) }}>
+              <View key={item.id} style={{ backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light, ...spacing.p(20), ...spacing.borderRadius(8) }}>
                 <View key={item.id} style={{ ...spacing.gap(20) }}>
                   <View style={{ ...spacing.gap(12) }} className=' flex-row items-center w-full'>
                     <ScaledText className='rounded-full' style={{ backgroundColor: "lightgray", fontWeight: "bold", ...spacing.p(16) }} size='base'>{item.station?.provider.slice(0, 2).toUpperCase()}</ScaledText>
@@ -78,7 +78,7 @@ export default function TankScreen() {
                       <View style={{ ...spacing.gap(4) }} className='flex items-start w-2/3'>
                         <ScaledText isThemed={true} size="lg" className='font-bold'>{item.station?.name}</ScaledText>
                         <View style={{ ...spacing.gap(2) }} className='flex-row justify-center items-center'>
-                          <Icon name="map_pin" color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor() * 15} />
+                          <Icon name="map_pin" color={Colors.icon.primary} size={getScaleFactor() * 15} />
                           <ScaledText numberOfLines={1} ellipsizeMode="tail" className='text-ellipsis overflow-visible w-2/3' isThemed={true} size="sm">{item.station?.address}</ScaledText>
                         </View>
                       </View>
@@ -159,7 +159,7 @@ export default function TankScreen() {
 
   return (
     <>
-      <View style={{ backgroundColor: isDark ? Colors.dark.background : Colors.light.background, flex: 1, position: 'relative' }}>
+      <View style={{ backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light, flex: 1, position: 'relative' }}>
         <View style={{ ...spacing.mx(20) }}>
           {tab === 'list' ? (
             <VirtualizedList
@@ -167,13 +167,13 @@ export default function TankScreen() {
                 <>
                   <Dashboard routePathName={pathname} />
                   <View className='flex-row justify-center items-center' style={{ ...spacing.mt(20) }}>
-                    <TouchableOpacity style={{ width: "50%", ...spacing.py(10), borderTopRightRadius: 8, borderTopLeftRadius: 8, borderBottomWidth: 3, borderBottomColor: Colors.primary, backgroundColor: isDark ? Colors.dark.secondary_light : Colors.white }} onPress={() => setTab('list')}>
-                      <ScaledText size='base' style={[{ fontWeight: 'bold', textAlign: "center", color: isDark ? Colors.dark.text : Colors.light.text }]}>
+                    <TouchableOpacity style={{ width: "50%", ...spacing.py(10), borderTopRightRadius: 8, borderTopLeftRadius: 8, borderBottomWidth: 3, borderBottomColor: Colors.primary, backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light }} onPress={() => setTab('list')}>
+                      <ScaledText size='base' style={[{ fontWeight: 'bold', textAlign: "center", color: isDark ? Colors.text.primary_dark : Colors.text.primary }]}>
                         Záznamy
                       </ScaledText>
                     </TouchableOpacity>
                     <TouchableOpacity style={{ width: "50%", ...spacing.py(10), ...spacing.mb(5) }} onPress={() => setTab('stats')}>
-                      <ScaledText size='base' style={{ fontWeight: 'normal', textAlign: "center", color: Colors.inactive_icon }}>
+                      <ScaledText size='base' style={{ fontWeight: 'normal', textAlign: "center", color: Colors.text.muted }}>
                         Statistiky
                       </ScaledText>
                     </TouchableOpacity>
@@ -192,7 +192,7 @@ export default function TankScreen() {
               keyExtractor={(item, index) => tanking[index].month ?? index.toString()}
               getItemCount={(_data: unknown) => tanking.length}
               getItem={(_data: unknown, index: number) => tanking[index]}
-              ListEmptyComponent={<ScaledText style={{ ...spacing.p(28) }} className="text-center font-bold" color={Colors.inactive_icon} size="base">Žádné další záznamy</ScaledText>}
+              ListEmptyComponent={<ScaledText style={{ ...spacing.p(28) }} className="text-center font-bold" color={Colors.text.muted} size="base">Žádné další záznamy</ScaledText>}
             />
           ) : (
             <>
@@ -200,12 +200,12 @@ export default function TankScreen() {
                 <Dashboard routePathName={pathname} />
                 <View className='flex-row justify-center items-center' style={{ ...spacing.mt(20) }}>
                   <TouchableOpacity style={{ width: "50%", ...spacing.py(10), ...spacing.mb(5) }} onPress={() => setTab('list')}>
-                    <ScaledText size='base' style={{ fontWeight: 'normal', textAlign: "center", color: Colors.inactive_icon }}>
+                    <ScaledText size='base' style={{ fontWeight: 'normal', textAlign: "center", color: Colors.text.muted }}>
                       Seznam
                     </ScaledText>
                   </TouchableOpacity>
-                  <TouchableOpacity style={{ width: "50%", ...spacing.py(10), ...spacing.mb(5), borderTopRightRadius: 8, borderTopLeftRadius: 8, borderBottomWidth: 3, borderBottomColor: Colors.primary, backgroundColor: isDark ? Colors.dark.secondary_light : Colors.white }} onPress={() => setTab('stats')}>
-                    <ScaledText size='base' style={[{ fontWeight: 'bold', textAlign: "center", color: isDark ? Colors.dark.text : Colors.light.text }]}>
+                  <TouchableOpacity style={{ width: "50%", ...spacing.py(10), ...spacing.mb(5), borderTopRightRadius: 8, borderTopLeftRadius: 8, borderBottomWidth: 3, borderBottomColor: Colors.primary, backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light }} onPress={() => setTab('stats')}>
+                    <ScaledText size='base' style={[{ fontWeight: 'bold', textAlign: "center", color: isDark ? Colors.text.primary_dark : Colors.text.primary }]}>
                       Statistiky
                     </ScaledText>
                   </TouchableOpacity>
@@ -219,12 +219,52 @@ export default function TankScreen() {
           <View onTouchEnd={
             () => { showModal(AddTankRecordModal) }} style={{ ...spacing.right(10) }} className='flex-row items-center gap-3'>
             <ScaledText size={'base'} color={isDark ? Colors.white : ''} className='font-bold'>Přidat tankování</ScaledText>
-            <CustomButton labelClassName='aspect text-center' style={{ ...spacing.borderRadius(90), ...spacing.p(16), ...spacing.width(60) }} className={`flex shadow-md justify-center items-center aspect-square`} label={<Icon name="tank" color={Colors.primary} style={{ ...spacing.width(20), ...spacing.height(20) }} />} labelSize='xl' labelColor={isDark ? Colors.white : ''} backgroundColor={isDark ? Colors.dark.secondary_light : Colors.light.secondary} />
+            <CustomButton
+              labelClassName='aspect text-center'
+              style={{
+                ...spacing.borderRadius(90),
+                ...spacing.p(16),
+                ...spacing.width(60)
+              }}
+              className={`flex shadow-md justify-center items-center aspect-square`}
+              label={
+                <Icon
+                  name="tank" color={Colors.primary}
+                  style={{
+                    ...spacing.width(20),
+                    ...spacing.height(20)
+                  }}
+                />
+              }
+              labelSize='xl'
+              labelColor={isDark ? Colors.white : ''}
+              backgroundColor={isDark ? Colors.background.surface.dark : Colors.background.surface.light}
+            />
           </View>
           <View onTouchEnd={
             () => { showModal(AddStationRecordModal) }} style={{ ...spacing.right(10) }} className='flex-row items-center gap-3'>
             <ScaledText size={'base'} color={isDark ? Colors.white : ''} className='font-bold'>Přidat stanici</ScaledText>
-            <CustomButton labelClassName='aspect-square text-center' style={{ ...spacing.borderRadius(90), ...spacing.p(16), ...spacing.width(60) }} className={`flex shadow-md justify-center items-center aspect-square`} label={<Icon name="map_pin" color={Colors.primary} style={{ ...spacing.width(20), ...spacing.height(20) }} />} labelSize='xl' labelColor={isDark ? Colors.white : ''} backgroundColor={isDark ? Colors.dark.secondary_light : Colors.light.secondary} />
+            <CustomButton
+              labelClassName='aspect-square text-center'
+              style={{
+                ...spacing.borderRadius(90),
+                ...spacing.p(16),
+                ...spacing.width(60)
+              }}
+              className={`flex shadow-md justify-center items-center aspect-square`}
+              label={
+                <Icon name="map_pin"
+                  color={Colors.primary}
+                  style={{
+                    ...spacing.width(20),
+                    ...spacing.height(20)
+                  }}
+                />
+              }
+              labelSize='xl'
+              labelColor={isDark ? Colors.white : ''}
+              backgroundColor={isDark ? Colors.background.surface.dark : Colors.background.surface.light}
+            />
           </View>
         </ActionButton>
       </View>

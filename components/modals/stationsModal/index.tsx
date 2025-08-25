@@ -44,7 +44,7 @@ const StationItem = React.memo(({ item, isDark, onPress, showDeleteConfirm }: { 
             ...spacing.borderRadius(6),
             ...spacing.p(12),
             ...spacing.px(17),
-            backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.background,
+            backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light,
         }}
     >
         <View className="flex-row justify-between items-start" style={{ ...spacing.gap(32) }}>
@@ -56,7 +56,7 @@ const StationItem = React.memo(({ item, isDark, onPress, showDeleteConfirm }: { 
                 </View>
                 {item.address && (
                     <View style={{ ...spacing.gap(4) }} className="flex-row items-center">
-                        <Icon name="map_pin" color={Colors.hidden_text} size={getScaleFactor() * 15} />
+                        <Icon name="map_pin" color={Colors.icon.disabled} size={getScaleFactor() * 15} />
                         <ScaledText numberOfLines={1} ellipsizeMode="tail" className="text-ellipsis overflow-visible" isThemed size="sm">
                             {item.address}
                         </ScaledText>
@@ -65,17 +65,17 @@ const StationItem = React.memo(({ item, isDark, onPress, showDeleteConfirm }: { 
             </View>
             <View className='flex-row items-center' style={{ ...spacing.gap(4) }}>
                 <View className="flex-row" style={{ ...spacing.gap(12), ...spacing.py(5), ...spacing.px(5) }} onTouchEnd={() => onPress(item)}>
-                    <Icon name="edit" color={Colors.hidden_text} size={getScaleFactor() * 20} />
+                    <Icon name="edit" color={Colors.icon.disabled} size={getScaleFactor() * 20} />
                 </View>
                 <View className="flex-row" style={{ ...spacing.gap(12), ...spacing.py(5), ...spacing.px(5), ...spacing.me(-5) }} onTouchEnd={() => showDeleteConfirm(item)}>
-                    <Icon name="bin" color={Colors.hidden_text} size={getScaleFactor() * 20} />
+                    <Icon name="bin" color={Colors.icon.disabled} size={getScaleFactor() * 20} />
                 </View>
             </View>
         </View>
         <View style={{ ...spacing.pt(8), ...spacing.gap(8) }} onTouchEnd={() => onPress(item)}>
             {item.phone && (
                 <View style={{ ...spacing.gap(4) }} className="w-4/5 flex-row items-center">
-                    <Icon name="phone" color={Colors.hidden_text} size={getScaleFactor() * 15} />
+                    <Icon name="phone" color={Colors.icon.disabled} size={getScaleFactor() * 15} />
                     <ScaledText numberOfLines={1} ellipsizeMode="tail" className="text-ellipsis overflow-visible" isThemed size="sm">
                         {item.phone}
                     </ScaledText>
@@ -84,7 +84,7 @@ const StationItem = React.memo(({ item, isDark, onPress, showDeleteConfirm }: { 
 
             {item.opening_hrs && item.closing_hrs && (
                 <View style={{ ...spacing.gap(4) }} className="w-4/5 flex-row items-center">
-                    <Icon name="clock" color={Colors.hidden_text} size={getScaleFactor() * 15} />
+                    <Icon name="clock" color={Colors.icon.disabled} size={getScaleFactor() * 15} />
                     <ScaledText numberOfLines={1} ellipsizeMode="tail" className="text-ellipsis overflow-visible" isThemed size="sm">
                         {new Date(item.opening_hrs).toLocaleTimeString('cs-CZ', { hour: '2-digit', minute: '2-digit' })} -{' '}
                         {new Date(item.closing_hrs).toLocaleTimeString('cs-CZ', { hour: '2-digit', minute: '2-digit' })}
@@ -184,8 +184,8 @@ export default function StationsModal() {
                 className="border-b-[1px] sticky flex-row justify-between items-center"
                 style={{
                     ...spacing.borderTopRadius(12),
-                    borderColor: isDark ? Colors.dark.secondary_light : Colors.light.background,
-                    backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.background,
+                    borderColor: isDark ? Colors.text.primary_dark : Colors.text.primary,
+                    backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light,
                     ...spacing.p(24),
                 }}
             >
@@ -199,7 +199,7 @@ export default function StationsModal() {
                         }}
                         className="flex items-center justify-center"
                     >
-                        <Icon name="map_pin" color={Colors.dark.text} size={getScaleFactor() * 20} />
+                        <Icon name="map_pin" color={Colors.icon.primary} size={getScaleFactor() * 20} />
                     </View>
                     <View>
                         <ScaledText size="xl" isThemed className="text-xl font-semibold">
@@ -215,7 +215,7 @@ export default function StationsModal() {
                     style={{ ...spacing.p(36), ...spacing.me(-12) }}
                     className="justify-center items-center absolute right-0"
                 >
-                    <Icon name="cross" color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor() * 20} />
+                    <Icon name="cross" color={Colors.icon.primary} size={getScaleFactor() * 20} />
                 </View>
             </View>
 
@@ -237,7 +237,7 @@ export default function StationsModal() {
                         <ScaledText
                             style={{ ...spacing.p(28) }}
                             className="text-center font-bold"
-                            color={Colors.inactive_icon}
+                            color={Colors.text.muted}
                             size="base"
                         >
                             Žádné záznamy nenalezeny
@@ -323,8 +323,8 @@ export function AddStationRecordModal({ station, previousModal }: { station: Sta
                 className="border-b-[1px] sticky flex-row justify-between items-center"
                 style={{
                     ...spacing.borderTopRadius(12),
-                    borderColor: isDark ? Colors.dark.secondary_light : Colors.light.background,
-                    backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.background,
+                    borderColor: isDark ? Colors.text.primary_dark : Colors.text.primary,
+                    backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light,
                     ...spacing.p(24),
                 }}
             >
@@ -338,7 +338,7 @@ export function AddStationRecordModal({ station, previousModal }: { station: Sta
                         }}
                         className="flex items-center justify-center"
                     >
-                        <Icon name="edit" color={Colors.dark.text} size={getScaleFactor() * 20} />
+                        <Icon name="edit" color={Colors.icon.primary} size={getScaleFactor() * 20} />
                     </View>
                     <View>
                         <ScaledText size="xl" isThemed className="text-xl font-semibold">
@@ -354,7 +354,7 @@ export function AddStationRecordModal({ station, previousModal }: { station: Sta
                     style={{ ...spacing.p(36), ...spacing.me(-12) }}
                     className="justify-center items-center absolute right-0"
                 >
-                    <Icon name="cross" color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor() * 20} />
+                    <Icon name="cross" color={Colors.icon.primary} size={getScaleFactor() * 20} />
                 </View>
             </View>
 
@@ -423,7 +423,7 @@ export function AddStationRecordModal({ station, previousModal }: { station: Sta
                                                     ...spacing.m(4),
                                                     ...spacing.ms(-4),
                                                     ...spacing.me(12),
-                                                    borderColor: selectedFuels.includes(fuel.id!) ? Colors.transparent : Colors.hidden_text,
+                                                    borderColor: selectedFuels.includes(fuel.id!) ? Colors.transparent : Colors.text.muted,
                                                 }}
                                                 badgeColor={selectedFuels.includes(fuel.id!) ? Colors.primary : Colors.transparent}
                                                 isCheckable
@@ -448,8 +448,21 @@ export function AddStationRecordModal({ station, previousModal }: { station: Sta
                 </View>
             </ScrollView>
 
-            <View style={{ ...spacing.p(20), ...spacing.gap(8), ...spacing.borderBottomRadius(12), backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.background }} className='flex-row justify-between'>
-                <CustomButton className='flex-1' onPress={() => showModal(previousModal!)} label="Zrušit" labelSize='base' labelClassName='text-center' labelColor={isDark ? Colors.white : ''} style={{ ...spacing.p(12), ...spacing.borderWidth(1), borderColor: isDark ? Colors.dark.secondary_lighter : Colors.hidden_text, ...spacing.borderRadius(12) }} backgroundColor={isDark ? Colors.dark.secondary_light : Colors.light.secondary} />
+            <View style={{ ...spacing.p(20), ...spacing.gap(8), ...spacing.borderBottomRadius(12), backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light }} className='flex-row justify-between'>
+                <CustomButton className='flex-1'
+                    onPress={() => showModal(previousModal!)}
+                    label="Zrušit"
+                    labelSize='base'
+                    labelClassName='text-center'
+                    labelColor={isDark ? Colors.white : ''}
+                    style={{
+                        ...spacing.p(12),
+                        ...spacing.borderWidth(1),
+                        borderColor: isDark ? Colors.text.primary_dark : Colors.text.muted,
+                        ...spacing.borderRadius(12)
+                    }}
+                    backgroundColor={isDark ? Colors.background.surface.dark : Colors.background.surface.light}
+                />
                 <CustomButton className='flex-1' onPress={handleSubmit(async (data) => {
                     await onFormSubmit(data);
                     hideModal();

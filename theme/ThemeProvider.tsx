@@ -81,7 +81,6 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         setColorScheme(scheme);
     };
 
-    const theme = colorScheme === 'dark' ? Colors.dark : Colors.light;
     const isDark = colorScheme === 'dark';
 
     if (isLoading || colorScheme === null) {

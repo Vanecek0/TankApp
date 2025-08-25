@@ -1,5 +1,5 @@
 import { View } from "react-native";
-import Graph from "../../graph/Graph";
+import Graph from "@/components/common/Graph";
 import ScaledText from "@/components/common/ScaledText";
 import { spacing } from "@/utils/SizeScaling";
 

@@ -65,7 +65,7 @@ export default function FormCheckboxItem({
             ) : (
                 <Text
                     style={{
-                        color: isDark ? Colors.white : Colors.dark.text,
+                        color: isDark ? Colors.text.primary : Colors.text.primary_dark,
                     }}
                 >
                     {label ?? value}

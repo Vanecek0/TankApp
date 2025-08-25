@@ -18,7 +18,7 @@ export default function HomeScreen() {
 
   return (
     <>
-      <ScrollView style={{ backgroundColor: isDark ? Colors.dark.background : Colors.light.background }}>
+      <ScrollView style={{ backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light }}>
         <View style={{ ...spacing.mx(20), ...spacing.mb(96), ...spacing.mt(12) }}>
           <Card>
             <View style={{ ...spacing.mb(8) }} className='flex-row justify-between'>
@@ -27,8 +27,8 @@ export default function HomeScreen() {
                 <ScaledText size='base' isThemed>2.0 TFSI Coupe</ScaledText>
               </View>
               <View className='rounded-full aspect-square flex justify-center items-center' style={{ borderColor: "lightgray", ...spacing.borderWidth(5), ...spacing.p(12) }}>
-                <ScaledText size='base' style={{ fontWeight: "bold", color: isDark ? Colors.dark.text : Colors.light.text }}>BA</ScaledText>
-                <ScaledText size='xs' style={{ color: isDark ? Colors.dark.text : Colors.light.text }}>E10</ScaledText>
+                <ScaledText size='base' style={{ fontWeight: "bold", color: isDark ? Colors.text.primary_dark : Colors.text.primary }}>BA</ScaledText>
+                <ScaledText size='xs' style={{ color: isDark ? Colors.text.primary_dark : Colors.text.primary }}>E10</ScaledText>
               </View>
             </View>
             <ResponsiveImage source={require('@/assets/images/car_image.png')} ratio={9 / 16} />
@@ -36,7 +36,7 @@ export default function HomeScreen() {
           <View className='flex-row flex-wrap justify-between'>
             <Card className={`basis-[48.5%]`}>
               <View style={{ ...spacing.gap(4) }} className='flex-row items-center'>
-                <Icon name="speedometer" color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor() * 15} />
+                <Icon name="speedometer" color={Colors.icon.primary} size={getScaleFactor() * 15} />
                 <ScaledText size='xs' className='font-bold' isThemed>Stav tachometru</ScaledText>
               </View>
               <View style={{ ...spacing.gap(12), ...spacing.mt(16) }} className='flex justify-between'>
@@ -45,7 +45,7 @@ export default function HomeScreen() {
             </Card>
             <Card className={`basis-[48.5%]`}>
               <View style={{ ...spacing.gap(4) }} className='flex-row items-center'>
-                <Icon name="calendar" color={isDark ? Colors.dark.text : Colors.light.text} style={{ ...spacing.width(15), ...spacing.height(15) }} />
+                <Icon name="calendar" color={Colors.icon.primary} style={{ ...spacing.width(15), ...spacing.height(15) }} />
                 <ScaledText size='xs' className='font-bold' isThemed>Příští STK</ScaledText>
               </View>
               <View style={{ ...spacing.gap(12), ...spacing.mt(16) }} className='flex justify-between'>
@@ -54,7 +54,7 @@ export default function HomeScreen() {
             </Card>
             <Card className={`basis-[48.5%]`}>
               <View style={{ ...spacing.gap(4) }} className='flex-row items-center'>
-                <Icon name="average" color={isDark ? Colors.dark.text : Colors.light.text} style={{ ...spacing.width(15), ...spacing.height(15) }} />
+                <Icon name="average" color={Colors.icon.primary} style={{ ...spacing.width(15), ...spacing.height(15) }} />
                 <ScaledText size='xs' className='font-bold' isThemed>Průměrné roční náklady</ScaledText>
               </View>
               <View style={{ ...spacing.gap(12), ...spacing.mt(16) }} className='flex justify-between'>
@@ -63,7 +63,7 @@ export default function HomeScreen() {
             </Card>
             <Card className={`basis-[48.5%]`}>
               <View style={{ ...spacing.gap(4) }} className='flex-row items-center'>
-                <Icon name="dollar" color={isDark ? Colors.dark.text : Colors.light.text} style={{ ...spacing.width(15), ...spacing.height(15) }} />
+                <Icon name="dollar" color={Colors.icon.primary} style={{ ...spacing.width(15), ...spacing.height(15) }} />
                 <ScaledText size='xs' className='font-bold' isThemed>Celkové náklady</ScaledText>
               </View>
               <View style={{ ...spacing.gap(12), ...spacing.mt(16) }} className='flex justify-between'>
@@ -73,7 +73,7 @@ export default function HomeScreen() {
           </View>
           <Card className={`basis-[48.5%]`}>
             <ScaledText style={{ ...spacing.mb(12) }} size='lg' className='font-bold' isThemed>Servisní záznam</ScaledText>
-            
+
             {/* Service item */}
             <View className='flex-row justify-between items-center'>
               <View style={{ ...spacing.mb(12), ...spacing.gap(8) }}>
@@ -92,12 +92,44 @@ export default function HomeScreen() {
         <View onTouchEnd={
           () => { showModal(AddTankRecordModal) }} style={{ ...spacing.right(10) }} className='flex-row items-center gap-3'>
           <ScaledText size={'base'} color={isDark ? Colors.white : ''} className='font-bold'>Přidat tankování</ScaledText>
-          <CustomButton labelClassName='aspect text-center' style={{ ...spacing.borderRadius(90), ...spacing.p(16), ...spacing.width(60) }} className={`flex shadow-md justify-center items-center aspect-square`} label={<Icon name="tank" color={Colors.primary} style={{ ...spacing.width(20), ...spacing.height(20) }} />} labelSize='xl' labelColor={isDark ? Colors.white : ''} backgroundColor={isDark ? Colors.dark.secondary_light : Colors.light.secondary} />
+          <CustomButton
+            labelClassName='aspect text-center'
+            style={{ ...spacing.borderRadius(90), ...spacing.p(16), ...spacing.width(60) }}
+            className={`flex shadow-md justify-center items-center aspect-square`}
+            label={
+              <Icon
+                name="tank"
+                color={Colors.primary}
+                style={{ ...spacing.width(20), ...spacing.height(20) }}
+              />
+            }
+            labelSize='xl'
+            labelColor={isDark ? Colors.white : ''}
+            backgroundColor={isDark ? Colors.background.surface.dark : Colors.background.surface.light}
+          />
         </View>
         <View onTouchEnd={
           () => { showModal(AddStationRecordModal) }} style={{ ...spacing.right(10) }} className='flex-row items-center gap-3'>
           <ScaledText size={'base'} color={isDark ? Colors.white : ''} className='font-bold'>Přidat stanici</ScaledText>
-          <CustomButton labelClassName='aspect-square text-center' style={{ ...spacing.borderRadius(90), ...spacing.p(16), ...spacing.width(60) }} className={`flex shadow-md justify-center items-center aspect-square`} label={<Icon name="map_pin" color={Colors.primary} style={{ ...spacing.width(20), ...spacing.height(20) }} />} labelSize='xl' labelColor={isDark ? Colors.white : ''} backgroundColor={isDark ? Colors.dark.secondary_light : Colors.light.secondary} />
+          <CustomButton
+            labelClassName='aspect-square text-center'
+            style={{
+              ...spacing.borderRadius(90),
+              ...spacing.p(16),
+              ...spacing.width(60)
+            }}
+            className={`flex shadow-md justify-center items-center aspect-square`}
+            label={
+              <Icon
+                name="map_pin"
+                color={Colors.primary}
+                style={{ ...spacing.width(20), ...spacing.height(20) }}
+              />
+            }
+            labelSize='xl'
+            labelColor={isDark ? Colors.white : ''}
+            backgroundColor={isDark ? Colors.background.surface.dark : Colors.background.surface.light}
+          />
         </View>
       </ActionButton>
     </>

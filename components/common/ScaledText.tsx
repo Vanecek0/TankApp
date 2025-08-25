@@ -16,7 +16,7 @@ export default function ScaledText({ size, isThemed = false, color, style, child
   const { isDark } = useTheme();
   const fontStyle = FontSizes[size];
   const themedColor = isThemed
-    ? { color: isDark ? Colors.dark.text : Colors.light.text }
+    ? { color: isDark ? Colors.text.primary_dark : Colors.text.primary }
     : color != null ? { color: color} : {};
 
   return (
