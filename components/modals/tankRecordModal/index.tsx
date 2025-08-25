@@ -96,7 +96,7 @@ export default function AddTankRecordModal({ onSubmit }: any) {
           </View>
           {item.address && (
             <View style={{ ...spacing.gap(4) }} className="flex-row items-center">
-              <Icon name="map_pin" color={Colors.hidden_text} size={getScaleFactor() * 15} />
+              <Icon name="map_pin" color={Colors.icon.disabled} size={getScaleFactor() * 15} />
               <ScaledText numberOfLines={1} ellipsizeMode="tail" className="text-ellipsis overflow-visible" isThemed size="sm">
                 {item.address}
               </ScaledText>
@@ -107,7 +107,7 @@ export default function AddTankRecordModal({ onSubmit }: any) {
 
       {item.phone && (
         <View style={{ ...spacing.gap(4) }} className="w-4/5 flex-row items-center">
-          <Icon name="phone" color={Colors.hidden_text} size={getScaleFactor() * 15} />
+          <Icon name="phone" color={Colors.icon.disabled} size={getScaleFactor() * 15} />
           <ScaledText numberOfLines={1} ellipsizeMode="tail" className="text-ellipsis overflow-visible" isThemed size="sm">
             {item.phone}
           </ScaledText>
@@ -116,7 +116,7 @@ export default function AddTankRecordModal({ onSubmit }: any) {
 
       {item.opening_hrs && item.closing_hrs && (
         <View style={{ ...spacing.gap(4) }} className="w-4/5 flex-row items-center">
-          <Icon name="clock" color={Colors.hidden_text} size={getScaleFactor() * 15} />
+          <Icon name="clock" color={Colors.icon.disabled} size={getScaleFactor() * 15} />
           <ScaledText numberOfLines={1} ellipsizeMode="tail" className="text-ellipsis overflow-visible" isThemed size="sm">
             {new Date(item.opening_hrs).toLocaleTimeString('cs-CZ', { hour: '2-digit', minute: '2-digit' })} -{' '}
             {new Date(item.closing_hrs).toLocaleTimeString('cs-CZ', { hour: '2-digit', minute: '2-digit' })}
@@ -134,8 +134,8 @@ export default function AddTankRecordModal({ onSubmit }: any) {
         className="border-b-[1px] sticky flex-row justify-between items-center"
         style={{
           ...spacing.borderTopRadius(12),
-          borderColor: isDark ? Colors.dark.secondary_light : Colors.light.background,
-          backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.background,
+          borderColor: isDark ? Colors.text.primary_dark : Colors.text.primary,
+          backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light,
           ...spacing.p(24),
         }}
       >
@@ -149,7 +149,7 @@ export default function AddTankRecordModal({ onSubmit }: any) {
             }}
             className="flex items-center justify-center"
           >
-            <Icon name="tank" color={Colors.dark.text} size={getScaleFactor() * 20} />
+            <Icon name="tank" color={Colors.icon.primary} size={getScaleFactor() * 20} />
           </View>
           <View>
             <ScaledText size="xl" isThemed className="text-xl font-semibold">
@@ -165,14 +165,14 @@ export default function AddTankRecordModal({ onSubmit }: any) {
           style={{ ...spacing.p(36), ...spacing.me(-12) }}
           className="justify-center items-center absolute right-0"
         >
-          <Icon name="cross" color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor() * 20} />
+          <Icon name="cross" color={Colors.icon.primary} size={getScaleFactor() * 20} />
         </View>
       </View>
       <ScrollView style={{ ...spacing.p(24) }} className="">
         <View style={{ ...spacing.gap(12), ...spacing.pb(52) }}>
           <View>
             <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
-              <Icon name='speedometer' color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor() * 16} />
+              <Icon name='speedometer' color={Colors.icon.primary} size={getScaleFactor() * 16} />
               <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Stav tachometru</ScaledText>
             </View>
 
@@ -181,7 +181,7 @@ export default function AddTankRecordModal({ onSubmit }: any) {
 
           <View>
             <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
-              <Icon name='map_pin' color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor() * 16} />
+              <Icon name='map_pin' color={Colors.icon.primary} size={getScaleFactor() * 16} />
               <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Stanice</ScaledText>
             </View>
 
@@ -199,7 +199,7 @@ export default function AddTankRecordModal({ onSubmit }: any) {
           <View className='flex-row justify-between'>
             <View className='w-[48%]'>
               <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
-                <Icon name='tank' color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor() * 16} />
+                <Icon name='tank' color={Colors.icon.primary} size={getScaleFactor() * 16} />
                 <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Palivo</ScaledText>
               </View>
 
@@ -215,7 +215,7 @@ export default function AddTankRecordModal({ onSubmit }: any) {
 
             <View className='w-[48%]'>
               <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
-                <Icon name='calc' color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor() * 16} />
+                <Icon name='calc' color={Colors.icon.primary} size={getScaleFactor() * 16} />
                 <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Cena za jednotku</ScaledText>
               </View>
 
@@ -225,7 +225,7 @@ export default function AddTankRecordModal({ onSubmit }: any) {
 
           <View>
             <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
-              <Icon name='dollar' color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor() * 16} />
+              <Icon name='dollar' color={Colors.icon.primary} size={getScaleFactor() * 16} />
               <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Cena (bez slev)</ScaledText>
             </View>
 
@@ -242,8 +242,8 @@ export default function AddTankRecordModal({ onSubmit }: any) {
 
         </View>
       </ScrollView>
-      <View style={{ ...spacing.p(20), ...spacing.gap(8), ...spacing.borderBottomRadius(12), backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.background }} className='flex-row justify-between'>
-        <CustomButton className='w-[48%]' onPress={() => hideModal()} label="Zrušit" labelSize='base' labelClassName='text-center' labelColor={isDark ? Colors.white : ''} style={{ ...spacing.p(12), ...spacing.borderWidth(1), borderColor: isDark ? Colors.dark.secondary_lighter : Colors.hidden_text, ...spacing.borderRadius(12) }} backgroundColor={isDark ? Colors.dark.secondary_light : Colors.light.secondary} />
+      <View style={{ ...spacing.p(20), ...spacing.gap(8), ...spacing.borderBottomRadius(12), backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light }} className='flex-row justify-between'>
+        <CustomButton className='w-[48%]' onPress={() => hideModal()} label="Zrušit" labelSize='base' labelClassName='text-center' labelColor={isDark ? Colors.white : ''} style={{ ...spacing.p(12), ...spacing.borderWidth(1), borderColor: isDark ? Colors.text.primary_dark : Colors.text.muted, ...spacing.borderRadius(12) }} backgroundColor={isDark ? Colors.background.surface.dark : Colors.background.surface.light} />
         <CustomButton className='w-[48%]' onPress={handleSubmit((data) => { onFormSubmit(data); hideModal() })} label="Přidat záznam" labelSize='base' labelClassName='text-center' labelColor={Colors.white} style={{ ...spacing.p(12), ...spacing.borderRadius(12), ...spacing.borderWidth(1), borderColor: Colors.primary }} backgroundColor={Colors.primary} />
       </View>
     </View>

@@ -84,7 +84,7 @@ export default function TankGraph({ className, data }: {
     if (!data || !Array.isArray(data)) {
         return (
             <SafeAreaView style={{ maxHeight: parentWidth / 3, ...spacing.my(15), ...spacing.height(120) }} className={`items-center justify-center ${className}`}>
-                <ScaledText size="sm" style={{ color: Colors.light.text }}>
+                <ScaledText size="sm" style={{ color: Colors.text.primary }}>
                     Načítání dat...
                 </ScaledText>
             </SafeAreaView>

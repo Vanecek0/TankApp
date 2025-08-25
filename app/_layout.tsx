@@ -72,7 +72,7 @@ function DrawerWithTheme() {
                 swipeEdgeWidth: 7,
                 swipeMinDistance: 55,
                 drawerStyle: {
-                    backgroundColor: isDark ? Colors.dark.secondary : Colors.light.secondary
+                    backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light
                 }
             }}
         />

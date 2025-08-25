@@ -113,7 +113,7 @@ export default function TankLineGraph({ className }: {
                 startOpacity={0.85}
                 endOpacity={0}
                 xAxisLabelTextStyle={{
-                    color: isDark ? Colors.white : Colors.dark.secondary,
+                    color: isDark ? Colors.background.surface.light : Colors.background.surface.dark,
                     innerWidth: 0,
                     outerWidth: 0,
                     marginTop: 0,
@@ -124,7 +124,7 @@ export default function TankLineGraph({ className }: {
                     ...spacing.height(25)
                 }}
                 yAxisTextStyle={{
-                    color: isDark ? Colors.white : Colors.dark.secondary,
+                    color: isDark ? Colors.background.surface.light : Colors.background.surface.dark,
                     innerWidth: 0,
                     outerWidth: 0,
                     marginTop: 0,
@@ -133,7 +133,7 @@ export default function TankLineGraph({ className }: {
                     paddingBottom: 0,
                     fontSize: FontSizes["sm"].size,
                 }}
-                rulesColor={Colors.inactive_icon}
+                rulesColor={Colors.text.muted}
                 adjustToWidth
                 width={parentWidth - 50}
                 height={parentWidth / 3}
@@ -144,10 +144,10 @@ export default function TankLineGraph({ className }: {
                 indicatorColor={"white"}
                 pointerConfig={{
                     pointerStripUptoDataPoint: true,
-                    pointerStripColor: isDark ? Colors.dark.text : Colors.light.text,
+                    pointerStripColor: isDark ? Colors.text.primary_dark : Colors.text.primary,
                     pointerStripWidth: 2 * getScaleFactor(),
                     strokeDashArray: [2, 5],
-                    pointerColor: isDark ? Colors.dark.text : Colors.light.text,
+                    pointerColor: isDark ? Colors.text.primary_dark : Colors.text.primary,
                     radius: 4 * getScaleFactor(),
                     pointerLabelWidth: 80 * getScaleFactor(),
                     pointerLabelHeight: 64 * getScaleFactor(),

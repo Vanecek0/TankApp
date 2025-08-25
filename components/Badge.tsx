@@ -26,10 +26,10 @@ export default function Badge({ className, textClassName, style, size = "base", 
             isThemed
                 ? isDark
                     ? isCheckable && !isChecked
-                        ? Colors.dark.secondary_lighter
-                        : Colors.dark.text
+                        ? Colors.text.secondary
+                        : Colors.text.primary_dark
                     : isCheckable && !isChecked
-                        ? Colors.hidden_text
+                        ? Colors.text.muted
                         : contrastHexColor(badgeColor)
                 : textColor ?? undefined,
     };

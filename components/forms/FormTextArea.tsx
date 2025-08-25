@@ -18,7 +18,7 @@ export default function FormTextArea({ name, control, placeholder, defaultValue,
             multiline
             numberOfLines={numberOfLines}
             placeholder={placeholder}
-            placeholderTextColor={isDark ? Colors.dark.secondary_lighter : Colors.light.text}
+            placeholderTextColor={isDark ? Colors.text.secondary : Colors.text.primary}
             style={{
                 ...spacing.borderRadius(12),
                 ...spacing.borderWidth(1),
@@ -26,9 +26,9 @@ export default function FormTextArea({ name, control, placeholder, defaultValue,
                 ...spacing.py(12),
                 ...spacing.height(fieldHeight),
                 textAlignVertical: 'top',
-                borderColor: isDark ? Colors.dark.secondary_lighter : Colors.hidden_text,
-                backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.secondary,
-                color: isDark ? Colors.white : Colors.dark.secondary,
+                borderColor: isDark ? Colors.text.secondary : Colors.text.muted,
+                backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light,
+                color: isDark ? Colors.text.primary : Colors.text.primary_dark
             }}
             value={field.value !== undefined ? field.value : defaultValue}
             onChangeText={field.onChange}

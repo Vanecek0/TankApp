@@ -70,18 +70,18 @@ export default function ProfileModal() {
                         style={{
                             ...spacing.borderTopRadius(8),
                         }}
-                        ratio={9/16}
+                        ratio={9 / 16}
                     />
 
-                    
+
                 </View>
 
                 <View
                     className='flex-row justify-between items-center relative'
                     style={{
                         backgroundColor: isDark
-                            ? Colors.dark.secondary_light
-                            : Colors.light.secondary,
+                            ? Colors.background.surface.dark
+                            : Colors.background.surface.light,
                         ...spacing.borderBottomRadius(8),
                     }}>
                     <View
@@ -92,10 +92,10 @@ export default function ProfileModal() {
                             <ScaledText size='lg' className='font-bold' isThemed>
                                 {item.car_nickname ?? `${item.manufacturer} ${item.model}`}
                             </ScaledText>
-                            <ScaledText size='base' color={Colors.hidden_text} >
+                            <ScaledText size='base' color={Colors.text.muted} >
                                 {`${item.manufacturer} ${item.model}`}
                             </ScaledText>
-                            <ScaledText size='base' color={Colors.hidden_text} >
+                            <ScaledText size='base' color={Colors.text.muted} >
                                 {`Rok výroby: ${item.manufacture_year}\nTachometr: ${item.odometer} km`}
                             </ScaledText>
                         </View>
@@ -103,11 +103,11 @@ export default function ProfileModal() {
                     </View>
                     <View className='absolute top-0 bottom-0 right-3 flex-row items-center' style={{ ...spacing.gap(4) }}>
                         <View className="flex-row" style={{ ...spacing.gap(12), ...spacing.py(5), ...spacing.px(5) }} onTouchEnd={() => onPress(item)}>
-                            <Icon name="edit" color={Colors.hidden_text} size={getScaleFactor() * 20} />
+                            <Icon name="edit" color={Colors.icon.disabled} size={getScaleFactor() * 20} />
                         </View>
                         {item.id != car?.id ?
                             (<View className="flex-row" style={{ ...spacing.gap(12), ...spacing.py(5), ...spacing.px(5) }} onTouchEnd={() => showDeleteConfirm(item)}>
-                                <Icon name="bin" color={Colors.hidden_text} size={getScaleFactor() * 20} />
+                                <Icon name="bin" color={Colors.icon.disabled} size={getScaleFactor() * 20} />
                             </View>) : undefined
                         }
                     </View>
@@ -142,8 +142,8 @@ export default function ProfileModal() {
                 className="border-b-[1px] sticky flex-row justify-between items-center"
                 style={{
                     ...spacing.borderTopRadius(12),
-                    borderColor: isDark ? Colors.dark.secondary_light : Colors.light.background,
-                    backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.background,
+                    borderColor: isDark ? Colors.text.primary : Colors.text.primary_dark,
+                    backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light,
                     ...spacing.p(24),
                 }}
             >
@@ -157,7 +157,7 @@ export default function ProfileModal() {
                         }}
                         className="flex items-center justify-center"
                     >
-                        <Icon name="map_pin" color={Colors.dark.text} size={getScaleFactor() * 20} />
+                        <Icon name="map_pin" color={Colors.text.primary} size={getScaleFactor() * 20} />
                     </View>
                     <View>
                         <ScaledText size="xl" isThemed className="text-xl font-semibold">
@@ -173,7 +173,7 @@ export default function ProfileModal() {
                     style={{ ...spacing.p(36), ...spacing.me(-12) }}
                     className="justify-center items-center absolute right-0"
                 >
-                    <Icon name="cross" color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor() * 20} />
+                    <Icon name="cross" color={isDark ? Colors.text.primary_dark : Colors.text.primary} size={getScaleFactor() * 20} />
                 </View>
             </View>
 
@@ -196,7 +196,7 @@ export default function ProfileModal() {
                         <ScaledText
                             style={{ ...spacing.p(28) }}
                             className="text-center font-bold"
-                            color={Colors.inactive_icon}
+                            color={Colors.text.muted}
                             size="base"
                         >
                             Žádné záznamy nenalezeny
@@ -247,8 +247,8 @@ export function ProfileActionModal({ car, previousModal }: { car: Car, previousM
                 className="border-b-[1px] sticky flex-row justify-between items-center"
                 style={{
                     ...spacing.borderTopRadius(12),
-                    borderColor: isDark ? Colors.dark.secondary_light : Colors.light.background,
-                    backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.background,
+                    borderColor: isDark ? Colors.text.primary : Colors.text.primary_dark,
+                    backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light,
                     ...spacing.p(24),
                 }}
             >
@@ -262,7 +262,7 @@ export function ProfileActionModal({ car, previousModal }: { car: Car, previousM
                         }}
                         className="flex items-center justify-center"
                     >
-                        <Icon name="edit" color={Colors.dark.text} size={getScaleFactor() * 20} />
+                        <Icon name="edit" color={Colors.icon.primary} size={getScaleFactor() * 20} />
                     </View>
                     <View>
                         <ScaledText size="xl" isThemed className="text-xl font-semibold">
@@ -278,7 +278,7 @@ export function ProfileActionModal({ car, previousModal }: { car: Car, previousM
                     style={{ ...spacing.p(36), ...spacing.me(-12) }}
                     className="justify-center items-center absolute right-0"
                 >
-                    <Icon name="cross" color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor() * 20} />
+                    <Icon name="cross" color={isDark ? Colors.text.primary_dark : Colors.text.primary} size={getScaleFactor() * 20} />
                 </View>
             </View>
 
@@ -338,7 +338,7 @@ export function ProfileActionModal({ car, previousModal }: { car: Car, previousM
                                                     ...spacing.m(4),
                                                     ...spacing.ms(-4),
                                                     ...spacing.me(12),
-                                                    borderColor: car.fuel_id == fuel.id! ? Colors.transparent : Colors.hidden_text,
+                                                    borderColor: car.fuel_id == fuel.id! ? Colors.transparent : Colors.text.muted,
                                                 }}
                                                 badgeColor={car.fuel_id == fuel.id! ? Colors.primary : Colors.transparent}
                                                 isCheckable
@@ -357,8 +357,20 @@ export function ProfileActionModal({ car, previousModal }: { car: Car, previousM
                 </View>
             </ScrollView>
 
-            <View style={{ ...spacing.p(20), ...spacing.gap(8), ...spacing.borderBottomRadius(12), backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.background }} className='flex-row justify-between'>
-                <CustomButton className='flex-1' onPress={() => showModal(previousModal!)} label="Zrušit" labelSize='base' labelClassName='text-center' labelColor={isDark ? Colors.white : ''} style={{ ...spacing.p(12), ...spacing.borderWidth(1), borderColor: isDark ? Colors.dark.secondary_lighter : Colors.hidden_text, ...spacing.borderRadius(12) }} backgroundColor={isDark ? Colors.dark.secondary_light : Colors.light.secondary} />
+            <View style={{ ...spacing.p(20), ...spacing.gap(8), ...spacing.borderBottomRadius(12), backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light }} className='flex-row justify-between'>
+                <CustomButton className='flex-1'
+                    onPress={() => showModal(previousModal!)}
+                    label="Zrušit"
+                    labelSize='base'
+                    labelClassName='text-center'
+                    labelColor={isDark ? Colors.white : ''}
+                    style={{
+                        ...spacing.p(12),
+                        ...spacing.borderWidth(1),
+                        borderColor: isDark ? Colors.text.primary_dark : Colors.text.muted,
+                        ...spacing.borderRadius(12)
+                    }}
+                    backgroundColor={isDark ? Colors.background.surface.dark : Colors.background.surface.light} />
                 <CustomButton className='flex-1' onPress={handleSubmit(async (data) => {
                     await onFormSubmit(data);
                     hideModal();

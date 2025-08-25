@@ -51,14 +51,14 @@ export default function FormDateTimeInput({ name, control, fieldHeight = 46, mod
                     ...spacing.p(12),
                     ...spacing.borderWidth(1),
                     ...spacing.borderRadius(12),
-                    borderColor: isDark ? Colors.dark.secondary_lighter : Colors.hidden_text,
-                    backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.secondary,
+                    borderColor: isDark ? Colors.text.secondary : Colors.text.muted,
+                    backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light,
                 }}
             >
                 <ScaledText
                     size='base'
                     style={{
-                        color: isDark ? Colors.white : Colors.dark.secondary
+                        color: isDark ? Colors.white : Colors.text.primary_dark
                     }}
                 >
                     {field.value !== undefined ? displayValue : defaultValue}

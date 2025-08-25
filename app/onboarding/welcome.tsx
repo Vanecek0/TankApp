@@ -15,7 +15,7 @@ export default function Welcome() {
     return (
         <SafeAreaView
             style={{
-                backgroundColor: isDark ? Colors.dark.background : Colors.light.background,
+                backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light,
                 flex: 1
             }}
             className={`${isDark ? 'dark' : ''}`}
@@ -31,10 +31,10 @@ export default function Welcome() {
                     }}
                         className="rounded-full flex items-center justify-center"
                     >
-                        <Icon name='tank' color={Colors.dark.text} size={getScaleFactor() * 36} />
+                        <Icon name='tank' color={Colors.icon.primary} size={getScaleFactor() * 36} />
                     </View>
-                    <ScaledText size='2xl' className='text-center font-bold' style={{ color: isDark ? Colors.dark.text : Colors.light.text }}>Vítejte v TankApp!</ScaledText>
-                    <ScaledText size="lg" className='text-center' style={{ color: isDark ? Colors.dark.text : Colors.light.text }}>
+                    <ScaledText size='2xl' className='text-center font-bold' style={{ color: isDark ? Colors.text.primary_dark : Colors.text.primary }}>Vítejte v TankApp!</ScaledText>
+                    <ScaledText size="lg" className='text-center' style={{ color: isDark ? Colors.text.primary_dark : Colors.text.primary }}>
                         Aplikace, která vám pomáhá kontrolovat náklady na tankování, spravovat servisní záznamy a mít přehled o důležitých termínech.
                     </ScaledText>
                 </View>
@@ -42,29 +42,29 @@ export default function Welcome() {
                 <View className='flex-col' style={{ ...spacing.gap(16) }}>
                     <View style={{ ...spacing.gap(4) }} className='justify-center items-center'>
                         <View style={{ backgroundColor: Colors.primary, ...spacing.borderRadius(8) }} className="w-12 h-12 rounded-lg flex items-center justify-center">
-                            <Icon name='tank' color={Colors.dark.text} size={getScaleFactor() * 20} />
+                            <Icon name='tank' color={Colors.icon.primary} size={getScaleFactor() * 20} />
                         </View>
-                        <ScaledText size='lg' className='font-bold' style={{ color: isDark ? Colors.dark.text : Colors.light.text }}>Sledování tankováni</ScaledText>
-                        <ScaledText size='base' style={{ color: isDark ? Colors.dark.text : Colors.light.text }}>Zaznamenávejte každé tankování a sledujte spotřebu</ScaledText>
+                        <ScaledText size='lg' className='font-bold' style={{ color: isDark ? Colors.text.primary_dark : Colors.text.primary }}>Sledování tankováni</ScaledText>
+                        <ScaledText size='base' style={{ color: isDark ? Colors.text.primary_dark : Colors.text.primary }}>Zaznamenávejte každé tankování a sledujte spotřebu</ScaledText>
                     </View>
                     <View style={{ ...spacing.gap(4) }} className='justify-center items-center'>
                         <View style={{ backgroundColor: Colors.primary, ...spacing.borderRadius(8) }} className="w-12 h-12 rounded-lg flex items-center justify-center">
-                            <Icon name='car_repair' color={Colors.dark.text} size={getScaleFactor() * 20} />
+                            <Icon name='car_repair' color={Colors.icon.primary} size={getScaleFactor() * 20} />
                         </View>
-                        <ScaledText size='lg' className='font-bold' style={{ color: isDark ? Colors.dark.text : Colors.light.text }}>Servisní záznamy</ScaledText>
-                        <ScaledText size='base' style={{ color: isDark ? Colors.dark.text : Colors.light.text }}>Plánujte a evidujte všechny servisní úkony</ScaledText>
+                        <ScaledText size='lg' className='font-bold' style={{ color: isDark ? Colors.text.primary_dark : Colors.text.primary }}>Servisní záznamy</ScaledText>
+                        <ScaledText size='base' style={{ color: isDark ? Colors.text.primary_dark : Colors.text.primary }}>Plánujte a evidujte všechny servisní úkony</ScaledText>
                     </View>
                     <View style={{ ...spacing.gap(4) }} className='justify-center items-center'>
                         <View style={{ backgroundColor: Colors.primary, ...spacing.borderRadius(8) }} className="w-12 h-12 rounded-lg flex items-center justify-center">
-                            <Icon name='bars' color={Colors.dark.text} size={getScaleFactor() * 20} />
+                            <Icon name='bars' color={Colors.icon.primary} size={getScaleFactor() * 20} />
                         </View>
-                        <ScaledText size='lg' className='font-bold' style={{ color: isDark ? Colors.dark.text : Colors.light.text }}>Statistiky</ScaledText>
-                        <ScaledText size='base' style={{ color: isDark ? Colors.dark.text : Colors.light.text }}>Přehledné grafy a analýzy vašich výdajů</ScaledText>
+                        <ScaledText size='lg' className='font-bold' style={{ color: isDark ? Colors.text.primary_dark : Colors.text.primary }}>Statistiky</ScaledText>
+                        <ScaledText size='base' style={{ color: isDark ? Colors.text.primary_dark : Colors.text.primary }}>Přehledné grafy a analýzy vašich výdajů</ScaledText>
                     </View>
                 </View>
 
                 <View className='flex-1 justify-end' style={{ ...spacing.pb(20), ...spacing.gap(12) }}>
-                    <ScaledText size='sm' className='text-center' style={{ color: Colors.inactive_icon }}>Začněte nastavením profilu v dalším kroku</ScaledText>
+                    <ScaledText size='sm' className='text-center' style={{ color: Colors.text.muted }}>Začněte nastavením profilu v dalším kroku</ScaledText>
                     <CustomButton
                         onPress={() => router.push('/onboarding/create-profile')}
                         label={"Začínáme"}

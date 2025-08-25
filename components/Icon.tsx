@@ -1,5 +1,4 @@
 import { ImageStyle, OpaqueColorValue, StyleProp, View, ViewStyle } from 'react-native';
-import { Theme } from '@/constants/Colors';
 import CarRepair from "@/assets/images/car_repair.jsx";
 import Home from "@/assets/images/home.jsx";
 import MapPin from "@/assets/images/map_pin.jsx";
@@ -80,7 +79,7 @@ export default function Icon({
     size
 }: {
     name: IconSrc;
-    color?: string | OpaqueColorValue | Theme;
+    color?: string | OpaqueColorValue;
     style?: StyleProp<ImageStyle>;
     className?: string;
     wrapperStyle?: ViewStyle;

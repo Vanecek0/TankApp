@@ -19,7 +19,7 @@ export default function TabsLayout() {
     const { isDark } = useTheme();
 
     return (
-        <SafeAreaView style={{ backgroundColor: isDark ? Colors.dark.background : Colors.light.background, flex: 1 }} className={`flex-1 ${isDark ? 'dark' : ''}`}>
+        <SafeAreaView style={{ backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light, flex: 1 }} className={`flex-1 ${isDark ? 'dark' : ''}`}>
             <ModalProvider>
                 <SettingsBar />
                 <Tabs
@@ -29,20 +29,20 @@ export default function TabsLayout() {
                         headerShown: false,
                         tabBarStyle: Platform.select({
                             ios: {
-                                backgroundColor: isDark ? Colors.dark.secondary : Colors.light.secondary,
+                                backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light,
                                 ...spacing.height(55),
                                 borderTopWidth: 0,
                                 paddingBottom: 0
                             },
                             android: {
-                                backgroundColor: isDark ? Colors.dark.secondary : Colors.light.secondary,
+                                backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light,
                                 ...spacing.height(75),
                                 borderTopWidth: 0,
                                 paddingBottom: 5,
                                 paddingTop: 5,
                             },
                             default: {
-                                backgroundColor: isDark ? Colors.dark.secondary : Colors.light.secondary,
+                                backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light,
                                 ...spacing.height(75),
                                 borderTopWidth: 0,
                                 paddingBottom: 0 * getScaleFactor()

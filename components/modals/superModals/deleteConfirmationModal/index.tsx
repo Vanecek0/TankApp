@@ -37,8 +37,8 @@ export default function DeleteConfirmationModal({
                 className="border-b-[1px] sticky flex-row justify-between items-center"
                 style={{
                     ...spacing.borderTopRadius(12),
-                    borderColor: isDark ? Colors.dark.secondary_light : Colors.light.background,
-                    backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.background,
+                    borderColor: isDark ? Colors.text.primary_dark : Colors.text.primary,
+                    backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light,
                     ...spacing.p(24),
                 }}
             >
@@ -52,7 +52,7 @@ export default function DeleteConfirmationModal({
                         }}
                         className="flex items-center justify-center"
                     >
-                        <Icon name="bin" color={Colors.dark.text} size={getScaleFactor() * 20} />
+                        <Icon name="bin" color={Colors.icon.primary} size={getScaleFactor() * 20} />
                     </View>
                     <View>
                         <ScaledText size="xl" isThemed className="text-xl font-semibold">
@@ -68,7 +68,7 @@ export default function DeleteConfirmationModal({
                     style={{ ...spacing.p(36), ...spacing.me(-12) }}
                     className="justify-center items-center absolute right-0"
                 >
-                    <Icon name="cross" color={isDark ? Colors.dark.text : Colors.light.text} size={getScaleFactor() * 20} />
+                    <Icon name="cross" color={Colors.icon.primary} size={getScaleFactor() * 20} />
                 </View>
             </View>
             <View style={{ ...spacing.p(24), }} className="flex justify-center items-center">
@@ -77,14 +77,14 @@ export default function DeleteConfirmationModal({
                 </View>
                 <ScaledText
                     size="lg"
-                    color={isDark ? Colors.dark.text : Colors.light.text}
+                    color={isDark ? Colors.text.primary_dark : Colors.text.primary}
                 >
                     {message}
                 </ScaledText>
 
             </View>
 
-            <View style={{ ...spacing.p(20), ...spacing.gap(8), ...spacing.borderBottomRadius(12), backgroundColor: isDark ? Colors.dark.secondary_light : Colors.light.background }} className='flex-row justify-between'>
+            <View style={{ ...spacing.p(20), ...spacing.gap(8), ...spacing.borderBottomRadius(12), backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light }} className='flex-row justify-between'>
                 <CustomButton
                     className='flex-1'
                     onPress={hideSuperModal}
@@ -95,9 +95,9 @@ export default function DeleteConfirmationModal({
                     style={{
                         ...spacing.p(12),
                         ...spacing.borderWidth(1),
-                        borderColor: isDark ? Colors.dark.secondary_lighter : Colors.hidden_text, ...spacing.borderRadius(12)
+                        borderColor: isDark ? Colors.text.primary_dark : Colors.text.muted, ...spacing.borderRadius(12)
                     }}
-                    backgroundColor={isDark ? Colors.dark.secondary_light : Colors.light.secondary}
+                    backgroundColor={isDark ? Colors.background.dark : Colors.background.light}
                 />
                 <CustomButton
                     className='flex-1'
