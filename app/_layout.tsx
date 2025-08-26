@@ -7,12 +7,13 @@ import "@/app/globals.css"
 import { ThemeColors as Colors } from '@/constants/Colors';
 import { FontSizes } from "@/utils/fontScaling";
 import { SQLiteProvider } from "expo-sqlite";
-import { CarProvider } from "@/context/carContext";
 import { Drawer } from 'expo-router/drawer';
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import SettingsBarDrawer from "@/components/common/Drawer";
 import { DatabaseProvider } from "@/database/databaseContext";
 import { initializeDemoDatabase } from "@/database/init";
+import { Provider as ReduxProvider } from "react-redux";
+import { store } from "@/store";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -46,17 +47,17 @@ export default function RootLayout() {
     }
 
     return (
-        <SQLiteProvider databaseName="database.db">
-            <DatabaseProvider>
-                <ThemeProvider>
-                    <CarProvider>
+        <ReduxProvider store={store}>
+            <SQLiteProvider databaseName="database.db">
+                <DatabaseProvider>
+                    <ThemeProvider>
                         <GestureHandlerRootView style={{ flex: 1 }}>
                             <DrawerWithTheme />
                         </GestureHandlerRootView>
-                    </CarProvider>
-                </ThemeProvider>
-            </DatabaseProvider>
-        </SQLiteProvider>
+                    </ThemeProvider>
+                </DatabaseProvider>
+            </SQLiteProvider>
+        </ReduxProvider>
     )
 }
 

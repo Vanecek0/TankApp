@@ -3,7 +3,6 @@ import ScaledText from "@/components/common/ScaledText";
 import Badge from "@/components/Badge";
 import Icon from "@/components/Icon";
 import { ThemeColors as Colors } from "@/constants/Colors";
-import { useCar } from "@/context/carContext";
 import { Car, CarModel } from "@/models/Car";
 import { useModal } from "@/providers/modalProvider";
 import { carRepository } from "@/repositories/carRepository";
@@ -22,11 +21,15 @@ import FormCheckboxItem from "@/components/forms/FormCheckboxItem";
 import FormNumberInput from "@/components/forms/FormNumberInput";
 import FormDateTimeInput from "@/components/forms/FormDateTimeInput";
 import ResponsiveImage from "@/components/common/ResponsiveImage";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/store";
+import { loadCarFromStorage } from "@/store/slices/car.slice";
 
 export default function ProfileModal() {
     const { hideModal, showModal, showSuperModal } = useModal();
     const { isDark } = useTheme();
-    const { car } = useCar();
+    const { car, loading } = useSelector((state: RootState) => state.car);
+    const dispatch = useDispatch<AppDispatch>();
     const [cars, setCars] = useState<Car[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -47,6 +50,10 @@ export default function ProfileModal() {
     useEffect(() => {
         loadCars();
     }, [])
+
+    useEffect(() => {
+        dispatch(loadCarFromStorage());
+    }, [dispatch]);
 
     const onRefresh = useCallback(async () => {
         await loadCars();

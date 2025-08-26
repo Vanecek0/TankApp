@@ -1,4 +1,4 @@
-import { Colors } from "@/constants/Colors"
+import { ThemeColors as Colors } from "@/constants/Colors"
 import { useTheme } from "@/theme/ThemeProvider"
 import { spacing } from "@/utils/SizeScaling"
 import type React from "react"

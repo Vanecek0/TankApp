@@ -5,15 +5,23 @@ import { Link, useNavigation } from "expo-router";
 import { useTheme } from "@/theme/ThemeProvider";
 import ScaledText from "./common/ScaledText";
 import getScaleFactor, { spacing } from "@/utils/SizeScaling";
-import { useCar } from "@/context/carContext";
 import { DrawerActions } from "@react-navigation/native";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/store";
+import { useEffect } from "react";
+import { loadCarFromStorage } from "@/store/slices/car.slice";
 
 export default function SettingsBar({ className }: {
     className?: string;
 }) {
     const { toggleColorScheme, isDark } = useTheme();
-    const { car } = useCar();
+    const { car, loading } = useSelector((state: RootState) => state.car);
+    const dispatch = useDispatch<AppDispatch>();
     const nav = useNavigation();
+
+    useEffect(() => {
+        dispatch(loadCarFromStorage());
+    }, [dispatch]);
 
     return (
         <View style={{ backgroundColor: isDark ? Colors.background.dark : Colors.background.light, ...spacing.py(12), ...spacing.px(20), ...spacing.gap(8) }} className={`${className} flex outline-none border-none flex-row items-center justify-between`}>

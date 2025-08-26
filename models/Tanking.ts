@@ -98,10 +98,10 @@ export class TankingModel extends BaseModel {
       .map(([month, data]) => ({ month, ...data }));
   }
 
-  static async getGroupedTankingsByMonth( order: string = 'DESC') {
+  static async getGroupedTankingsByMonth( order: string = 'DESC', carId: number) {
     const db = await this.getDb();
     const rows = await db.getAllAsync<{ id: number; snapshot: string; tank_date: number }>(
-      `SELECT id, snapshot, tank_date FROM tanking WHERE car_id = 1 ORDER BY tank_date ${order}`
+      `SELECT id, snapshot, tank_date FROM tanking WHERE car_id = ${carId} ORDER BY tank_date ${order}`
     );
 
     const badgesMap = await badgeTankingRepository.getBadgesByTanking(rows.map(r => r.id));
