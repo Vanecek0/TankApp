@@ -1,9 +1,8 @@
-import { View } from "react-native";
+import { Button, View } from "react-native";
 import ScaledText from "@/components/common/ScaledText";
 import { Link } from "expo-router";
 import getScaleFactor, { spacing } from "@/utils/SizeScaling";
 import { useTheme } from "@/theme/ThemeProvider";
-import { useCar } from "@/context/carContext";
 import Icon from "../Icon";
 import { ThemeColors as Colors } from "@/constants/Colors";
 import { ModalProvider, useModal } from "@/providers/modalProvider";
@@ -13,6 +12,10 @@ import { useSegments } from 'expo-router';
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView } from "react-native-gesture-handler";
 import ProfileModal from "@/components/modals/profileModal";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/store";
+import { loadCarFromStorage, setCarByIdAndPersist } from "@/store/slices/car.slice";
+import { useEffect } from "react";
 
 export default function Drawer({ ...props }) {
 
@@ -36,8 +39,13 @@ const currentTabIndex = () => {
 
 function TestDrawerContent() {
     const { isDark } = useTheme();
-    const { car } = useCar();
+    const { car, loading } = useSelector((state: RootState) => state.car);
+    const dispatch = useDispatch<AppDispatch>();
     const { showModal } = useModal();
+
+    useEffect(() => {
+        dispatch(loadCarFromStorage());
+    }, [dispatch]);
 
     return (
         <>
@@ -55,6 +63,12 @@ function TestDrawerContent() {
                     </View>
                 </View>
             </View>
+            <Button
+        title={`Změnit auto na ${car?.id === 1 ? 2 : 1}`}
+        onPress={() =>
+          dispatch(setCarByIdAndPersist(car?.id === 1 ? 2 : 1))
+        }
+      />
             <View>
                 <View >
                     <View style={{ ...spacing.gap(8) }}>

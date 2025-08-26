@@ -17,9 +17,14 @@ import { useModal } from '@/providers/modalProvider';
 import AddTankRecordModal from '@/components/modals/tankRecordModal';
 import { AddStationRecordModal } from '@/components/modals/stationsModal';
 import Card from '@/components/common/Card';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/store';
+import { loadCarFromStorage } from '@/store/slices/car.slice';
 
 export default function HomeScreen() {
   const { isDark } = useTheme();
+  const { car, loading } = useSelector((state: RootState) => state.car);
+  const dispatch = useDispatch<AppDispatch>();
   const pathname = usePathname();
   const { showModal } = useModal();
   const [orderTankings, setOrderTankings] = useState('DESC');
@@ -31,25 +36,29 @@ export default function HomeScreen() {
   }[]>([])
   const [isLoading, setIsLoading] = useState(true);
 
-  const loadTankings = useCallback(async (orderTankings: string) => {
+  useEffect(() => {
+    dispatch(loadCarFromStorage());
+  }, [dispatch]);
+
+  const loadTankings = useCallback(async (orderTankings: string, carId: number) => {
     setIsLoading(true);
     try {
-      const tankingsBadges = await TankingModel.getGroupedTankingsByMonth(orderTankings);
+      const tankingsBadges = await TankingModel.getGroupedTankingsByMonth(orderTankings, carId);
       setTanking(tankingsBadges);
     } catch (error) {
       console.error('Chyba při načítání tankings:', error);
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [dispatch]);
 
   const onRefresh = useCallback(async () => {
-    await loadTankings(orderTankings);
-  }, []);
+    await loadTankings(orderTankings, car?.id ?? 2);
+  }, [car]);
 
   useEffect(() => {
-    loadTankings(orderTankings);
-  }, [loadTankings, orderTankings])
+    loadTankings(orderTankings, car?.id ?? 2);
+  }, [loadTankings, orderTankings, car])
 
   const TankingItem = React.memo(({ item }: { item: { month: string, tankings: (Tanking & { station?: Station })[] } }) => {
     return (
