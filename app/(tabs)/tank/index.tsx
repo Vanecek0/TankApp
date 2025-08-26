@@ -2,7 +2,7 @@ import { RefreshControl, ScrollView, TouchableOpacity, View, VirtualizedList } f
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTheme } from '@/theme/ThemeProvider';
 import { usePathname } from 'expo-router';
-import { Colors } from '@/constants/Colors';
+import { ThemeColors as Colors } from '@/constants/Colors';
 import TankStatistics from './tabs/statistics';
 import getScaleFactor, { spacing } from '@/utils/SizeScaling';
 import { Tanking, TankingModel } from '@/models/Tanking';
@@ -123,7 +123,7 @@ export default function TankScreen() {
                       <Badge
                         key={badge.id}
                         badgeColor={badge.color}
-                        textColor={Colors.white}
+                        textColor={Colors.base.white}
                         size='xs'
                         style={{
                           ...spacing.borderRadius(12),
@@ -167,7 +167,7 @@ export default function TankScreen() {
                 <>
                   <Dashboard routePathName={pathname} />
                   <View className='flex-row justify-center items-center' style={{ ...spacing.mt(20) }}>
-                    <TouchableOpacity style={{ width: "50%", ...spacing.py(10), borderTopRightRadius: 8, borderTopLeftRadius: 8, borderBottomWidth: 3, borderBottomColor: Colors.primary, backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light }} onPress={() => setTab('list')}>
+                    <TouchableOpacity style={{ width: "50%", ...spacing.py(10), borderTopRightRadius: 8, borderTopLeftRadius: 8, borderBottomWidth: 3, borderBottomColor: Colors.base.primary, backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light }} onPress={() => setTab('list')}>
                       <ScaledText size='base' style={[{ fontWeight: 'bold', textAlign: "center", color: isDark ? Colors.text.primary_dark : Colors.text.primary }]}>
                         Záznamy
                       </ScaledText>
@@ -204,7 +204,7 @@ export default function TankScreen() {
                       Seznam
                     </ScaledText>
                   </TouchableOpacity>
-                  <TouchableOpacity style={{ width: "50%", ...spacing.py(10), ...spacing.mb(5), borderTopRightRadius: 8, borderTopLeftRadius: 8, borderBottomWidth: 3, borderBottomColor: Colors.primary, backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light }} onPress={() => setTab('stats')}>
+                  <TouchableOpacity style={{ width: "50%", ...spacing.py(10), ...spacing.mb(5), borderTopRightRadius: 8, borderTopLeftRadius: 8, borderBottomWidth: 3, borderBottomColor: Colors.base.primary, backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light }} onPress={() => setTab('stats')}>
                     <ScaledText size='base' style={[{ fontWeight: 'bold', textAlign: "center", color: isDark ? Colors.text.primary_dark : Colors.text.primary }]}>
                       Statistiky
                     </ScaledText>
@@ -218,7 +218,7 @@ export default function TankScreen() {
         <ActionButton>
           <View onTouchEnd={
             () => { showModal(AddTankRecordModal) }} style={{ ...spacing.right(10) }} className='flex-row items-center gap-3'>
-            <ScaledText size={'base'} color={isDark ? Colors.white : ''} className='font-bold'>Přidat tankování</ScaledText>
+            <ScaledText size={'base'} color={isDark ? Colors.base.white : ''} className='font-bold'>Přidat tankování</ScaledText>
             <CustomButton
               labelClassName='aspect text-center'
               style={{
@@ -229,7 +229,7 @@ export default function TankScreen() {
               className={`flex shadow-md justify-center items-center aspect-square`}
               label={
                 <Icon
-                  name="tank" color={Colors.primary}
+                  name="tank" color={Colors.base.primary}
                   style={{
                     ...spacing.width(20),
                     ...spacing.height(20)
@@ -237,13 +237,13 @@ export default function TankScreen() {
                 />
               }
               labelSize='xl'
-              labelColor={isDark ? Colors.white : ''}
+              labelColor={isDark ? Colors.base.white : ''}
               backgroundColor={isDark ? Colors.background.surface.dark : Colors.background.surface.light}
             />
           </View>
           <View onTouchEnd={
             () => { showModal(AddStationRecordModal) }} style={{ ...spacing.right(10) }} className='flex-row items-center gap-3'>
-            <ScaledText size={'base'} color={isDark ? Colors.white : ''} className='font-bold'>Přidat stanici</ScaledText>
+            <ScaledText size={'base'} color={isDark ? Colors.base.white : ''} className='font-bold'>Přidat stanici</ScaledText>
             <CustomButton
               labelClassName='aspect-square text-center'
               style={{
@@ -254,7 +254,7 @@ export default function TankScreen() {
               className={`flex shadow-md justify-center items-center aspect-square`}
               label={
                 <Icon name="map_pin"
-                  color={Colors.primary}
+                  color={Colors.base.primary}
                   style={{
                     ...spacing.width(20),
                     ...spacing.height(20)
@@ -262,7 +262,7 @@ export default function TankScreen() {
                 />
               }
               labelSize='xl'
-              labelColor={isDark ? Colors.white : ''}
+              labelColor={isDark ? Colors.base.white : ''}
               backgroundColor={isDark ? Colors.background.surface.dark : Colors.background.surface.light}
             />
           </View>

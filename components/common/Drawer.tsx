@@ -5,7 +5,7 @@ import getScaleFactor, { spacing } from "@/utils/SizeScaling";
 import { useTheme } from "@/theme/ThemeProvider";
 import { useCar } from "@/context/carContext";
 import Icon from "../Icon";
-import { Colors } from "@/constants/Colors";
+import { ThemeColors as Colors } from "@/constants/Colors";
 import { ModalProvider, useModal } from "@/providers/modalProvider";
 import AboutAppModal from "@/components/modals/aboutAppModal";
 import StationsModal from "@/components/modals/stationsModal";

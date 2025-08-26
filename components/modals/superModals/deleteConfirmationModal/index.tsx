@@ -1,6 +1,6 @@
 import React from "react"
 import { View } from "react-native"
-import { Colors } from "@/constants/Colors"
+import { ThemeColors as Colors } from "@/constants/Colors"
 import getScaleFactor, { spacing } from "@/utils/SizeScaling"
 import { useTheme } from "@/theme/ThemeProvider"
 import { useModal } from "@/providers/modalProvider"
@@ -48,7 +48,7 @@ export default function DeleteConfirmationModal({
                             ...spacing.borderRadius(8),
                             ...spacing.width(48),
                             ...spacing.height(48),
-                            backgroundColor: Colors.primary,
+                            backgroundColor: Colors.base.primary,
                         }}
                         className="flex items-center justify-center"
                     >
@@ -91,7 +91,7 @@ export default function DeleteConfirmationModal({
                     label={cancelLabel}
                     labelSize='base'
                     labelClassName='text-center'
-                    labelColor={isDark ? Colors.white : ''}
+                    labelColor={isDark ? Colors.base.white : ''}
                     style={{
                         ...spacing.p(12),
                         ...spacing.borderWidth(1),
@@ -105,14 +105,14 @@ export default function DeleteConfirmationModal({
                     label={confirmLabel}
                     labelSize='base'
                     labelClassName='text-center'
-                    labelColor={Colors.white}
+                    labelColor={Colors.base.white}
                     style={{
                         ...spacing.p(12),
                         ...spacing.borderRadius(12),
                         ...spacing.borderWidth(1),
-                        borderColor: Colors.primary
+                        borderColor: Colors.base.primary
                     }}
-                    backgroundColor={Colors.primary}
+                    backgroundColor={Colors.base.primary}
                 />
             </View>
         </View>

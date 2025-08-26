@@ -1,11 +1,11 @@
 import CustomButton from '@/components/common/Buttons';
-import { Colors } from '@/constants/Colors';
+import { ThemeColors as Colors } from '@/constants/Colors';
 import { useModal } from '@/providers/modalProvider';
 import { useTheme } from '@/theme/ThemeProvider';
 import getScaleFactor, { spacing } from '@/utils/SizeScaling';
 import React, { useEffect, useState } from 'react';
-import { View, TextInput, ScrollView } from 'react-native';
-import { useForm, useController, useWatch, useFormState } from 'react-hook-form';
+import { View, ScrollView } from 'react-native';
+import { useForm, useWatch, useFormState } from 'react-hook-form';
 import ScaledText from '@/components/common/ScaledText';
 import { DTO } from '@/DTO/mapper';
 import { Tanking, TankingModel } from '@/models/Tanking';
@@ -13,8 +13,7 @@ import Dropdown from '@/components/common/Dropdown';
 import Icon from '@/components/Icon';
 import FormNumberInput from '@/components/forms/FormNumberInput';
 import { Station, StationModel } from '@/models/Station';
-import { Fuel, FuelModel } from '@/models/Fuel';
-import { StationFuelModel } from '@/models/StationFuel';
+import { Fuel } from '@/models/Fuel';
 import { useDatabase } from '@/database/databaseContext';
 import { stationFuelRepository } from '@/repositories/stationFuelRepository';
 
@@ -22,7 +21,6 @@ export default function AddTankRecordModal({ onSubmit }: any) {
   const { hideModal } = useModal();
   const { isDark } = useTheme();
   const { control, handleSubmit, setValue, getValues, formState: { errors } } = useForm();
-  const { touchedFields } = useFormState({ control });
   const [stations, setStations] = useState<Station[]>([]);
   const [selectedStation, setSelectedStation] = useState<Station>();
   const {db} = useDatabase();
@@ -145,7 +143,7 @@ export default function AddTankRecordModal({ onSubmit }: any) {
               ...spacing.borderRadius(8),
               ...spacing.width(48),
               ...spacing.height(48),
-              backgroundColor: Colors.primary,
+              backgroundColor: Colors.base.primary,
             }}
             className="flex items-center justify-center"
           >
@@ -173,16 +171,16 @@ export default function AddTankRecordModal({ onSubmit }: any) {
           <View>
             <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
               <Icon name='speedometer' color={Colors.icon.primary} size={getScaleFactor() * 16} />
-              <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Stav tachometru</ScaledText>
+              <ScaledText size='base' style={{ color: isDark ? Colors.base.white : '' }}>Stav tachometru</ScaledText>
             </View>
 
-            <FormNumberInput name="tachometer" control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></FormNumberInput>
+            <FormNumberInput name="tachometer" control={control} style={{ padding: 8, color: isDark ? Colors.base.white : '' }}></FormNumberInput>
           </View>
 
           <View>
             <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
               <Icon name='map_pin' color={Colors.icon.primary} size={getScaleFactor() * 16} />
-              <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Stanice</ScaledText>
+              <ScaledText size='base' style={{ color: isDark ? Colors.base.white : '' }}>Stanice</ScaledText>
             </View>
 
             <Dropdown<Station>
@@ -200,7 +198,7 @@ export default function AddTankRecordModal({ onSubmit }: any) {
             <View className='w-[48%]'>
               <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
                 <Icon name='tank' color={Colors.icon.primary} size={getScaleFactor() * 16} />
-                <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Palivo</ScaledText>
+                <ScaledText size='base' style={{ color: isDark ? Colors.base.white : '' }}>Palivo</ScaledText>
               </View>
 
               <Dropdown<Fuel>
@@ -216,35 +214,35 @@ export default function AddTankRecordModal({ onSubmit }: any) {
             <View className='w-[48%]'>
               <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
                 <Icon name='calc' color={Colors.icon.primary} size={getScaleFactor() * 16} />
-                <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Cena za jednotku</ScaledText>
+                <ScaledText size='base' style={{ color: isDark ? Colors.base.white : '' }}>Cena za jednotku</ScaledText>
               </View>
 
-              <FormNumberInput name="price_per_litre" control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></FormNumberInput>
+              <FormNumberInput name="price_per_litre" control={control} style={{ padding: 8, color: isDark ? Colors.base.white : '' }}></FormNumberInput>
             </View>
           </View>
 
           <View>
             <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
               <Icon name='dollar' color={Colors.icon.primary} size={getScaleFactor() * 16} />
-              <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Cena (bez slev)</ScaledText>
+              <ScaledText size='base' style={{ color: isDark ? Colors.base.white : '' }}>Cena (bez slev)</ScaledText>
             </View>
 
-            <FormNumberInput name="price" control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></FormNumberInput>
+            <FormNumberInput name="price" control={control} style={{ padding: 8, color: isDark ? Colors.base.white : '' }}></FormNumberInput>
           </View>
 
           <View>
             <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
-              <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Počet litrů</ScaledText>
+              <ScaledText size='base' style={{ color: isDark ? Colors.base.white : '' }}>Počet litrů</ScaledText>
             </View>
 
-            <FormNumberInput name="amount" control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></FormNumberInput>
+            <FormNumberInput name="amount" control={control} style={{ padding: 8, color: isDark ? Colors.base.white : '' }}></FormNumberInput>
           </View>
 
         </View>
       </ScrollView>
       <View style={{ ...spacing.p(20), ...spacing.gap(8), ...spacing.borderBottomRadius(12), backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light }} className='flex-row justify-between'>
-        <CustomButton className='w-[48%]' onPress={() => hideModal()} label="Zrušit" labelSize='base' labelClassName='text-center' labelColor={isDark ? Colors.white : ''} style={{ ...spacing.p(12), ...spacing.borderWidth(1), borderColor: isDark ? Colors.text.primary_dark : Colors.text.muted, ...spacing.borderRadius(12) }} backgroundColor={isDark ? Colors.background.surface.dark : Colors.background.surface.light} />
-        <CustomButton className='w-[48%]' onPress={handleSubmit((data) => { onFormSubmit(data); hideModal() })} label="Přidat záznam" labelSize='base' labelClassName='text-center' labelColor={Colors.white} style={{ ...spacing.p(12), ...spacing.borderRadius(12), ...spacing.borderWidth(1), borderColor: Colors.primary }} backgroundColor={Colors.primary} />
+        <CustomButton className='w-[48%]' onPress={() => hideModal()} label="Zrušit" labelSize='base' labelClassName='text-center' labelColor={isDark ? Colors.base.white : ''} style={{ ...spacing.p(12), ...spacing.borderWidth(1), borderColor: isDark ? Colors.text.primary_dark : Colors.text.muted, ...spacing.borderRadius(12) }} backgroundColor={isDark ? Colors.background.surface.dark : Colors.background.surface.light} />
+        <CustomButton className='w-[48%]' onPress={handleSubmit((data) => { onFormSubmit(data); hideModal() })} label="Přidat záznam" labelSize='base' labelClassName='text-center' labelColor={Colors.base.white} style={{ ...spacing.p(12), ...spacing.borderRadius(12), ...spacing.borderWidth(1), borderColor: Colors.base.primary }} backgroundColor={Colors.base.primary} />
       </View>
     </View>
   );

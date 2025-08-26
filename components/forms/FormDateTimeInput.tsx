@@ -2,7 +2,7 @@ import { Pressable, View } from 'react-native';
 import { useState } from 'react';
 import { useController } from 'react-hook-form';
 import { useTheme } from '@/theme/ThemeProvider';
-import { Colors } from '@/constants/Colors';
+import { ThemeColors as Colors } from '@/constants/Colors';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { spacing } from '@/utils/SizeScaling';
 import ScaledText from '../common/ScaledText';
@@ -58,7 +58,7 @@ export default function FormDateTimeInput({ name, control, fieldHeight = 46, mod
                 <ScaledText
                     size='base'
                     style={{
-                        color: isDark ? Colors.white : Colors.text.primary_dark
+                        color: isDark ? Colors.base.white : Colors.text.primary_dark
                     }}
                 >
                     {field.value !== undefined ? displayValue : defaultValue}

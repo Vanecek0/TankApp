@@ -1,4 +1,4 @@
-import { Colors, ColorsKey } from '@/constants/Colors';
+import { ThemeColors as Colors } from '@/constants/Colors';
 import { FontSizes } from '@/utils/fontScaling';
 import { useTheme } from '@/theme/ThemeProvider';
 import getScaleFactor from '@/utils/SizeScaling';
@@ -8,7 +8,7 @@ export type FontSizeKey = keyof typeof FontSizes;
 
 type ScaledTextProps = TextProps & {
   size: FontSizeKey;
-  color?: string | ColorsKey;
+  color?: string ;
   isThemed?: boolean;
 };
 
