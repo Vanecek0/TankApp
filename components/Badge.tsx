@@ -5,7 +5,7 @@ import { spacing } from "@/utils/SizeScaling";
 import darkenHexColor from "@/utils/colorDarken";
 import contrastHexColor from "@/utils/colorContrast";
 import { useTheme } from "@/theme/ThemeProvider";
-import { Colors } from "@/constants/Colors";
+import { ThemeColors as Colors } from "@/constants/Colors";
 
 export default function Badge({ className, textClassName, style, size = "base", value, badgeColor = "#ffffff", textColor, isThemed, isCheckable = false, isChecked = false }: {
     className?: string;

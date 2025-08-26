@@ -5,7 +5,7 @@ import Icon from '@/components/Icon';
 import Badge from '@/components/Badge';
 import { Station, StationModel } from '@/models/Station';
 import { Fuel, FuelModel } from '@/models/Fuel';
-import { Colors } from '@/constants/Colors';
+import { ThemeColors as Colors } from '@/constants/Colors';
 import { useModal } from '@/providers/modalProvider';
 import { useTheme } from '@/theme/ThemeProvider';
 import getScaleFactor, { spacing } from '@/utils/SizeScaling';
@@ -108,9 +108,9 @@ const StationItem = React.memo(({ item, isDark, onPress, showDeleteConfirm }: { 
                                 style={{
                                     ...spacing.borderRadius(12),
                                     ...spacing.borderWidth(1),
-                                    borderColor: Colors.transparent,
+                                    borderColor: Colors.base.transparent,
                                 }}
-                                badgeColor={Colors.primary}
+                                badgeColor={Colors.base.primary}
                             />
                         ))}
                     </View>
@@ -165,7 +165,7 @@ export default function StationsModal() {
                     isDark={isDark}
                     showDeleteConfirm={() => showSuperModal(DeleteConfirmationModal, {
                         message: "Opravdu chcete smazat tuto stanici?",
-                        deleteIcon: <Icon name="bin" color={Colors.primary} size={getScaleFactor() * 45} />,
+                        deleteIcon: <Icon name="bin" color={Colors.base.primary} size={getScaleFactor() * 45} />,
                         onConfirm: async () => {
                             await stationRepository.delete(item.id!);
                             onRefresh();
@@ -195,7 +195,7 @@ export default function StationsModal() {
                             ...spacing.borderRadius(8),
                             ...spacing.width(48),
                             ...spacing.height(48),
-                            backgroundColor: Colors.primary,
+                            backgroundColor: Colors.base.primary,
                         }}
                         className="flex items-center justify-center"
                     >
@@ -334,7 +334,7 @@ export function AddStationRecordModal({ station, previousModal }: { station: Sta
                             ...spacing.borderRadius(8),
                             ...spacing.width(48),
                             ...spacing.height(48),
-                            backgroundColor: Colors.primary,
+                            backgroundColor: Colors.base.primary,
                         }}
                         className="flex items-center justify-center"
                     >
@@ -362,46 +362,46 @@ export function AddStationRecordModal({ station, previousModal }: { station: Sta
                 <View style={{ ...spacing.gap(12), ...spacing.pb(52) }}>
                     <View>
                         <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
-                            <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Název stanice</ScaledText>
+                            <ScaledText size='base' style={{ color: isDark ? Colors.base.white : '' }}>Název stanice</ScaledText>
                         </View>
 
-                        <FormTextInput name="name" defaultValue={station?.name ?? ''} control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></FormTextInput>
+                        <FormTextInput name="name" defaultValue={station?.name ?? ''} control={control} style={{ padding: 8, color: isDark ? Colors.base.white : '' }}></FormTextInput>
                     </View>
 
                     <View>
                         <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
-                            <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Adresa</ScaledText>
+                            <ScaledText size='base' style={{ color: isDark ? Colors.base.white : '' }}>Adresa</ScaledText>
                         </View>
 
-                        <FormTextInput name="address" defaultValue={station?.address ?? ''} control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></FormTextInput>
+                        <FormTextInput name="address" defaultValue={station?.address ?? ''} control={control} style={{ padding: 8, color: isDark ? Colors.base.white : '' }}></FormTextInput>
                     </View>
 
                     <View>
                         <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
-                            <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Telefonní číslo</ScaledText>
+                            <ScaledText size='base' style={{ color: isDark ? Colors.base.white : '' }}>Telefonní číslo</ScaledText>
                         </View>
 
-                        <FormTextInput name="phone" defaultValue={station?.phone ?? ''} control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></FormTextInput>
+                        <FormTextInput name="phone" defaultValue={station?.phone ?? ''} control={control} style={{ padding: 8, color: isDark ? Colors.base.white : '' }}></FormTextInput>
                     </View>
 
                     <View>
                         <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
-                            <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Otevírací doba</ScaledText>
+                            <ScaledText size='base' style={{ color: isDark ? Colors.base.white : '' }}>Otevírací doba</ScaledText>
                         </View>
                         <View style={{ ...spacing.gap(8) }} className='flex-row justify-between'>
                             <View style={{ ...spacing.gap(8) }} className='flex-row flex-1 items-center'>
                                 <ScaledText size='base' isThemed>od</ScaledText>
-                                <FormDateTimeInput name="opening" defaultValue={station?.opening_hrs ?? ''} control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></FormDateTimeInput>
+                                <FormDateTimeInput name="opening" defaultValue={station?.opening_hrs ?? ''} control={control} style={{ padding: 8, color: isDark ? Colors.base.white : '' }}></FormDateTimeInput>
                             </View>
                             <View style={{ ...spacing.gap(8) }} className='flex-row flex-1 items-center'>
-                                <ScaledText size='base' isThemed>do</ScaledText><FormDateTimeInput name="closing" defaultValue={station?.closing_hrs ?? ''} control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></FormDateTimeInput>
+                                <ScaledText size='base' isThemed>do</ScaledText><FormDateTimeInput name="closing" defaultValue={station?.closing_hrs ?? ''} control={control} style={{ padding: 8, color: isDark ? Colors.base.white : '' }}></FormDateTimeInput>
                             </View>
                         </View>
                     </View>
 
                     <View>
                         <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
-                            <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Typy paliv</ScaledText>
+                            <ScaledText size='base' style={{ color: isDark ? Colors.base.white : '' }}>Typy paliv</ScaledText>
                         </View>
 
                         <View className="flex-row flex-wrap" style={{}}>
@@ -423,9 +423,9 @@ export function AddStationRecordModal({ station, previousModal }: { station: Sta
                                                     ...spacing.m(4),
                                                     ...spacing.ms(-4),
                                                     ...spacing.me(12),
-                                                    borderColor: selectedFuels.includes(fuel.id!) ? Colors.transparent : Colors.text.muted,
+                                                    borderColor: selectedFuels.includes(fuel.id!) ? Colors.base.transparent : Colors.text.muted,
                                                 }}
-                                                badgeColor={selectedFuels.includes(fuel.id!) ? Colors.primary : Colors.transparent}
+                                                badgeColor={selectedFuels.includes(fuel.id!) ? Colors.base.primary : Colors.base.transparent}
                                                 isCheckable
                                                 isChecked={selectedFuels.includes(fuel.id!)}
                                                 isThemed
@@ -441,9 +441,9 @@ export function AddStationRecordModal({ station, previousModal }: { station: Sta
 
                     <View>
                         <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
-                            <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Poznámka</ScaledText>
+                            <ScaledText size='base' style={{ color: isDark ? Colors.base.white : '' }}>Poznámka</ScaledText>
                         </View>
-                        <FormTextAreaInput name="note" defaultValue={station?.note ?? ''} control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></FormTextAreaInput>
+                        <FormTextAreaInput name="note" defaultValue={station?.note ?? ''} control={control} style={{ padding: 8, color: isDark ? Colors.base.white : '' }}></FormTextAreaInput>
                     </View>
                 </View>
             </ScrollView>
@@ -454,7 +454,7 @@ export function AddStationRecordModal({ station, previousModal }: { station: Sta
                     label="Zrušit"
                     labelSize='base'
                     labelClassName='text-center'
-                    labelColor={isDark ? Colors.white : ''}
+                    labelColor={isDark ? Colors.base.white : ''}
                     style={{
                         ...spacing.p(12),
                         ...spacing.borderWidth(1),
@@ -467,7 +467,7 @@ export function AddStationRecordModal({ station, previousModal }: { station: Sta
                     await onFormSubmit(data);
                     hideModal();
                     showModal(StationsModal);
-                })} label={station ? "Uložit změny" : "Přidat stanici"} labelSize='base' labelClassName='text-center' labelColor={Colors.white} style={{ ...spacing.p(12), ...spacing.borderRadius(12), ...spacing.borderWidth(1), borderColor: Colors.primary }} backgroundColor={Colors.primary} />
+                })} label={station ? "Uložit změny" : "Přidat stanici"} labelSize='base' labelClassName='text-center' labelColor={Colors.base.white} style={{ ...spacing.p(12), ...spacing.borderRadius(12), ...spacing.borderWidth(1), borderColor: Colors.base.primary }} backgroundColor={Colors.base.primary} />
             </View>
         </View>
     );

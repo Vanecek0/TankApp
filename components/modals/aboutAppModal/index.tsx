@@ -1,5 +1,4 @@
-import CustomButton from '@/components/common/Buttons';
-import { Colors } from '@/constants/Colors';
+import { ThemeColors as Colors } from '@/constants/Colors';
 import { useModal } from '@/providers/modalProvider';
 import { useTheme } from '@/theme/ThemeProvider';
 import getScaleFactor, { spacing } from '@/utils/SizeScaling';
@@ -16,7 +15,7 @@ export default function AboutAppModal() {
         <View className='max-h-full' style={{ ...spacing.borderRadius(12) }}>
             <View className="border-b-[1px] sticky flex-row justify-between items-center" style={{ ...spacing.borderTopRadius(12), borderColor: isDark ? Colors.background.dark : Colors.background.light, ...spacing.p(24) }}>
                 <View className="flex-row items-center" style={{ ...spacing.gap(8) }}>
-                    <View style={{ ...spacing.borderRadius(8), ...spacing.width(48), ...spacing.height(48), backgroundColor: Colors.primary }} className="flex items-center justify-center">
+                    <View style={{ ...spacing.borderRadius(8), ...spacing.width(48), ...spacing.height(48), backgroundColor: Colors.base.primary }} className="flex items-center justify-center">
                         <Icon name='tank' color={Colors.icon.primary} size={getScaleFactor() * 20} />
                     </View>
                     <View>

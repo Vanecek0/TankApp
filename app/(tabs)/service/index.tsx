@@ -1,7 +1,7 @@
 import ScaledText from '@/components/common/ScaledText';
 import Badge from '@/components/Badge';
 import Icon from '@/components/Icon';
-import { Colors } from '@/constants/Colors';
+import { ThemeColors as Colors } from '@/constants/Colors';
 import { useTheme } from '@/theme/ThemeProvider';
 import getScaleFactor, { spacing } from '@/utils/SizeScaling';
 import { View, ScrollView } from 'react-native';
@@ -91,7 +91,7 @@ export default function HomeScreen() {
       <ActionButton>
         <View onTouchEnd={
           () => { showModal(AddTankRecordModal) }} style={{ ...spacing.right(10) }} className='flex-row items-center gap-3'>
-          <ScaledText size={'base'} color={isDark ? Colors.white : ''} className='font-bold'>Přidat tankování</ScaledText>
+          <ScaledText size={'base'} color={isDark ? Colors.base.white : ''} className='font-bold'>Přidat tankování</ScaledText>
           <CustomButton
             labelClassName='aspect text-center'
             style={{ ...spacing.borderRadius(90), ...spacing.p(16), ...spacing.width(60) }}
@@ -99,18 +99,18 @@ export default function HomeScreen() {
             label={
               <Icon
                 name="tank"
-                color={Colors.primary}
+                color={Colors.base.primary}
                 style={{ ...spacing.width(20), ...spacing.height(20) }}
               />
             }
             labelSize='xl'
-            labelColor={isDark ? Colors.white : ''}
+            labelColor={isDark ? Colors.base.white : ''}
             backgroundColor={isDark ? Colors.background.surface.dark : Colors.background.surface.light}
           />
         </View>
         <View onTouchEnd={
           () => { showModal(AddStationRecordModal) }} style={{ ...spacing.right(10) }} className='flex-row items-center gap-3'>
-          <ScaledText size={'base'} color={isDark ? Colors.white : ''} className='font-bold'>Přidat stanici</ScaledText>
+          <ScaledText size={'base'} color={isDark ? Colors.base.white : ''} className='font-bold'>Přidat stanici</ScaledText>
           <CustomButton
             labelClassName='aspect-square text-center'
             style={{
@@ -122,12 +122,12 @@ export default function HomeScreen() {
             label={
               <Icon
                 name="map_pin"
-                color={Colors.primary}
+                color={Colors.base.primary}
                 style={{ ...spacing.width(20), ...spacing.height(20) }}
               />
             }
             labelSize='xl'
-            labelColor={isDark ? Colors.white : ''}
+            labelColor={isDark ? Colors.base.white : ''}
             backgroundColor={isDark ? Colors.background.surface.dark : Colors.background.surface.light}
           />
         </View>

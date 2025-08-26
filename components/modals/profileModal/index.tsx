@@ -2,7 +2,7 @@ import CustomButton from "@/components/common/Buttons";
 import ScaledText from "@/components/common/ScaledText";
 import Badge from "@/components/Badge";
 import Icon from "@/components/Icon";
-import { Colors } from "@/constants/Colors";
+import { ThemeColors as Colors } from "@/constants/Colors";
 import { useCar } from "@/context/carContext";
 import { Car, CarModel } from "@/models/Car";
 import { useModal } from "@/providers/modalProvider";
@@ -124,7 +124,7 @@ export default function ProfileModal() {
                 isDark={isDark}
                 showDeleteConfirm={() => showSuperModal(DeleteConfirmationModal, {
                     message: "Opravdu chcete smazat tento profil?",
-                    deleteIcon: <Icon name="bin" color={Colors.primary} size={getScaleFactor() * 45} />,
+                    deleteIcon: <Icon name="bin" color={Colors.base.primary} size={getScaleFactor() * 45} />,
                     onConfirm: async () => {
                         await carRepository.delete(item.id!);
                         onRefresh();
@@ -153,7 +153,7 @@ export default function ProfileModal() {
                             ...spacing.borderRadius(8),
                             ...spacing.width(48),
                             ...spacing.height(48),
-                            backgroundColor: Colors.primary,
+                            backgroundColor: Colors.base.primary,
                         }}
                         className="flex items-center justify-center"
                     >
@@ -258,7 +258,7 @@ export function ProfileActionModal({ car, previousModal }: { car: Car, previousM
                             ...spacing.borderRadius(8),
                             ...spacing.width(48),
                             ...spacing.height(48),
-                            backgroundColor: Colors.primary,
+                            backgroundColor: Colors.base.primary,
                         }}
                         className="flex items-center justify-center"
                     >
@@ -286,38 +286,38 @@ export function ProfileActionModal({ car, previousModal }: { car: Car, previousM
                 <View style={{ ...spacing.gap(12), ...spacing.pb(52) }}>
                     <View>
                         <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
-                            <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Výrobce</ScaledText>
+                            <ScaledText size='base' style={{ color: isDark ? Colors.base.white : '' }}>Výrobce</ScaledText>
                         </View>
 
-                        <FormTextInput name="manufacturer" defaultValue={car?.manufacturer ?? ''} control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></FormTextInput>
+                        <FormTextInput name="manufacturer" defaultValue={car?.manufacturer ?? ''} control={control} style={{ padding: 8, color: isDark ? Colors.base.white : '' }}></FormTextInput>
                     </View>
 
                     <View>
                         <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
-                            <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Model</ScaledText>
+                            <ScaledText size='base' style={{ color: isDark ? Colors.base.white : '' }}>Model</ScaledText>
                         </View>
 
-                        <FormTextInput name="model" defaultValue={car?.model ?? ''} control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></FormTextInput>
+                        <FormTextInput name="model" defaultValue={car?.model ?? ''} control={control} style={{ padding: 8, color: isDark ? Colors.base.white : '' }}></FormTextInput>
                     </View>
 
                     <View>
                         <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
-                            <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Rok výroby</ScaledText>
+                            <ScaledText size='base' style={{ color: isDark ? Colors.base.white : '' }}>Rok výroby</ScaledText>
                         </View>
 
-                        <FormNumberInput name="manufacture_year" defaultValue={car?.manufacture_year ?? ''} control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></FormNumberInput>
+                        <FormNumberInput name="manufacture_year" defaultValue={car?.manufacture_year ?? ''} control={control} style={{ padding: 8, color: isDark ? Colors.base.white : '' }}></FormNumberInput>
                     </View>
 
                     <View>
                         <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
-                            <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Datum registrace</ScaledText>
+                            <ScaledText size='base' style={{ color: isDark ? Colors.base.white : '' }}>Datum registrace</ScaledText>
                         </View>
-                        <FormDateTimeInput mode="date" name="registration_date" defaultValue={car?.registration_date ?? ''} control={control} style={{ padding: 8, color: isDark ? Colors.white : '' }}></FormDateTimeInput>
+                        <FormDateTimeInput mode="date" name="registration_date" defaultValue={car?.registration_date ?? ''} control={control} style={{ padding: 8, color: isDark ? Colors.base.white : '' }}></FormDateTimeInput>
                     </View>
 
                     <View>
                         <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
-                            <ScaledText size='base' style={{ color: isDark ? Colors.white : '' }}>Typy paliv</ScaledText>
+                            <ScaledText size='base' style={{ color: isDark ? Colors.base.white : '' }}>Typy paliv</ScaledText>
                         </View>
 
                         <View className="flex-row flex-wrap" style={{}}>
@@ -338,9 +338,9 @@ export function ProfileActionModal({ car, previousModal }: { car: Car, previousM
                                                     ...spacing.m(4),
                                                     ...spacing.ms(-4),
                                                     ...spacing.me(12),
-                                                    borderColor: car.fuel_id == fuel.id! ? Colors.transparent : Colors.text.muted,
+                                                    borderColor: car.fuel_id == fuel.id! ? Colors.base.transparent : Colors.text.muted,
                                                 }}
-                                                badgeColor={car.fuel_id == fuel.id! ? Colors.primary : Colors.transparent}
+                                                badgeColor={car.fuel_id == fuel.id! ? Colors.base.primary : Colors.base.transparent}
                                                 isCheckable
                                                 isChecked={car.fuel_id == fuel.id!}
                                                 isThemed
@@ -363,7 +363,7 @@ export function ProfileActionModal({ car, previousModal }: { car: Car, previousM
                     label="Zrušit"
                     labelSize='base'
                     labelClassName='text-center'
-                    labelColor={isDark ? Colors.white : ''}
+                    labelColor={isDark ? Colors.base.white : ''}
                     style={{
                         ...spacing.p(12),
                         ...spacing.borderWidth(1),
@@ -375,7 +375,7 @@ export function ProfileActionModal({ car, previousModal }: { car: Car, previousM
                     await onFormSubmit(data);
                     hideModal();
                     showModal(ProfileModal);
-                })} label={car ? "Uložit změny" : "Přidat stanici"} labelSize='base' labelClassName='text-center' labelColor={Colors.white} style={{ ...spacing.p(12), ...spacing.borderRadius(12), ...spacing.borderWidth(1), borderColor: Colors.primary }} backgroundColor={Colors.primary} />
+                })} label={car ? "Uložit změny" : "Přidat stanici"} labelSize='base' labelClassName='text-center' labelColor={Colors.base.white} style={{ ...spacing.p(12), ...spacing.borderRadius(12), ...spacing.borderWidth(1), borderColor: Colors.base.primary }} backgroundColor={Colors.base.primary} />
             </View>
         </View>
     )

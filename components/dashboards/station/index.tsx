@@ -1,5 +1,4 @@
 import { View } from "react-native";
-import Graph from "@/components/common/Graph";
 import ScaledText from "@/components/common/ScaledText";
 import { spacing } from "@/utils/SizeScaling";
 
@@ -21,7 +20,6 @@ export default function StationDashboard({ data, routePathName, className }: {
                     <ScaledText size="lg" className="text-hidden_text font-bold">Vzdálenost</ScaledText>
                 </View>
             </View>
-            <Graph routePathName={routePathName} />
         </View>
     )
 }

@@ -1,7 +1,7 @@
 import { Tabs } from 'expo-router';
 import { Platform, Text } from 'react-native';
 import { useTheme } from '@/theme/ThemeProvider';
-import { Colors } from '@/constants/Colors';
+import { ThemeColors as Colors } from '@/constants/Colors';
 import getScaleFactor, { spacing } from '@/utils/SizeScaling';
 import Icon from '../../components/Icon';
 import { FontSizes } from '@/utils/fontScaling';
@@ -25,7 +25,7 @@ export default function TabsLayout() {
                 <Tabs
                     initialRouteName="home/index"
                     screenOptions={{
-                        tabBarActiveTintColor: Colors.primary,
+                        tabBarActiveTintColor: Colors.base.primary,
                         headerShown: false,
                         tabBarStyle: Platform.select({
                             ios: {

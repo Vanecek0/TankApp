@@ -2,7 +2,7 @@ import { RefreshControl, View, VirtualizedList } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTheme } from '@/theme/ThemeProvider';
 import { usePathname } from 'expo-router';
-import { Colors } from '@/constants/Colors';
+import { ThemeColors as Colors } from '@/constants/Colors';
 import ScaledText from '@/components/common/ScaledText';
 import Icon from '@/components/Icon';
 import getScaleFactor, { scaled } from '@/utils/SizeScaling';
@@ -57,8 +57,8 @@ export default function HomeScreen() {
         <ScaledText size='lg' className='font-bold capitalize' style={{ color: isDark ? Colors.text.primary_dark : '' }}>{getDate(item.month).monthLong} {getDate(item.month).year}</ScaledText>
         <View style={{ ...spacing.gap(12) }}>
           {item.tankings.map((item) => (
-            <>
-              <Card key={item.id}>
+            <React.Fragment key={item.id}>
+              <Card>
                 <View style={{ ...spacing.gap(12) }} className='flex-row items-center'>
                   <ScaledText className='rounded-full' style={{ backgroundColor: "lightgray", fontWeight: "bold", ...spacing.p(16) }} size='base'>{item.station?.provider?.slice(0, 2).toUpperCase() ?? '-'}</ScaledText>
                   <View className='flex-row justify-between flex-1'>
@@ -84,7 +84,7 @@ export default function HomeScreen() {
                   </View>
                 </View>
               </Card >
-              <Card key={item.id}>
+              <Card>
                 <View style={{ ...spacing.gap(12) }} className='flex'>
                   <View style={{ ...spacing.gap(12) }} className='flex-row items-center w-full'>
                     <ScaledText className='rounded-full' style={{ backgroundColor: "lightgray", fontWeight: "bold", ...spacing.p(16) }} size='base'>{item.station?.provider?.slice(0, 2).toUpperCase() ?? '-'}</ScaledText>
@@ -112,7 +112,7 @@ export default function HomeScreen() {
                   </View>
                 </View>
               </Card >
-            </>
+            </React.Fragment>
           ))}
         </View>
       </View>
@@ -145,7 +145,7 @@ export default function HomeScreen() {
                     ...spacing.width(150),
                     ...spacing.borderWidth(0.5),
                     ...spacing.px(12),
-                    borderColor: Colors.transparent,
+                    borderColor: Colors.base.transparent,
                     backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light
                   }}
                 ></Dropdown>
@@ -171,13 +171,55 @@ export default function HomeScreen() {
       <ActionButton>
         <View onTouchEnd={
           () => { showModal(AddTankRecordModal) }} style={{ ...spacing.right(10) }} className='flex-row items-center gap-3'>
-          <ScaledText size={'base'} color={isDark ? Colors.white : ''} className='font-bold'>Přidat tankování</ScaledText>
-          <CustomButton labelClassName='aspect text-center' style={{ ...spacing.borderRadius(90), ...spacing.p(16), ...spacing.width(60) }} className={`flex shadow-md justify-center items-center aspect-square`} label={<Icon name="tank" color={Colors.primary} style={{ ...spacing.width(20), ...spacing.height(20) }} />} labelSize='xl' labelColor={isDark ? Colors.white : ''} backgroundColor={Colors.text.secondary} />
+          <ScaledText size={'base'} color={isDark ? Colors.base.white : ''} className='font-bold'>Přidat tankování</ScaledText>
+          <CustomButton
+            labelClassName='aspect text-center'
+            style={{
+              ...spacing.borderRadius(90),
+              ...spacing.p(16),
+              ...spacing.width(60)
+            }}
+            className={`flex shadow-md justify-center items-center aspect-square`}
+            label={
+              <Icon
+                name="tank"
+                color={Colors.base.primary}
+                style={{
+                  ...spacing.width(20),
+                  ...spacing.height(20)
+                }}
+              />
+            }
+            labelSize='xl'
+            labelColor={isDark ? Colors.base.white : ''}
+            backgroundColor={Colors.text.secondary}
+          />
         </View>
         <View onTouchEnd={
           () => { showModal(AddStationRecordModal) }} style={{ ...spacing.right(10) }} className='flex-row items-center gap-3'>
-          <ScaledText size={'base'} color={isDark ? Colors.white : ''} className='font-bold'>Přidat stanici</ScaledText>
-          <CustomButton labelClassName='aspect-square text-center' style={{ ...spacing.borderRadius(90), ...spacing.p(16), ...spacing.width(60) }} className={`flex shadow-md justify-center items-center aspect-square`} label={<Icon name="map_pin" color={Colors.primary} style={{ ...spacing.width(20), ...spacing.height(20) }} />} labelSize='xl' labelColor={isDark ? Colors.white : ''} backgroundColor={Colors.text.secondary} />
+          <ScaledText size={'base'} color={isDark ? Colors.base.white : ''} className='font-bold'>Přidat stanici</ScaledText>
+          <CustomButton
+            labelClassName='aspect-square text-center'
+            style={{
+              ...spacing.borderRadius(90),
+              ...spacing.p(16),
+              ...spacing.width(60)
+            }}
+            className={`flex shadow-md justify-center items-center aspect-square`}
+            label={
+              <Icon
+                name="map_pin"
+                color={Colors.base.primary}
+                style={{
+                  ...spacing.width(20),
+                  ...spacing.height(20)
+                }}
+              />
+            }
+            labelSize='xl'
+            labelColor={isDark ? Colors.base.white : ''}
+            backgroundColor={Colors.text.secondary}
+          />
         </View>
       </ActionButton>
     </>

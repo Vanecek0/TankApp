@@ -3,7 +3,7 @@ import ScaledText from './ScaledText';
 import { useCallback, useState } from 'react';
 import Icon from '@/components/Icon';
 import getScaleFactor, { spacing } from '@/utils/SizeScaling';
-import { Colors } from '@/constants/Colors';
+import { ThemeColors as Colors } from '@/constants/Colors';
 import { useTheme } from '@/theme/ThemeProvider';
 
 type DropdownProps<T> = TouchableOpacityProps & {
@@ -65,7 +65,7 @@ export default function Dropdown<T>({
             >
                 <ScaledText
                     size="base"
-                    style={[{ color: isDark ? Colors.white : Colors.text.primary }, dropdownTextStyle]}
+                    style={[{ color: isDark ? Colors.base.white : Colors.text.primary }, dropdownTextStyle]}
                 >
                     {selectedItem ? getItemLabel(selectedItem) : placeholder}
                 </ScaledText>
@@ -90,7 +90,7 @@ export default function Dropdown<T>({
                         zIndex: 10,
                         backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light,
                         ...spacing.borderBottomRadius(12),
-                        shadowColor: Colors.black,
+                        shadowColor: Colors.base.black,
                         shadowOffset: {
                             width: 0,
                             height: 5,
@@ -132,7 +132,7 @@ export default function Dropdown<T>({
                                                     style={{
                                                         ...spacing.p(8),
                                                         ...spacing.borderRadius(8),
-                                                        color: isDark ? Colors.white : '',
+                                                        color: isDark ? Colors.base.white : '',
                                                         backgroundColor: isSelected ? isDark ? Colors.text.primary : Colors.text.primary_dark : ''
                                                     }}
                                                 >

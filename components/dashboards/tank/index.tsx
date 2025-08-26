@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { TankingModel } from "@/models/Tanking";
 import { TankingStatistics, TankingStatisticsModel } from "@/models/TankingStatistics";
 import { useDatabase } from "@/database/databaseContext";
-import Graph from "@/components/common/Graph";
+import TankGraph from "@/components/graphs/TankGraph";
 
 export default function TankDashboard({ routePathName, className }: {
     routePathName?: string;
@@ -44,7 +44,7 @@ export default function TankDashboard({ routePathName, className }: {
                         <ScaledText size="lg" className="text-hidden_text font-bold">Vzdálenost</ScaledText>
                     </View>
                 </View>
-                <Graph data={tankingSumsDate} routePathName={routePathName} />
+                <TankGraph data={tankingSumsDate} />
             </View>
         </>
 

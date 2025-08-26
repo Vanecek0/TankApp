@@ -1,6 +1,6 @@
 import { useController } from "react-hook-form";
 import { Pressable, Text } from "react-native";
-import { Colors } from "@/constants/Colors";
+import { ThemeColors as Colors } from "@/constants/Colors";
 import { useTheme } from "@/theme/ThemeProvider";
 import { useEffect } from "react";
 

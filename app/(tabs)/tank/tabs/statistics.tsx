@@ -1,18 +1,15 @@
 import { View } from 'react-native';
 import React, { useEffect, useState } from 'react';
-
 import { useTheme } from '@/theme/ThemeProvider';
-import { usePathname } from 'expo-router';
-import { Colors } from '@/constants/Colors';
+import { ThemeColors as Colors } from '@/constants/Colors';
 import ScaledText from '@/components/common/ScaledText';
 import Icon from '@/components/Icon';
-import Graph from '@/components/common/Graph';
 import { spacing } from '@/utils/SizeScaling';
 import { TankingStatistics, TankingStatisticsModel } from '@/models/TankingStatistics';
+import TankLineGraph from '@/components/graphs/TankLineGraph';
 
 export default function TankStatistics() {
   const { isDark } = useTheme();
-  const pathname = usePathname();
 
   const [statistics, setStatistics] = useState<TankingStatistics[]>([]);
 
@@ -91,7 +88,7 @@ export default function TankStatistics() {
         </View>
         <View style={{ backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light, ...spacing.p(20), ...spacing.borderRadius(8) }} className={`basis-[48.5%] rounded-lg`}>
           <ScaledText style={{ ...spacing.mb(32) }} size='lg' className='font-bold' isThemed={true}>Vývoj ceny paliva</ScaledText>
-          <Graph data={statistics} routePathName={pathname + "/statistics"}></Graph>
+          <TankLineGraph data={statistics} />
         </View>
         <View style={{ backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light, ...spacing.p(20), ...spacing.borderRadius(8) }} className={`basis-[48.5%] rounded-lg`}>
           <ScaledText style={{ ...spacing.mb(12) }} size='lg' className='font-bold' isThemed={true}>Nejčastější čerpací stanice</ScaledText>

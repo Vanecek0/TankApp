@@ -1,6 +1,6 @@
 import { TouchableOpacity, View } from "react-native";
 import Icon from "./Icon";
-import { Colors } from "@/constants/Colors";
+import { ThemeColors as Colors } from "@/constants/Colors";
 import { Link, useNavigation } from "expo-router";
 import { useTheme } from "@/theme/ThemeProvider";
 import ScaledText from "./common/ScaledText";

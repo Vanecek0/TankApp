@@ -2,14 +2,11 @@ import { TextStyle, TouchableHighlight, TouchableOpacityProps, View, ViewStyle }
 import ScaledText from './ScaledText';
 import type { FontSizeKey } from './ScaledText';
 import darkenHexColor from '@/utils/colorDarken';
-import { Children, ReactNode, useState } from 'react';
+import { ReactNode, useState } from 'react';
 import { useTheme } from '@/theme/ThemeProvider';
 import { useModal } from '@/providers/modalProvider';
 import { spacing } from '@/utils/SizeScaling';
 import { Colors } from '@/constants/Colors';
-import AddTankRecordModal from '../modals/tankRecordModal';
-import { AddStationRecordModal } from '../modals/stationsModal';
-import Icon from '../Icon';
 
 export type CustomButtonProps = TouchableOpacityProps & {
     label: string | ReactNode;
@@ -44,7 +41,7 @@ export default function CustomButton(
 ) {
     return (
         <TouchableHighlight className={`${className}`} onPress={() => null} underlayColor={darkenHexColor(backgroundColor, 30)} style={[{ borderRadius: roundedRadius, borderWidth: borderWidth, borderColor: borderColor, backgroundColor: backgroundColor }, style]} {...props}>
-            <ScaledText color={labelColor} size={labelSize} isThemed={isThemed} style={labelStyle} className={`${labelClassName}`}>{label}</ScaledText>
+            <ScaledText size={labelSize} isThemed={isThemed} style={[{color: labelColor}, labelStyle]} className={`${labelClassName}`}>{label}</ScaledText>
         </TouchableHighlight>
     );
 }
