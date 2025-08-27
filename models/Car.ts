@@ -1,4 +1,5 @@
 import BaseModel from "@/database/base-model"
+import IDbModel from "@/interfaces/IDbModel"
 
 export type Car = {
   id?: number
@@ -29,6 +30,9 @@ export const carColumns: (keyof Car)[] = [
 ]
 
 export class CarModel extends BaseModel {
+  static tableName = "car"
+  static columns = carColumns
+
   static async create(car: Omit<Car, "id">) {
     const carInsertColumns = carColumns.filter(col => col !== "id")
     const columns = carInsertColumns.join(", ")
@@ -40,7 +44,7 @@ export class CarModel extends BaseModel {
   }
 
   static all(): Promise<Car[]> {
-    return this.query<Car>("SELECT * FROM car")
+    return this.query<Car>("SELECT * FROM ?", [this.tableName])
   }
 
   static update(id: number, car: Partial<Omit<Car, "id">>) {

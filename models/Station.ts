@@ -28,6 +28,8 @@ export const stationColumns: (keyof Omit<Station, "id">)[] = [
 ];
 
 export class StationModel extends BaseModel {
+    static tableName = "station"
+    static columns = stationColumns
 
     static async create(station: Omit<Station, "id">) {
         const columns = stationColumns.join(", ");

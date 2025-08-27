@@ -26,6 +26,8 @@ const partColumns: (keyof Omit<Part, "id">)[] = [
 ];
 
 export class PartModel extends BaseModel {
+    static tableName = "part"
+    static columns = partColumns
 
     static async create(part: Omit<Part, "id">) {
         const columns = partColumns.join(", ");

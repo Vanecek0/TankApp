@@ -1,5 +1,4 @@
 import Config from "react-native-config"
-import { createTables } from "./migrations/001_create_tables"
 import * as SQLite from "expo-sqlite"
 
 const DB_NAME = Config.DB_NAME ?? "database.db"
@@ -50,6 +49,11 @@ export default abstract class Database {
     if (!this.dbInstance) throw new Error("Database not initialized")
     const result = await this.dbInstance.getFirstAsync<T>(sql, params)
     return result ?? null
+  }
+
+  static async count(tableName: string): Promise<number> {
+    const row = await this.queryFirst<{ count: number }>(`SELECT COUNT(*) as count FROM ${tableName}`)
+    return row?.count ?? 0
   }
 
 }

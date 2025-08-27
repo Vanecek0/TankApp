@@ -12,6 +12,8 @@ const servicingPartColumns: (keyof Omit<ServicingPart, "id">)[] = [
 ];
 
 export class ServicingPartModel extends BaseModel {
+    static tableName = "servicing_part"
+    static columns = servicingPartColumns
 
     static async create(servicingPart: Omit<ServicingPart, "id">) {
         const columns = servicingPartColumns.join(", ");

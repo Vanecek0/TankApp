@@ -7,16 +7,22 @@ class CarRepository extends BaseRepository<Car> {
 
     async findByFuelId(fuelId: number): Promise<Car[]> {
         const result = await this.findBy({ fuel_id: fuelId })
-        if (!result.success || !result.data) {
+        if (!result.success || result.error) {
             throw new Error(result.error || "Nepodařilo se načíst auta podle fuel_id")
+        }
+        if (!result.data) {
+            return []
         }
         return result.data
     }
 
     async findByManufacturer(manufacturer: string): Promise<Car[]> {
         const result = await this.findBy({ manufacturer })
-        if (!result.success || !result.data) {
+        if (!result.success || result.error) {
             throw new Error(result.error || "Nepodařilo se načíst auta podle manufacturer")
+        }
+         if (!result.data) {
+            return []
         }
         return result.data
     }
