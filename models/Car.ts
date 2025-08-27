@@ -1,5 +1,4 @@
 import BaseModel from "@/database/base-model"
-import IDbModel from "@/interfaces/IDbModel"
 
 export type Car = {
   id?: number
@@ -43,8 +42,8 @@ export class CarModel extends BaseModel {
     return this.execute(sql, values)
   }
 
-  static all(): Promise<Car[]> {
-    return this.query<Car>("SELECT * FROM ?", [this.tableName])
+  static all(): Promise<CarModel[]> {
+    return this.select();
   }
 
   static update(id: number, car: Partial<Omit<Car, "id">>) {
@@ -62,7 +61,7 @@ export class CarModel extends BaseModel {
     return this.execute("DELETE FROM car WHERE id = ?", [id])
   }
 
-  static findById(id: number): Promise<Car | null> {
-    return this.queryFirst<Car>("SELECT * FROM car WHERE id = ?", [id])
+  static findById(id: number): Promise<CarModel | null> {
+    return this.select({ id })
   }
 }

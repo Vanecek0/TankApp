@@ -40,20 +40,4 @@ export default abstract class Database {
     }
   }
 
-  static async query<T = any>(sql: string, params: any[] = []): Promise<T[]> {
-    if (!this.dbInstance) throw new Error("Database not initialized")
-    return this.dbInstance.getAllAsync<T>(sql, params)
-  }
-
-  static async queryFirst<T = any>(sql: string, params: any[] = []): Promise<T | null> {
-    if (!this.dbInstance) throw new Error("Database not initialized")
-    const result = await this.dbInstance.getFirstAsync<T>(sql, params)
-    return result ?? null
-  }
-
-  static async count(tableName: string): Promise<number> {
-    const row = await this.queryFirst<{ count: number }>(`SELECT COUNT(*) as count FROM ${tableName}`)
-    return row?.count ?? 0
-  }
-
 }
