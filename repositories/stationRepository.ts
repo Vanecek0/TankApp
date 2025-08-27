@@ -1,10 +1,6 @@
-import { Station, stationColumns } from "@/models/Station"
+import { Station } from "@/models/Station"
 import BaseRepository from "@/database/base-repository"
 
-class StationRepository extends BaseRepository<Station> {
-    protected tableName = "station"
-    protected columns = stationColumns;
+export default class StationRepository extends BaseRepository<Station> {
 
 }
-
-export const stationRepository = new StationRepository()

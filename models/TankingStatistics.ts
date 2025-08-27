@@ -1,6 +1,7 @@
 import Database from "@/database/database";
 
 export type TankingStatistics = {
+    id?: number;
     period: string;
     total_amount: number;
     total_mileage: number;
@@ -9,7 +10,19 @@ export type TankingStatistics = {
     avg_price_per_unit: number;
 };
 
+export const tankingStatisticsColumns: (keyof TankingStatistics)[] = [
+    "id",
+    "period",
+    "total_amount",
+    "total_mileage",
+    "total_price",
+    "last_tachometer",
+    "avg_price_per_unit"
+]
+
 export class TankingStatisticsModel {
+    static tableName = "monthly_tanking_stats"
+    static columns = tankingStatisticsColumns
 
     static async all(fromDate?: Date, toDate?: Date): Promise<TankingStatistics[]> {
         const db = await Database.getConnection();

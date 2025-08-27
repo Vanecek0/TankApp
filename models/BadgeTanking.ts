@@ -12,6 +12,9 @@ export const badgeTankingColumns: (keyof Omit<BadgeTanking, "id">)[] = [
 ]
 
 export class BadgeTankingModel extends BaseModel {
+    static tableName = "badge_tanking"
+    static columns = badgeTankingColumns
+
     static async create(badgeTanking: Omit<BadgeTanking, "id">) {
         const columns = badgeTankingColumns.join(", ")
         const placeholders = badgeTankingColumns.map(() => "?").join(", ")

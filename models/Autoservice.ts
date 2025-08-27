@@ -16,6 +16,9 @@ export const autoserviceColumns: (keyof Omit<Autoservice, "id">)[] = [
 ]
 
 export class AutoserviceModel extends BaseModel {
+    static tableName = "autoservice"
+    static columns = autoserviceColumns
+
     static async create(autoservice: Omit<Autoservice, "id">) {
         const columns = autoserviceColumns.join(", ")
         const placeholders = autoserviceColumns.map(() => "?").join(", ")

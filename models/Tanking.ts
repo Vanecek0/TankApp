@@ -22,12 +22,30 @@ export type Tanking = {
   updated_at: number;
 };
 
+export const tankingColumns: (keyof Tanking)[] = [
+  "id",
+  "car_id",
+  "station_fuel_id",
+  "price_per_unit",
+  "price",
+  "amount",
+  "mileage",
+  "tachometer",
+  "tank_date",
+  "snapshot",
+  "created_at",
+  "updated_at",
+]
+
 type Snapshot = Tanking & {
   station?: Station;
   fuels?: Fuel[];
 };
 
 export class TankingModel extends BaseModel {
+  static tableName = "tanking"
+  static columns = tankingColumns
+
   static async create(db: SQLiteDatabase, t: Tanking) {
     return db.runAsync(
       `INSERT INTO tanking (car_id, station_fuel_id, price_per_unit, price, amount, mileage, tachometer, tank_date, snapshot, created_at, updated_at)
@@ -98,7 +116,7 @@ export class TankingModel extends BaseModel {
       .map(([month, data]) => ({ month, ...data }));
   }
 
-  static async getGroupedTankingsByMonth( order: string = 'DESC', carId: number) {
+  static async getGroupedTankingsByMonth(order: string = 'DESC', carId: number) {
     const db = await this.getDb();
     const rows = await db.getAllAsync<{ id: number; snapshot: string; tank_date: number }>(
       `SELECT id, snapshot, tank_date FROM tanking WHERE car_id = ${carId} ORDER BY tank_date ${order}`

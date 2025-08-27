@@ -14,6 +14,9 @@ export const stationFuelColumns: (keyof Omit<StationFuel, "id">)[] = [
 ]
 
 export class StationFuelModel extends BaseModel {
+        static tableName = "station_fuel"
+        static columns = stationFuelColumns
+
     static async create(stationFuel: Omit<StationFuel, "id">) {
         const columns = stationFuelColumns.join(", ")
         const placeholders = stationFuelColumns.map(() => "?").join(", ")

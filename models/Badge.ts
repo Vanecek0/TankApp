@@ -12,6 +12,9 @@ export const badgeColumns: (keyof Omit<Badge, "id">)[] = [
 ]
 
 export class BadgeModel extends BaseModel {
+    static tableName = "badge"
+    static columns = badgeColumns
+
     static async create(badge: Omit<Badge, "id">) {
         return this.execute(
             "INSERT INTO badge (name, color) VALUES (?, ?)",
