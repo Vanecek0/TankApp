@@ -1,20 +1,11 @@
-import { Badge } from "@/models/Badge"
+import { Badge, BadgeModel } from "@/models/Badge"
 import BaseRepository from "@/database/base-repository"
 
-class BadgeRepository extends BaseRepository<Badge> {
-    protected tableName = "badge"
-    protected columns = [
-        "id",
-        "manufacturer",
-        "model",
-        "manufacture_year",
-        "registration_date",
-        "fuel_id",
-        "car_nickname",
-        "tachometer"
-    ];
+class BadgeRepository extends BaseRepository<typeof BadgeModel, Badge> {
+    constructor() {
+        super(BadgeModel)
+    }
 
-   
 }
 
 export const badgeRepository = new BadgeRepository()

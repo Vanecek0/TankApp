@@ -1,17 +1,5 @@
+import BaseModel from "./base-model"
 import dbInstance from "./database"
-
-export interface DatabaseModel {
-    id?: number
-    created_at?: number
-    updated_at?: number
-}
-
-export interface QueryOptions {
-    where?: Record<string, any>
-    orderBy?: string
-    limit?: number
-    offset?: number
-}
 
 export type DatabaseListResult<T> = {
     success: boolean
@@ -26,70 +14,41 @@ export type DatabaseResult<T> = {
     error?: string
 }
 
-export default abstract class BaseRepository<T extends DatabaseModel> {
-    protected abstract tableName: string
-    protected abstract columns: string[]
+export default abstract class BaseRepository<M extends typeof BaseModel, T> {
+    protected model: M;
 
-    protected buildWhereClause(where?: Record<string, any>): { clause: string; params: any[] } {
-        if (!where || Object.keys(where).length === 0) {
-            return { clause: "", params: [] }
-        }
-
-        const conditions: string[] = []
-        const params: any[] = []
-
-        Object.entries(where).forEach(([key, value]) => {
-            if (value === null) {
-                conditions.push(`${key} IS NULL`)
-            } else if (Array.isArray(value)) {
-                conditions.push(`${key} IN (${value.map(() => "?").join(", ")})`)
-                params.push(...value)
-            } else {
-                conditions.push(`${key} = ?`)
-                params.push(value)
-            }
-        })
-
-        return {
-            clause: `WHERE ${conditions.join(" AND ")}`,
-            params,
-        }
+    constructor(model: M) {
+        this.model = model;
     }
 
-    protected buildOrderClause(orderBy?: string): string {
-        return orderBy ? `ORDER BY ${orderBy}` : ""
-    }
-
-    protected buildLimitClause(limit?: number, offset?: number): string {
-        let clause = ""
-        if (limit) {
-            clause += `LIMIT ${limit}`
-            if (offset) {
-                clause += ` OFFSET ${offset}`
-            }
-        }
-        return clause
-    }
-
-    async findAll(options: QueryOptions = {}): Promise<DatabaseListResult<T>> {
+  
+/*
+    async findAll(
+        options: {
+            where?: Record<string, any>
+            orderBy?: string
+            limit?: number
+            offset?: number
+        } = {}
+    ): Promise<DatabaseListResult<T>> {
         try {
             const { clause: whereClause, params } = this.buildWhereClause(options.where)
             const orderClause = this.buildOrderClause(options.orderBy)
             const limitClause = this.buildLimitClause(options.limit, options.offset)
 
             const sql = `
-        SELECT ${this.columns.join(", ")} 
-        FROM ${this.tableName} 
+        SELECT ${this.model.columns.join(", ")} 
+        FROM ${this.model.tableName} 
         ${whereClause} 
         ${orderClause} 
         ${limitClause}
       `.trim()
 
-            const data = await dbInstance.query<T>(sql, params)
+            const data = await this.model.query<T>(sql, params)
             let count: number | undefined
             if (options.limit) {
-                const countSql = `SELECT COUNT(*) as count FROM ${this.tableName} ${whereClause}`
-                const countResult = await dbInstance.queryFirst<{ count: number }>(countSql, params)
+                const countSql = `SELECT COUNT(*) as count FROM ${this.model.tableName} ${whereClause}`
+                const countResult = await this.model.queryFirst<{ count: number }>(countSql, params)
                 count = countResult?.count || 0
             }
 
@@ -101,8 +60,8 @@ export default abstract class BaseRepository<T extends DatabaseModel> {
 
     async findById(id: number): Promise<DatabaseResult<T>> {
         try {
-            const sql = `SELECT ${this.columns.join(", ")} FROM ${this.tableName} WHERE id = ?`
-            const data = await dbInstance.queryFirst<T>(sql, [id])
+            const sql = `SELECT ${this.model.columns.join(", ")} FROM ${this.model.tableName} WHERE id = ?`
+            const data = await this.model.queryFirst<T>(sql, [id])
             return { success: true, data: data || undefined }
         } catch (error) {
             return { success: false, error: error instanceof Error ? error.message : "Unknown error" }
@@ -120,8 +79,8 @@ export default abstract class BaseRepository<T extends DatabaseModel> {
                 values = keys.map((key) => filters[key as keyof T])
             }
 
-            const sql = `SELECT ${this.columns.join(", ")} FROM ${this.tableName} ${whereClause} LIMIT 1`
-            const row = await dbInstance.queryFirst<T>(sql, values)
+            const sql = `SELECT ${this.model.columns.join(", ")} FROM ${this.model.tableName} ${whereClause} LIMIT 1`
+            const row = await this.model.queryFirst<T>(sql, values)
 
             return { success: true, data: row ?? undefined }
         } catch (error) {
@@ -132,32 +91,28 @@ export default abstract class BaseRepository<T extends DatabaseModel> {
         }
     }
 
-    async findBy(filters: Partial<Record<keyof T, any>>): Promise<DatabaseResult<T[]>> {
+    async findBy(where: Partial<Record<string, any>>): Promise<DatabaseListResult<T>> {
+        const keys = Object.keys(where)
+        if (keys.length === 0) {
+            return { success: false, error: "Empty where clause" }
+        }
+
+        const conditions = keys.map((k) => `${k} = ?`).join(" AND ")
+        const values = keys.map((k) => where[k])
+        const sql = `SELECT * FROM ${this.model.tableName} WHERE ${conditions}`
+
         try {
-            const keys = Object.keys(filters)
-            if (keys.length === 0) {
-                throw new Error("No filter conditions provided")
-            }
-
-            const whereClause = keys.map((key) => `${key} = ?`).join(" AND ")
-            const values = keys.map((key) => filters[key as keyof T])
-
-            const sql = `SELECT ${this.columns.join(", ")} FROM ${this.tableName} WHERE ${whereClause}`
-            const rows = await dbInstance.query<T>(sql, values)
-
-            return { success: true, data: rows }
-        } catch (error) {
-            return {
-                success: false,
-                error: error instanceof Error ? error.message : "Unknown error"
-            }
+            const data = await this.model.query<T>(sql, values)
+            return { success: true, data }
+        } catch (e: any) {
+            return { success: false, error: e.message }
         }
     }
 
     async findByColumn(id: number): Promise<DatabaseResult<T>> {
         try {
-            const sql = `SELECT ${this.columns.join(", ")} FROM ${this.tableName} WHERE id = ?`
-            const data = await dbInstance.queryFirst<T>(sql, [id])
+            const sql = `SELECT ${this.model.columns.join(", ")} FROM ${this.model.tableName} WHERE id = ?`
+            const data = await this.model.queryFirst<T>(sql, [id])
             return { success: true, data: data || undefined }
         } catch (error) {
             return { success: false, error: error instanceof Error ? error.message : "Unknown error" }
@@ -171,7 +126,7 @@ export default abstract class BaseRepository<T extends DatabaseModel> {
             const values = Object.values(data)
 
             const sql = `
-        INSERT INTO ${this.tableName} (${columns.join(", ")}, created_at, updated_at) 
+        INSERT INTO ${this.model.tableName} (${columns.join(", ")}, created_at, updated_at) 
         VALUES (${placeholders}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
       `
 
@@ -195,7 +150,7 @@ export default abstract class BaseRepository<T extends DatabaseModel> {
             const values = [...Object.values(data), id]
 
             const sql = `
-        UPDATE ${this.tableName} 
+        UPDATE ${this.model.tableName} 
         SET ${setClause}, updated_at = CURRENT_TIMESTAMP 
         WHERE id = ?
       `
@@ -210,11 +165,11 @@ export default abstract class BaseRepository<T extends DatabaseModel> {
 
     async delete(id: number): Promise<DatabaseResult<boolean>> {
         try {
-            const sql = `DELETE FROM ${this.tableName} WHERE id = ?`
+            const sql = `DELETE FROM ${this.model.tableName} WHERE id = ?`
             const result = await dbInstance.executeSql(sql, [id])
             return { success: true, data: result.changes > 0 }
         } catch (error) {
             return { success: false, error: error instanceof Error ? error.message : "Unknown error" }
         }
-    }
+    }*/
 }

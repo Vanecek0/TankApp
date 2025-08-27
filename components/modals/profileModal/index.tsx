@@ -37,9 +37,7 @@ export default function ProfileModal() {
         setIsLoading(true);
         try {
             const result = await carRepository.findAll();
-            if (result.success && result.data) {
-                setCars(result.data);
-            }
+            setCars(result);
         } catch (error) {
             console.error('Chyba při načítání cars:', error);
         } finally {
