@@ -167,7 +167,7 @@ export default function StationsModal() {
                         message: "Opravdu chcete smazat tuto stanici?",
                         deleteIcon: <Icon name="bin" color={Colors.base.primary} size={getScaleFactor() * 45} />,
                         onConfirm: async () => {
-                            await stationRepository.delete(item.id!);
+                            await stationRepository.removeRecord(item.id!);
                             onRefresh();
                         },
                     })}
@@ -267,16 +267,9 @@ export function AddStationRecordModal({ station, previousModal }: { station: Sta
 
     const onFormSubmit = async (data: any) => {
         try {
-
+            const stationDTO = DTO<Station, typeof data>(data);
             if (station) {
-                const result = await stationRepository.update(station.id!, {
-                    name: data.name,
-                    address: data.address,
-                    phone: data.phone,
-                    opening_hrs: data.opening,
-                    closing_hrs: data.closing,
-                    note: data.note,
-                });
+                const result = await StationModel.modify(station.id!, stationDTO);
 
                 const existingFuels = await StationFuelModel.all();
                 const existingFuelIds = existingFuels.map(sf => sf.id_fuel);

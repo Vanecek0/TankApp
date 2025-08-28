@@ -1,4 +1,4 @@
-import BaseModel from "@/database/base-model"
+import BaseModel from "@/database/abstract/baseModel"
 
 export type Car = {
   id?: number
@@ -33,35 +33,30 @@ export class CarModel extends BaseModel {
   static columns = carColumns
 
   static async create(car: Omit<Car, "id">) {
-    const carInsertColumns = carColumns.filter(col => col !== "id")
-    const columns = carInsertColumns.join(", ")
-    const placeholders = carInsertColumns.map(() => "?").join(", ")
-    const values = carInsertColumns.map((key) => car[key])
+    return this.insert(car)
+  }
 
-    const sql = `INSERT INTO car (${columns}) VALUES (${placeholders})`
-    return this.execute(sql, values)
+  static modify(id: number, car: Partial<Omit<Car, "id">>) {
+    return this.update(car, { id: id })
   }
 
   static all(): Promise<CarModel[]> {
     return this.select();
   }
 
-  static update(id: number, car: Partial<Omit<Car, "id">>) {
-    const fields = Object.keys(car)
-    const values = Object.values(car)
-    const setClause = fields.map((field) => `${field} = ?`).join(", ")
-    return this.execute(`UPDATE car SET ${setClause} WHERE id = ?`, [...values, id])
+  static first(): Promise<CarModel> {
+    return this.select([], 1);
   }
 
   static count(): Promise<number> {
-    return super.count("car")
+    return super.count()
   }
 
-  static delete(id: number) {
-    return this.execute("DELETE FROM car WHERE id = ?", [id])
+  static remove(id: number) {
+    return this.delete({ id: id });
   }
 
-  static findById(id: number): Promise<CarModel | null> {
-    return this.select({ id })
+  static findBy(where: Partial<Record<string, any>>) {
+    return this.select(where);
   }
 }

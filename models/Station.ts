@@ -1,4 +1,5 @@
-import BaseModel from "@/database/base-model";
+import BaseModel from "@/database/abstract/baseModel";
+import { SQLiteRunResult } from "expo-sqlite";
 
 export type Station = {
     id?: number;
@@ -32,38 +33,30 @@ export class StationModel extends BaseModel {
     static columns = stationColumns
 
     static async create(station: Omit<Station, "id">) {
-        const columns = stationColumns.join(", ");
-        const placeholders = stationColumns.map(() => "?").join(", ");
-        const values = stationColumns.map((key) => station[key]);
-
-        const sql = `INSERT INTO station (${columns}) VALUES (${placeholders})`;
-        return this.execute(sql, values);
+        return this.insert(station)
     }
 
-    static all(): Promise<Station[]> {
-        return this.query<Station>("SELECT * FROM station");
+    static modify(id: number, station: Partial<Omit<Station, "id">>) {
+        return this.update({ ...station, updated_at: "CURRENT_TIMESTAMP" }, { id: id })
     }
 
-    static findById(id: number): Promise<Station | null> {
-        return this.queryFirst<Station>("SELECT * FROM station WHERE id = ?", [id]);
+    static all(): Promise<StationModel[]> {
+        return this.select();
     }
 
-    static update(id: number, station: Partial<Omit<Station, "id">>) {
-        const fields = Object.keys(station);
-        const values = Object.values(station);
-        if (fields.length === 0) return Promise.resolve();
-
-        const setClause = fields.map((field) => `${field} = ?`).join(", ");
-        const sql = `UPDATE station SET ${setClause}, updated_at = CURRENT_TIMESTAMP WHERE id = ?`;
-        return this.execute(sql, [...values, id]);
+    static findBy(where: Partial<Record<string, any>>) {
+        return this.select(where);
     }
 
-    static delete(id: number) {
-        return this.execute("DELETE FROM station WHERE id = ?", [id]);
+    static findById(id: number): Promise<StationModel | null> {
+        return this.select({ id: id });
+    }
+
+    static remove(id: number): Promise<SQLiteRunResult> {
+        return this.delete({ id: id });
     }
 
     static count(): Promise<number> {
-        return super.count("station");
+        return this.count();
     }
-
 }
