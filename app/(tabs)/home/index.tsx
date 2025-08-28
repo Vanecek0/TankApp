@@ -63,7 +63,7 @@ export default function HomeScreen() {
   const TankingItem = React.memo(({ item }: { item: { month: string, tankings: (Tanking & { station?: Station })[] } }) => {
     return (
       <View style={{ ...spacing.gap(12) }}>
-        <ScaledText size='lg' className='font-bold capitalize' style={{ color: isDark ? Colors.text.primary_dark : '' }}>{getDate(item.month).monthLong} {getDate(item.month).year}</ScaledText>
+        <ScaledText size='base' className='capitalize' style={{ color: isDark ? Colors.text.primary_dark : '' }}>{getDate(item.month).monthLong} {getDate(item.month).year}</ScaledText>
         <View style={{ ...spacing.gap(12) }}>
           {item.tankings.map((item) => (
             <React.Fragment key={item.id}>

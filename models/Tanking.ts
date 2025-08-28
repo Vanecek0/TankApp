@@ -5,7 +5,7 @@ import { Station } from './Station';
 import { Fuel } from './Fuel';
 import { badgeTankingRepository } from '@/repositories/badgeTankingRepository';
 import { stationFuelRepository } from '@/repositories/stationFuelRepository';
-import BaseModel from '@/database/base-model';
+import BaseModel from '@/database/abstract/baseModel';
 
 export type Tanking = {
   id?: number;
@@ -156,7 +156,7 @@ export class TankingModel extends BaseModel {
     return db.getFirstAsync<Tanking>('SELECT * FROM tanking WHERE id = ?', [id]);
   }
 
-  static async delete(db: SQLiteDatabase, id: number) {
+  static async remove(db: SQLiteDatabase, id: number) {
     return db.runAsync('DELETE FROM tanking WHERE id = ?', [id]);
   }
 }

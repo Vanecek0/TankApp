@@ -1,13 +1,11 @@
 import { Car, CarModel } from "@/models/Car"
-import BaseRepository from "@/database/base-repository"
+import { SQLiteRunResult } from "expo-sqlite";
 
-class CarRepository extends BaseRepository<typeof CarModel, Car> {
-  constructor() {
-    super(CarModel)
-  }
+class CarRepository {
+  protected model = CarModel;
 
   async findAll(): Promise<Car[]> {
-    const result = await this.model.select()
+    const result = await this.model.all()
     if (!result) {
       throw new Error("Nepodařilo se načíst auta")
     }
@@ -15,35 +13,43 @@ class CarRepository extends BaseRepository<typeof CarModel, Car> {
   }
 
   async findById(id: number): Promise<Car> {
-    const result = await this.model.findById( id );
+    const result = await this.model.findBy({ id: id });
     if (!result) {
       throw new Error("Auto s daným ID nebylo nalezeno");
     }
-    return result as Car;
+    return result[0] as Car;
   }
 
-  async findFirst(): Promise<Car | null> {
-    const results = await this.model.select();
-    if (results.length === 0) {
-      return null;
+  async findFirst(): Promise<Car> {
+    const result = await this.model.first();
+    if (!result) {
+      throw new Error("Auto nebylo nalezeno");
     }
-    return results[0] as Car;
+    return result as Car
   }
 
   async findByFuelId(fuelId: number): Promise<Car[]> {
-    const result = await this.findBy({ fuel_id: fuelId })
-    if (!result.success || result.error) {
-      throw new Error(result.error || "Nepodařilo se načíst auta podle fuel_id")
+    const result = await this.model.findBy({ fuel_id: fuelId })
+    if (!result) {
+      throw new Error("Nepodařilo se načíst auta podle fuel_id")
     }
-    return result.data ?? []
+    return result as Car[]
   }
 
   async findByManufacturer(manufacturer: string): Promise<Car[]> {
-    const result = await this.findBy({ manufacturer })
-    if (!result.success || result.error) {
-      throw new Error(result.error || "Nepodařilo se načíst auta podle manufacturer")
+    const result = await this.model.findBy({ manufacturer: manufacturer })
+    if (!result) {
+      throw new Error("Nepodařilo se načíst auta podle manufacturer")
     }
-    return result.data ?? []
+    return result as Car[]
+  }
+
+  async removeRecord(id: number): Promise<SQLiteRunResult> {
+    const result = await this.model.remove(id)
+    if (!result) {
+      throw new Error("Nepodařilo se odstranit záznam auta")
+    }
+    return result
   }
 }
 

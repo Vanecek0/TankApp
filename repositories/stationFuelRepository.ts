@@ -4,6 +4,7 @@ import Database from "@/database/database"
 import { StationFuel, StationFuelModel } from "@/models/StationFuel"
 
 class StationFuelRepository {
+    protected model = StationFuelModel;
 
     static async createFromIds(id_station: number, id_fuel: number, last_price_per_unit: number = 0) {
         return await StationFuelModel.create({

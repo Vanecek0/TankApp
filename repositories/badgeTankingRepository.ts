@@ -1,7 +1,9 @@
 import Database from "@/database/database"
 import { Badge } from "@/models/Badge";
+import { BadgeTankingModel } from "@/models/BadgeTanking";
 
 class BadgeTankingRepository {
+protected model = BadgeTankingModel;
 
     async getBadgesByTanking(tankingIds: number[]): Promise<{ [key: number]: Badge[] }> {
         const db = await Database.getConnection();

@@ -131,7 +131,7 @@ export default function ProfileModal() {
                     message: "Opravdu chcete smazat tento profil?",
                     deleteIcon: <Icon name="bin" color={Colors.base.primary} size={getScaleFactor() * 45} />,
                     onConfirm: async () => {
-                        await carRepository.delete(item.id!);
+                        await carRepository.removeRecord(item.id!);
                         onRefresh();
                     },
                 })}
@@ -233,7 +233,7 @@ export function ProfileActionModal({ car, previousModal }: { car: Car, previousM
             const carDTO = DTO<Car, typeof data>(data);
 
             if (car) {
-                const result = await carRepository.update(car.id!, carDTO);
+                const result = await CarModel.modify(car.id!, carDTO);
                 return result;
             } else {
                 const result = await CarModel.create(carDTO);

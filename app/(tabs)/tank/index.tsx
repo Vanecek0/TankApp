@@ -19,11 +19,18 @@ import Dashboard from '@/components/dashboards';
 import AddTankRecordModal from '@/components/modals/tankRecordModal';
 import { AddStationRecordModal } from '@/components/modals/stationsModal';
 import { useModal } from '@/providers/modalProvider';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/store';
+import { loadCarFromStorage } from '@/store/slices/car.slice';
+import Dropdown from '@/components/common/Dropdown';
 
 export default function TankScreen() {
   const { isDark } = useTheme();
   const pathname = usePathname();
   const [isLoading, setIsLoading] = useState(true);
+  const { car, loading } = useSelector((state: RootState) => state.car);
+  const dispatch = useDispatch<AppDispatch>();
+  const [orderTankings, setOrderTankings] = useState('DESC');
   const { showModal } = useModal();
   const [tanking, setTanking] = useState<{
     month: string,
@@ -35,23 +42,30 @@ export default function TankScreen() {
     })[]
   }[]>([])
 
-  const loadTankings = useCallback(async () => {
+  useEffect(() => {
+    dispatch(loadCarFromStorage());
+  }, [dispatch]);
+
+  const loadTankings = useCallback(async (orderTankings: string, carId: number) => {
     setIsLoading(true);
     try {
-      const tankingsBadges = await TankingModel.getGroupedTankingsByMonth();
+      const tankingsBadges = await TankingModel.getGroupedTankingsByMonth(orderTankings, carId);
       setTanking(tankingsBadges);
     } catch (error) {
       console.error('Chyba při načítání tankings:', error);
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
-    loadTankings();
+    loadTankings(orderTankings, car?.id ?? 2);
   }, [loadTankings]);
 
-  const onRefresh = loadTankings;
+  const onRefresh = useCallback(async () => {
+    await loadTankings(orderTankings, car?.id ?? 2);
+  }, [car]);
+
 
   const TankingItem = React.memo(({ item }: {
     item: {
@@ -177,6 +191,25 @@ export default function TankScreen() {
                         Statistiky
                       </ScaledText>
                     </TouchableOpacity>
+                  </View>
+                  <View style={{ ...spacing.mt(24), ...spacing.mb(12) }} className='flex-row items-center justify-between'>
+                    <ScaledText size='lg' className='font-bold' isThemed={true}>Poslední záznamy</ScaledText>
+                    <Dropdown
+                      defaultIndex={0}
+                      data={[
+                        { value: 'DESC', label: 'Nejnovější' },
+                        { value: 'ASC', label: 'Nejstarší' }
+                      ]}
+                      onChange={(item) => setOrderTankings(item.value)}
+                      dropdownStyle={{
+                        ...spacing.borderRadius(12),
+                        ...spacing.width(150),
+                        ...spacing.borderWidth(0.5),
+                        ...spacing.px(12),
+                        borderColor: Colors.base.transparent,
+                        backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light
+                      }}
+                    ></Dropdown>
                   </View>
 
                 </>

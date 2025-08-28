@@ -1,8 +1,16 @@
 import { Station, StationModel } from "@/models/Station"
-import BaseRepository from "@/database/base-repository"
+import { SQLiteRunResult } from "expo-sqlite";
 
-export default class StationRepository extends BaseRepository<typeof StationModel, Station> {
-    constructor() {
-        super(StationModel)
+class StationRepository {
+    protected model = StationModel;
+
+    async removeRecord(id: number): Promise<SQLiteRunResult> {
+        const result = await this.model.remove(id)
+        if (!result) {
+            throw new Error("Nepodařilo se odstranit záznam stanice")
+        }
+        return result
     }
 }
+
+export const stationRepository = new StationRepository()

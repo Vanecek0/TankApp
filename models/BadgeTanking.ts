@@ -1,4 +1,4 @@
-import BaseModel from "@/database/base-model"
+import BaseModel from "@/database/abstract/baseModel"
 
 export type BadgeTanking = {
     id?: number
