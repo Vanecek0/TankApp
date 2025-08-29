@@ -26,34 +26,27 @@ export class ServicingModel extends BaseModel {
     static columns = servicingColumns
 
     static async create(servicing: Omit<Servicing, "id">) {
-        const columns = servicingColumns.join(", ");
-        const placeholders = servicingColumns.map(() => "?").join(", ");
-        const values = servicingColumns.map((key) => servicing[key]);
-
-        const sql = `INSERT INTO servicing (${columns}) VALUES (${placeholders})`;
-        return this.execute(sql, values);
+        return this.insert(servicing)
     }
 
-    static all(): Promise<Servicing[]> {
-        return this.query<Servicing>("SELECT * FROM servicing");
+    static modify(id: number, servicing: Partial<Omit<Servicing, "id">>) {
+        return this.update(servicing, { id: id })
     }
+
+    static all(): Promise<ServicingModel[]> {
+        return this.select();
+    }
+
 
     static count(): Promise<number> {
-        return super.count("servicing");
+        return super.count();
     }
 
     static findById(id: number): Promise<Servicing | null> {
         return this.queryFirst<Servicing>("SELECT * FROM servicing WHERE id = ?", [id]);
     }
 
-    static update(id: number, servicing: Partial<Omit<Servicing, "id">>) {
-        const fields = Object.keys(servicing);
-        const values = Object.values(servicing);
-        const setClause = fields.map((field) => `${field} = ?`).join(", ");
-        return this.execute(`UPDATE servicing SET ${setClause} WHERE id = ?`, [...values, id]);
-    }
-
-    static delete(id: number) {
+    static remove(id: number) {
         return this.execute("DELETE FROM servicing WHERE id = ?", [id]);
     }
 

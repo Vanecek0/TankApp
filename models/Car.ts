@@ -32,7 +32,7 @@ export class CarModel extends BaseModel {
   static tableName = "car"
   static columns = carColumns
 
-  static async create(car: Omit<Car, "id">) {
+  static create(car: CarModel) {
     return this.insert(car)
   }
 
@@ -45,7 +45,7 @@ export class CarModel extends BaseModel {
   }
 
   static first(): Promise<CarModel> {
-    return this.select([], 1);
+    return this.select([], [], 1);
   }
 
   static count(): Promise<number> {

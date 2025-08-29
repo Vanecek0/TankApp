@@ -42,7 +42,7 @@ export class StationFuelModel extends BaseModel {
         return this.queryFirst<StationFuel>("SELECT * FROM station_fuel WHERE id = ?", [id])
     }
 
-    static async update(id: number, stationFuel: Partial<Omit<StationFuel, "id">>) {
+    static async modify(id: number, stationFuel: Partial<Omit<StationFuel, "id">>) {
         const fields = Object.keys(stationFuel)
         const values = Object.values(stationFuel)
         if (fields.length === 0) return Promise.resolve()
@@ -52,11 +52,11 @@ export class StationFuelModel extends BaseModel {
         return this.execute(sql, [...values, id])
     }
 
-    static delete(id: number) {
+    static remove(id: number) {
         return this.execute("DELETE FROM station_fuel WHERE id = ?", [id])
     }
 
     static count(): Promise<number> {
-        return super.count("station_fuel")
+        return super.count()
     }
 }

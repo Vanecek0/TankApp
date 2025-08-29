@@ -1,24 +1,8 @@
 import { Station } from "@/models/Station";
 
-export function createStationSeed(overrides: Partial<Station> = {}): Station {
-    return {
-        name: 'Tank ONO',
-        address: 'Hlavní 123, Praha',
-        phone: '+420 123 456 789',
-        opening_hrs: Date.now(),
-        closing_hrs: Date.now(),
-        last_visit: Date.now(),
-        provider: 'ONO',
-        note: '',
-        created_at: Date.now(),
-        updated_at: Date.now(),
-        ...overrides,
-    };
-}
-
-export async function getStationSeeds() {
+export async function getStationSeeds(): Promise<Station[]> {
     return [
-        createStationSeed({
+        {
             name: 'Tank ONO',
             address: 'Domažlická 674/160, 318 00 Plzeň 3',
             phone: '+420 607 111 111',
@@ -29,9 +13,8 @@ export async function getStationSeeds() {
             note: 'Nejlevnější v okolí',
             created_at: Date.now(),
             updated_at: Date.now(),
-        }),
-
-        createStationSeed({
+        },
+        {
             name: 'Shell',
             address: 'Koterovská 156, 326 00 Plzeň 2-Slovany',
             phone: '+420 607 222 222',
@@ -42,9 +25,8 @@ export async function getStationSeeds() {
             note: 'Čistá toaleta, dražší',
             created_at: Date.now() - 1000 * 60 * 60 * 24 * 20,
             updated_at: Date.now() - 1000 * 60 * 60 * 24 * 20,
-        }),
-
-        createStationSeed({
+        },
+        {
             name: 'Benzina',
             address: 'Rokycanská 1132/111, 312 00 Plzeň 4',
             phone: '+420 607 333 333',
@@ -55,9 +37,8 @@ export async function getStationSeeds() {
             note: '',
             created_at: Date.now() - 1000 * 60 * 60 * 24 * 10,
             updated_at: Date.now() - 1000 * 60 * 60 * 24 * 2,
-        }),
-
-        createStationSeed({
+        },
+        {
             name: 'OMV',
             address: 'Studentská 1, 323 00 Plzeň 1',
             phone: '+420 607 444 444',
@@ -68,9 +49,8 @@ export async function getStationSeeds() {
             note: 'Prémiová paliva',
             created_at: Date.now() - 1000 * 60 * 60 * 24 * 15,
             updated_at: Date.now() - 1000 * 60 * 60 * 24 * 6,
-        }),
-
-        createStationSeed({
+        },
+        {
             name: 'EuroOil',
             address: 'Karlovarská 202, 323 00 Plzeň 1',
             phone: '+420 607 555 555',
@@ -81,9 +61,8 @@ export async function getStationSeeds() {
             note: 'Český provozovatel',
             created_at: Date.now() - 1000 * 60 * 60 * 24 * 30,
             updated_at: Date.now() - 1000 * 60 * 60 * 24 * 3,
-        }),
-
-        createStationSeed({
+        },
+        {
             name: 'MOL',
             address: 'Borská 59, 301 00 Plzeň 3',
             phone: '+420 607 666 666',
@@ -94,9 +73,8 @@ export async function getStationSeeds() {
             note: '',
             created_at: Date.now() - 1000 * 60 * 60 * 24 * 7,
             updated_at: Date.now(),
-        }),
-
-        createStationSeed({
+        },
+        {
             name: 'Robin Oil',
             address: 'U Prazdroje 2807/10, 301 00 Plzeň 3',
             phone: '+420 607 777 777',
@@ -107,6 +85,6 @@ export async function getStationSeeds() {
             note: 'Dostupné ceny, dobré parkování',
             created_at: Date.now() - 1000 * 60 * 60 * 24 * 25,
             updated_at: Date.now() - 1000 * 60 * 60 * 24 * 18,
-        }),
+        },
     ];
 }
