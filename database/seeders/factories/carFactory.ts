@@ -1,24 +1,8 @@
 import { Car } from "@/models/Car";
 
-export function createCarSeed(overrides: Partial<Car> = {}): Car {
-    return {
-        manufacturer: '',
-        model: '',
-        manufacture_year: Date.now(),
-        registration_date: Date.now(),
-        license_plate: '1US2738',
-        vin: "XYZ0000000001",
-        fuel_id: 1,
-        car_nickname: '',
-        tank_capacity: 50,
-        odometer: 50000,
-        ...overrides,
-    };
-}
-
-export async function getCarSeeds() {
+export async function getCarSeeds(): Promise<Car[]> {
     return [
-        createCarSeed({
+        {
             manufacturer: 'Audi',
             model: 'TT',
             manufacture_year: 2006,
@@ -29,9 +13,8 @@ export async function getCarSeeds() {
             car_nickname: 'TéTéčko',
             tank_capacity: 55,
             odometer: 140000,
-        }),
-
-        createCarSeed({
+        },
+        {
             manufacturer: 'Volkswagen',
             model: 'Golf',
             manufacture_year: 2012,
@@ -42,9 +25,8 @@ export async function getCarSeeds() {
             car_nickname: 'Golfík',
             tank_capacity: 50,
             odometer: 142300,
-        }),
-
-        createCarSeed({
+        },
+        {
             manufacturer: 'Toyota',
             model: 'Corolla',
             manufacture_year: 2019,
@@ -55,9 +37,8 @@ export async function getCarSeeds() {
             car_nickname: 'Korela',
             tank_capacity: 55,
             odometer: 65300,
-        }),
-
-        createCarSeed({
+        },
+        {
             manufacturer: 'Dacia',
             model: 'Duster',
             manufacture_year: 2018,
@@ -68,9 +49,8 @@ export async function getCarSeeds() {
             car_nickname: 'Dusterka',
             tank_capacity: 50,
             odometer: 104500,
-        }),
-
-        createCarSeed({
+        },
+        {
             manufacturer: 'Peugeot',
             model: '208',
             manufacture_year: 2020,
@@ -81,9 +61,8 @@ export async function getCarSeeds() {
             car_nickname: 'Pěťule',
             tank_capacity: 44,
             odometer: 34500,
-        }),
-
-        createCarSeed({
+        },
+        {
             manufacturer: 'Ford',
             model: 'Focus',
             manufacture_year: 2016,
@@ -94,9 +73,8 @@ export async function getCarSeeds() {
             car_nickname: 'Modrák',
             tank_capacity: 55,
             odometer: 98500,
-        }),
-
-        createCarSeed({
+        },
+        {
             manufacturer: 'Hyundai',
             model: 'i30',
             manufacture_year: 2017,
@@ -107,9 +85,8 @@ export async function getCarSeeds() {
             car_nickname: 'Hájíčko',
             tank_capacity: 53,
             odometer: 76800,
-        }),
-
-        createCarSeed({
+        },
+        {
             manufacturer: 'Renault',
             model: 'Clio',
             manufacture_year: 2013,
@@ -120,9 +97,8 @@ export async function getCarSeeds() {
             car_nickname: 'Klijo',
             tank_capacity: 45,
             odometer: 119200,
-        }),
-
-        createCarSeed({
+        },
+        {
             manufacturer: 'Opel',
             model: 'Astra',
             manufacture_year: 2014,
@@ -133,9 +109,8 @@ export async function getCarSeeds() {
             car_nickname: 'Astrička',
             tank_capacity: 52,
             odometer: 133000,
-        }),
-
-        createCarSeed({
+        },
+        {
             manufacturer: 'Tesla',
             model: 'Model 3',
             manufacture_year: 2021,
@@ -144,8 +119,8 @@ export async function getCarSeeds() {
             vin: '5YJ3E1EA5MF000010',
             fuel_id: 13,
             car_nickname: 'Teslička',
-            tank_capacity: 0, // EV
+            tank_capacity: 0,
             odometer: 25300,
-        })
+        },
     ];
 }

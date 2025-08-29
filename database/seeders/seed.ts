@@ -1,7 +1,6 @@
 import { StationModel } from "@/models/Station"
 import { getStationSeeds } from "./factories/stationFactory"
 import { getTankingSeeds } from "./factories/tankingFactory"
-import type * as SQLite from "expo-sqlite"
 import { TankingModel } from "@/models/Tanking"
 import { getFuelSeeds } from "./factories/fuelFactory"
 import { FuelModel } from "@/models/Fuel"
@@ -21,6 +20,8 @@ import { getBadgeSeeds } from "./factories/badgeFactory"
 import { BadgeModel } from "@/models/Badge"
 import { getBadgeTankingSeeds } from "./factories/badgeTankingFactory"
 import { BadgeTankingModel } from "@/models/BadgeTanking"
+import { seedEntity } from "./seedFactory"
+import type * as SQLite from "expo-sqlite"
 
 export async function seed(db: SQLite.SQLiteDatabase) {
     try {
@@ -31,72 +32,17 @@ export async function seed(db: SQLite.SQLiteDatabase) {
         await db.execAsync("BEGIN TRANSACTION;")
 
         try {
-
-            const fuelSeeds = await getFuelSeeds()
-
-            for (const fuel of fuelSeeds) {
-                await FuelModel.create(fuel)
-            }
-
-            const stationSeeds = await getStationSeeds()
-            for (const station of stationSeeds) {
-                await StationModel.create(station)
-            }
-
-            const stationFuelSeeds = await getStationFuelSeeds()
-
-            for (const stationFuel of stationFuelSeeds) {
-                await StationFuelModel.create(stationFuel)
-            }
-
-            const autoserviceSeeds = await getAutoserviceSeeds()
-
-            for (const autoservice of autoserviceSeeds) {
-                await AutoserviceModel.create(autoservice)
-            }
-
-            const partSeeds = await getPartSeeds()
-
-            for (const part of partSeeds) {
-                await PartModel.create(part)
-            }
-
-            const carSeeds = await getCarSeeds()
-
-            for (const car of carSeeds) {
-                await CarModel.create(car)
-            }
-
-            const servicingSeeds = await getServicingSeeds()
-
-            for (const servicing of servicingSeeds) {
-                await ServicingModel.create(servicing)
-            }
-
-            const servicingPartSeeds = await getServicingPartSeeds()
-
-            for (const servicingPart of servicingPartSeeds) {
-                await ServicingPartModel.create(servicingPart)
-            }
-
-            const tankingSeeds = await getTankingSeeds()
-
-            for (const tanking of tankingSeeds) {
-                await TankingModel.create(db, tanking)
-            }
-
-            const badgeSeeds = await getBadgeSeeds()
-
-            for (const badge of badgeSeeds) {
-                await BadgeModel.create(badge)
-            }
-
-            const badgeTankingSeeds = await getBadgeTankingSeeds()
-
-            for (const badgeTanking of badgeTankingSeeds) {
-                await BadgeTankingModel.create(badgeTanking)
-            }
-
+            await seedEntity(await getFuelSeeds(), FuelModel)
+            await seedEntity(await getStationSeeds(), StationModel)
+            await seedEntity(await getStationFuelSeeds(), StationFuelModel)
+            await seedEntity(await getAutoserviceSeeds(), AutoserviceModel)
+            await seedEntity(await getPartSeeds(), PartModel)
+            await seedEntity(await getCarSeeds(), CarModel)
+            await seedEntity(await getServicingSeeds(), ServicingModel)
+            await seedEntity(await getServicingPartSeeds(), ServicingPartModel)
+            await seedEntity(await getTankingSeeds(), TankingModel)
+            await seedEntity(await getBadgeSeeds(), BadgeModel)
+            await seedEntity(await getBadgeTankingSeeds(), BadgeTankingModel)
 
             await db.execAsync("COMMIT;")
         } catch (error) {

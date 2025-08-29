@@ -1,30 +1,8 @@
 import { Tanking } from "@/models/Tanking";
 
-export function createTankingSeed(overrides: Partial<Tanking> = {}): Tanking {
-    return {
-        car_id: 1,
-        station_fuel_id: 1,
-        price_per_unit: 20,
-        price: 0,
-        amount: 0,
-        mileage: 0,
-        tachometer: 0,
-        tank_date: Date.now(),
-        snapshot: undefined,
-        created_at: Date.now(),
-        updated_at: Date.now(),
-        ...overrides,
-    };
-}
-
-export async function getTankingSeeds() {
+export async function getTankingSeeds(): Promise<Tanking[]> {
     return [
-
-        // Historická data tankování pro roky 2021-2023
-
-        // ========== ROK 2021 ==========
-        // Leden 2021
-        createTankingSeed({
+        {
             car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 30.6,
@@ -36,9 +14,8 @@ export async function getTankingSeeds() {
             snapshot: "{\"id\":1,\"car_id\":1,\"station_fuel_id\":1,\"price_per_unit\":30.6,\"price\":1071,\"amount\":35,\"mileage\":315,\"tachometer\":35316,\"tank_date\":1609545600000,\"created_at\":1609545600000,\"updated_at\":1609545600000,\"station\":{\"id\":1,\"name\":\"Tank ONO\",\"address\":\"Domažlická 674/160, 318 00 Plzeň 3\",\"phone\":\"+420 607 111 111\",\"opening_hrs\":1753855200000,\"closing_hrs\":1753912800000,\"last_visit\":1752184877250,\"provider\":\"ONO\",\"note\":\"Nejlevnější v okolí\",\"created_at\":1753912877250,\"updated_at\":1753912877250},\"fuels\":[{\"id\":1,\"name\":\"Benzín\",\"code\":\"BA 90\",\"trademark\":\"Natural 90\",\"unit\":\"l\"},{\"id\":3,\"name\":\"Benzín\",\"code\":\"BA 95\",\"trademark\":\"Natural 95\",\"unit\":\"l\"},{\"id\":7,\"name\":\"Nafta\",\"code\":\"NM\",\"trademark\":\"Diesel\",\"unit\":\"l\"}]}",
             created_at: 1609545600000,
             updated_at: 1609545600000,
-        }),
-
-        createTankingSeed({
+        },
+        {
             car_id: 1,
             station_fuel_id: 1,
             price_per_unit: 31.2,
@@ -79,8 +56,7 @@ export async function getTankingSeeds() {
                 ]
             }),
             created_at: 1612137600000,
-            updated_at: 1612137600000
-        }),
-
+            updated_at: 1612137600000,
+        },
     ];
 }

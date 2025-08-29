@@ -1,6 +1,16 @@
 import Database from "../database"
 import type { SQLiteBindValue, SQLiteDatabase, SQLiteRunResult } from "expo-sqlite"
 
+type WhereConditionValue =
+  | [operator: "AND" | "OR", value: any]
+  | [operator: string, value: any]
+  | string
+  | any;
+
+type Where<T> = {
+  [K in keyof T]?: WhereConditionValue
+};
+
 export default abstract class BaseModel {
   static tableName: string;
   static columns: string[];
@@ -16,27 +26,46 @@ export default abstract class BaseModel {
 
   protected static async select<T extends object>(
     this: { new(): T; tableName: string; columns: string[] },
-    where: Record<string, any> = {}, limit?: number
+    where: Where<T> = {},
+    columns?: string[],
+    limit?: number
   ): Promise<T[]> {
-    const db = await BaseModel.getDb()
+    const db = await BaseModel.getDb();
+    const columnsClause = columns?.length ? columns.join(", ") : (this.columns.length ? this.columns.join(", ") : "*");
 
-    const columnsClause = this.columns.length > 0 ? this.columns.join(", ") : "*"
+    let sql = `SELECT ${columnsClause} FROM ${this.tableName}`;
+    const values: any[] = [];
+    const conditions: string[] = [];
 
-    let sql = `SELECT ${columnsClause} FROM ${this.tableName}`
+    for (const [key, val] of Object.entries(where)) {
+      if (Array.isArray(val)) {
+        const [operator, v] = val;
 
-    const values: any[] = []
-    if (Object.keys(where).length > 0) {
-      const conditions = Object.keys(where).map(key => `${key} = ?`)
-      sql += " WHERE " + conditions.join(" AND ")
-      values.push(...Object.values(where))
+        if (["AND", "OR"].includes(operator.toUpperCase())) {
+          conditions.push(`${key} ${operator} ?`);
+          values.push(v);
+        } else {
+          conditions.push(`${key} ${operator} ?`);
+          values.push(v);
+        }
+      } else if (typeof val === "string" && val.toUpperCase().includes("NULL")) {
+        conditions.push(`${key} ${val}`);
+      } else {
+        conditions.push(`${key} = ?`);
+        values.push(val);
+      }
+    }
+
+    if (conditions.length > 0) {
+      sql += " WHERE " + conditions.join(" AND ");
     }
 
     if (limit) {
-      sql += " LIMIT " + limit
+      sql += " LIMIT " + limit;
     }
 
-    const rows = await db.getAllAsync<any>(sql, values)
-    return rows.map(row => Object.assign(new this(), row))
+    const rows = await db.getAllAsync<any>(sql, values);
+    return rows.map(row => Object.assign(new this(), row));
   }
 
   protected static async insert<T extends object>(

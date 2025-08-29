@@ -1,6 +1,5 @@
 import type { SQLiteDatabase } from 'expo-sqlite';
-import { Badge, BadgeModel } from './Badge';
-import { StationFuelModel } from './StationFuel';
+import { Badge } from './Badge';
 import { Station } from './Station';
 import { Fuel } from './Fuel';
 import { badgeTankingRepository } from '@/repositories/badgeTankingRepository';
@@ -37,7 +36,7 @@ export const tankingColumns: (keyof Tanking)[] = [
   "updated_at",
 ]
 
-type Snapshot = Tanking & {
+export type Snapshot = Tanking & {
   station?: Station;
   fuels?: Fuel[];
 };
@@ -46,29 +45,20 @@ export class TankingModel extends BaseModel {
   static tableName = "tanking"
   static columns = tankingColumns
 
-  static async create(db: SQLiteDatabase, t: Tanking) {
-    return db.runAsync(
-      `INSERT INTO tanking (car_id, station_fuel_id, price_per_unit, price, amount, mileage, tachometer, tank_date, snapshot, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [t.car_id, t.station_fuel_id, t.price_per_unit, t.price, t.amount, t.mileage, t.tachometer, t.tank_date, t.snapshot ?? '', t.created_at, t.updated_at]
-    );
+  static async create(tanking: Omit<TankingModel, "id">) {
+    return this.insert(tanking)
   }
 
-  static async all(): Promise<Tanking[]> {
-    return this.query<Tanking>('SELECT * FROM tanking');
+  static async all(): Promise<TankingModel[]> {
+    return this.select();
   }
 
-  static async allFromSnapshot(db: SQLiteDatabase): Promise<Tanking[]> {
-    const rows = await db.getAllAsync<{ snapshot: string }>('SELECT snapshot FROM tanking WHERE snapshot IS NOT NULL');
-    return rows.map(r => {
-      try {
-        return JSON.parse(r.snapshot) as Tanking;
-      } catch {
-        return null;
-      }
-    }).filter((x): x is Tanking => !!x);
+  static async allFromSnapshot(): Promise<Tanking[]> {
+    const rows = await this.select({ snapshot: "IS NOT NULL" }, ["snapshot"]) as Tanking[];
+    return rows
+      .map(r => r.snapshot && JSON.parse(r.snapshot))
+      .filter(Boolean) as Tanking[];
   }
-
 
   static async getTotalPriceAndMileage(db: SQLiteDatabase): Promise<{ total_price: number; total_mileage: number }> {
     const result = await db.getFirstAsync<{ total_price: number; total_mileage: number }>(
@@ -78,6 +68,15 @@ export class TankingModel extends BaseModel {
       total_price: result?.total_price ?? 0,
       total_mileage: result?.total_mileage ?? 0,
     };
+  }
+
+  static async safeParseSnapshot(snapshot: string): Promise<Snapshot | null> {
+    try {
+      return JSON.parse(snapshot);
+    } catch {
+      console.warn('Invalid snapshot JSON:', snapshot);
+      return null; 
+    }
   }
 
   static async getPriceMileageSumByDate(
@@ -99,7 +98,7 @@ export class TankingModel extends BaseModel {
     for (const { tank_date, snapshot } of rows) {
       if (!snapshot) continue;
 
-      const snap = safeParseSnapshot(snapshot);
+      const snap = await this.safeParseSnapshot(snapshot);
       if (!snap) continue;
 
       const month = new Date(tank_date).toISOString().slice(0, 7);
@@ -126,7 +125,7 @@ export class TankingModel extends BaseModel {
     const grouped = new Map<string, (Snapshot & { badges: Badge[] })[]>();
 
     for (const row of rows) {
-      const snap = safeParseSnapshot(row.snapshot);
+      const snap = await this.safeParseSnapshot(row.snapshot);
       if (!snap) continue;
 
       const month = new Date(row.tank_date).toISOString().slice(0, 7);
@@ -136,36 +135,15 @@ export class TankingModel extends BaseModel {
     return Array.from(grouped.entries()).map(([month, tankings]) => ({ month, tankings }));
   }
 
-  static async updateSnapshot(db: SQLiteDatabase, id: number) {
-    const tanking = await this.findById(db, id);
-    if (!tanking) throw new Error(`Tanking ${id} not found`);
-
-    const stationFuel = await stationFuelRepository.getStationWithFuelsById(tanking.station_fuel_id);
-    if (!stationFuel) throw new Error(`StationFuel ${tanking.station_fuel_id} not found`);
-
-    const snapshotJson = JSON.stringify({
-      ...tanking,
-      station: stationFuel.station,
-      fuels: stationFuel.fuels,
-    });
-
-    await db.runAsync('UPDATE tanking SET snapshot = ? WHERE id = ?', [snapshotJson, id]);
+  static findById(id: number): Promise<TankingModel> {
+    return this.select({ id: id });
   }
 
-  static async findById(db: SQLiteDatabase, id: number): Promise<Tanking | null> {
-    return db.getFirstAsync<Tanking>('SELECT * FROM tanking WHERE id = ?', [id]);
+  static modify(id: number, tanking: Partial<Omit<Tanking, "id">>) {
+    return this.update(tanking, { id: id })
   }
 
-  static async remove(db: SQLiteDatabase, id: number) {
-    return db.runAsync('DELETE FROM tanking WHERE id = ?', [id]);
-  }
-}
-
-function safeParseSnapshot(snapshot: string): Snapshot | null {
-  try {
-    return JSON.parse(snapshot);
-  } catch {
-    console.warn('Invalid snapshot JSON:', snapshot);
-    return null;
+  static async remove(id: number) {
+    return this.delete({ id: id });
   }
 }
