@@ -1,15 +1,24 @@
-import { Station, StationModel } from "@/models/Station"
-import { SQLiteRunResult } from "expo-sqlite";
+import BaseRepository from "@/database/abstract/baseRepository";
+import { Station } from "@/models/Station";
 
-class StationRepository {
-    protected model = StationModel;
+export class StationRepository extends BaseRepository<Station> {
+    protected tableName = Station.tableName;
+    protected columns = Station.columns;
+    protected modelClass = Station;
 
-    async removeRecord(id: number): Promise<SQLiteRunResult> {
-        const result = await this.model.remove(id)
-        if (!result) {
-            throw new Error("Nepodařilo se odstranit záznam stanice")
+
+    async removeById(id: number): Promise<boolean> {
+        try {
+            const result = await this.delete({ id });
+            if (!result) {
+                console.warn(`Station with id ${id} could not be deleted`);
+                return false;
+            }
+            return true;
+        } catch (err) {
+            console.error(`Error deleting station with id ${id}:`, err);
+            return false;
         }
-        return result
     }
 }
 

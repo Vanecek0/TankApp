@@ -1,6 +1,3 @@
-
-//IMPLEMENTOVAT REDUX!!
-
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Car } from '@/models/Car';
@@ -22,13 +19,11 @@ export const useCar = (): CarContextType => {
 };
 
 const getCarById = async (id: number): Promise<Car | null> => {
-    const result = await carRepository.findById(id);
-    return result.success && result.data ? result.data : null;
+    return await carRepository.getById(id);
 };
 
 const getFirstAvailableCar = async (): Promise<Car | null> => {
-    const result = await carRepository.findFirst();
-    return result.success && result.data ? result.data : null;
+    return await carRepository.getFirst();
 };
 
 type CarProviderProps = { children: ReactNode };

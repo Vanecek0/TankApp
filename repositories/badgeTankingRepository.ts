@@ -1,34 +1,62 @@
-import Database from "@/database/database"
-import { Badge } from "@/models/Badge";
-import { BadgeTankingModel } from "@/models/BadgeTanking";
+import BaseRepository from "@/database/abstract/baseRepository";
+import { BadgeTanking } from "@/models/BadgeTanking";
 
-class BadgeTankingRepository {
-protected model = BadgeTankingModel;
+export class BadgeTankingRepository extends BaseRepository<BadgeTanking> {
+    protected tableName = BadgeTanking.tableName;
+    protected columns = BadgeTanking.columns;
+    protected modelClass = BadgeTanking;
 
-    async getBadgesByTanking(tankingIds: number[]): Promise<{ [key: number]: Badge[] }> {
-        const db = await Database.getConnection();
-        if (tankingIds.length === 0) return {};
-        const placeholders = tankingIds.map(() => '?').join(',');
-
-        const rows = await db.getAllAsync<(Badge & { id_tanking: number })>(
-            `SELECT b.*, bt.id_tanking
-       FROM badge b
-       JOIN badge_tanking bt ON b.id = bt.id_badge
-       WHERE bt.id_tanking IN (${placeholders})
-       ORDER BY bt.id_tanking, b.id DESC`,
-            tankingIds
-        );
-
-        return rows.reduce((acc, row) => {
-            acc[row.id_tanking] ||= [];
-            acc[row.id_tanking].push({ id: row.id, name: row.name, color: row.color });
-            return acc;
-        }, {} as { [key: number]: Badge[] });
+    async getAllRelations(): Promise<BadgeTanking[]> {
+        const db = await BadgeTankingRepository.getDb();
+        const sql = `
+      SELECT bt.*
+      FROM badge_tanking bt
+      INNER JOIN badge b ON bt.id_badge = b.id
+      INNER JOIN tanking t ON bt.id_tanking = t.id
+    `
+        return db.getAllAsync<BadgeTanking>(sql)
     }
 
-    async getBadgeByTanking(tankingId: number): Promise<Badge[]> {
-        return (await this.getBadgesByTanking([tankingId]))[tankingId] || [];
+    async getById(id: number): Promise<BadgeTanking | null> {
+        try {
+            const result = await this.select({ id: id });
+            if (!result || result.length === 0) {
+                return null;
+            }
+            return result[0];
+        } catch (err) {
+            console.error(`Error fetching badge_tanking relation with id ${id}:`, err);
+            return null;
+        }
     }
+
+    async getFirst(): Promise<BadgeTanking | null> {
+        try {
+            const result = await this.select({}, [], [], 1);
+            if (!result || result.length === 0) {
+                return null;
+            }
+            return result[0];
+        } catch (err) {
+            console.error("Error fetching first badge_tanking relation:", err);
+            return null;
+        }
+    }
+
+    async removeById(id: number): Promise<boolean> {
+        try {
+            const result = await this.delete({ id });
+            if (!result) {
+                console.warn(`Badge_tanking relation with id ${id} could not be deleted`);
+                return false;
+            }
+            return true;
+        } catch (err) {
+            console.error(`Error deleting Badge_tanking relation with id ${id}:`, err);
+            return false;
+        }
+    }
+
 }
 
 export const badgeTankingRepository = new BadgeTankingRepository()

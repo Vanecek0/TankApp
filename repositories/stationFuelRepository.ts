@@ -1,13 +1,14 @@
-import { Station } from "@/models/Station"
-import { Fuel } from "@/models/Fuel"
-import Database from "@/database/database"
-import { StationFuel, StationFuelModel } from "@/models/StationFuel"
+import { StationFuel } from "@/models/StationFuel";
+import BaseRepository from "@/database/abstract/baseRepository";
 
-class StationFuelRepository {
-    protected model = StationFuelModel;
+
+export class StationFuelRepository extends BaseRepository<StationFuel> {
+    protected tableName = StationFuel.tableName;
+    protected columns = StationFuel.columns;
+    protected modelClass = StationFuel;
 
     static async createFromIds(id_station: number, id_fuel: number, last_price_per_unit: number = 0) {
-        return await StationFuelModel.create({
+        return await StationFuel.create({
             id_station,
             id_fuel,
             last_price_per_unit,
