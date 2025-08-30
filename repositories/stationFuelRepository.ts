@@ -1,8 +1,8 @@
 import { StationFuel } from "@/models/StationFuel";
-import BaseRepository from "@/database/abstract/baseRepository";
+import DatabaseRepository from "@/database/abstract/databaseRepository";
 
 
-export class StationFuelRepository extends BaseRepository<StationFuel> {
+export class StationFuelRepository extends DatabaseRepository<StationFuel> {
     protected tableName = StationFuel.tableName;
     protected columns = StationFuel.columns;
     protected modelClass = StationFuel;

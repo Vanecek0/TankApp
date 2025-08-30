@@ -1,7 +1,7 @@
-import BaseRepository from "@/database/abstract/baseRepository";
+import DatabaseRepository from "@/database/abstract/databaseRepository";
 import { BadgeTanking } from "@/models/BadgeTanking";
 
-export class BadgeTankingRepository extends BaseRepository<BadgeTanking> {
+export class BadgeTankingRepository extends DatabaseRepository<BadgeTanking> {
     protected tableName = BadgeTanking.tableName;
     protected columns = BadgeTanking.columns;
     protected modelClass = BadgeTanking;
