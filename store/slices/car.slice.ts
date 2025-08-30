@@ -47,7 +47,7 @@ export const loadCarFromStorage = createAsyncThunk(
       
     }
     else {
-      const firstCar = await carRepository.findFirst();
+      const firstCar = await carRepository.getFirst();
       if (!firstCar) {
         return null;
       }
@@ -62,10 +62,7 @@ export const setCarByIdAndPersist = createAsyncThunk(
   "car/setCarByIdAndPersist",
   async (carId: number) => {
 
-      const car = await carRepository.findById(carId);
-      if (!car) {
-        return null;
-      }
+      const car = await carRepository.getById(carId);
       await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(car));
       return car;
   }

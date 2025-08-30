@@ -5,7 +5,6 @@ import { ThemeColors as Colors } from '@/constants/Colors';
 import ScaledText from '@/components/common/ScaledText';
 import Icon from '@/components/Icon';
 import { spacing } from '@/utils/SizeScaling';
-import { TankingStatistics, TankingStatisticsModel } from '@/models/TankingStatistics';
 import TankLineGraph from '@/components/graphs/TankLineGraph';
 
 export default function TankStatistics() {

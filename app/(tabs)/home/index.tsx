@@ -8,7 +8,6 @@ import Icon from '@/components/Icon';
 import getScaleFactor, { scaled } from '@/utils/SizeScaling';
 import { spacing } from '@/utils/SizeScaling';
 import { getDate } from '@/utils/getDate';
-import { Tanking, TankingModel } from '@/models/Tanking';
 import { Station } from '@/models/Station';
 import Dropdown from '@/components/common/Dropdown';
 import CustomButton, { ActionButton } from '@/components/common/Buttons';
@@ -20,6 +19,11 @@ import Card from '@/components/common/Card';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/store';
 import { loadCarFromStorage } from '@/store/slices/car.slice';
+import { Tanking } from '@/models/Tanking';
+import { tankingRepository } from '@/repositories/tankingRepository';
+import { tankingService } from '@/services/tankingService';
+import { Fuel } from '@/models/Fuel';
+import { Badge } from '@/models/Badge';
 
 export default function HomeScreen() {
   const { isDark } = useTheme();
@@ -27,11 +31,13 @@ export default function HomeScreen() {
   const dispatch = useDispatch<AppDispatch>();
   const pathname = usePathname();
   const { showModal } = useModal();
-  const [orderTankings, setOrderTankings] = useState('DESC');
+  const [orderTankings, setOrderTankings] = useState<'DESC' | 'ASC'>('DESC');
   const [tanking, setTanking] = useState<{
     month: string,
     tankings: (Tanking & {
-      station?: Station,
+      station?: Station;
+      fuels?: Fuel[];
+      badges: Badge[];
     })[]
   }[]>([])
   const [isLoading, setIsLoading] = useState(true);
@@ -40,10 +46,10 @@ export default function HomeScreen() {
     dispatch(loadCarFromStorage());
   }, [dispatch]);
 
-  const loadTankings = useCallback(async (orderTankings: string, carId: number) => {
+  const loadTankings = useCallback(async (orderTankings: 'DESC' | 'ASC', carId: number) => {
     setIsLoading(true);
     try {
-      const tankingsBadges = await TankingModel.getGroupedTankingsByMonth(orderTankings, carId);
+      const tankingsBadges = await tankingService.getGroupedTankingsByMonth(orderTankings, carId);
       setTanking(tankingsBadges);
     } catch (error) {
       console.error('Chyba při načítání tankings:', error);
@@ -148,7 +154,13 @@ export default function HomeScreen() {
                     { value: 'DESC', label: 'Nejnovější' },
                     { value: 'ASC', label: 'Nejstarší' }
                   ]}
-                  onChange={(item) => setOrderTankings(item.value)}
+                  onChange={(item) => {
+                    if (item.value === "DESC" || item.value === "ASC") {
+                      setOrderTankings(item.value);
+                    } else {
+                      console.warn("Invalid value for order:", item.value);
+                    }
+                  }}
                   dropdownStyle={{
                     ...spacing.borderRadius(12),
                     ...spacing.width(150),

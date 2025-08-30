@@ -3,14 +3,13 @@ import ScaledText from "@/components/common/ScaledText";
 import Badge from "@/components/Badge";
 import Icon from "@/components/Icon";
 import { ThemeColors as Colors } from "@/constants/Colors";
-import { Car, CarModel } from "@/models/Car";
 import { useModal } from "@/providers/modalProvider";
 import { carRepository } from "@/repositories/carRepository";
 import { useTheme } from "@/theme/ThemeProvider";
 import contrastHexColor from "@/utils/colorContrast";
 import getScaleFactor, { spacing } from "@/utils/SizeScaling";
-import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
-import { Image, LayoutChangeEvent, ScrollView, useWindowDimensions, View, VirtualizedList } from "react-native";
+import React, { useCallback, useEffect, useState } from "react";
+import { ScrollView, View, VirtualizedList } from "react-native";
 import DeleteConfirmationModal from "../superModals/deleteConfirmationModal";
 import { RefreshControl } from "react-native-gesture-handler";
 import { useForm } from "react-hook-form";
@@ -24,6 +23,7 @@ import ResponsiveImage from "@/components/common/ResponsiveImage";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store";
 import { loadCarFromStorage } from "@/store/slices/car.slice";
+import { Car } from "@/models/Car";
 
 export default function ProfileModal() {
     const { hideModal, showModal, showSuperModal } = useModal();
@@ -36,7 +36,7 @@ export default function ProfileModal() {
     const loadCars = useCallback(async () => {
         setIsLoading(true);
         try {
-            const result = await carRepository.findAll();
+            const result = await carRepository.getAll();
             setCars(result);
         } catch (error) {
             console.error('Chyba při načítání cars:', error);
@@ -131,7 +131,7 @@ export default function ProfileModal() {
                     message: "Opravdu chcete smazat tento profil?",
                     deleteIcon: <Icon name="bin" color={Colors.base.primary} size={getScaleFactor() * 45} />,
                     onConfirm: async () => {
-                        await carRepository.removeRecord(item.id!);
+                        await carRepository.removeById(item.id!);
                         onRefresh();
                     },
                 })}
@@ -233,10 +233,10 @@ export function ProfileActionModal({ car, previousModal }: { car: Car, previousM
             const carDTO = DTO<Car, typeof data>(data);
 
             if (car) {
-                const result = await CarModel.modify(car.id!, carDTO);
+                const result = await carRepository.update(carDTO, { id: car.id });
                 return result;
             } else {
-                const result = await CarModel.create(carDTO);
+                const result = await carRepository.create(carDTO);
                 return result;
             }
 

@@ -1,69 +1,85 @@
-import { Repository } from "@/interfaces/IRepository";
-import { Car, CarModel } from "@/models/Car"
-import { SQLiteRunResult } from "expo-sqlite";
+import BaseRepository from "@/database/abstract/baseRepository";
+import { Car } from "@/models/Car";
 
-export interface ICarRepository extends Repository<CarModel> {
-  getAllCars(): Promise<CarModel[]>;
-}
+export class CarRepository extends BaseRepository<Car> {
+  protected tableName = Car.tableName;
+  protected columns = Car.columns;
+  protected modelClass = Car;
 
-class CarRepository implements Repository<CarRepository> {
-  protected model = CarModel;
-
-  async create(car: CarModel): Promise<CarModel> {
-    return this.model.create(car)
-  }
-
-  async exists(car: Car): Promise<boolean> {
-    const result = this.model.findBy({id: car.id})
-    return !!result === true;
-  }
-
-  async findAll(): Promise<Car[]> {
-    const result = await this.model.all()
-    if (!result) {
-      throw new Error("Nepodařilo se načíst auta")
+  async getAll(): Promise<Car[]> {
+    try {
+      const result = await this.select();
+      return result || [];
+    } catch (err) {
+      console.error("Error loading cars:", err);
+      return [];
     }
-    return result as Car[]
   }
 
-  async getById(id: number): Promise<CarModel> {
-    const result = await this.model.findBy({ id: id });
-    if (!result) {
-      throw new Error("Auto s daným ID nebylo nalezeno");
+  async getById(id: number): Promise<Car | null> {
+    try {
+      const result = await this.select({ id: id });
+      if (!result || result.length === 0) {
+        return null;
+      }
+      return result[0];
+    } catch (err) {
+      console.error(`Error fetching car with id ${id}:`, err);
+      return null;
     }
-    return result[0];
   }
 
-  async findFirst(): Promise<Car> {
-    const result = await this.model.first();
-    if (!result) {
-      throw new Error("Auto nebylo nalezeno");
+  async getFirst(): Promise<Car | null> {
+    try {
+      const result = await this.select({}, [], [], 1);
+      if (!result || result.length === 0) {
+        return null;
+      }
+      return result[0];
+    } catch (err) {
+      console.error("Error fetching first car:", err);
+      return null;
     }
-    return result as Car
   }
 
-  async findByFuelId(fuelId: number): Promise<Car[]> {
-    const result = await this.model.findBy({ fuel_id: fuelId })
-    if (!result) {
-      throw new Error("Nepodařilo se načíst auta podle fuel_id")
+  async getByFuelId(fuelId: number): Promise<Car[]> {
+    try {
+      const result = await this.select({ fuel_id: fuelId });
+      if (!result || result.length === 0) {
+        return [];
+      }
+      return result;
+    } catch (err) {
+      console.error(`Error fetching cars with fuel_id ${fuelId}:`, err);
+      return [];
     }
-    return result as Car[]
   }
 
-  async findByManufacturer(manufacturer: string): Promise<Car[]> {
-    const result = await this.model.findBy({ manufacturer: manufacturer })
-    if (!result) {
-      throw new Error("Nepodařilo se načíst auta podle manufacturer")
+  async getByManufacturer(manufacturer: string): Promise<Car[]> {
+    try {
+      const result = await this.select({ manufacturer });
+      if (!result || result.length === 0) {
+        return [];
+      }
+      return result;
+    } catch (err) {
+      console.error(`Error fetching cars by manufacturer "${manufacturer}":`, err);
+      return [];
     }
-    return result as Car[]
   }
 
-  async remove(id: number): Promise<SQLiteRunResult> {
-    const result = await this.model.remove(id)
-    if (!result) {
-      throw new Error("Nepodařilo se odstranit záznam auta")
+  async removeById(id: number): Promise<boolean> {
+    try {
+      const result = await this.delete({ id });
+      if (!result) {
+        console.warn(`Car with id ${id} could not be deleted`);
+        return false;
+      }
+      return true;
+    } catch (err) {
+      console.error(`Error deleting car with id ${id}:`, err);
+      return false;
     }
-    return result
   }
 }
 

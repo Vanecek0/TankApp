@@ -1,40 +1,19 @@
-import BaseModel from "@/database/abstract/baseModel"
-
-export type Badge = {
-    id?: number
-    name: string
-    color: string
+export interface IBadge {
+  id?: number
+  name: string
+  color: string
 }
 
-export const badgeColumns: (keyof Omit<Badge, "id">)[] = [
+export class Badge implements IBadge {
+  id?: number
+  name!: string
+  color!: string
+
+  static tableName = "badge"
+
+  static columns: (keyof Badge)[] = [
+    "id",
     "name",
     "color"
-]
-
-export class BadgeModel extends BaseModel {
-    static tableName = "badge"
-    static columns = badgeColumns
-
-    static async create(badge: Omit<Badge, "id">) {
-        return this.execute(
-            "INSERT INTO badge (name, color) VALUES (?, ?)",
-            [badge.name, badge.color]
-        )
-    }
-
-    static all(): Promise<Badge[]> {
-        return this.query<Badge>("SELECT * FROM badge")
-    }
-
-    static findById(id: number): Promise<Badge | null> {
-        return this.queryFirst<Badge>("SELECT * FROM badge WHERE id = ?", [id])
-    }
-
-    static delete(id: number) {
-        return this.execute("DELETE FROM badge WHERE id = ?", [id])
-    }
-
-    static count(): Promise<number> {
-        return super.count("badge")
-    }
+  ]
 }
