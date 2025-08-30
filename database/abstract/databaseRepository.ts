@@ -1,7 +1,7 @@
 import Database from "../database"
 import { SQLiteBindValue, SQLiteDatabase, SQLiteRunResult } from "expo-sqlite";
 
-export interface Repository {
+export interface IDatabaseRepository {
     create(t: object): Promise<boolean>;
     update(row: Partial<object>, where: Record<string, any>): Promise<boolean>;
     delete(where: Record<string, any>): Promise<boolean>;
@@ -23,7 +23,7 @@ type OrderBy<T extends object> =
     | Array<{ column: keyof T & string; direction?: OrderDirection }>;
 
 
-export default abstract class BaseRepository<T extends object> implements Repository {
+export default abstract class DatabaseRepository<T extends object> implements IDatabaseRepository {
     protected abstract tableName: string;
     protected abstract columns: string[];
     protected abstract modelClass: new () => T;
@@ -43,7 +43,7 @@ export default abstract class BaseRepository<T extends object> implements Reposi
         orderBy?: OrderBy<T>,
         limit?: number
     ): Promise<T[]> {
-        const db = await BaseRepository.getDb();
+        const db = await DatabaseRepository.getDb();
 
         const cols =
             columns?.length
@@ -102,7 +102,7 @@ export default abstract class BaseRepository<T extends object> implements Reposi
     async insert<T extends object>(
         row: Partial<Omit<T, "id">>
     ): Promise<SQLiteRunResult> {
-        const db = await BaseRepository.getDb()
+        const db = await DatabaseRepository.getDb()
 
         const keys = Object.keys(row)
         if (keys.length === 0) {
@@ -125,7 +125,7 @@ export default abstract class BaseRepository<T extends object> implements Reposi
         row: Partial<object>,
         where: Record<string, any> = {}
     ): Promise<boolean> {
-        const db = await BaseRepository.getDb()
+        const db = await DatabaseRepository.getDb()
 
         const keys = Object.keys(row)
         if (keys.length === 0) {
@@ -149,7 +149,7 @@ export default abstract class BaseRepository<T extends object> implements Reposi
     async delete(
         where: Record<string, any> = {}
     ): Promise<boolean> {
-        const db = await BaseRepository.getDb()
+        const db = await DatabaseRepository.getDb()
 
         let sql = `DELETE FROM ${this.tableName}`
 
@@ -166,7 +166,7 @@ export default abstract class BaseRepository<T extends object> implements Reposi
     async count(
     ): Promise<number> {
         const sql = `SELECT COUNT(*) as count FROM ${this.tableName}`
-        const result = await (await BaseRepository.getDb()).getAllAsync<{ count: number }>(sql)
+        const result = await (await DatabaseRepository.getDb()).getAllAsync<{ count: number }>(sql)
         return result[0].count
     }
 

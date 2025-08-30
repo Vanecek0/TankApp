@@ -1,7 +1,7 @@
-import BaseRepository from "@/database/abstract/baseRepository";
+import DatabaseRepository from "@/database/abstract/databaseRepository";
 import { Car } from "@/models/Car";
 
-export class CarRepository extends BaseRepository<Car> {
+export class CarRepository extends DatabaseRepository<Car> {
   protected tableName = Car.tableName;
   protected columns = Car.columns;
   protected modelClass = Car;

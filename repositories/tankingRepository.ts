@@ -1,7 +1,7 @@
-import BaseRepository from "@/database/abstract/baseRepository";
+import DatabaseRepository from "@/database/abstract/databaseRepository";
 import { Tanking } from "@/models/Tanking";
 
-export class TankingRepository extends BaseRepository<Tanking> {
+export class TankingRepository extends DatabaseRepository<Tanking> {
     protected tableName = Tanking.tableName;
     protected columns = Tanking.columns;
     protected modelClass = Tanking;
