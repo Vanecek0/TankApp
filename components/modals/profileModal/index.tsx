@@ -13,7 +13,6 @@ import { ScrollView, View, VirtualizedList } from "react-native";
 import DeleteConfirmationModal from "../superModals/deleteConfirmationModal";
 import { RefreshControl } from "react-native-gesture-handler";
 import { useForm } from "react-hook-form";
-import { Fuel, FuelModel } from "@/models/Fuel";
 import { DTO } from "@/DTO/mapper";
 import FormTextInput from "@/components/forms/FormTextInput";
 import FormCheckboxItem from "@/components/forms/FormCheckboxItem";
@@ -24,6 +23,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store";
 import { loadCarFromStorage } from "@/store/slices/car.slice";
 import { Car } from "@/models/Car";
+import { fuelRepository } from "@/repositories/fuelRepository";
+import { Fuel } from "@/models/Fuel";
 
 export default function ProfileModal() {
     const { hideModal, showModal, showSuperModal } = useModal();
@@ -220,7 +221,7 @@ export function ProfileActionModal({ car, previousModal }: { car: Car, previousM
     const { control, handleSubmit, formState } = useForm();
 
     const loadAllFuels = async () => {
-        const allFuels = await FuelModel.all();
+        const allFuels = await fuelRepository.getAll();
         setFuels(allFuels);
     };
 

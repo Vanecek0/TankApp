@@ -2,34 +2,42 @@ import { View } from "react-native";
 import ScaledText from "@/components/common/ScaledText";
 import { spacing } from "@/utils/SizeScaling";
 import { useEffect, useState } from "react";
-import { TankingModel } from "@/models/Tanking";
-import { TankingStatistics, TankingStatisticsModel } from "@/models/TankingStatistics";
-import { useDatabase } from "@/database/databaseContext";
 import TankGraph from "@/components/graphs/TankGraph";
+import { tankingRepository } from "@/repositories/tankingRepository";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/store";
+import { TankingStatistics } from "@/models/TankingStatistics";
+import { tankingStatisticService } from "@/services/tankingStatisticsService";
+import { loadCarFromStorage } from "@/store/slices/car.slice";
 
-export default function TankDashboard({ routePathName, className }: {
+export default function TankDashboard({ className }: {
     routePathName?: string;
     className?: string;
 }) {
     const [tankingSumsDate, setTankingSumsDate] = useState<({ month: string; total_price: number; total_mileage: number })[]>([])
     const [tankingStatistics, setTankingStatistics] = useState<Omit<TankingStatistics, 'period'>>()
-    const { db } = useDatabase();
+    const { car, loading } = useSelector((state: RootState) => state.car);
+    const dispatch = useDispatch<AppDispatch>();
+
+    useEffect(() => {
+        dispatch(loadCarFromStorage());
+    }, [dispatch]);
 
     useEffect(() => {
         const getTankingSums = async () => {
-            const tankingSums = await TankingModel.getPriceMileageSumByDate(db);
+            const tankingSums = await tankingRepository.getPriceMileageSumByDate(car?.id!);
             setTankingSumsDate(tankingSums)
         }
 
         const getTankingStatistics = async () => {
-            const tankingStatisticsDate = await TankingStatisticsModel.getSumOfMonthlyTankingStatsByDate();
+            const tankingStatisticsDate = await tankingStatisticService.getSumOfMonthlyTankingStatsByDate();
             setTankingStatistics(tankingStatisticsDate)
         }
 
         getTankingStatistics();
         getTankingSums();
 
-    }, [])
+    }, [dispatch, car])
     return (
         <>
             <View style={{ ...spacing.p(20), ...spacing.borderRadius(12) }} className={`${className} flex-col bg-primary`}>

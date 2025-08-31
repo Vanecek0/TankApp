@@ -5,7 +5,7 @@ import { usePathname } from 'expo-router';
 import { ThemeColors as Colors } from '@/constants/Colors';
 import ScaledText from '@/components/common/ScaledText';
 import Icon from '@/components/Icon';
-import getScaleFactor, { scaled } from '@/utils/SizeScaling';
+import getScaleFactor from '@/utils/SizeScaling';
 import { spacing } from '@/utils/SizeScaling';
 import { getDate } from '@/utils/getDate';
 import { Station } from '@/models/Station';
@@ -20,7 +20,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/store';
 import { loadCarFromStorage } from '@/store/slices/car.slice';
 import { Tanking } from '@/models/Tanking';
-import { tankingRepository } from '@/repositories/tankingRepository';
 import { tankingService } from '@/services/tankingService';
 import { Fuel } from '@/models/Fuel';
 import { Badge } from '@/models/Badge';
@@ -52,21 +51,28 @@ export default function HomeScreen() {
       const tankingsBadges = await tankingService.getGroupedTankingsByMonth(orderTankings, carId);
       setTanking(tankingsBadges);
     } catch (error) {
-      console.error('Chyba při načítání tankings:', error);
+      console.error('Error while loading tankings:', error);
     } finally {
       setIsLoading(false);
     }
   }, [dispatch]);
 
+  useEffect(() => {
+    loadTankings(orderTankings, car?.id ?? 2);
+  }, [loadTankings, car, orderTankings]);
+
   const onRefresh = useCallback(async () => {
     await loadTankings(orderTankings, car?.id ?? 2);
   }, [car]);
 
-  useEffect(() => {
-    loadTankings(orderTankings, car?.id ?? 2);
-  }, [loadTankings, orderTankings, car])
-
-  const TankingItem = React.memo(({ item }: { item: { month: string, tankings: (Tanking & { station?: Station })[] } }) => {
+  const TankingItem = React.memo(({ item }: {
+    item: {
+      month: string,
+      tankings: (Tanking & {
+        station?: Station
+      })[]
+    }
+  }) => {
     return (
       <View style={{ ...spacing.gap(12) }}>
         <ScaledText size='base' className='capitalize' style={{ color: isDark ? Colors.text.primary_dark : '' }}>{getDate(item.month).monthLong} {getDate(item.month).year}</ScaledText>
@@ -99,34 +105,6 @@ export default function HomeScreen() {
                   </View>
                 </View>
               </Card >
-              <Card>
-                <View style={{ ...spacing.gap(12) }} className='flex'>
-                  <View style={{ ...spacing.gap(12) }} className='flex-row items-center w-full'>
-                    <ScaledText className='rounded-full' style={{ backgroundColor: "lightgray", fontWeight: "bold", ...spacing.p(16) }} size='base'>{item.station?.provider?.slice(0, 2).toUpperCase() ?? '-'}</ScaledText>
-                    <View className='flex-row justify-between flex-1'>
-                      <View style={{ ...spacing.gap(4) }} className='flex items-start w-2/3'>
-                        <ScaledText isThemed={true} size="lg" className='font-bold'>{item.id} {item.station?.name ?? 'Neznámá stanice'}</ScaledText>
-                        <View style={{ ...spacing.gap(2) }} className='flex-row items-center justify-start'>
-                          <Icon name="map_pin" color={Colors.text.muted} size={getScaleFactor() * 15} />
-                          <ScaledText numberOfLines={1} ellipsizeMode="tail" className='text-ellipsis overflow-visible' isThemed={true} size="sm">{item.station?.address ?? 'Bez adresy'}</ScaledText>
-                        </View>
-                        <View style={{ ...spacing.gap(12) }} className='flex-col'>
-                          <View style={{ ...spacing.gap(2) }} className='flex-row items-center justify-start'>
-                            <Icon name="calendar" color={Colors.text.muted} size={getScaleFactor() * 15} />
-                            <ScaledText isThemed={true} size="sm">{new Date(item.tank_date).toLocaleDateString("cs-CZ")}, {new Date(item.created_at).toLocaleTimeString("cs-CZ", { hour: "2-digit", minute: "2-digit" })}</ScaledText>
-                          </View>
-                        </View>
-                      </View>
-
-                      <View style={{ ...spacing.gap(4) }} className='flex items-end'>
-                        <ScaledText isThemed={true} size="lg" className='font-bold'>{item.price} Kč</ScaledText>
-                        <ScaledText isThemed={true} size="sm">{item.amount}l</ScaledText>
-                        <ScaledText isThemed={true} size="sm">{item.tachometer} km</ScaledText>
-                      </View>
-                    </View>
-                  </View>
-                </View>
-              </Card >
             </React.Fragment>
           ))}
         </View>
@@ -135,7 +113,14 @@ export default function HomeScreen() {
   })
 
   const renderItem = useCallback(
-    ({ item }: { item: { month: string, tankings: (Tanking & { station?: Station })[] } }) => <TankingItem item={item} />,
+    ({ item }: {
+      item: {
+        month: string,
+        tankings: (Tanking & {
+          station?: Station
+        })[]
+      }
+    }) => <TankingItem item={item} />,
     [isDark]
   );
 
@@ -186,7 +171,11 @@ export default function HomeScreen() {
           getItemCount={(_data: unknown) => tanking.length}
           keyExtractor={(item, index) => tanking[index].month ?? index.toString()}
           getItem={(_data: unknown, index: number) => tanking[index]}
-          ListEmptyComponent={<ScaledText style={{ ...spacing.p(28) }} className="text-center font-bold" color={Colors.text.muted} size="base">Žádné další záznamy</ScaledText>}
+          ListEmptyComponent={
+            !loading ? (
+              <ScaledText style={{ ...spacing.p(28) }} className="text-center font-bold" color={Colors.text.muted} size="base">Žádné další záznamy</ScaledText>
+              ) : <ScaledText style={{ ...spacing.p(28) }} className="text-center font-bold" color={Colors.text.muted} size="base">Načítání</ScaledText>
+          }
         />
       </View>
       <ActionButton>

@@ -114,7 +114,9 @@ export default abstract class DatabaseRepository<T extends object> implements ID
         const values = Object.values(row) as SQLiteBindValue[]
 
         const sql = `INSERT INTO ${this.tableName} (${columnsClause}) VALUES (${placeholders})`
-        return await db.runAsync(sql, values)
+        const inserting = await db.runAsync(sql, values)
+        console.log(`Inserting into ${this.tableName}: `, inserting.lastInsertRowId);
+        return inserting;
     }
 
     async create(t: object): Promise<boolean> {

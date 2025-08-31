@@ -1,25 +1,25 @@
-import { StationModel } from "@/models/Station"
 import { getStationSeeds } from "./factories/stationFactory"
 import { getTankingSeeds } from "./factories/tankingFactory"
-import { TankingModel } from "@/models/Tanking"
 import { getFuelSeeds } from "./factories/fuelFactory"
-import { FuelModel } from "@/models/Fuel"
 import { getStationFuelSeeds } from "./factories/stationFuelFactory"
-import { StationFuelModel } from "@/models/StationFuel"
-import { getServicingSeeds } from "./factories/servicingFactory"
-import { ServicingModel } from "@/models/Servicing"
 import { getPartSeeds } from "./factories/partFactory"
-import { PartModel } from "@/models/Part"
 import { getAutoserviceSeeds } from "./factories/autoserviceFactory"
-import { AutoserviceModel } from "@/models/Autoservice"
 import { getCarSeeds } from "./factories/carFactory"
-import { CarModel } from "@/models/Car"
 import { getServicingPartSeeds } from "./factories/servicingPartFactory"
-import { ServicingPartModel } from "@/models/ServicingPart"
 import { getBadgeSeeds } from "./factories/badgeFactory"
-import { BadgeModel } from "@/models/Badge"
 import { getBadgeTankingSeeds } from "./factories/badgeTankingFactory"
-import { BadgeTankingModel } from "@/models/BadgeTanking"
+import { badgeTankingRepository } from "@/repositories/badgeTankingRepository"
+import { badgeRepository } from "@/repositories/badgeRepository"
+import { tankingRepository } from "@/repositories/tankingRepository"
+import { servicingPartRepository } from "@/repositories/servicingPartRepository"
+import { servicingRepository } from "@/repositories/servicingRepository"
+import { carRepository } from "@/repositories/carRepository"
+import { partRepository } from "@/repositories/partRepository"
+import { autoserviceRepository } from "@/repositories/autoserviceRepository"
+import { stationFuelRepository } from "@/repositories/stationFuelRepository"
+import { stationRepository } from "@/repositories/stationRepository"
+import { fuelRepository } from "@/repositories/fuelRepository"
+import { getServicingSeeds } from "./factories/servicingFactory"
 import { seedEntity } from "./seedFactory"
 import type * as SQLite from "expo-sqlite"
 
@@ -32,17 +32,17 @@ export async function seed(db: SQLite.SQLiteDatabase) {
         await db.execAsync("BEGIN TRANSACTION;")
 
         try {
-            await seedEntity(await getFuelSeeds(), FuelModel)
-            await seedEntity(await getStationSeeds(), StationModel)
-            await seedEntity(await getStationFuelSeeds(), StationFuelModel)
-            await seedEntity(await getAutoserviceSeeds(), AutoserviceModel)
-            await seedEntity(await getPartSeeds(), PartModel)
-            await seedEntity(await getCarSeeds(), CarModel)
-            await seedEntity(await getServicingSeeds(), ServicingModel)
-            await seedEntity(await getServicingPartSeeds(), ServicingPartModel)
-            await seedEntity(await getTankingSeeds(), TankingModel)
-            await seedEntity(await getBadgeSeeds(), BadgeModel)
-            await seedEntity(await getBadgeTankingSeeds(), BadgeTankingModel)
+            await seedEntity(await getFuelSeeds(), fuelRepository)
+            await seedEntity(await getStationSeeds(), stationRepository)
+            await seedEntity(await getStationFuelSeeds(), stationFuelRepository)
+            await seedEntity(await getAutoserviceSeeds(), autoserviceRepository)
+            await seedEntity(await getPartSeeds(), partRepository)
+            await seedEntity(await getCarSeeds(), carRepository)
+            await seedEntity(await getServicingSeeds(), servicingRepository)
+            await seedEntity(await getServicingPartSeeds(), servicingPartRepository)
+            await seedEntity(await getTankingSeeds(), tankingRepository)
+            await seedEntity(await getBadgeSeeds(), badgeRepository)
+            await seedEntity(await getBadgeTankingSeeds(), badgeTankingRepository)
 
             await db.execAsync("COMMIT;")
         } catch (error) {

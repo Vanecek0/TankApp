@@ -1,5 +1,4 @@
 export interface ITankingStatistics {
-    id?: number;
     period: string;
     total_amount: number;
     total_mileage: number;
@@ -9,7 +8,6 @@ export interface ITankingStatistics {
 }
 
 export class TankingStatistics implements ITankingStatistics {
-    id?: number;
     period!: string;
     total_amount!: number;
     total_mileage!: number;
@@ -20,7 +18,6 @@ export class TankingStatistics implements ITankingStatistics {
     static tableName = "monthly_tanking_stats";
 
     static columns: (keyof TankingStatistics)[] = [
-        "id",
         "period",
         "total_amount",
         "total_mileage",

@@ -27,7 +27,7 @@ export class Tanking implements ITanking {
   created_at!: number;
   updated_at!: number;
 
-  static tableName = "tankings"
+  static tableName = "tanking"
   
   static columns: (keyof Tanking)[] = [
     "id",
