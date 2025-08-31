@@ -2,6 +2,7 @@ import Database from "@/database/database";
 import { Badge } from "@/models/Badge";
 import { Fuel } from "@/models/Fuel";
 import { Station } from "@/models/Station";
+import { Tanking } from "@/models/Tanking";
 import { BadgeTankingRepository, badgeTankingRepository } from "@/repositories/badgeTankingRepository";
 import { tankingRepository } from "@/repositories/tankingRepository";
 
@@ -37,7 +38,7 @@ export class TankingService {
         }, {});
     }
 
-    async getGroupedTankingsByMonth(order: "DESC" | "ASC", carId: number) {
+    async getGroupedTankingsByMonth(order: "DESC" | "ASC" = "DESC", carId: number) {
         const rows = await tankingRepository.select(
             { car_id: carId },
             ["id", "snapshot", "tank_date"],
@@ -45,7 +46,7 @@ export class TankingService {
         );
 
         const badgesMap = await this.getBadgesByTanking(rows.map(r => r.id!));
-        const grouped = new Map<string, { station?: Station; fuels?: Fuel[]; badges: Badge[] }[]>();
+        const grouped = new Map<string, (Tanking & {station?: Station; fuels?: Fuel[]; badges: Badge[] })[]>();
 
         const safeParse = (json?: string) => {
             try {

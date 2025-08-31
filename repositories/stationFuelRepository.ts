@@ -7,6 +7,17 @@ export class StationFuelRepository extends DatabaseRepository<StationFuel> {
     protected columns = StationFuel.columns;
     protected modelClass = StationFuel;
 
+    async getAll(): Promise<StationFuel[]> {
+        try {
+            const result = await this.select();
+            return result || [];
+        } catch (err) {
+            console.error("Error loading station_fuels:", err);
+            return [];
+        }
+    }
+
+
     static async createFromIds(id_station: number, id_fuel: number, last_price_per_unit: number = 0) {
         return await StationFuel.create({
             id_station,

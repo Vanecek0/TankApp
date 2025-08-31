@@ -9,15 +9,15 @@ export default function Dashboard({ routePathName, className }: {
     const renderDashboard = () => {
         switch (routePathName) {
             case "home":
-                return <TankDashboard routePathName={routePathName}/>;
+                return <TankDashboard />;
             case "/tank":
-                return <TankDashboard routePathName={routePathName}/>;
+                return <TankDashboard />;
             /*case "/servis":
                 return <ServisDashboard routePathName={routePathName} data={data}/>*/
             /*case "/station":
                 return <StationDashboard routePathName={routePathName} data={data}/>;*/
             default:
-                return <TankDashboard routePathName={routePathName}/>;
+                return <TankDashboard />;
         }
     };
 

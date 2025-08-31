@@ -6,10 +6,14 @@ import ScaledText from "@/components/common/ScaledText";
 import { ThemeColors as Colors } from "@/constants/Colors";
 import { FontSizes } from "@/utils/fontScaling";
 import { Station } from "@/models/Station";
-import { Tanking, TankingModel } from "@/models/Tanking";
 import { useTheme } from "@/theme/ThemeProvider";
 import getScaleFactor, { spacing } from "@/utils/SizeScaling";
 import { getMonthLabels } from "@/utils/dateLabels";
+import { Tanking } from "@/models/Tanking";
+import { tankingService } from "@/services/tankingService";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/store";
+import { loadCarFromStorage } from "@/store/slices/car.slice";
 
 type TankLineGraphProps = {
     className?: string;
@@ -44,14 +48,20 @@ export default function TankLineGraph({ className }: TankLineGraphProps) {
     const { isDark } = useTheme();
     const [tankings, setTankings] = useState<TankingGroup[]>([]);
     const [parentWidth, setParentWidth] = useState(0);
+    const { car, loading } = useSelector((state: RootState) => state.car);
+    const dispatch = useDispatch<AppDispatch>();
 
     const handleLayout = (event: any) => {
         setParentWidth(event.nativeEvent.layout.width);
     };
 
+    useEffect(() => {
+        dispatch(loadCarFromStorage());
+    }, [dispatch]);
+
     const loadTankings = useCallback(async () => {
         try {
-            const tankingsBadges = await TankingModel.getGroupedTankingsByMonth();
+            const tankingsBadges = await tankingService.getGroupedTankingsByMonth(undefined, car?.id!);
             setTankings(tankingsBadges);
         } catch (error) {
             console.error("Chyba při načítání tankings:", error);

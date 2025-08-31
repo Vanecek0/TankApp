@@ -3,8 +3,6 @@ import { View, VirtualizedList, RefreshControl, ScrollView } from 'react-native'
 import ScaledText from '@/components/common/ScaledText';
 import Icon from '@/components/Icon';
 import Badge from '@/components/Badge';
-import { Station, StationModel } from '@/models/Station';
-import { Fuel, FuelModel } from '@/models/Fuel';
 import { ThemeColors as Colors } from '@/constants/Colors';
 import { useModal } from '@/providers/modalProvider';
 import { useTheme } from '@/theme/ThemeProvider';
@@ -16,10 +14,12 @@ import FormTextInput from '@/components/forms/FormTextInput';
 import FormDateTimeInput from '@/components/forms/FormDateTimeInput';
 import FormTextAreaInput from '@/components/forms/FormTextArea';
 import FormCheckboxItem from '@/components/forms/FormCheckboxItem';
-import { StationFuelModel } from '@/models/StationFuel';
 import DeleteConfirmationModal from '../superModals/deleteConfirmationModal';
 import { stationFuelRepository } from '@/repositories/stationFuelRepository';
 import { stationRepository } from '@/repositories/stationRepository';
+import { Station } from '@/models/Station';
+import { Fuel } from '@/models/Fuel';
+import { fuelRepository } from '@/repositories/fuelRepository';
 
 
 let onRefresh: null | (() => void | Promise<void>) = null;
@@ -167,7 +167,7 @@ export default function StationsModal() {
                         message: "Opravdu chcete smazat tuto stanici?",
                         deleteIcon: <Icon name="bin" color={Colors.base.primary} size={getScaleFactor() * 45} />,
                         onConfirm: async () => {
-                            await stationRepository.removeRecord(item.id!);
+                            await stationRepository.delete({id: item.id!});
                             onRefresh();
                         },
                     })}
@@ -257,7 +257,7 @@ export function AddStationRecordModal({ station, previousModal }: { station: Sta
     const selectedFuels = useWatch({ control, name: 'fuels' }) ?? [];
 
     const loadAllFuels = async () => {
-        const allFuels = await FuelModel.all();
+        const allFuels = await fuelRepository.getAll();
         setFuels(allFuels);
     };
 
@@ -269,9 +269,9 @@ export function AddStationRecordModal({ station, previousModal }: { station: Sta
         try {
             const stationDTO = DTO<Station, typeof data>(data);
             if (station) {
-                const result = await StationModel.modify(station.id!, stationDTO);
+                const result = await stationRepository.update(stationDTO, { id: station.id! });
 
-                const existingFuels = await StationFuelModel.all();
+                const existingFuels = await stationFuelRepository.getAll();
                 const existingFuelIds = existingFuels.map(sf => sf.id_fuel);
 
                 for (const fuelId of existingFuelIds) {
@@ -280,7 +280,7 @@ export function AddStationRecordModal({ station, previousModal }: { station: Sta
 
                 for (const fuelId of selectedFuels) {
 
-                    await StationFuelModel.create({
+                    await stationFuelRepository.create({
                         id_station: station.id!,
                         id_fuel: fuelId,
                         last_price_per_unit: 0,
@@ -290,12 +290,12 @@ export function AddStationRecordModal({ station, previousModal }: { station: Sta
             } else {
 
                 const stationDTO = DTO<Station, typeof data>(data);
-                const station = await StationModel.create(stationDTO);
+                const station = await stationRepository.create(stationDTO);
 
                 for (const fuelId of selectedFuels) {
 
-                    await StationFuelModel.create({
-                        id_station: station.lastInsertRowId,
+                    await stationFuelRepository.create({
+                        id_station: station.lastInsertRowId, //TODO: Use the ID of the newly created station
                         id_fuel: fuelId,
                         last_price_per_unit: 0,
                     });

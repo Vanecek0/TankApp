@@ -70,7 +70,7 @@ export class TankingRepository extends DatabaseRepository<Tanking> {
         };
     }
 
-    static async getPriceMileageSumByDate(
+    async getPriceMileageSumByDate(
         carId: number,
         fromDate?: Date,
         toDate?: Date,
@@ -78,7 +78,7 @@ export class TankingRepository extends DatabaseRepository<Tanking> {
     ): Promise<{ month: string; total_price: number; total_mileage: number }[]> {
         const from = fromDate?.getTime() ?? 0;
         const to = toDate?.getTime() ?? Date.now();
-        const db = await this.getDb();
+        const db = await TankingRepository.getDb();
 
         const rows = await db.getAllAsync<{ tank_date: number; snapshot: string }>(
             `SELECT 

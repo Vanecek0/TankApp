@@ -2,9 +2,9 @@ type SeedFactoryParams<T> = T;
 
 export async function seedEntity<T> (
         entities: SeedFactoryParams<T>[],
-        model: { create: (data: T) => Promise<any> }
+        repository: { create: (t: object) => Promise<boolean> }
     ) {
         for (const item of entities) {
-            await model.create(item);
+            await repository.create(item as object);
         }
     };
