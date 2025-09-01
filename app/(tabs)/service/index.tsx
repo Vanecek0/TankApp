@@ -12,7 +12,7 @@ import { AddStationRecordModal } from '@/components/modals/stationsModal';
 import AddTankRecordModal from '@/components/modals/tankRecordModal';
 import Card from '@/components/common/Card';
 
-export default function HomeScreen() {
+export default function ServiceScreen() {
   const { isDark } = useTheme();
   const { showModal } = useModal();
 

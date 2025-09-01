@@ -1,4 +1,4 @@
-import { RefreshControl, ScrollView, TouchableOpacity, View, VirtualizedList } from 'react-native';
+import { Animated, FlatList, RefreshControl, ScrollView, TouchableOpacity, useWindowDimensions, View, VirtualizedList } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTheme } from '@/theme/ThemeProvider';
 import { usePathname } from 'expo-router';
@@ -25,6 +25,7 @@ import Dropdown from '@/components/common/Dropdown';
 import { Tanking } from '@/models/Tanking';
 import { tankingService } from '@/services/tankingService';
 import Card from '@/components/common/Card';
+import { TabView, SceneMap } from 'react-native-tab-view';
 
 export default function TankScreen() {
   const { isDark } = useTheme();
@@ -62,11 +63,11 @@ export default function TankScreen() {
 
   useEffect(() => {
     loadTankings(orderTankings, car?.id ?? 2);
-  }, [loadTankings, car, orderTankings]);
+  }, [loadTankings, orderTankings]);
 
   const onRefresh = useCallback(async () => {
     await loadTankings(orderTankings, car?.id ?? 2);
-  }, [car]);
+  }, []);
 
   const TankingItem = React.memo(({ item }: {
     item: {
@@ -168,96 +169,106 @@ export default function TankScreen() {
     }) => <TankingItem item={item} />,
     [isDark]
   );
-  const [tab, setTab] = useState<'list' | 'stats'>('list');
+
+  const [index, setIndex] = useState(0);
+
+  const [routes] = React.useState([
+    { key: 'first', title: 'First' },
+    { key: 'second', title: 'Second' },
+  ]);
+
+  const FirstRoute = () => (
+    <FlatList
+      ListHeaderComponent={
+        <View style={{ ...spacing.mt(24), ...spacing.mb(12) }} className='flex-row items-center justify-between'>
+          <ScaledText size='lg' className='font-bold' isThemed={true}>Poslední záznamy</ScaledText>
+          <Dropdown
+            defaultIndex={0}
+            data={[
+              { value: 'DESC', label: 'Nejnovější' },
+              { value: 'ASC', label: 'Nejstarší' }
+            ]}
+            onChange={(item) => {
+              if (item.value === "DESC" || item.value === "ASC") {
+                setOrderTankings(item.value);
+              } else {
+                console.warn("Invalid value for order:", item.value);
+              }
+            }}
+            dropdownStyle={{
+              ...spacing.borderRadius(12),
+              ...spacing.width(150),
+              ...spacing.borderWidth(0.5),
+              ...spacing.px(12),
+              borderColor: Colors.base.transparent,
+              backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light
+            }}
+          ></Dropdown>
+        </View>
+      }
+      refreshControl={
+        <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
+      }
+      initialNumToRender={1}
+      maxToRenderPerBatch={1}
+      windowSize={2}
+      ListHeaderComponentStyle={{ zIndex: 50 }}
+      contentContainerStyle={{ ...spacing.gap(12), ...spacing.borderRadius(12), ...spacing.pb(96) }}
+      renderItem={renderItem}
+      keyExtractor={(item, index) => tanking[index].month ?? index.toString()}
+      data={tanking}
+      ListEmptyComponent={
+        !loading ? (
+          <ScaledText style={{ ...spacing.p(28) }} className="text-center font-bold" color={Colors.text.muted} size="base">Žádné další záznamy</ScaledText>
+        ) : <ScaledText style={{ ...spacing.p(28) }} className="text-center font-bold" color={Colors.text.muted} size="base">Načítání</ScaledText>
+      }
+    />
+  );
+
+  const SecondRoute = () => (
+      <ScaledText size='lg'>Test</ScaledText>
+  );
+
+  const renderScene = SceneMap({
+    first: FirstRoute,
+    second: SecondRoute,
+  });
+
+  const renderTabBar = React.useCallback((props: any) => {
+
+    return (
+      <View className='flex-row justify-center items-center' style={{ ...spacing.mt(20), ...spacing.gap(8) }}>
+        {props.navigationState.routes.map((route: any, i: number) => {
+
+          return (
+            <TouchableOpacity style={{ width: "50%", ...spacing.py(10), borderTopRightRadius: 8, borderTopLeftRadius: 8, borderBottomWidth: 3, borderBottomColor: Colors.base.primary, backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light }}
+              key={route.key}
+              onPress={() => setIndex(i)}>
+              <ScaledText size='base' style={[{ fontWeight: 'bold', textAlign: "center", color: isDark ? Colors.text.primary_dark : Colors.text.primary }]}>
+                {route.title}
+              </ScaledText>
+            </TouchableOpacity>
+          );
+        })}
+      </View>
+    );
+  }, [isDark]);
+
 
   return (
     <>
       <View style={{ backgroundColor: isDark ? Colors.background.dark : Colors.background.light, flex: 1, position: 'relative' }}>
         <View style={{ ...spacing.mx(20) }}>
-          {tab === 'list' ? (
-            <VirtualizedList
-              ListHeaderComponent={
-                <View>
-                  <Dashboard routePathName={pathname} />
-                  <View className='flex-row justify-center items-center' style={{ ...spacing.mt(20) }}>
-                    <TouchableOpacity style={{ width: "50%", ...spacing.py(10), borderTopRightRadius: 8, borderTopLeftRadius: 8, borderBottomWidth: 3, borderBottomColor: Colors.base.primary, backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light }} onPress={() => setTab('list')}>
-                      <ScaledText size='base' style={[{ fontWeight: 'bold', textAlign: "center", color: isDark ? Colors.text.primary_dark : Colors.text.primary }]}>
-                        Záznamy
-                      </ScaledText>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={{ width: "50%", ...spacing.py(10), ...spacing.mb(5) }} onPress={() => setTab('stats')}>
-                      <ScaledText size='base' style={{ fontWeight: 'normal', textAlign: "center", color: Colors.text.muted }}>
-                        Statistiky
-                      </ScaledText>
-                    </TouchableOpacity>
-                  </View>
-                  <View style={{ ...spacing.mt(24), ...spacing.mb(12) }} className='flex-row items-center justify-between'>
-                    <ScaledText size='lg' className='font-bold' isThemed={true}>Poslední záznamy</ScaledText>
-                    <Dropdown
-                      defaultIndex={0}
-                      data={[
-                        { value: 'DESC', label: 'Nejnovější' },
-                        { value: 'ASC', label: 'Nejstarší' }
-                      ]}
-                      onChange={(item) => {
-                        if (item.value === "DESC" || item.value === "ASC") {
-                          setOrderTankings(item.value);
-                        } else {
-                          console.warn("Invalid value for order:", item.value);
-                        }
-                      }}
-                      dropdownStyle={{
-                        ...spacing.borderRadius(12),
-                        ...spacing.width(150),
-                        ...spacing.borderWidth(0.5),
-                        ...spacing.px(12),
-                        borderColor: Colors.base.transparent,
-                        backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light
-                      }}
-                    ></Dropdown>
-                  </View>
-
-                </View>
-              }
-              refreshControl={
-                <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
-              }
-              initialNumToRender={1}
-              maxToRenderPerBatch={1}
-              windowSize={2}
-              ListHeaderComponentStyle={{ zIndex: 50 }}
-              contentContainerStyle={{ ...spacing.gap(12), ...spacing.borderRadius(12), ...spacing.pb(96) }}
-              renderItem={renderItem}
-              keyExtractor={(item, index) => tanking[index].month ?? index.toString()}
-              getItemCount={(_data: unknown) => tanking.length}
-              getItem={(_data: unknown, index: number) => tanking[index]}
-              ListEmptyComponent={
-                !loading ? (
-                  <ScaledText style={{ ...spacing.p(28) }} className="text-center font-bold" color={Colors.text.muted} size="base">Žádné další záznamy</ScaledText>
-                ) : <ScaledText style={{ ...spacing.p(28) }} className="text-center font-bold" color={Colors.text.muted} size="base">Načítání</ScaledText>
-              }
+          <Dashboard routePathName={pathname} />
+          <View style={{ height: "100%" }}>
+            <TabView
+              navigationState={{ index, routes }}
+              renderScene={renderScene}
+              renderTabBar={renderTabBar}
+              onIndexChange={setIndex}
             />
-          ) : (
-            <>
-              <ScrollView>
-                <Dashboard routePathName={pathname} />
-                <View className='flex-row justify-center items-center' style={{ ...spacing.mt(20) }}>
-                  <TouchableOpacity style={{ width: "50%", ...spacing.py(10), ...spacing.mb(5) }} onPress={() => setTab('list')}>
-                    <ScaledText size='base' style={{ fontWeight: 'normal', textAlign: "center", color: Colors.text.muted }}>
-                      Seznam
-                    </ScaledText>
-                  </TouchableOpacity>
-                  <TouchableOpacity style={{ width: "50%", ...spacing.py(10), ...spacing.mb(5), borderTopRightRadius: 8, borderTopLeftRadius: 8, borderBottomWidth: 3, borderBottomColor: Colors.base.primary, backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light }} onPress={() => setTab('stats')}>
-                    <ScaledText size='base' style={[{ fontWeight: 'bold', textAlign: "center", color: isDark ? Colors.text.primary_dark : Colors.text.primary }]}>
-                      Statistiky
-                    </ScaledText>
-                  </TouchableOpacity>
-                </View>
-                <TankStatistics />
-              </ScrollView>
-            </>
-          )}
-        </View>
+          </View>
+        </View >
         <ActionButton>
           <View onTouchEnd={
             () => { showModal(AddTankRecordModal) }} style={{ ...spacing.right(10) }} className='flex-row items-center gap-3'>
@@ -310,7 +321,7 @@ export default function TankScreen() {
             />
           </View>
         </ActionButton>
-      </View>
+      </View >
     </>
   );
 }
