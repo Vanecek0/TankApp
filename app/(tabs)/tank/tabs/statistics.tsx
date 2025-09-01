@@ -11,7 +11,6 @@ import { TankingStatistics } from '@/models/TankingStatistics';
 
 export default function TankStatistics() {
   const { isDark } = useTheme();
-
   const [statistics, setStatistics] = useState<TankingStatistics[]>([]);
 
   useEffect(() => {
