@@ -1,5 +1,5 @@
-import { RefreshControl, View, VirtualizedList } from 'react-native';
-import React, { useCallback, useEffect, useState } from 'react';
+import { Animated, RefreshControl, View, VirtualizedList } from 'react-native';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useTheme } from '@/theme/ThemeProvider';
 import { usePathname } from 'expo-router';
 import { ThemeColors as Colors } from '@/constants/Colors';
@@ -124,59 +124,77 @@ export default function HomeScreen() {
     [isDark]
   );
 
+  const scrollY = useRef(new Animated.Value(0)).current;
+
+  const headerHeight = scrollY.interpolate({
+    inputRange: [0, 250],
+    outputRange: [275, 108],
+    extrapolate: "clamp",
+
+  });
+
   return (
     <>
       <View className='flex-1' style={{ backgroundColor: isDark ? Colors.background.dark : Colors.background.light }}>
-        <VirtualizedList
-          ListHeaderComponent={
-            <View>
-              <Dashboard routePathName={pathname} />
-              <View style={{ ...spacing.mt(24), ...spacing.mb(12) }} className='flex-row items-center justify-between'>
-                <ScaledText size='lg' className='font-bold' isThemed={true}>Poslední záznamy</ScaledText>
-                <Dropdown
-                  defaultIndex={0}
-                  data={[
-                    { value: 'DESC', label: 'Nejnovější' },
-                    { value: 'ASC', label: 'Nejstarší' }
-                  ]}
-                  onChange={(item) => {
-                    if (item.value === "DESC" || item.value === "ASC") {
-                      setOrderTankings(item.value);
-                    } else {
-                      console.warn("Invalid value for order:", item.value);
-                    }
-                  }}
-                  dropdownStyle={{
-                    ...spacing.borderRadius(12),
-                    ...spacing.width(150),
-                    ...spacing.borderWidth(0.5),
-                    ...spacing.px(12),
-                    borderColor: Colors.base.transparent,
-                    backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light
-                  }}
-                ></Dropdown>
+        <View style={{ ...spacing.mx(20), position: 'absolute', top: 0, left: 0, right: 0, zIndex: 10, backgroundColor: isDark ? Colors.background.dark : Colors.background.light }}>
+          <Dashboard scrollYValue={scrollY} />
+        </View>
+        <Animated.View style={{ height: "100%", paddingTop: headerHeight }}>
+          <Animated.FlatList
+            ListHeaderComponent={
+              <View>
+                <View style={{ ...spacing.mt(24), ...spacing.mb(12) }} className='flex-row items-center justify-between'>
+                  <ScaledText size='lg' className='font-bold' isThemed={true}>Poslední záznamy</ScaledText>
+                  <Dropdown
+                    defaultIndex={0}
+                    data={[
+                      { value: 'DESC', label: 'Nejnovější' },
+                      { value: 'ASC', label: 'Nejstarší' }
+                    ]}
+                    onChange={(item) => {
+                      if (item.value === "DESC" || item.value === "ASC") {
+                        setOrderTankings(item.value);
+                      } else {
+                        console.warn("Invalid value for order:", item.value);
+                      }
+                    }}
+                    dropdownStyle={{
+                      ...spacing.borderRadius(12),
+                      ...spacing.width(150),
+                      ...spacing.borderWidth(0.5),
+                      ...spacing.px(12),
+                      borderColor: Colors.base.transparent,
+                      backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light
+                    }}
+                  ></Dropdown>
+                </View>
               </View>
-            </View>
-          }
-          refreshControl={
-            <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
-          }
-          initialNumToRender={1}
-          maxToRenderPerBatch={1}
-          windowSize={2}
-          ListHeaderComponentStyle={{ zIndex: 50 }}
-          contentContainerStyle={{ ...spacing.gap(12), ...spacing.borderRadius(12), ...spacing.mx(20), ...spacing.pb(96) }}
-          renderItem={renderItem}
-          horizontal={false}
-          getItemCount={(_data: unknown) => tanking.length}
-          keyExtractor={(item, index) => tanking[index].month ?? index.toString()}
-          getItem={(_data: unknown, index: number) => tanking[index]}
-          ListEmptyComponent={
-            !loading ? (
-              <ScaledText style={{ ...spacing.p(28) }} className="text-center font-bold" color={Colors.text.muted} size="base">Žádné další záznamy</ScaledText>
+            }
+            refreshControl={
+              <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
+            }
+            initialNumToRender={1}
+            maxToRenderPerBatch={1}
+            windowSize={2}
+            ListHeaderComponentStyle={{ zIndex: 50 }}
+            contentContainerStyle={{ ...spacing.gap(12), ...spacing.borderRadius(12), ...spacing.mx(20), ...spacing.pb(96) }}
+            renderItem={renderItem}
+            horizontal={false}
+            data={tanking}
+            keyExtractor={(item, index) => tanking[index].month ?? index.toString()}
+            scrollEventThrottle={16}
+            onScroll={Animated.event(
+              [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+              { useNativeDriver: false }
+            )}
+            ListEmptyComponent={
+              !loading ? (
+                <ScaledText style={{ ...spacing.p(28) }} className="text-center font-bold" color={Colors.text.muted} size="base">Žádné další záznamy</ScaledText>
               ) : <ScaledText style={{ ...spacing.p(28) }} className="text-center font-bold" color={Colors.text.muted} size="base">Načítání</ScaledText>
-          }
-        />
+            }
+          />
+        </Animated.View>
+
       </View>
       <ActionButton>
         <View onTouchEnd={

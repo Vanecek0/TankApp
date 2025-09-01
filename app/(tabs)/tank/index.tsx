@@ -1,5 +1,5 @@
 import { Animated, FlatList, RefreshControl, ScrollView, TouchableOpacity, useWindowDimensions, View, VirtualizedList } from 'react-native';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useTheme } from '@/theme/ThemeProvider';
 import { usePathname } from 'expo-router';
 import { ThemeColors as Colors } from '@/constants/Colors';
@@ -173,12 +173,12 @@ export default function TankScreen() {
   const [index, setIndex] = useState(0);
 
   const [routes] = React.useState([
-    { key: 'first', title: 'First' },
-    { key: 'second', title: 'Second' },
+    { key: 'first', title: 'Záznamy' },
+    { key: 'second', title: 'Statistiky' },
   ]);
 
   const FirstRoute = () => (
-    <FlatList
+    <Animated.FlatList
       ListHeaderComponent={
         <View style={{ ...spacing.mt(24), ...spacing.mb(12) }} className='flex-row items-center justify-between'>
           <ScaledText size='lg' className='font-bold' isThemed={true}>Poslední záznamy</ScaledText>
@@ -217,6 +217,11 @@ export default function TankScreen() {
       renderItem={renderItem}
       keyExtractor={(item, index) => tanking[index].month ?? index.toString()}
       data={tanking}
+      scrollEventThrottle={16}
+      onScroll={Animated.event(
+        [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+        { useNativeDriver: false }
+      )}
       ListEmptyComponent={
         !loading ? (
           <ScaledText style={{ ...spacing.p(28) }} className="text-center font-bold" color={Colors.text.muted} size="base">Žádné další záznamy</ScaledText>
@@ -226,7 +231,7 @@ export default function TankScreen() {
   );
 
   const SecondRoute = () => (
-      <ScaledText size='lg'>Test</ScaledText>
+    <ScaledText size='lg'>Test</ScaledText>
   );
 
   const renderScene = SceneMap({
@@ -254,20 +259,31 @@ export default function TankScreen() {
     );
   }, [isDark]);
 
+  const scrollY = useRef(new Animated.Value(0)).current;
+
+  const headerHeight = scrollY.interpolate({
+    inputRange: [0, 250],
+    outputRange: [280, 108],
+    extrapolate: "clamp",
+
+  });
 
   return (
     <>
       <View style={{ backgroundColor: isDark ? Colors.background.dark : Colors.background.light, flex: 1, position: 'relative' }}>
         <View style={{ ...spacing.mx(20) }}>
-          <Dashboard routePathName={pathname} />
-          <View style={{ height: "100%" }}>
+          <View style={{position: 'absolute', top: 0, left: 0, right: 0, zIndex: 10, backgroundColor: isDark ? Colors.background.dark : Colors.background.light }}>
+            <Dashboard scrollYValue={scrollY} />
+          </View>
+
+          <Animated.View style={{ height: "100%", paddingTop: headerHeight }}>
             <TabView
               navigationState={{ index, routes }}
               renderScene={renderScene}
               renderTabBar={renderTabBar}
               onIndexChange={setIndex}
             />
-          </View>
+          </Animated.View>
         </View >
         <ActionButton>
           <View onTouchEnd={
