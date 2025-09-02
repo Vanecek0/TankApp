@@ -47,7 +47,7 @@ export default function Dropdown<T>({
     );
 
     return (
-        <View style={{ position: 'relative' }}>
+        <View style={{ position: 'relative', zIndex: 50 }}>
             <TouchableOpacity
                 onLayout={(e) => setButtonHeight(e.nativeEvent.layout.height)}
                 onPress={toggleExpanded}

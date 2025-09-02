@@ -58,13 +58,13 @@ export function ActionButton({ children }: any) {
             <View className='flex justify-end items-end absolute bottom-0 top-0 left-0 right-0 gap-3'>
                 {isOpen ? (
                     <>
-                        <View onTouchEnd={() => setIsOpen(!isOpen)} style={{ backgroundColor: isDark ? '#000000bf' : "#ffffffbf" }} className='flex absolute bottom-0 left-0 right-0 top-0'></View>
-                        <View style={{ ...spacing.right(20), ...spacing.my(12), ...spacing.gap(12), ...spacing.pb(92) }} className='flex-col items-end absolute right-0'>
+                        <View onTouchEnd={() => setIsOpen(!isOpen)} style={{ backgroundColor: isDark ? '#000000bf' : "#ffffffbf", zIndex: 10 }} className='flex absolute bottom-0 left-0 right-0 top-0'></View>
+                        <View style={{ ...spacing.right(20), ...spacing.my(12), ...spacing.gap(12), ...spacing.pb(92), zIndex: 20 }} className='flex-col items-end absolute right-0'>
                             {children}
                         </View>
                     </>
                 ) : null}
-                <CustomButton labelClassName='aspect text-center' onPress={() => setIsOpen(!isOpen)} style={{ ...spacing.borderRadius(90), ...spacing.p(24), ...spacing.my(12), ...spacing.right(20), ...spacing.width(80) }} className={`flex justify-center items-center aspect-square`} label='+' labelSize='xl' labelColor={Colors.white} backgroundColor={Colors.primary} />
+                <CustomButton labelClassName='aspect text-center' onPress={() => setIsOpen(!isOpen)} style={{ ...spacing.borderRadius(90), ...spacing.p(24), ...spacing.my(12), ...spacing.right(20), ...spacing.width(80), zIndex: 20 }} className={`flex justify-center items-center aspect-square`} label='+' labelSize='xl' labelColor={Colors.white} backgroundColor={Colors.primary} />
             </View>
         </>
     );
