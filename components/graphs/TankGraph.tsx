@@ -19,10 +19,12 @@ const DISTANCE_WEIGHT = 2.66;
 
 export default function TankGraph({ className, data }: TankGraphProps) {
     const [parentWidth, setParentWidth] = useState(0);
+     const [parentHeight, setParentHeight] = useState(0);
     const [highlightedGroupIndex, setHighlightedGroupIndex] = useState<number | null>(null);
 
     const handleLayout = (event: any) => {
         setParentWidth(event.nativeEvent.layout.width);
+        setParentHeight(event.nativeEvent.layout.height);
     };
 
     const transformToBarData = (tankData: any[]) => {
@@ -102,7 +104,7 @@ export default function TankGraph({ className, data }: TankGraphProps) {
                 data={chartData}
                 parentWidth={parentWidth}
                 width={parentWidth - 20 * getScaleFactor()}
-                height={parentWidth / 3}
+                height={parentHeight}
                 spacing={22 * getScaleFactor()}
                 barWidth={24 * getScaleFactor()}
                 labelWidth={(24 * 2) * getScaleFactor()}

@@ -127,8 +127,8 @@ export default function HomeScreen() {
   const scrollY = useRef(new Animated.Value(0)).current;
 
   const headerHeight = scrollY.interpolate({
-    inputRange: [0, 250],
-    outputRange: [275, 108],
+    inputRange: [0, 200],
+    outputRange: [280, 95],
     extrapolate: "clamp",
 
   });
@@ -136,40 +136,36 @@ export default function HomeScreen() {
   return (
     <>
       <View className='flex-1' style={{ backgroundColor: isDark ? Colors.background.dark : Colors.background.light }}>
-        <View style={{ ...spacing.mx(20), position: 'absolute', top: 0, left: 0, right: 0, zIndex: 10, backgroundColor: isDark ? Colors.background.dark : Colors.background.light }}>
-          <Dashboard scrollYValue={scrollY} />
+        <View style={{ ...spacing.mx(20), position: 'absolute', top: 0, left: 0, right: 0, backgroundColor: isDark ? Colors.background.dark : Colors.background.light }}>
+          <Dashboard scrollRefVal={scrollY} />
         </View>
-        <Animated.View style={{ height: "100%", paddingTop: headerHeight }}>
+        <Animated.View style={{ height: "100%", marginTop: headerHeight, zIndex: 10 }}>
+          <View style={{ ...spacing.mt(12), ...spacing.mx(20), ...spacing.mb(12) }} className='flex-row items-center justify-between'>
+            <ScaledText size='lg' className='font-bold' isThemed={true}>Poslední záznamy</ScaledText>
+            <Dropdown
+              defaultIndex={0}
+              data={[
+                { value: 'DESC', label: 'Nejnovější' },
+                { value: 'ASC', label: 'Nejstarší' }
+              ]}
+              onChange={(item) => {
+                if (item.value === "DESC" || item.value === "ASC") {
+                  setOrderTankings(item.value);
+                } else {
+                  console.warn("Invalid value for order:", item.value);
+                }
+              }}
+              dropdownStyle={{
+                ...spacing.borderRadius(12),
+                ...spacing.width(150),
+                ...spacing.borderWidth(0.5),
+                ...spacing.px(12),
+                borderColor: Colors.base.transparent,
+                backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light
+              }}
+            ></Dropdown>
+          </View>
           <Animated.FlatList
-            ListHeaderComponent={
-              <View>
-                <View style={{ ...spacing.mt(24), ...spacing.mb(12) }} className='flex-row items-center justify-between'>
-                  <ScaledText size='lg' className='font-bold' isThemed={true}>Poslední záznamy</ScaledText>
-                  <Dropdown
-                    defaultIndex={0}
-                    data={[
-                      { value: 'DESC', label: 'Nejnovější' },
-                      { value: 'ASC', label: 'Nejstarší' }
-                    ]}
-                    onChange={(item) => {
-                      if (item.value === "DESC" || item.value === "ASC") {
-                        setOrderTankings(item.value);
-                      } else {
-                        console.warn("Invalid value for order:", item.value);
-                      }
-                    }}
-                    dropdownStyle={{
-                      ...spacing.borderRadius(12),
-                      ...spacing.width(150),
-                      ...spacing.borderWidth(0.5),
-                      ...spacing.px(12),
-                      borderColor: Colors.base.transparent,
-                      backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light
-                    }}
-                  ></Dropdown>
-                </View>
-              </View>
-            }
             refreshControl={
               <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
             }
@@ -184,8 +180,7 @@ export default function HomeScreen() {
             keyExtractor={(item, index) => tanking[index].month ?? index.toString()}
             scrollEventThrottle={16}
             onScroll={Animated.event(
-              [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-              { useNativeDriver: false }
+              [{ nativeEvent: { contentOffset: { y: scrollY } } }]
             )}
             ListEmptyComponent={
               !loading ? (
@@ -194,7 +189,6 @@ export default function HomeScreen() {
             }
           />
         </Animated.View>
-
       </View>
       <ActionButton>
         <View onTouchEnd={

@@ -178,56 +178,56 @@ export default function TankScreen() {
   ]);
 
   const FirstRoute = () => (
-    <Animated.FlatList
-      ListHeaderComponent={
-        <View style={{ ...spacing.mt(24), ...spacing.mb(12) }} className='flex-row items-center justify-between'>
-          <ScaledText size='lg' className='font-bold' isThemed={true}>Poslední záznamy</ScaledText>
-          <Dropdown
-            defaultIndex={0}
-            data={[
-              { value: 'DESC', label: 'Nejnovější' },
-              { value: 'ASC', label: 'Nejstarší' }
-            ]}
-            onChange={(item) => {
-              if (item.value === "DESC" || item.value === "ASC") {
-                setOrderTankings(item.value);
-              } else {
-                console.warn("Invalid value for order:", item.value);
-              }
-            }}
-            dropdownStyle={{
-              ...spacing.borderRadius(12),
-              ...spacing.width(150),
-              ...spacing.borderWidth(0.5),
-              ...spacing.px(12),
-              borderColor: Colors.base.transparent,
-              backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light
-            }}
-          ></Dropdown>
-        </View>
-      }
-      refreshControl={
-        <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
-      }
-      initialNumToRender={1}
-      maxToRenderPerBatch={1}
-      windowSize={2}
-      ListHeaderComponentStyle={{ zIndex: 50 }}
-      contentContainerStyle={{ ...spacing.gap(12), ...spacing.borderRadius(12), ...spacing.pb(96) }}
-      renderItem={renderItem}
-      keyExtractor={(item, index) => tanking[index].month ?? index.toString()}
-      data={tanking}
-      scrollEventThrottle={16}
-      onScroll={Animated.event(
-        [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-        { useNativeDriver: false }
-      )}
-      ListEmptyComponent={
-        !loading ? (
-          <ScaledText style={{ ...spacing.p(28) }} className="text-center font-bold" color={Colors.text.muted} size="base">Žádné další záznamy</ScaledText>
-        ) : <ScaledText style={{ ...spacing.p(28) }} className="text-center font-bold" color={Colors.text.muted} size="base">Načítání</ScaledText>
-      }
-    />
+    <>
+      <View style={{ ...spacing.mt(12), ...spacing.mb(12) }} className='flex-row items-center justify-between'>
+        <ScaledText size='lg' className='font-bold' isThemed={true}>Poslední záznamy</ScaledText>
+        <Dropdown
+          defaultIndex={0}
+          data={[
+            { value: 'DESC', label: 'Nejnovější' },
+            { value: 'ASC', label: 'Nejstarší' }
+          ]}
+          onChange={(item) => {
+            if (item.value === "DESC" || item.value === "ASC") {
+              setOrderTankings(item.value);
+            } else {
+              console.warn("Invalid value for order:", item.value);
+            }
+          }}
+          dropdownStyle={{
+            ...spacing.borderRadius(12),
+            ...spacing.width(150),
+            ...spacing.borderWidth(0.5),
+            ...spacing.px(12),
+            borderColor: Colors.base.transparent,
+            backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light
+          }}
+        ></Dropdown>
+      </View>
+      <Animated.FlatList
+        refreshControl={
+          <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
+        }
+        initialNumToRender={1}
+        maxToRenderPerBatch={1}
+        windowSize={2}
+        ListHeaderComponentStyle={{ zIndex: 50 }}
+        contentContainerStyle={{ ...spacing.gap(12), ...spacing.borderRadius(12), ...spacing.pb(96) }}
+        renderItem={renderItem}
+        keyExtractor={(item, index) => tanking[index].month ?? index.toString()}
+        data={tanking}
+        scrollEventThrottle={16}
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+          { useNativeDriver: false }
+        )}
+        ListEmptyComponent={
+          !loading ? (
+            <ScaledText style={{ ...spacing.p(28) }} className="text-center font-bold" color={Colors.text.muted} size="base">Žádné další záznamy</ScaledText>
+          ) : <ScaledText style={{ ...spacing.p(28) }} className="text-center font-bold" color={Colors.text.muted} size="base">Načítání</ScaledText>
+        }
+      />
+    </>
   );
 
   const SecondRoute = () => (
@@ -242,7 +242,7 @@ export default function TankScreen() {
   const renderTabBar = React.useCallback((props: any) => {
 
     return (
-      <View className='flex-row justify-center items-center' style={{ ...spacing.mt(20), ...spacing.gap(8) }}>
+      <View className='flex-row justify-center items-center' style={{ ...spacing.mt(12), ...spacing.gap(12) }}>
         {props.navigationState.routes.map((route: any, i: number) => {
 
           return (
@@ -262,8 +262,8 @@ export default function TankScreen() {
   const scrollY = useRef(new Animated.Value(0)).current;
 
   const headerHeight = scrollY.interpolate({
-    inputRange: [0, 250],
-    outputRange: [280, 108],
+    inputRange: [0, 200],
+    outputRange: [280, 95],
     extrapolate: "clamp",
 
   });
@@ -272,12 +272,13 @@ export default function TankScreen() {
     <>
       <View style={{ backgroundColor: isDark ? Colors.background.dark : Colors.background.light, flex: 1, position: 'relative' }}>
         <View style={{ ...spacing.mx(20) }}>
-          <View style={{position: 'absolute', top: 0, left: 0, right: 0, zIndex: 10, backgroundColor: isDark ? Colors.background.dark : Colors.background.light }}>
-            <Dashboard scrollYValue={scrollY} />
+          <View style={{ position: 'absolute', top: 0, left: 0, right: 0, backgroundColor: isDark ? Colors.background.dark : Colors.background.light }}>
+            <Dashboard scrollRefVal={scrollY} />
           </View>
 
-          <Animated.View style={{ height: "100%", paddingTop: headerHeight }}>
+          <Animated.View style={{ height: "100%", marginTop: headerHeight, zIndex: 10 }}>
             <TabView
+            lazy
               navigationState={{ index, routes }}
               renderScene={renderScene}
               renderTabBar={renderTabBar}

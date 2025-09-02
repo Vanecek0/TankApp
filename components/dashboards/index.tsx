@@ -1,20 +1,19 @@
 import { Animated, View } from "react-native";
 import TankDashboard from "./tank";
 
-export default function Dashboard({ routePathName, className, scrollYValue }: {
+export default function Dashboard({ routePathName, className, scrollRefVal}: {
     routePathName?: string;
     className?: string;
-    scrollYValue?: Animated.Value;
+    scrollRefVal?: Animated.Value;
 }) {
-
     const renderDashboard = () => {
         switch (routePathName) {
             case "home":
-                return <TankDashboard scrollYValue={scrollYValue!} />;
+                return <TankDashboard scrollRefVal={scrollRefVal!} />;
             case "/tank":
-                return <TankDashboard scrollYValue={scrollYValue!}/>;
+                return <TankDashboard scrollRefVal={scrollRefVal!}/>;
             default:
-                return <TankDashboard scrollYValue={scrollYValue!}/>;
+                return <TankDashboard scrollRefVal={scrollRefVal!}/>;
         }
     };
 

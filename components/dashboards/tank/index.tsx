@@ -1,4 +1,4 @@
-import { Animated, View } from "react-native";
+import { Animated, TouchableWithoutFeedback, View } from "react-native";
 import ScaledText from "@/components/common/ScaledText";
 import { spacing } from "@/utils/SizeScaling";
 import { useEffect, useRef, useState } from "react";
@@ -10,9 +10,9 @@ import { TankingStatistics } from "@/models/TankingStatistics";
 import { tankingStatisticService } from "@/services/tankingStatisticsService";
 import { loadCarFromStorage } from "@/store/slices/car.slice";
 
-export default function TankDashboard({ className, scrollYValue }: {
+export default function TankDashboard({ className, scrollRefVal }: {
     className?: string;
-    scrollYValue?: Animated.Value;
+    scrollRefVal?: Animated.Value;
 }) {
     const [tankingSumsDate, setTankingSumsDate] = useState<({ month: string; total_price: number; total_mileage: number })[]>([])
     const [tankingStatistics, setTankingStatistics] = useState<Omit<TankingStatistics, 'period'>>()
@@ -39,11 +39,11 @@ export default function TankDashboard({ className, scrollYValue }: {
 
     }, [dispatch, car])
 
-    const scrollY = useRef(scrollYValue!).current;
+    const scrollY = useRef(scrollRefVal!).current;
 
     const animatedHeight = scrollY.interpolate({
-        inputRange: [0, 250],
-        outputRange: [280, 108],
+        inputRange: [0, 200],
+        outputRange: [280, 95],
         extrapolate: 'clamp',
     });
 
@@ -51,32 +51,16 @@ export default function TankDashboard({ className, scrollYValue }: {
         inputRange: [0, 100],
         outputRange: [0, 1],
         extrapolate: 'clamp',
-    });
+    }) as Animated.AnimatedInterpolation<number>;
 
     const fullOpacity = scrollY.interpolate({
         inputRange: [0, 100],
         outputRange: [1, 0],
         extrapolate: 'clamp',
-    });
+    }) as Animated.AnimatedInterpolation<number>;
 
     return (
         <>
-            {/* Full Dashboard */}
-            <Animated.View style={{ opacity: fullOpacity, height: animatedHeight, ...spacing.p(20), ...spacing.borderRadius(12) }} className={`${className} flex-col bg-primary`} >
-                <ScaledText size="lg" className="text-center text-white font-bold">Leden 2025 – Únor 2025</ScaledText>
-                <View style={{ ...spacing.my(12) }} className="flex-row justify-between">
-                    <View className="items-center">
-                        <ScaledText style={{ ...spacing.mb(4) }} size="3xl" className="text-white font-bold">{tankingStatistics?.total_price} kč</ScaledText>
-                        <ScaledText size="lg" className="text-hidden_text font-bold">Výdaje za palivo</ScaledText>
-                    </View>
-                    <View className="items-center">
-                        <ScaledText style={{ ...spacing.mb(4) }} size="3xl" className="text-white font-bold">{tankingStatistics?.total_mileage} km</ScaledText>
-                        <ScaledText size="lg" className="text-hidden_text font-bold">Vzdálenost</ScaledText>
-                    </View>
-                </View>
-                <TankGraph data={tankingSumsDate} />
-            </Animated.View>
-
             {/* Compact Dashboard */}
             <Animated.View
                 style={{
@@ -84,7 +68,8 @@ export default function TankDashboard({ className, scrollYValue }: {
                     position: 'absolute',
                     top: 0,
                     height: animatedHeight,
-                    ...spacing.p(20),
+                    ...spacing.px(20),
+                    ...spacing.py(12),
                     ...spacing.borderRadius(12)
                 }}
                 className={`${className} flex-col bg-primary`}
@@ -101,6 +86,32 @@ export default function TankDashboard({ className, scrollYValue }: {
                     </View>
                 </View>
             </Animated.View>
+
+            {/* Full Dashboard */}
+            <Animated.View style={{
+                opacity: fullOpacity,
+                height: animatedHeight,
+                ...spacing.p(20),
+                ...spacing.borderRadius(12)
+            }}
+                className={`${className} flex-col bg-primary`} >
+                <>
+                    <ScaledText size="lg" className="text-center text-white font-bold">Leden 2025 – Únor 2025</ScaledText>
+                    <View style={{ ...spacing.my(12) }} className="flex-row justify-between">
+                        <View className="items-center">
+                            <ScaledText style={{ ...spacing.mb(4) }} size="3xl" className="text-white font-bold">{tankingStatistics?.total_price} kč</ScaledText>
+                            <ScaledText size="lg" className="text-hidden_text font-bold">Výdaje za palivo</ScaledText>
+                        </View>
+                        <View className="items-center">
+                            <ScaledText style={{ ...spacing.mb(4) }} size="3xl" className="text-white font-bold">{tankingStatistics?.total_mileage} km</ScaledText>
+                            <ScaledText size="lg" className="text-hidden_text font-bold">Vzdálenost</ScaledText>
+                        </View>
+                    </View>
+                    <TankGraph data={tankingSumsDate} />
+                </>
+            </Animated.View>
+
+
         </>
     );
 }
