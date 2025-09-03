@@ -23,7 +23,6 @@ const cartSlice = createSlice({
     builder
       .addCase(loadCarFromStorage.pending, (state) => {
         state.loading = true;
-        console.log('Fetching car...');
       })
       .addCase(loadCarFromStorage.fulfilled, (state, action: PayloadAction<Car | null>) => {
         state.car = action.payload;

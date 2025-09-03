@@ -23,6 +23,7 @@ import { Tanking } from '@/models/Tanking';
 import { tankingService } from '@/services/tankingService';
 import { Fuel } from '@/models/Fuel';
 import { Badge } from '@/models/Badge';
+import { useAnimatedScrollHandler } from '@/hooks/useAnimatedScrollHandler';
 
 export default function HomeScreen() {
   const { isDark } = useTheme();
@@ -126,12 +127,29 @@ export default function HomeScreen() {
 
   const scrollY = useRef(new Animated.Value(0)).current;
 
+  const { handleScroll, buttonOpacity } = useAnimatedScrollHandler(scrollY, [orderTankings], true);
+
+  useEffect(() => {
+    Animated.timing(scrollY, {
+      toValue: 0,
+      duration: 500,
+      useNativeDriver: false,
+    }).start();
+  }, [orderTankings]);
+
   const headerHeight = scrollY.interpolate({
     inputRange: [0, 200],
     outputRange: [280, 95],
     extrapolate: "clamp",
 
   });
+
+  const flatListRef = useRef<Animated.FlatList>(null);
+
+  useEffect(() => {
+    flatListRef.current?.scrollToOffset({ offset: 0, animated: true });
+  }, [orderTankings]);
+
 
   return (
     <>
@@ -166,6 +184,7 @@ export default function HomeScreen() {
             ></Dropdown>
           </View>
           <Animated.FlatList
+            ref={flatListRef}
             refreshControl={
               <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
             }
@@ -173,15 +192,14 @@ export default function HomeScreen() {
             maxToRenderPerBatch={1}
             windowSize={2}
             ListHeaderComponentStyle={{ zIndex: 50 }}
-            contentContainerStyle={{ ...spacing.gap(12), ...spacing.borderRadius(12), ...spacing.mx(20), ...spacing.pb(96) }}
+            contentContainerStyle={{ ...spacing.gap(12), ...spacing.borderRadius(12), ...spacing.mx(20), ...spacing.pb(196) }}
             renderItem={renderItem}
             horizontal={false}
             data={tanking}
             keyExtractor={(item, index) => tanking[index].month ?? index.toString()}
             scrollEventThrottle={16}
-            onScroll={Animated.event(
-              [{ nativeEvent: { contentOffset: { y: scrollY } } }]
-            )}
+            showsVerticalScrollIndicator={false}
+            onScroll={handleScroll}
             ListEmptyComponent={
               !loading ? (
                 <ScaledText style={{ ...spacing.p(28) }} className="text-center font-bold" color={Colors.text.muted} size="base">Žádné další záznamy</ScaledText>
@@ -190,7 +208,7 @@ export default function HomeScreen() {
           />
         </Animated.View>
       </View>
-      <ActionButton>
+      <ActionButton opacity={buttonOpacity}>
         <View onTouchEnd={
           () => { showModal(AddTankRecordModal) }} style={{ ...spacing.right(10) }} className='flex-row items-center gap-3'>
           <ScaledText size={'base'} color={isDark ? Colors.base.white : ''} className='font-bold'>Přidat tankování</ScaledText>
@@ -199,7 +217,15 @@ export default function HomeScreen() {
             style={{
               ...spacing.borderRadius(90),
               ...spacing.p(16),
-              ...spacing.width(60)
+              ...spacing.width(60),
+              shadowColor: Colors.base.black,
+              shadowOffset: {
+                width: 0,
+                height: 5,
+              },
+              shadowOpacity: 0.34,
+              shadowRadius: 6.27,
+              elevation: 8,
             }}
             className={`flex shadow-md justify-center items-center aspect-square`}
             label={
@@ -208,13 +234,13 @@ export default function HomeScreen() {
                 color={Colors.base.primary}
                 style={{
                   ...spacing.width(20),
-                  ...spacing.height(20)
+                  ...spacing.height(20),
                 }}
               />
             }
             labelSize='xl'
-            labelColor={isDark ? Colors.base.white : ''}
-            backgroundColor={Colors.text.secondary}
+            backgroundColor={isDark ? Colors.background.surface.dark : Colors.background.surface.light}
+
           />
         </View>
         <View onTouchEnd={
@@ -225,7 +251,15 @@ export default function HomeScreen() {
             style={{
               ...spacing.borderRadius(90),
               ...spacing.p(16),
-              ...spacing.width(60)
+              ...spacing.width(60),
+              shadowColor: Colors.base.black,
+              shadowOffset: {
+                width: 0,
+                height: 5,
+              },
+              shadowOpacity: 0.34,
+              shadowRadius: 6.27,
+              elevation: 8,
             }}
             className={`flex shadow-md justify-center items-center aspect-square`}
             label={
@@ -239,8 +273,7 @@ export default function HomeScreen() {
               />
             }
             labelSize='xl'
-            labelColor={isDark ? Colors.base.white : ''}
-            backgroundColor={Colors.text.secondary}
+            backgroundColor={isDark ? Colors.background.surface.dark : Colors.background.surface.light}
           />
         </View>
       </ActionButton>
