@@ -24,6 +24,7 @@ import { tankingService } from '@/services/tankingService';
 import { Fuel } from '@/models/Fuel';
 import { Badge } from '@/models/Badge';
 import { useAnimatedScrollHandler } from '@/hooks/useAnimatedScrollHandler';
+import CollapsibleHeader from '@/components/CollapsibleHeader';
 
 export default function HomeScreen() {
   const { isDark } = useTheme();
@@ -126,7 +127,6 @@ export default function HomeScreen() {
   );
 
   const scrollY = useRef(new Animated.Value(0)).current;
-
   const { handleScroll, buttonOpacity } = useAnimatedScrollHandler(scrollY, [orderTankings], true);
 
   useEffect(() => {
@@ -154,10 +154,8 @@ export default function HomeScreen() {
   return (
     <>
       <View className='flex-1' style={{ backgroundColor: isDark ? Colors.background.dark : Colors.background.light }}>
-        <View style={{ ...spacing.mx(20), position: 'absolute', top: 0, left: 0, right: 0, backgroundColor: isDark ? Colors.background.dark : Colors.background.light }}>
-          <Dashboard scrollRefVal={scrollY} />
-        </View>
-        <Animated.View style={{ height: "100%", marginTop: headerHeight, zIndex: 10 }}>
+        <CollapsibleHeader>
+        <Animated.View style={{ zIndex: 10 }}>
           <View style={{ ...spacing.mt(12), ...spacing.mx(20), ...spacing.mb(12) }} className='flex-row items-center justify-between'>
             <ScaledText size='lg' className='font-bold' isThemed={true}>Poslední záznamy</ScaledText>
             <Dropdown
@@ -192,7 +190,7 @@ export default function HomeScreen() {
             maxToRenderPerBatch={1}
             windowSize={2}
             ListHeaderComponentStyle={{ zIndex: 50 }}
-            contentContainerStyle={{ ...spacing.gap(12), ...spacing.borderRadius(12), ...spacing.mx(20), ...spacing.pb(196) }}
+            contentContainerStyle={{ ...spacing.gap(12), ...spacing.borderRadius(12), ...spacing.mx(20) }}
             renderItem={renderItem}
             horizontal={false}
             data={tanking}
@@ -207,6 +205,8 @@ export default function HomeScreen() {
             }
           />
         </Animated.View>
+        </CollapsibleHeader>
+        
       </View>
       <ActionButton opacity={buttonOpacity}>
         <View onTouchEnd={

@@ -19,6 +19,10 @@ export default function TankDashboard({ className, scrollRefVal }: {
     const { car, loading } = useSelector((state: RootState) => state.car);
     const dispatch = useDispatch<AppDispatch>();
 
+    const H_MAX_HEIGHT = 280;
+    const H_MIN_HEIGHT = 95;
+    const H_SCROLL_DISTANCE = H_MAX_HEIGHT - H_MIN_HEIGHT;
+
     useEffect(() => {
         dispatch(loadCarFromStorage());
     }, [dispatch]);
@@ -42,8 +46,8 @@ export default function TankDashboard({ className, scrollRefVal }: {
     const scrollY = useRef(scrollRefVal!).current;
 
     const animatedHeight = scrollY.interpolate({
-        inputRange: [0, 200],
-        outputRange: [280, 95],
+        inputRange: [0, H_SCROLL_DISTANCE],
+        outputRange: [H_MAX_HEIGHT, H_MIN_HEIGHT],
         extrapolate: 'clamp',
     });
 
