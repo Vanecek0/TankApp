@@ -1,7 +1,6 @@
-import { Animated, RefreshControl, View, VirtualizedList } from 'react-native';
+import { Animated, RefreshControl, View } from 'react-native';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useTheme } from '@/theme/ThemeProvider';
-import { usePathname } from 'expo-router';
 import { ThemeColors as Colors } from '@/constants/Colors';
 import ScaledText from '@/components/common/ScaledText';
 import Icon from '@/components/Icon';
@@ -23,14 +22,12 @@ import { Tanking } from '@/models/Tanking';
 import { tankingService } from '@/services/tankingService';
 import { Fuel } from '@/models/Fuel';
 import { Badge } from '@/models/Badge';
-import { useAnimatedScrollHandler } from '@/hooks/useAnimatedScrollHandler';
-import CollapsibleHeader from '@/components/CollapsibleHeader';
+import CollapsibleSection from '@/components/CollapsibleSection';
 
 export default function HomeScreen() {
   const { isDark } = useTheme();
   const { car, loading } = useSelector((state: RootState) => state.car);
   const dispatch = useDispatch<AppDispatch>();
-  const pathname = usePathname();
   const { showModal } = useModal();
   const [orderTankings, setOrderTankings] = useState<'DESC' | 'ASC'>('DESC');
   const [tanking, setTanking] = useState<{
@@ -126,89 +123,69 @@ export default function HomeScreen() {
     [isDark]
   );
 
-  const scrollY = useRef(new Animated.Value(0)).current;
-  const { handleScroll, buttonOpacity } = useAnimatedScrollHandler(scrollY, [orderTankings], true);
-
-  useEffect(() => {
-    Animated.timing(scrollY, {
-      toValue: 0,
-      duration: 500,
-      useNativeDriver: false,
-    }).start();
-  }, [orderTankings]);
-
-  const headerHeight = scrollY.interpolate({
-    inputRange: [0, 200],
-    outputRange: [280, 95],
-    extrapolate: "clamp",
-
-  });
-
-  const flatListRef = useRef<Animated.FlatList>(null);
-
-  useEffect(() => {
-    flatListRef.current?.scrollToOffset({ offset: 0, animated: true });
-  }, [orderTankings]);
-
-
   return (
     <>
-      <View className='flex-1' style={{ backgroundColor: isDark ? Colors.background.dark : Colors.background.light }}>
-        <CollapsibleHeader>
-        <Animated.View style={{ zIndex: 10 }}>
-          <View style={{ ...spacing.mt(12), ...spacing.mx(20), ...spacing.mb(12) }} className='flex-row items-center justify-between'>
-            <ScaledText size='lg' className='font-bold' isThemed={true}>Poslední záznamy</ScaledText>
-            <Dropdown
-              defaultIndex={0}
-              data={[
-                { value: 'DESC', label: 'Nejnovější' },
-                { value: 'ASC', label: 'Nejstarší' }
-              ]}
-              onChange={(item) => {
-                if (item.value === "DESC" || item.value === "ASC") {
-                  setOrderTankings(item.value);
-                } else {
-                  console.warn("Invalid value for order:", item.value);
-                }
-              }}
-              dropdownStyle={{
-                ...spacing.borderRadius(12),
-                ...spacing.width(150),
-                ...spacing.borderWidth(0.5),
-                ...spacing.px(12),
-                borderColor: Colors.base.transparent,
-                backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light
-              }}
-            ></Dropdown>
-          </View>
-          <Animated.FlatList
-            ref={flatListRef}
-            refreshControl={
-              <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
-            }
-            initialNumToRender={1}
-            maxToRenderPerBatch={1}
-            windowSize={2}
-            ListHeaderComponentStyle={{ zIndex: 50 }}
-            contentContainerStyle={{ ...spacing.gap(12), ...spacing.borderRadius(12), ...spacing.mx(20) }}
-            renderItem={renderItem}
-            horizontal={false}
-            data={tanking}
-            keyExtractor={(item, index) => tanking[index].month ?? index.toString()}
-            scrollEventThrottle={16}
-            showsVerticalScrollIndicator={false}
-            onScroll={handleScroll}
-            ListEmptyComponent={
+      <View
+        className='flex-1'
+        style={{
+          backgroundColor: isDark ? Colors.background.dark : Colors.background.light
+        }}
+      >
+        <CollapsibleSection
+          header={(scrollY) =>
+            <View style={{ ...spacing.mx(20) }}>
+              <Dashboard scrollRefVal={scrollY} />
+            </View>
+          }
+          subHeader={() => (
+            <View style={{ ...spacing.py(12), ...spacing.mx(20) }} className='flex-row items-center justify-between'>
+              <ScaledText size='lg' className='font-bold' isThemed={true}>Poslední záznamy</ScaledText>
+              <Dropdown
+                defaultIndex={0}
+                data={[
+                  { value: 'DESC', label: 'Nejnovější' },
+                  { value: 'ASC', label: 'Nejstarší' }
+                ]}
+                onChange={(item) => {
+                  if (item.value === "DESC" || item.value === "ASC") {
+                    setOrderTankings(item.value);
+                  } else {
+                    console.warn("Invalid value for order:", item.value);
+                  }
+                }}
+                dropdownStyle={{
+                  ...spacing.borderRadius(12),
+                  ...spacing.width(180),
+                  ...spacing.borderWidth(0.5),
+                  ...spacing.p(12),
+                  borderColor: Colors.base.transparent,
+                  backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light
+                }}
+              ></Dropdown>
+            </View>
+          )}
+          scrollComponent={Animated.FlatList}
+          scrollProps={{
+            initialNumToRender: 1,
+            maxToRenderPerBatch: 1,
+            windowSize: 1,
+            contentContainerStyle: { ...spacing.borderRadius(12), ...spacing.mx(20), backgroundColor: isDark ? Colors.background.dark : Colors.background.light },
+            renderItem: renderItem,
+            horizontal: false,
+            data: tanking,
+            keyExtractor: (item, index) => tanking[index].month ?? index.toString(),
+            showsVerticalScrollIndicator: false,
+            ListEmptyComponent:
               !loading ? (
                 <ScaledText style={{ ...spacing.p(28) }} className="text-center font-bold" color={Colors.text.muted} size="base">Žádné další záznamy</ScaledText>
               ) : <ScaledText style={{ ...spacing.p(28) }} className="text-center font-bold" color={Colors.text.muted} size="base">Načítání</ScaledText>
-            }
-          />
-        </Animated.View>
-        </CollapsibleHeader>
-        
-      </View>
-      <ActionButton opacity={buttonOpacity}>
+
+          }}
+        >
+        </CollapsibleSection>
+
+      </View >
+      <ActionButton>
         <View onTouchEnd={
           () => { showModal(AddTankRecordModal) }} style={{ ...spacing.right(10) }} className='flex-row items-center gap-3'>
           <ScaledText size={'base'} color={isDark ? Colors.base.white : ''} className='font-bold'>Přidat tankování</ScaledText>
