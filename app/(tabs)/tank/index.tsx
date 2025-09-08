@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Animated, RefreshControl, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { TabView, SceneMap } from 'react-native-tab-view';
@@ -18,6 +18,7 @@ import { AppDispatch, RootState } from '@/store';
 import { tankingService } from '@/services/tankingService';
 import { useAnimatedScrollHandler } from '@/hooks/useAnimatedScrollHandler';
 import { TankingItem } from '@/components/tanking/TankingItem';
+import TankStatistics from './tabs/statistics';
 
 export default function TankScreen() {
   const { isDark } = useTheme();
@@ -35,6 +36,21 @@ export default function TankScreen() {
     { key: 'second', title: 'Statistiky' },
   ]);
 
+  const renderScene = useMemo(
+    () =>
+      ({ route }: { route: { key: string } }) => {
+        switch (route.key) {
+          case "first":
+            return renderTankingList();
+          case "second":
+            return renderTankstatistics();
+          default:
+            return null;
+        }
+      },
+    [orderTankings, isLoading, tanking, isDark]
+  );
+
   const scrollY = useRef(new Animated.Value(0)).current;
   const { handleScroll, buttonOpacity } = useAnimatedScrollHandler(scrollY, [index, orderTankings]);
 
@@ -48,7 +64,6 @@ export default function TankScreen() {
   }, [index, orderTankings]);
 
   const flatListRef = useRef<Animated.FlatList>(null);
-
 
   const headerHeight = scrollY.interpolate({
     inputRange: [0, 200],
@@ -124,10 +139,16 @@ export default function TankScreen() {
     </>
   );
 
-  const renderScene = SceneMap({
-    first: renderTankingList,
-    second: () => <ScaledText size="lg">Statistiky</ScaledText>,
-  });
+  const renderTankstatistics = () => (
+    <Animated.ScrollView
+      showsVerticalScrollIndicator={false}
+      onScroll={handleScroll}
+      contentContainerStyle={{ paddingBottom: 180 }}
+      scrollEventThrottle={16}
+    >
+      <TankStatistics />
+    </Animated.ScrollView>
+  );
 
   const renderTabBar = useCallback(
     (props: any) => (
@@ -167,7 +188,14 @@ export default function TankScreen() {
         </View>
 
         <Animated.View style={{ height: '100%', marginTop: headerHeight, zIndex: 10 }}>
-          <TabView lazy navigationState={{ index, routes }} renderScene={renderScene} renderTabBar={renderTabBar} onIndexChange={setIndex} />
+          <TabView
+            lazy
+            lazyPreloadDistance={Infinity}
+            navigationState={{ index, routes }}
+            renderScene={renderScene}
+            renderTabBar={renderTabBar}
+            onIndexChange={setIndex}
+          />
         </Animated.View>
       </View>
 

@@ -1,5 +1,5 @@
-import { View } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import { Animated, View } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
 import { useTheme } from '@/theme/ThemeProvider';
 import { ThemeColors as Colors } from '@/constants/Colors';
 import ScaledText from '@/components/common/ScaledText';
@@ -8,6 +8,7 @@ import { spacing } from '@/utils/SizeScaling';
 import TankLineGraph from '@/components/graphs/TankLineGraph';
 import { tankingStatisticsRepository } from '@/repositories/tankingStatisticsRepository';
 import { TankingStatistics } from '@/models/TankingStatistics';
+import { useAnimatedScrollHandler } from '@/hooks/useAnimatedScrollHandler';
 
 export default function TankStatistics() {
   const { isDark } = useTheme();
@@ -20,6 +21,9 @@ export default function TankStatistics() {
     }
     getStats();
   }, []);
+
+  const scrollY = useRef(new Animated.Value(0)).current;
+  const { handleScroll, buttonOpacity } = useAnimatedScrollHandler(scrollY, []);
 
   if (!statistics.length) return null;
 
@@ -61,6 +65,7 @@ export default function TankStatistics() {
 
   return (
     <>
+      {/* Statistics Cards */}
       <View style={{ ...spacing.gap(12), ...spacing.mb(112) }} className='flex'>
         <View style={{ ...spacing.mt(8) }} className='flex-row flex-wrap justify-between'>
           {/* Průměrná cena */}
