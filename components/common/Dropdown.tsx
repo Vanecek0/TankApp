@@ -105,7 +105,7 @@ export default function Dropdown<T>({
                                 <ScaledText
                                     size="base"
                                     style={{
-                                        ...spacing.p(8),
+                                        ...spacing.p(12),
                                         textAlign: 'center',
                                         color: Colors.text.muted
                                     }}
@@ -130,7 +130,7 @@ export default function Dropdown<T>({
                                                 <ScaledText
                                                     size="base"
                                                     style={{
-                                                        ...spacing.p(8),
+                                                        ...spacing.p(12),
                                                         ...spacing.borderRadius(8),
                                                         color: isDark ? Colors.base.white : '',
                                                         backgroundColor: isSelected ? isDark ? Colors.text.primary : Colors.text.primary_dark : ''

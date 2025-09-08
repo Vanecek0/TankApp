@@ -51,24 +51,16 @@ export default function TankDashboard({ className, scrollRefVal }: {
         extrapolate: 'clamp',
     });
 
-    const compactOpacity = scrollY.interpolate({
-        inputRange: [0, 100],
-        outputRange: [0, 1],
-        extrapolate: 'clamp',
-    }) as Animated.AnimatedInterpolation<number>;
-
     const fullOpacity = scrollY.interpolate({
-        inputRange: [0, 100],
+        inputRange: [0, 85],
         outputRange: [1, 0],
         extrapolate: 'clamp',
     }) as Animated.AnimatedInterpolation<number>;
 
     return (
         <>
-            {/* Compact Dashboard */}
             <Animated.View
                 style={{
-                    opacity: compactOpacity,
                     position: 'absolute',
                     top: 0,
                     height: animatedHeight,
@@ -91,7 +83,6 @@ export default function TankDashboard({ className, scrollRefVal }: {
                 </View>
             </Animated.View>
 
-            {/* Full Dashboard */}
             <Animated.View style={{
                 opacity: fullOpacity,
                 height: animatedHeight,
@@ -114,8 +105,6 @@ export default function TankDashboard({ className, scrollRefVal }: {
                     <TankGraph data={tankingSumsDate} />
                 </>
             </Animated.View>
-
-
         </>
     );
 }
