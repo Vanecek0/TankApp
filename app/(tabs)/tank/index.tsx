@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Animated, RefreshControl, TouchableOpacity, View } from 'react-native';
+import { Animated, RefreshControl, ScrollView, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { TabView, SceneMap } from 'react-native-tab-view';
 import { useTheme } from '@/theme/ThemeProvider';
@@ -16,7 +16,6 @@ import { AddStationRecordModal } from '@/components/modals/stationsModal';
 import { loadCarFromStorage } from '@/store/slices/car.slice';
 import { AppDispatch, RootState } from '@/store';
 import { tankingService } from '@/services/tankingService';
-import { useAnimatedScrollHandler } from '@/hooks/useAnimatedScrollHandler';
 import { TankingItem } from '@/components/tanking/TankingItem';
 import TankStatistics from './tabs/statistics';
 
@@ -52,7 +51,6 @@ export default function TankScreen() {
   );
 
   const scrollY = useRef(new Animated.Value(0)).current;
-  const { handleScroll, buttonOpacity } = useAnimatedScrollHandler(scrollY, [index, orderTankings]);
 
   useEffect(() => {
     flatListRef.current?.scrollToOffset({ offset: 0, animated: true });
@@ -130,9 +128,6 @@ export default function TankScreen() {
         keyExtractor={(item, idx) => item.month ?? idx.toString()}
         renderItem={({ item }) => <TankingItem item={item} isDark={isDark} />}
         refreshControl={<RefreshControl refreshing={isLoading} onRefresh={onRefresh} />}
-        contentContainerStyle={[
-          { paddingTop: H_MAX_HEIGHT },
-        ]}
         scrollEventThrottle={16}
         onScroll={Animated.event(
           [{ nativeEvent: { contentOffset: { y: scrollY } } }],
@@ -151,7 +146,6 @@ export default function TankScreen() {
   const renderTankstatistics = () => (
     <Animated.ScrollView
       showsVerticalScrollIndicator={false}
-      onScroll={handleScroll}
       contentContainerStyle={{ paddingBottom: 180 }}
       scrollEventThrottle={16}
     >
@@ -189,26 +183,27 @@ export default function TankScreen() {
     [isDark]
   );
 
+
   return (
     <View style={{ flex: 1, backgroundColor: isDark ? Colors.background.dark : Colors.background.light }}>
       <View style={{ ...spacing.mx(20) }}>
         <View style={{ position: 'absolute', top: 0, left: 0, right: 0, backgroundColor: isDark ? Colors.background.dark : Colors.background.light }}>
           <Dashboard scrollRefVal={scrollY} />
         </View>
-          <Animated.View style={{ height: "100%", paddingTop: headerHeight }}>
-            <TabView
-              lazy
-              navigationState={{ index, routes }}
-              renderScene={renderScene}
-              renderTabBar={renderTabBar}
-              onIndexChange={setIndex}
-            />
-        </Animated.View>
 
+        <Animated.View style={{ height: "100%", marginTop: headerHeight }}>
+          <TabView
+            lazy
+            navigationState={{ index, routes }}
+            renderScene={renderScene}
+            renderTabBar={renderTabBar}
+            onIndexChange={setIndex}
+          />
+        </Animated.View>
 
       </View>
 
-      <ActionButton opacity={buttonOpacity}>
+      <ActionButton>
         <AddActionButton label="Přidat tankování" icon="tank" onPress={() => showModal(AddTankRecordModal)} isDark={isDark} />
         <AddActionButton label="Přidat stanici" icon="map_pin" onPress={() => showModal(AddStationRecordModal)} isDark={isDark} />
       </ActionButton>

@@ -8,7 +8,6 @@ import { spacing } from '@/utils/SizeScaling';
 import TankLineGraph from '@/components/graphs/TankLineGraph';
 import { tankingStatisticsRepository } from '@/repositories/tankingStatisticsRepository';
 import { TankingStatistics } from '@/models/TankingStatistics';
-import { useAnimatedScrollHandler } from '@/hooks/useAnimatedScrollHandler';
 
 export default function TankStatistics() {
   const { isDark } = useTheme();
@@ -23,7 +22,6 @@ export default function TankStatistics() {
   }, []);
 
   const scrollY = useRef(new Animated.Value(0)).current;
-  const { handleScroll, buttonOpacity } = useAnimatedScrollHandler(scrollY, []);
 
   if (!statistics.length) return null;
 
