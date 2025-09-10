@@ -1,5 +1,5 @@
 import { useTheme } from "@/theme/ThemeProvider";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ThemeColors as Colors } from '@/constants/Colors';
 import {
     View,
@@ -50,6 +50,16 @@ const CollapsibleSection = <T,>({
         </ScrollComponent>
     );
 
+    const subHeaderRef = useRef<View>(null);
+
+    useEffect(() => {
+        if (subHeaderRef.current) {
+            subHeaderRef.current.measure((x, y, width, height) => {
+                setSubHeaderHeight(height);
+            });
+        }
+    }, []);
+
     return (
         <View style={{ flex: 1 }}>
             {wrapper ? wrapper(scrollContent, scrollY) : scrollContent}
@@ -66,20 +76,8 @@ const CollapsibleSection = <T,>({
                 }}
             >
                 {header(scrollY)}
-
                 {subHeader && (
-                    <View
-                        style={{
-                            position: "relative",
-                            bottom: 0,
-                            left: 0,
-                            right: 0,
-                            backgroundColor: isDark ? Colors.background.dark : Colors.background.light
-                        }}
-                        onLayout={(e: LayoutChangeEvent) =>
-                            setSubHeaderHeight(e.nativeEvent.layout.height)
-                        }
-                    >
+                    <View ref={subHeaderRef}>
                         {subHeader(scrollY)}
                     </View>
                 )}

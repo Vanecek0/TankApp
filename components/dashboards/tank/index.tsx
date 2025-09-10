@@ -1,4 +1,4 @@
-import { Animated, TouchableWithoutFeedback, View } from "react-native";
+import { Animated, View } from "react-native";
 import ScaledText from "@/components/common/ScaledText";
 import { spacing } from "@/utils/SizeScaling";
 import { useEffect, useRef, useState } from "react";
