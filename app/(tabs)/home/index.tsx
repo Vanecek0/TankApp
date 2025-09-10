@@ -1,5 +1,5 @@
-import { Animated, RefreshControl, View } from 'react-native';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { Animated, View } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useTheme } from '@/theme/ThemeProvider';
 import { ThemeColors as Colors } from '@/constants/Colors';
 import ScaledText from '@/components/common/ScaledText';
@@ -22,7 +22,7 @@ import { Tanking } from '@/models/Tanking';
 import { tankingService } from '@/services/tankingService';
 import { Fuel } from '@/models/Fuel';
 import { Badge } from '@/models/Badge';
-import CollapsibleSection from '@/components/CollapsibleSection';
+import CollapsibleScroll from '@/components/CollapsibleScroll';
 
 export default function HomeScreen() {
   const { isDark } = useTheme();
@@ -59,10 +59,6 @@ export default function HomeScreen() {
   useEffect(() => {
     loadTankings(orderTankings, car?.id ?? 2);
   }, [loadTankings, car, orderTankings]);
-
-  const onRefresh = useCallback(async () => {
-    await loadTankings(orderTankings, car?.id ?? 2);
-  }, [car]);
 
   const TankingItem = React.memo(({ item }: {
     item: {
@@ -131,7 +127,7 @@ export default function HomeScreen() {
           backgroundColor: isDark ? Colors.background.dark : Colors.background.light
         }}
       >
-        <CollapsibleSection
+        <CollapsibleScroll
           header={(scrollY) =>
             <View style={{ ...spacing.mx(20) }}>
               <Dashboard scrollRefVal={scrollY} />
@@ -182,7 +178,7 @@ export default function HomeScreen() {
 
           }}
         >
-        </CollapsibleSection>
+        </CollapsibleScroll>
 
       </View >
       <ActionButton>

@@ -1,37 +1,46 @@
 import { useTheme } from "@/theme/ThemeProvider";
 import React, { useEffect, useRef, useState } from "react";
-import { ThemeColors as Colors } from '@/constants/Colors';
-import {
-    View,
-    Animated,
-    ScrollView,
-    FlatListProps,
-    ScrollViewProps,
-    LayoutChangeEvent,
-} from "react-native";
+import { ThemeColors as Colors } from "@/constants/Colors";
+import { View, Animated, ScrollView, ScrollViewProps, FlatListProps } from "react-native";
 
-const H_MAX_HEIGHT = 280;
-
-type CollapsibleSectionProps<T> = {
+type CollapsibleScrollProps<T> = {
     header: (scrollY: Animated.Value) => React.ReactNode;
     children?: React.ReactNode;
-    scrollComponent?: React.ComponentType<any>;
     scrollProps?: ScrollViewProps | FlatListProps<T>;
     subHeader?: (scrollY: Animated.Value) => React.ReactNode;
     wrapper?: (content: React.ReactNode, scrollY: Animated.Value) => React.ReactNode;
+    scrollComponent?: React.ComponentType<any>;
 };
 
-const CollapsibleSection = <T,>({
+const CollapsibleScroll = <T,>({
     header,
     children,
-    scrollComponent: ScrollComponent = ScrollView,
     scrollProps = {},
     subHeader,
     wrapper,
-}: CollapsibleSectionProps<T>) => {
+    scrollComponent: ScrollComponent = ScrollView,
+}: CollapsibleScrollProps<T>) => {
     const scrollY = useRef(new Animated.Value(0)).current;
+    const [headerHeight, setHeaderHeight] = useState(0);
     const [subHeaderHeight, setSubHeaderHeight] = useState(0);
     const { isDark } = useTheme();
+
+    const headerRef = useRef<View>(null);
+    const subHeaderRef = useRef<View>(null);
+
+    useEffect(() => {
+        if (subHeaderRef.current) {
+            subHeaderRef.current.measure((x, y, width, height) => {
+                setSubHeaderHeight(height);
+            });
+        }
+
+        if (headerRef.current) {
+            headerRef.current.measure((x, y, width, height) => {
+                setHeaderHeight(height);
+            });
+        }
+    }, []);
 
     const scrollContent = (
         <ScrollComponent
@@ -42,7 +51,7 @@ const CollapsibleSection = <T,>({
             )}
             scrollEventThrottle={16}
             contentContainerStyle={[
-                { paddingTop: H_MAX_HEIGHT + subHeaderHeight },
+                { paddingTop: headerHeight + subHeaderHeight },
                 (scrollProps as any).contentContainerStyle,
             ]}
         >
@@ -50,20 +59,9 @@ const CollapsibleSection = <T,>({
         </ScrollComponent>
     );
 
-    const subHeaderRef = useRef<View>(null);
-
-    useEffect(() => {
-        if (subHeaderRef.current) {
-            subHeaderRef.current.measure((x, y, width, height) => {
-                setSubHeaderHeight(height);
-            });
-        }
-    }, []);
-
     return (
         <View style={{ flex: 1 }}>
             {wrapper ? wrapper(scrollContent, scrollY) : scrollContent}
-
             <View
                 style={{
                     position: "absolute",
@@ -72,18 +70,20 @@ const CollapsibleSection = <T,>({
                     top: 0,
                     width: "100%",
                     zIndex: 10,
-                    backgroundColor: isDark ? Colors.background.dark : Colors.background.light
+                    backgroundColor: isDark ? Colors.background.dark : Colors.background.light,
                 }}
             >
-                {header(scrollY)}
-                {subHeader && (
-                    <View ref={subHeaderRef}>
+                <View ref={headerRef}>
+                    {header(scrollY)}
+                </View>
+                {subHeader &&
+                    <View ref={subHeaderRef} style={{backgroundColor: isDark ? Colors.background.dark : Colors.background.light}}>
                         {subHeader(scrollY)}
                     </View>
-                )}
+                }
             </View>
         </View>
     );
 };
 
-export default CollapsibleSection;
+export default CollapsibleScroll;
