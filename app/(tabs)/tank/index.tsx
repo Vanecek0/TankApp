@@ -58,16 +58,20 @@ export default function TankScreen() {
     flatListRef.current?.scrollToOffset({ offset: 0, animated: true });
     Animated.timing(scrollY, {
       toValue: 0,
-      duration: 500,
+      duration: 300,
       useNativeDriver: false,
     }).start();
   }, [index, orderTankings]);
 
   const flatListRef = useRef<Animated.FlatList>(null);
 
+  const H_MAX_HEIGHT = 280;
+  const H_MIN_HEIGHT = 95;
+  const H_SCROLL_DISTANCE = H_MAX_HEIGHT - H_MIN_HEIGHT;
+
   const headerHeight = scrollY.interpolate({
-    inputRange: [0, 200],
-    outputRange: [280, 95],
+    inputRange: [0, H_SCROLL_DISTANCE],
+    outputRange: [H_MAX_HEIGHT, H_MIN_HEIGHT],
     extrapolate: 'clamp',
   });
 
@@ -126,9 +130,14 @@ export default function TankScreen() {
         keyExtractor={(item, idx) => item.month ?? idx.toString()}
         renderItem={({ item }) => <TankingItem item={item} isDark={isDark} />}
         refreshControl={<RefreshControl refreshing={isLoading} onRefresh={onRefresh} />}
-        contentContainerStyle={{ ...spacing.gap(12), paddingBottom: 300 }}
+        contentContainerStyle={[
+          { paddingTop: H_MAX_HEIGHT },
+        ]}
         scrollEventThrottle={16}
-        onScroll={handleScroll}
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+          { useNativeDriver: false }
+        )}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={
           <ScaledText style={{ ...spacing.p(28) }} className="text-center font-bold" color={Colors.text.muted} size="base">
@@ -186,17 +195,17 @@ export default function TankScreen() {
         <View style={{ position: 'absolute', top: 0, left: 0, right: 0, backgroundColor: isDark ? Colors.background.dark : Colors.background.light }}>
           <Dashboard scrollRefVal={scrollY} />
         </View>
-
-        <Animated.View style={{ height: '100%', marginTop: headerHeight, zIndex: 10 }}>
-          <TabView
-            lazy
-            lazyPreloadDistance={Infinity}
-            navigationState={{ index, routes }}
-            renderScene={renderScene}
-            renderTabBar={renderTabBar}
-            onIndexChange={setIndex}
-          />
+          <Animated.View style={{ height: "100%", paddingTop: headerHeight }}>
+            <TabView
+              lazy
+              navigationState={{ index, routes }}
+              renderScene={renderScene}
+              renderTabBar={renderTabBar}
+              onIndexChange={setIndex}
+            />
         </Animated.View>
+
+
       </View>
 
       <ActionButton opacity={buttonOpacity}>
