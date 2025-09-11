@@ -8,14 +8,15 @@ import { View, ScrollView } from 'react-native';
 import { useForm, useWatch, useFormState } from 'react-hook-form';
 import ScaledText from '@/components/common/ScaledText';
 import { DTO } from '@/DTO/mapper';
-import { Tanking, TankingModel } from '@/models/Tanking';
 import Dropdown from '@/components/common/Dropdown';
 import Icon from '@/components/Icon';
 import FormNumberInput from '@/components/forms/FormNumberInput';
-import { Station, StationModel } from '@/models/Station';
 import { Fuel } from '@/models/Fuel';
-import { useDatabase } from '@/database/databaseContext';
 import { stationFuelRepository } from '@/repositories/stationFuelRepository';
+import { Station } from '@/models/Station';
+import { stationRepository } from '@/repositories/stationRepository';
+import { Tanking } from '@/models/Tanking';
+import { tankingRepository } from '@/repositories/tankingRepository';
 
 export default function AddTankRecordModal({ onSubmit }: any) {
   const { hideModal } = useModal();
@@ -23,7 +24,6 @@ export default function AddTankRecordModal({ onSubmit }: any) {
   const { control, handleSubmit, setValue, getValues, formState: { errors } } = useForm();
   const [stations, setStations] = useState<Station[]>([]);
   const [selectedStation, setSelectedStation] = useState<Station>();
-  const {db} = useDatabase();
 
   const [fuels, setFuels] = useState<Fuel[]>([]);
 
@@ -32,7 +32,7 @@ export default function AddTankRecordModal({ onSubmit }: any) {
   const pricePerLtr = useWatch({ control, name: 'price_per_litre' });
 
   const loadAllStationsFuels = async () => {
-    const allStations = await StationModel.all();
+    const allStations = await stationRepository.getAll();
     setStations(allStations);
   };
 
@@ -47,6 +47,7 @@ export default function AddTankRecordModal({ onSubmit }: any) {
 
   useEffect(() => {
     loadSelectedStationFuels(selectedStation?.id ?? 0);
+    console.log(selectedStation?.id);
   }, [selectedStation])
 
   useEffect(() => {
@@ -62,8 +63,8 @@ export default function AddTankRecordModal({ onSubmit }: any) {
   const onFormSubmit = async (data: any) => {
     try {
       const myModel = DTO<Tanking, typeof data>(data);
-      const result = await TankingModel.create(db,myModel);
-      await TankingModel.updateSnapshot(db,1);
+      const result = await tankingRepository.create(myModel);
+      //await tankingRepository.updateSnapshot(db,1);
       console.log('Záznam úspěšně uložen:', result);
       return result;
     } catch (error) {
@@ -132,7 +133,7 @@ export default function AddTankRecordModal({ onSubmit }: any) {
         className="border-b-[1px] sticky flex-row justify-between items-center"
         style={{
           ...spacing.borderTopRadius(12),
-          borderColor: isDark ? Colors.text.primary_dark : Colors.text.primary,
+          borderColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light,
           backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light,
           ...spacing.p(24),
         }}
@@ -147,7 +148,7 @@ export default function AddTankRecordModal({ onSubmit }: any) {
             }}
             className="flex items-center justify-center"
           >
-            <Icon name="tank" color={Colors.icon.primary} size={getScaleFactor() * 20} />
+            <Icon name="tank" color={Colors.base.white} size={getScaleFactor() * 20} />
           </View>
           <View>
             <ScaledText size="xl" isThemed className="text-xl font-semibold">
@@ -163,14 +164,14 @@ export default function AddTankRecordModal({ onSubmit }: any) {
           style={{ ...spacing.p(36), ...spacing.me(-12) }}
           className="justify-center items-center absolute right-0"
         >
-          <Icon name="cross" color={Colors.icon.primary} size={getScaleFactor() * 20} />
+          <Icon name="cross" color={isDark ? Colors.icon.primary_dark : Colors.icon.primary} size={getScaleFactor() * 20} />
         </View>
       </View>
       <ScrollView style={{ ...spacing.p(24) }} className="">
         <View style={{ ...spacing.gap(12), ...spacing.pb(52) }}>
           <View>
             <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
-              <Icon name='speedometer' color={Colors.icon.primary} size={getScaleFactor() * 16} />
+              <Icon name='speedometer' color={isDark ? Colors.icon.primary_dark : Colors.icon.primary} size={getScaleFactor() * 16} />
               <ScaledText size='base' style={{ color: isDark ? Colors.base.white : '' }}>Stav tachometru</ScaledText>
             </View>
 
@@ -179,7 +180,7 @@ export default function AddTankRecordModal({ onSubmit }: any) {
 
           <View>
             <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
-              <Icon name='map_pin' color={Colors.icon.primary} size={getScaleFactor() * 16} />
+              <Icon name='map_pin' color={isDark ? Colors.icon.primary_dark : Colors.icon.primary} size={getScaleFactor() * 16} />
               <ScaledText size='base' style={{ color: isDark ? Colors.base.white : '' }}>Stanice</ScaledText>
             </View>
 
@@ -197,7 +198,7 @@ export default function AddTankRecordModal({ onSubmit }: any) {
           <View className='flex-row justify-between'>
             <View className='w-[48%]'>
               <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
-                <Icon name='tank' color={Colors.icon.primary} size={getScaleFactor() * 16} />
+                <Icon name='tank' color={isDark ? Colors.icon.primary_dark : Colors.icon.primary} size={getScaleFactor() * 16} />
                 <ScaledText size='base' style={{ color: isDark ? Colors.base.white : '' }}>Palivo</ScaledText>
               </View>
 
@@ -213,7 +214,7 @@ export default function AddTankRecordModal({ onSubmit }: any) {
 
             <View className='w-[48%]'>
               <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
-                <Icon name='calc' color={Colors.icon.primary} size={getScaleFactor() * 16} />
+                <Icon name='calc' color={isDark ? Colors.icon.primary_dark : Colors.icon.primary} size={getScaleFactor() * 16} />
                 <ScaledText size='base' style={{ color: isDark ? Colors.base.white : '' }}>Cena za jednotku</ScaledText>
               </View>
 
@@ -223,7 +224,7 @@ export default function AddTankRecordModal({ onSubmit }: any) {
 
           <View>
             <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
-              <Icon name='dollar' color={Colors.icon.primary} size={getScaleFactor() * 16} />
+              <Icon name='dollar' color={isDark ? Colors.icon.primary_dark : Colors.icon.primary} size={getScaleFactor() * 16} />
               <ScaledText size='base' style={{ color: isDark ? Colors.base.white : '' }}>Cena (bez slev)</ScaledText>
             </View>
 

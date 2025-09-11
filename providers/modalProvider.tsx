@@ -104,7 +104,7 @@ export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
             <View style={styles.modalContainer}>
               <View style={[
                 styles.modalContent,
-                { backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light, ...spacing.borderRadius(12) }
+                { backgroundColor: isDark ? Colors.background.dark : Colors.background.light, ...spacing.borderRadius(12) }
               ]}>
                 <ModalComponent {...modalProps} />
               </View>

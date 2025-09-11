@@ -34,7 +34,7 @@ export default function FormNumberInput({ name, control, fieldHeight = 46, place
                 ...spacing.height(fieldHeight),
                 borderColor: isDark ? Colors.text.secondary : Colors.text.muted,
                 backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light,
-                color: isDark ? Colors.text.primary : Colors.text.primary_dark
+                color: isDark ? Colors.text.primary_dark : Colors.text.primary
             }}
             value={field.value !== undefined ? field.value : 0}
             onBlur={() => {
