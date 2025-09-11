@@ -1,5 +1,6 @@
 import { StationFuel } from "@/models/StationFuel";
 import DatabaseRepository from "@/database/abstract/databaseRepository";
+import { Fuel } from "@/models/Fuel";
 
 
 export class StationFuelRepository extends DatabaseRepository<StationFuel> {
@@ -27,7 +28,7 @@ export class StationFuelRepository extends DatabaseRepository<StationFuel> {
     }
 
     async getAllStationsWithFuels(): Promise<(Station & { fuels: (Fuel & { last_price_per_unit: number | null })[] })[]> {
-        const db = await Database.getConnection()
+        const db = await StationFuelRepository.getDb()
         const rows = await db.getAllAsync(`
       SELECT
           s.id AS station_id,
@@ -158,7 +159,7 @@ export class StationFuelRepository extends DatabaseRepository<StationFuel> {
     }
 
     async getFuelsByStationId(stationId: number): Promise<Fuel[]> {
-        const db = await Database.getConnection();
+        const db = await StationFuelRepository.getDb();
 
         const fuels = await db.getAllAsync<Fuel>(
             `SELECT fuel.*

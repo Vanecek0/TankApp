@@ -6,6 +6,15 @@ export class StationRepository extends DatabaseRepository<Station> {
     protected columns = Station.columns;
     protected modelClass = Station;
 
+    async getAll(): Promise<Station[]> {
+        try {
+            const result = await this.select();
+            return result || [];
+        } catch (err) {
+            console.error("Error loading stations:", err);
+            return [];
+        }
+    }
 
     async removeById(id: number): Promise<boolean> {
         try {
