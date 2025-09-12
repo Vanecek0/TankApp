@@ -6,7 +6,7 @@ import { useTheme } from '@/theme/ThemeProvider';
 import getScaleFactor, { spacing } from '@/utils/SizeScaling';
 import { View, ScrollView } from 'react-native';
 import CustomButton, { ActionButton } from '@/components/common/Buttons';
-import { useModal } from '@/providers/modalProvider';
+import { useModal } from '@/hooks/useModal';
 import ResponsiveImage from '@/components/common/ResponsiveImage';
 import { AddStationRecordModal } from '@/components/modals/stationsModal';
 import AddTankRecordModal from '@/components/modals/tankRecordModal';

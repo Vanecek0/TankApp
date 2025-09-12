@@ -27,7 +27,7 @@ const cartSlice = createSlice({
       .addCase(loadCarFromStorage.fulfilled, (state, action: PayloadAction<Car | null>) => {
         state.car = action.payload;
       })
-       .addCase(setCarByIdAndPersist.fulfilled, (state, action: PayloadAction<Car | null>) => {
+      .addCase(setCarByIdAndPersist.fulfilled, (state, action: PayloadAction<Car | null>) => {
         state.car = action.payload;
       });
   }
@@ -43,16 +43,16 @@ export const loadCarFromStorage = createAsyncThunk(
       } catch (e) {
         console.warn("Chyba při parsování auta z AsyncStorage", e);
       }
-      
+
     }
     else {
       const firstCar = await carRepository.getFirst();
       if (!firstCar) {
         return null;
       }
-      
-      await AsyncStorage.setItem("selected_car", JSON.stringify(firstCar));
-      return JSON.stringify(firstCar);
+      const carObj = JSON.parse(JSON.stringify(firstCar)); // ✅ převede instanci třídy na čistý objekt
+      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(carObj));
+      return carObj;
     }
   }
 );
@@ -60,10 +60,12 @@ export const loadCarFromStorage = createAsyncThunk(
 export const setCarByIdAndPersist = createAsyncThunk(
   "car/setCarByIdAndPersist",
   async (carId: number) => {
+    const car = await carRepository.getById(carId);
+    if (!car) return null;
 
-      const car = await carRepository.getById(carId);
-      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(car));
-      return car;
+    const carObj = JSON.parse(JSON.stringify(car)); // ✅ plain object
+    await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(carObj));
+    return carObj;
   }
 );
 

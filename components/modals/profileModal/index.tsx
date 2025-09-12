@@ -3,7 +3,7 @@ import ScaledText from "@/components/common/ScaledText";
 import Badge from "@/components/Badge";
 import Icon from "@/components/Icon";
 import { ThemeColors as Colors } from "@/constants/Colors";
-import { useModal } from "@/providers/modalProvider";
+import { useModal } from "@/hooks/useModal";
 import { carRepository } from "@/repositories/carRepository";
 import { useTheme } from "@/theme/ThemeProvider";
 import contrastHexColor from "@/utils/colorContrast";

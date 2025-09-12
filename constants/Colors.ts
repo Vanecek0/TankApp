@@ -51,9 +51,16 @@ export const ThemeColors = {
     disabled_dark: Colors.palette.disabled.dark,
   },
 
+  modal: {
+    header: {
+      primary: Colors.palette.primary.dark,
+      primary_dark: Colors.palette.primary.light,
+    }
+  },
+
   background: {
-    light: "#efefef",
-    dark: "#101010",
+    light: Colors.palette.primary.dark,
+    dark: Colors.palette.primary.light,
     surface: {
       light: "#FFFFFF",
       dark: "#232323",

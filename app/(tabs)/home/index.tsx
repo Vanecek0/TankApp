@@ -11,7 +11,7 @@ import { Station } from '@/models/Station';
 import Dropdown from '@/components/common/Dropdown';
 import CustomButton, { ActionButton } from '@/components/common/Buttons';
 import Dashboard from '@/components/dashboards';
-import { useModal } from '@/providers/modalProvider';
+import { useModal } from '@/hooks/useModal';
 import AddTankRecordModal from '@/components/modals/tankRecordModal';
 import { AddStationRecordModal } from '@/components/modals/stationsModal';
 import Card from '@/components/common/Card';
@@ -26,7 +26,7 @@ import CollapsibleScroll from '@/components/CollapsibleScroll';
 
 export default function HomeScreen() {
   const { isDark } = useTheme();
-  const { car, loading } = useSelector((state: RootState) => state.car);
+  const { car } = useSelector((state: RootState) => state.car);
   const dispatch = useDispatch<AppDispatch>();
   const { showModal } = useModal();
   const [orderTankings, setOrderTankings] = useState<'DESC' | 'ASC'>('DESC');
@@ -79,7 +79,7 @@ export default function HomeScreen() {
                   <ScaledText className='rounded-full' style={{ backgroundColor: "lightgray", fontWeight: "bold", ...spacing.p(16) }} size='base'>{item.station?.provider?.slice(0, 2).toUpperCase() ?? '-'}</ScaledText>
                   <View className='flex-row justify-between flex-1'>
                     <View style={{ ...spacing.gap(4) }} className='flex items-start w-2/3'>
-                      <ScaledText isThemed={true} size="lg" className='font-bold'>{item.id} {item.station?.name ?? 'Neznámá stanice'}</ScaledText>
+                      <ScaledText isThemed={true} size="lg" className='font-bold'>{item.station?.name ?? 'Neznámá stanice'}</ScaledText>
                       <View style={{ ...spacing.gap(2) }} className='flex-row items-center justify-start'>
                         <Icon name="map_pin" color={Colors.text.muted} size={getScaleFactor() * 15} />
                         <ScaledText numberOfLines={1} ellipsizeMode="tail" className='text-ellipsis overflow-visible' isThemed={true} size="sm">{item.station?.address ?? 'Bez adresy'}</ScaledText>
@@ -165,14 +165,14 @@ export default function HomeScreen() {
             initialNumToRender: 1,
             maxToRenderPerBatch: 1,
             windowSize: 1,
-            contentContainerStyle: { ...spacing.borderRadius(12), ...spacing.mx(20), backgroundColor: isDark ? Colors.background.dark : Colors.background.light },
+            contentContainerStyle: { ...spacing.borderRadius(12), ...spacing.mx(20), ...spacing.pb(12), backgroundColor: isDark ? Colors.background.dark : Colors.background.light },
             renderItem: renderItem,
             horizontal: false,
             data: tanking,
             keyExtractor: (item, index) => tanking[index].month ?? index.toString(),
             showsVerticalScrollIndicator: false,
             ListEmptyComponent:
-              !loading ? (
+              !isLoading ? (
                 <ScaledText style={{ ...spacing.p(28) }} className="text-center font-bold" color={Colors.text.muted} size="base">Žádné další záznamy</ScaledText>
               ) : <ScaledText style={{ ...spacing.p(28) }} className="text-center font-bold" color={Colors.text.muted} size="base">Načítání</ScaledText>
 

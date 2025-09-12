@@ -115,7 +115,6 @@ export default abstract class DatabaseRepository<T extends object> implements ID
 
         const sql = `INSERT INTO ${this.tableName} (${columnsClause}) VALUES (${placeholders})`
         const inserting = await db.runAsync(sql, values)
-        console.log(`Inserting into ${this.tableName}: `, inserting.lastInsertRowId);
         return inserting;
     }
 

@@ -14,6 +14,8 @@ import { DatabaseProvider } from "@/database/databaseContext";
 import { initializeDemoDatabase } from "@/database/init";
 import { Provider as ReduxProvider } from "react-redux";
 import { store } from "@/store";
+import { DropdownProvider } from "@/hooks/useDropdown";
+import { AppProviders } from "@/hooks/AppProviders";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -47,17 +49,9 @@ export default function RootLayout() {
     }
 
     return (
-        <ReduxProvider store={store}>
-            <SQLiteProvider databaseName="database.db">
-                <DatabaseProvider>
-                    <ThemeProvider>
-                        <GestureHandlerRootView style={{ flex: 1 }}>
-                            <DrawerWithTheme />
-                        </GestureHandlerRootView>
-                    </ThemeProvider>
-                </DatabaseProvider>
-            </SQLiteProvider>
-        </ReduxProvider>
+        <AppProviders>
+            <DrawerWithTheme />
+        </AppProviders>
     )
 }
 
