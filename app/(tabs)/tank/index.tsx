@@ -10,7 +10,7 @@ import Icon from '@/components/Icon';
 import Dropdown from '@/components/common/Dropdown';
 import CustomButton, { ActionButton } from '@/components/common/Buttons';
 import Dashboard from '@/components/dashboards';
-import { useModal } from '@/providers/modalProvider';
+import { useModal } from '@/hooks/useModal';
 import AddTankRecordModal from '@/components/modals/tankRecordModal';
 import { AddStationRecordModal } from '@/components/modals/stationsModal';
 import { loadCarFromStorage } from '@/store/slices/car.slice';

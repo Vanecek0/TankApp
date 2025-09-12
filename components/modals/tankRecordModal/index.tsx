@@ -1,6 +1,6 @@
 import CustomButton from '@/components/common/Buttons';
 import { ThemeColors as Colors } from '@/constants/Colors';
-import { useModal } from '@/providers/modalProvider';
+import { useModal } from '@/hooks/useModal';
 import { useTheme } from '@/theme/ThemeProvider';
 import getScaleFactor, { spacing } from '@/utils/SizeScaling';
 import React, { useEffect, useState } from 'react';
@@ -47,7 +47,6 @@ export default function AddTankRecordModal({ onSubmit }: any) {
 
   useEffect(() => {
     loadSelectedStationFuels(selectedStation?.id ?? 0);
-    console.log(selectedStation?.id);
   }, [selectedStation])
 
   useEffect(() => {

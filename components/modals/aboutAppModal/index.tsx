@@ -1,5 +1,5 @@
 import { ThemeColors as Colors } from '@/constants/Colors';
-import { useModal } from '@/providers/modalProvider';
+import { useModal } from '@/hooks/useModal';
 import { useTheme } from '@/theme/ThemeProvider';
 import getScaleFactor, { spacing } from '@/utils/SizeScaling';
 import React from 'react';
@@ -13,10 +13,10 @@ export default function AboutAppModal() {
 
     return (
         <View className='max-h-full' style={{ ...spacing.borderRadius(12) }}>
-            <View className="border-b-[1px] sticky flex-row justify-between items-center" style={{ ...spacing.borderTopRadius(12), borderColor: isDark ? Colors.background.dark : Colors.background.light, ...spacing.p(24) }}>
+            <View className="sticky flex-row justify-between items-center" style={{ ...spacing.borderBottomWidth(1), ...spacing.borderTopRadius(12), backgroundColor: isDark ? Colors.modal.header.primary_dark : Colors.modal.header.primary, borderColor: isDark ? Colors.background.surface.dark : Colors.background.light, ...spacing.p(24) }}>
                 <View className="flex-row items-center" style={{ ...spacing.gap(8) }}>
                     <View style={{ ...spacing.borderRadius(8), ...spacing.width(48), ...spacing.height(48), backgroundColor: Colors.base.primary }} className="flex items-center justify-center">
-                        <Icon name='tank' color={Colors.icon.primary} size={getScaleFactor() * 20} />
+                        <Icon name='tank' color={Colors.base.white} size={getScaleFactor() * 20} />
                     </View>
                     <View>
                         <ScaledText size='xl' isThemed={true} className="text-xl font-semibold">TankApp</ScaledText>
@@ -24,7 +24,7 @@ export default function AboutAppModal() {
                     </View>
                 </View>
                 <View onTouchEnd={() => hideModal()} style={{ ...spacing.p(36), ...spacing.me(-12) }} className='justify-center items-center absolute right-0'>
-                    <Icon name='cross' color={Colors.icon.primary} size={getScaleFactor() * 20} />
+                    <Icon name='cross' color={isDark ? Colors.icon.primary_dark : Colors.icon.primary} size={getScaleFactor() * 20} />
                 </View>
             </View>
 
@@ -71,7 +71,7 @@ export default function AboutAppModal() {
                     <ScaledText size='xl' className='font-bold ' isThemed={true}>Vývojář</ScaledText>
                     <View className="flex-row items-start" style={{ ...spacing.gap(8) }}>
                         <View style={{ backgroundColor: Colors.status.warning, ...spacing.borderRadius(8) }} className="w-12 h-12 rounded-lg flex items-center justify-center">
-                            <Icon name='tank' color={Colors.icon.primary} size={getScaleFactor() * 20} />
+                            <Icon name='tank' color={Colors.base.white} size={getScaleFactor() * 20} />
                         </View>
                         <View style={{...spacing.gap(8)}}>
                             <ScaledText size='xl' isThemed={true} className="text-xl font-semibold">Pavel Vaněček</ScaledText>

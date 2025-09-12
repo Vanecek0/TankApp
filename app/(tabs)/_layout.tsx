@@ -8,7 +8,7 @@ import { FontSizes } from '@/utils/fontScaling';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import SettingsBar from '@/components/SettingsBar';
 import { StatusBar } from 'expo-status-bar';
-import { ModalProvider } from '@/providers/modalProvider';
+import { ModalProvider } from '@/hooks/useModal';
 
 
 export const unstable_settings = {

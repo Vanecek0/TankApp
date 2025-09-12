@@ -3,7 +3,7 @@ import { View } from "react-native"
 import { ThemeColors as Colors } from "@/constants/Colors"
 import getScaleFactor, { spacing } from "@/utils/SizeScaling"
 import { useTheme } from "@/theme/ThemeProvider"
-import { useModal } from "@/providers/modalProvider"
+import { useModal } from "@/hooks/useModal"
 import CustomButton from "@/components/common/Buttons"
 import ScaledText from "@/components/common/ScaledText"
 import Icon from "@/components/Icon";

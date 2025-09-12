@@ -4,7 +4,7 @@ import ScaledText from '@/components/common/ScaledText';
 import Icon from '@/components/Icon';
 import Badge from '@/components/Badge';
 import { ThemeColors as Colors } from '@/constants/Colors';
-import { useModal } from '@/providers/modalProvider';
+import { useModal } from '@/hooks/useModal';
 import { useTheme } from '@/theme/ThemeProvider';
 import getScaleFactor, { spacing } from '@/utils/SizeScaling';
 import { DTO } from '@/DTO/mapper';
@@ -167,7 +167,7 @@ export default function StationsModal() {
                         message: "Opravdu chcete smazat tuto stanici?",
                         deleteIcon: <Icon name="bin" color={Colors.base.primary} size={getScaleFactor() * 45} />,
                         onConfirm: async () => {
-                            await stationRepository.delete({id: item.id!});
+                            await stationRepository.delete({ id: item.id! });
                             onRefresh();
                         },
                     })}
@@ -184,7 +184,7 @@ export default function StationsModal() {
                 className="border-b-[1px] sticky flex-row justify-between items-center"
                 style={{
                     ...spacing.borderTopRadius(12),
-                    borderColor: isDark ? Colors.text.primary_dark : Colors.text.primary,
+                    borderColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light,
                     backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light,
                     ...spacing.p(24),
                 }}
@@ -199,7 +199,7 @@ export default function StationsModal() {
                         }}
                         className="flex items-center justify-center"
                     >
-                        <Icon name="map_pin" color={Colors.icon.primary} size={getScaleFactor() * 20} />
+                        <Icon name="map_pin" color={Colors.base.white} size={getScaleFactor() * 20} />
                     </View>
                     <View>
                         <ScaledText size="xl" isThemed className="text-xl font-semibold">
@@ -290,12 +290,12 @@ export function AddStationRecordModal({ station, previousModal }: { station: Sta
             } else {
 
                 const stationDTO = DTO<Station, typeof data>(data);
-                const station = await stationRepository.create(stationDTO);
+                const station = await stationRepository.insert(stationDTO);
 
                 for (const fuelId of selectedFuels) {
 
                     await stationFuelRepository.create({
-                        id_station: station.lastInsertRowId, //TODO: Use the ID of the newly created station
+                        id_station: station.lastInsertRowId,
                         id_fuel: fuelId,
                         last_price_per_unit: 0,
                     });

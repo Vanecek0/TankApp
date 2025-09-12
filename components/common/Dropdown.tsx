@@ -1,10 +1,11 @@
 import { ScrollView, TextStyle, TouchableOpacity, TouchableOpacityProps, TouchableWithoutFeedback, View, ViewStyle } from 'react-native';
 import ScaledText from './ScaledText';
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import Icon from '@/components/Icon';
 import getScaleFactor, { spacing } from '@/utils/SizeScaling';
 import { ThemeColors as Colors } from '@/constants/Colors';
 import { useTheme } from '@/theme/ThemeProvider';
+import { useDropdown } from '@/hooks/useDropdown';
 
 type DropdownProps<T> = TouchableOpacityProps & {
     placeholder?: string;
@@ -29,11 +30,16 @@ export default function Dropdown<T>({
     getItemLabel = (item) => (item as any).label,
     getItemValue = (item) => (item as any).value
 }: DropdownProps<T>) {
-    const [expanded, setExpanded] = useState(false);
-    const toggleExpanded = useCallback(() => setExpanded((e) => !e), []);
+    const { activeId, setActiveId } = useDropdown();
     const [selectedItem, setSelectedItem] = useState<T | null>(
         !placeholder ? data[defaultIndex] : null
     );
+    const id = useMemo(() => Math.random().toString(36).substring(2, 9), []);
+    const expanded = activeId === id;
+    const toggleExpanded = useCallback(() => {
+        setActiveId(expanded ? null : id);
+    }, [expanded, id, setActiveId]);
+
     const [buttonHeight, setButtonHeight] = useState(0);
     const { isDark } = useTheme();
 
@@ -41,13 +47,13 @@ export default function Dropdown<T>({
         (item: T) => {
             onChange(item);
             setSelectedItem(item);
-            setExpanded(false);
+            setActiveId(null);
         },
         [onChange]
     );
 
     return (
-        <View style={{ position: 'relative', zIndex: 50 }}>
+        <View style={{ position: 'relative' }}>
             <TouchableOpacity
                 onLayout={(e) => setButtonHeight(e.nativeEvent.layout.height)}
                 onPress={toggleExpanded}
@@ -59,7 +65,7 @@ export default function Dropdown<T>({
                     ...spacing.borderWidth(1),
                     ...spacing.borderBottomRadius(expanded ? 0 : 12),
                     borderColor: isDark ? Colors.text.secondary : Colors.text.muted,
-                    backgroundColor: Colors.background.dark
+                    backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light
                 }, dropdownStyle]}
                 className="flex-row items-center justify-between"
             >
@@ -78,7 +84,7 @@ export default function Dropdown<T>({
 
             {expanded && (
                 <>
-                    <TouchableWithoutFeedback onPress={() => setExpanded(false)}>
+                    <TouchableWithoutFeedback onPress={() => setActiveId(null)}>
                         <View style={{ ...spacing.p(0) }} className="absolute inset-0" />
                     </TouchableWithoutFeedback>
 
