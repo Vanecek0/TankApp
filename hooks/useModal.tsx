@@ -19,6 +19,7 @@ type ModalContextType = {
   hidePlainModal: () => void
   showSuperModal: (Component: React.FC<any>, props?: Record<string, any>) => void
   hideSuperModal: () => void
+  hideAllModals: () => void
 }
 
 const ModalContext = createContext<ModalContextType | undefined>(undefined)
@@ -51,6 +52,11 @@ export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
     setPlainModalProps(props)
   }
 
+  const showSuperModal = (Component: React.FC<any>, props: Record<string, any> = {}) => {
+    setSuperModalComponent(() => Component)
+    setSuperModalProps(props)
+  }
+
   const hideModal = () => {
     setModalComponent(null)
     setModalProps({})
@@ -61,28 +67,26 @@ export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
     setPlainModalProps({})
   }
 
-  const showSuperModal = (Component: React.FC<any>, props: Record<string, any> = {}) => {
-    setSuperModalComponent(() => Component)
-    setSuperModalProps(props)
-  }
-
   const hideSuperModal = () => {
     setSuperModalComponent(null)
     setSuperModalProps({})
   }
 
+  const hideAllModals = () => {
+    hideModal()
+    hidePlainModal()
+    hideSuperModal()
+  }
+
   return (
-    <ModalContext.Provider value={{ showModal, hideModal, showPlainModal, hidePlainModal, showSuperModal, hideSuperModal }}>
+    <ModalContext.Provider value={{ showModal, hideModal, showPlainModal, hidePlainModal, showSuperModal, hideSuperModal, hideAllModals }}>
       {children}
 
       {PlainModalComponent && (
         <Modal animationType="fade" transparent visible onRequestClose={hideModal}>
           <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}>
             <TouchableWithoutFeedback onPress={hidePlainModal}>
-              <View style={[
-                styles.backdrop,
-                {zIndex: 1}
-              ]} />
+              <View style={[styles.backdrop, { zIndex: 1 }]} />
             </TouchableWithoutFeedback>
             <View>
               <PlainModalComponent {...plainModalProps} />
@@ -95,17 +99,11 @@ export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
         <Modal animationType="fade" transparent visible onRequestClose={hideModal}>
           <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}>
             <TouchableWithoutFeedback onPress={hideModal}>
-              <View style={[
-                styles.backdrop,
-                { backgroundColor: isDark ? "rgba(0,0,0,0.75)" : "rgba(0,0,0,0.5)" }
-              ]} />
+              <View style={[styles.backdrop, { backgroundColor: isDark ? "rgba(0,0,0,0.75)" : "rgba(0,0,0,0.5)" }]} />
             </TouchableWithoutFeedback>
 
             <View style={styles.modalContainer}>
-              <View style={[
-                styles.modalContent,
-                { backgroundColor: isDark ? Colors.background.dark : Colors.background.light, ...spacing.borderRadius(12) }
-              ]}>
+              <View style={[styles.modalContent, { backgroundColor: isDark ? Colors.background.dark : Colors.background.light, ...spacing.borderRadius(12) }]}>
                 <ModalComponent {...modalProps} />
               </View>
             </View>
@@ -121,10 +119,7 @@ export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
             </TouchableWithoutFeedback>
 
             <View style={[styles.modalContainer, { zIndex: 10000 }]}>
-              <View style={[
-                styles.modalContent,
-                { backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light, ...spacing.borderRadius(12) }
-              ]}>
+              <View style={[styles.modalContent, { backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light, ...spacing.borderRadius(12) }]}>
                 <SuperModalComponent {...superModalProps} />
               </View>
             </View>

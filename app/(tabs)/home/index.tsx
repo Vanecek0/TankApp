@@ -1,5 +1,5 @@
-import { Animated, View } from 'react-native';
-import React, { useCallback, useEffect, useState } from 'react';
+import { Animated, Dimensions, View } from 'react-native';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useTheme } from '@/theme/ThemeProvider';
 import { ThemeColors as Colors } from '@/constants/Colors';
 import ScaledText from '@/components/common/ScaledText';
@@ -23,12 +23,15 @@ import { tankingService } from '@/services/tankingService';
 import { Fuel } from '@/models/Fuel';
 import { Badge } from '@/models/Badge';
 import CollapsibleScroll from '@/components/CollapsibleScroll';
+import { LinearGradient } from 'expo-linear-gradient';
+import darkenHexColor from '@/utils/colorDarken';
 
 export default function HomeScreen() {
   const { isDark } = useTheme();
   const { car } = useSelector((state: RootState) => state.car);
   const dispatch = useDispatch<AppDispatch>();
   const { showModal } = useModal();
+  const scrollY = useRef(new Animated.Value(0)).current;
   const [orderTankings, setOrderTankings] = useState<'DESC' | 'ASC'>('DESC');
   const [tanking, setTanking] = useState<{
     month: string,
@@ -69,40 +72,36 @@ export default function HomeScreen() {
     }
   }) => {
     return (
-      <View style={{ ...spacing.gap(12) }}>
-        <ScaledText size='base' className='capitalize' style={{ color: isDark ? Colors.text.primary_dark : '' }}>{getDate(item.month).monthLong} {getDate(item.month).year}</ScaledText>
-        <View style={{ ...spacing.gap(12) }}>
-          {item.tankings.map((item) => (
-            <React.Fragment key={item.id}>
-              <Card>
-                <View style={{ ...spacing.gap(12) }} className='flex-row items-center'>
-                  <ScaledText className='rounded-full' style={{ backgroundColor: "lightgray", fontWeight: "bold", ...spacing.p(16) }} size='base'>{item.station?.provider?.slice(0, 2).toUpperCase() ?? '-'}</ScaledText>
-                  <View className='flex-row justify-between flex-1'>
-                    <View style={{ ...spacing.gap(4) }} className='flex items-start w-2/3'>
-                      <ScaledText isThemed={true} size="lg" className='font-bold'>{item.station?.name ?? 'Neznámá stanice'}</ScaledText>
-                      <View style={{ ...spacing.gap(2) }} className='flex-row items-center justify-start'>
-                        <Icon name="map_pin" color={Colors.text.muted} size={getScaleFactor() * 15} />
-                        <ScaledText numberOfLines={1} ellipsizeMode="tail" className='text-ellipsis overflow-visible' isThemed={true} size="sm">{item.station?.address ?? 'Bez adresy'}</ScaledText>
-                      </View>
-                      <View style={{ ...spacing.gap(12) }} className='flex-col'>
-                        <View style={{ ...spacing.gap(2) }} className='flex-row items-center justify-start'>
-                          <Icon name="calendar" color={Colors.text.muted} size={getScaleFactor() * 15} />
-                          <ScaledText isThemed={true} size="sm">{new Date(item.tank_date).toLocaleDateString("cs-CZ")}, {new Date(item.created_at).toLocaleTimeString("cs-CZ", { hour: "2-digit", minute: "2-digit" })}</ScaledText>
-                        </View>
-                      </View>
-                    </View>
-
-                    <View style={{ ...spacing.gap(4) }} className='flex items-end'>
-                      <ScaledText isThemed={true} size="lg" className='font-bold'>{item.price} Kč</ScaledText>
-                      <ScaledText isThemed={true} size="sm">{item.amount}l</ScaledText>
-                      <ScaledText isThemed={true} size="sm">{item.tachometer} km</ScaledText>
+      <View>
+        <ScaledText size='xl' className='capitalize font-bold' style={{ color: isDark ? Colors.text.primary_dark : '', ...spacing.my(12) }}>{getDate(item.month).monthLong} {getDate(item.month).year}</ScaledText>
+        {item.tankings.map((item) => (
+          <Card key={item.id}>
+            <View style={{ ...spacing.gap(12) }} className='flex-row items-center'>
+              <ScaledText className='rounded-full' style={{ backgroundColor: "lightgray", fontWeight: "bold", ...spacing.p(16) }} size='lg'>{item.station?.provider?.slice(0, 2).toUpperCase() ?? '-'}</ScaledText>
+              <View className='flex-row justify-between flex-1'>
+                <View style={{ ...spacing.gap(4) }} className='flex items-start w-2/3'>
+                  <ScaledText isThemed size="xl" className='font-bold'>{item.station?.name ?? 'Neznámá stanice'}</ScaledText>
+                  <View style={{ ...spacing.gap(4) }} className='flex-row items-center justify-start'>
+                    <Icon name="map_pin" color={Colors.text.muted} size={getScaleFactor() * 16} />
+                    <ScaledText numberOfLines={1} ellipsizeMode="tail" className='text-ellipsis overflow-visible' isThemed size="base">{item.station?.address ?? 'Bez adresy'}</ScaledText>
+                  </View>
+                  <View style={{ ...spacing.gap(12) }} className='flex-col'>
+                    <View style={{ ...spacing.gap(4) }} className='flex-row items-center justify-start'>
+                      <Icon name="calendar" color={Colors.text.muted} size={getScaleFactor() * 16} />
+                      <ScaledText isThemed size="base">{new Date(item.tank_date).toLocaleDateString("cs-CZ")}, {new Date(item.created_at).toLocaleTimeString("cs-CZ", { hour: "2-digit", minute: "2-digit" })}</ScaledText>
                     </View>
                   </View>
                 </View>
-              </Card >
-            </React.Fragment>
-          ))}
-        </View>
+
+                <View style={{ ...spacing.gap(4) }} className='flex items-end'>
+                  <ScaledText isThemed size="xl" className='font-bold'>{item.price} Kč</ScaledText>
+                  <ScaledText isThemed size="base">{item.amount} l</ScaledText>
+                  <ScaledText isThemed size="base">{item.tachometer} km</ScaledText>
+                </View>
+              </View>
+            </View>
+          </Card >
+        ))}
       </View>
     )
   })
@@ -129,13 +128,31 @@ export default function HomeScreen() {
       >
         <CollapsibleScroll
           header={(scrollY) =>
-            <View style={{ ...spacing.mx(20) }}>
-              <Dashboard scrollRefVal={scrollY} />
+            <View>
+
+              <LinearGradient
+                colors={[Colors.base.primary, darkenHexColor(Colors.base.primary, -15)]}
+                locations={[0, 1]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+                style={{
+                  position: 'absolute',
+                  height: '75%',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                }}
+              />
+
+              <View style={{ ...spacing.mx(20) }}>
+                <Dashboard scrollRefVal={scrollY} />
+              </View>
             </View>
           }
+          scrollYValue={scrollY}
           subHeader={() => (
             <View style={{ ...spacing.py(12), ...spacing.mx(20) }} className='flex-row items-center justify-between'>
-              <ScaledText size='lg' className='font-bold' isThemed={true}>Poslední záznamy</ScaledText>
+              <ScaledText size='lg' className='font-bold' isThemed>Poslední záznamy</ScaledText>
               <Dropdown
                 defaultIndex={0}
                 data={[
@@ -163,9 +180,9 @@ export default function HomeScreen() {
           scrollComponent={Animated.FlatList}
           scrollProps={{
             initialNumToRender: 1,
-            maxToRenderPerBatch: 1,
-            windowSize: 1,
-            contentContainerStyle: { ...spacing.borderRadius(12), ...spacing.mx(20), ...spacing.pb(12), backgroundColor: isDark ? Colors.background.dark : Colors.background.light },
+            maxToRenderPerBatch: 2,
+            windowSize: 2,
+            contentContainerStyle: { ...spacing.borderRadius(12), ...spacing.mx(20), ...spacing.pb(6), backgroundColor: isDark ? Colors.background.dark : Colors.background.light },
             renderItem: renderItem,
             horizontal: false,
             data: tanking,
@@ -181,7 +198,7 @@ export default function HomeScreen() {
         </CollapsibleScroll>
 
       </View >
-      <ActionButton>
+      <ActionButton scrollY={scrollY}>
         <View onTouchEnd={
           () => { showModal(AddTankRecordModal) }} style={{ ...spacing.right(10) }} className='flex-row items-center gap-3'>
           <ScaledText size={'base'} color={isDark ? Colors.base.white : ''} className='font-bold'>Přidat tankování</ScaledText>

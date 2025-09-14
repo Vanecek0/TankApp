@@ -95,6 +95,8 @@ export async function createTables(db: SQLite.SQLiteDatabase) {
         "mileage"	NUMERIC,
         "tachometer" NUMERIC,
         "tank_date" NUMERIC,
+        "full_tank" INTEGER NOT NULL DEFAULT 0 CHECK("full_tank" IN (0,1)),
+        "note" TEXT,
         "snapshot" TEXT,
         "created_at"	NUMERIC,
         "updated_at"	NUMERIC,

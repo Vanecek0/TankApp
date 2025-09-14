@@ -45,26 +45,41 @@ export default function CustomButton(
     );
 }
 
-
 type ActionButtonProps = {
     children?: React.ReactNode;
-    opacity?: Animated.Value;
+    scrollY?: Animated.Value;
 };
 
-export function ActionButton({ children, opacity }: ActionButtonProps) {
+export function ActionButton({ children, scrollY }: ActionButtonProps) {
     const { isDark } = useTheme();
     const [isOpen, setIsOpen] = useState(false);
+    const fadeAnim = useRef(new Animated.Value(1)).current;
 
-    const [visible, setVisible] = useState(true);
 
     useEffect(() => {
-        if (!(opacity instanceof Animated.Value)) return;
+        if (!(scrollY instanceof Animated.Value)) return;
 
-        const id = opacity.addListener(({ value }) => {
-            setVisible(value > 0);
+        let lastValue = 0;
+
+        const id = scrollY.addListener(({ value }) => {
+            if (value > lastValue + 5) {
+                Animated.timing(fadeAnim, {
+                    toValue: 0,
+                    duration: 50,
+                    useNativeDriver: true,
+                }).start();
+            } else if (value < lastValue - 5) {
+                Animated.timing(fadeAnim, {
+                    toValue: 1,
+                    duration: 50,
+                    useNativeDriver: true,
+                }).start();
+            }
+            lastValue = value;
         });
-        return () => opacity.removeListener(id);
-    }, [opacity]);
+
+        return () => scrollY.removeListener(id);
+    }, [scrollY, fadeAnim]);
 
     return (
         <View className='flex justify-end items-end absolute bottom-0 top-0 left-0 right-0 gap-3'>
@@ -76,7 +91,7 @@ export function ActionButton({ children, opacity }: ActionButtonProps) {
                     </View>
                 </>
             ) : null}
-            <Animated.View className={visible ? "show" : "hidden"} style={{ zIndex: 20, opacity: opacity }}>
+            <Animated.View style={{ zIndex: 20, opacity: fadeAnim }}>
                 <CustomButton labelClassName='aspect text-center' onPress={() => setIsOpen(!isOpen)} style={{ ...spacing.borderRadius(90), ...spacing.p(24), ...spacing.my(12), ...spacing.right(20), ...spacing.width(80), zIndex: 20 }} className={`flex justify-center items-center aspect-square`} label='+' labelSize='xl' labelColor={Colors.white} backgroundColor={Colors.primary} />
             </Animated.View>
         </View>

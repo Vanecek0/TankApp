@@ -14,7 +14,6 @@ export async function getBadgeSeeds(): Promise<Badge[]> {
             name: 'Rezerva',
             color: '#ff0000',
         },
-
         {
             name: 'Ekonomická jízda',
             color: '#00b894',

@@ -26,7 +26,7 @@ export class Car implements ICar {
   odometer!: number
 
   static tableName = "car"
-  
+
   static columns: (keyof Car)[] = [
     "id",
     "manufacturer",

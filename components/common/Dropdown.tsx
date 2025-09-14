@@ -60,7 +60,7 @@ export default function Dropdown<T>({
                 activeOpacity={0.8}
                 style={[{
                     ...spacing.px(12),
-                    ...spacing.py(11),
+                    ...spacing.py(10),
                     ...spacing.borderRadius(12),
                     ...spacing.borderWidth(1),
                     ...spacing.borderBottomRadius(expanded ? 0 : 12),

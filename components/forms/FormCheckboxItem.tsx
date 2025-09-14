@@ -1,8 +1,11 @@
 import { useController } from "react-hook-form";
-import { Pressable, Text } from "react-native";
+import { Pressable, Text, View } from "react-native";
 import { ThemeColors as Colors } from "@/constants/Colors";
 import { useTheme } from "@/theme/ThemeProvider";
 import { useEffect } from "react";
+import ScaledText from "../common/ScaledText";
+import Icon from "../Icon";
+import getScaleFactor, { spacing } from "@/utils/SizeScaling";
 
 type FormCheckboxItemProps = {
     name: string;
@@ -58,18 +61,44 @@ export default function FormCheckboxItem({
             style={{
                 flexDirection: "row",
                 alignItems: "center",
+                paddingVertical: 4,
             }}
         >
             {render ? (
                 render(isChecked)
             ) : (
-                <Text
-                    style={{
-                        color: isDark ? Colors.text.primary : Colors.text.primary_dark,
-                    }}
-                >
-                    {label ?? value}
-                </Text>
+                <>
+                    {/* Default fallback checkbox */}
+                    <View
+                    className="justify-center items-center"
+                        style={{
+                            ...spacing.width(20),
+                            ...spacing.height(20),
+                            ...spacing.borderWidth(isChecked ? 0 : 1),
+                            ...spacing.borderRadius(4),
+                            borderColor: isDark ? Colors.border.secondary_dark : Colors.border.secondary,
+                            backgroundColor: isChecked
+                                ? (Colors.base.primary)
+                                : "transparent",
+                            ...spacing.me(8),
+                        }}
+                    >
+                        {isChecked && (
+                            <ScaledText color={Colors.base.white} size="xs">
+                                <Icon name='check' color={Colors.base.white} size={getScaleFactor() * 16} />
+                            </ScaledText>
+                        )}
+                    </View>
+
+                    {(label || value) && (
+                        <ScaledText
+                            isThemed
+                            size="base"
+                        >
+                            {label ?? value}
+                        </ScaledText>
+                    )}
+                </>
             )}
         </Pressable>
     );
