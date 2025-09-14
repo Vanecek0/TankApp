@@ -1,46 +1,20 @@
-export interface ITanking {
-  id?: number;
-  car_id: number;
-  station_fuel_id: number;
-  price_per_unit: number;
-  price: number;
-  amount: number;
-  mileage: number;
-  tachometer: number;
-  tank_date: number;
-  snapshot?: string;
-  created_at: number;
-  updated_at: number;
-}
-
-export class Tanking implements ITanking {
+export class Tanking {
   id?: number;
   car_id!: number;
   station_fuel_id!: number;
-  price_per_unit!: number;
-  price!: number;
-  amount!: number;
-  mileage!: number;
-  tachometer!: number;
-  tank_date!: number;
-  snapshot?: string;
-  created_at!: number;
-  updated_at!: number;
+  price_per_unit?: number;
+  price?: number;
+  amount?: number;
+  mileage?: number;
+  tachometer?: number;
+  tank_date: number = Date.now();
+  full_tank: boolean = false;
+  note!: string;
+  snapshot!: string;
+  created_at: number = Date.now();
+  updated_at: number = Date.now();
 
-  static tableName = "tanking"
-  
-  static columns: (keyof Tanking)[] = [
-    "id",
-    "car_id",
-    "station_fuel_id",
-    "price_per_unit",
-    "price",
-    "amount",
-    "mileage",
-    "tachometer",
-    "tank_date",
-    "snapshot",
-    "created_at",
-    "updated_at"
-  ]
+  static tableName = "tanking";
+
+  static columns = Object.keys(new Tanking());
 }

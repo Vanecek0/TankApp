@@ -58,7 +58,7 @@ export default function FormDateTimeInput({ name, control, fieldHeight = 46, mod
                 <ScaledText
                     size='base'
                     style={{
-                        color: isDark ? Colors.base.white : Colors.text.primary_dark
+                        color: isDark ? Colors.text.primary_dark : Colors.text.primary
                     }}
                 >
                     {field.value !== undefined ? displayValue : defaultValue}

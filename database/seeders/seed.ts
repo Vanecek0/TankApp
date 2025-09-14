@@ -31,6 +31,7 @@ export async function seed(db: SQLite.SQLiteDatabase) {
         }
         await db.execAsync("BEGIN TRANSACTION;")
 
+        {/**TODO: najít alternativu za reflexe :) */}
         try {
             await seedEntity(await getFuelSeeds(), fuelRepository)
             await seedEntity(await getStationSeeds(), stationRepository)

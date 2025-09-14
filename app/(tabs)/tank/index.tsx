@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Animated, RefreshControl, ScrollView, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { TabView, SceneMap } from 'react-native-tab-view';
+import { TabView } from 'react-native-tab-view';
 import { useTheme } from '@/theme/ThemeProvider';
 import { ThemeColors as Colors } from '@/constants/Colors';
 import { spacing } from '@/utils/SizeScaling';
@@ -18,6 +18,8 @@ import { AppDispatch, RootState } from '@/store';
 import { tankingService } from '@/services/tankingService';
 import { TankingItem } from '@/components/tanking/TankingItem';
 import TankStatistics from './tabs/statistics';
+import { LinearGradient } from 'expo-linear-gradient';
+import darkenHexColor from '@/utils/colorDarken';
 
 export default function TankScreen() {
   const { isDark } = useTheme();
@@ -185,13 +187,28 @@ export default function TankScreen() {
 
 
   return (
-    <View style={{ flex: 1, backgroundColor: isDark ? Colors.background.dark : Colors.background.light }}>
-      <View style={{ ...spacing.mx(20) }}>
-        <View style={{ position: 'absolute', top: 0, left: 0, right: 0, backgroundColor: isDark ? Colors.background.dark : Colors.background.light }}>
+    <View style={{ backgroundColor: isDark ? Colors.background.dark : Colors.background.light }}>
+      <View>
+        <LinearGradient
+          colors={[Colors.base.primary, darkenHexColor(Colors.base.primary, -15)]}
+          locations={[0, 1]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+          style={{
+            position: 'absolute',
+            height: '75%',
+            top: 0,
+            left: 0,
+            right: 0,
+          }}
+        />
+        <View style={{ ...spacing.mx(20) }}>
           <Dashboard scrollRefVal={scrollY} />
         </View>
+      </View>
 
-        <Animated.View style={{ height: "100%", marginTop: headerHeight }}>
+      <View style={{ ...spacing.mx(20)}}>
+        <Animated.View style={{ height: "100%" }}>
           <TabView
             lazy
             navigationState={{ index, routes }}

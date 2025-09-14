@@ -5,6 +5,8 @@ module.exports = {
     "./app/**/*.{js,jsx,ts,tsx}",
     "./app/(tabs)/**/*.{js,jsx,ts,tsx}",
     "./components/**/*.{js,jsx,ts,tsx}",
+    "./components/common/**/*.{js,jsx,ts,tsx}",
+    "./components/forms/**/*.{js,jsx,ts,tsx}",
     "./utils/**/*.{js,jsx,ts,tsx}",
     "./theme/**/*.{js,jsx,ts,tsx}",
   ],

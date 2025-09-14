@@ -1,5 +1,5 @@
 import { Tabs } from 'expo-router';
-import { Platform, Text } from 'react-native';
+import { Platform, Text, View } from 'react-native';
 import { useTheme } from '@/theme/ThemeProvider';
 import { ThemeColors as Colors } from '@/constants/Colors';
 import getScaleFactor, { spacing } from '@/utils/SizeScaling';
@@ -19,83 +19,83 @@ export default function TabsLayout() {
     const { isDark } = useTheme();
 
     return (
-        <SafeAreaView style={{ backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light, flex: 1 }} className={`flex-1 ${isDark ? 'dark' : ''}`}>
-            <ModalProvider>
-                <SettingsBar />
-                <Tabs
-                    initialRouteName="home/index"
-                    screenOptions={{
-                        tabBarActiveTintColor: Colors.base.primary,
-                        headerShown: false,
-                        tabBarStyle: Platform.select({
-                            ios: {
-                                backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light,
-                                ...spacing.height(55),
-                                borderTopWidth: 0,
-                                paddingBottom: 0
-                            },
-                            android: {
-                                backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light,
-                                ...spacing.height(75),
-                                borderTopWidth: 0,
-                                paddingBottom: 5,
-                                paddingTop: 5,
-                            },
-                            default: {
-                                backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light,
-                                ...spacing.height(75),
-                                borderTopWidth: 0,
-                                paddingBottom: 0 * getScaleFactor()
-                            },
-                        }),
-                        tabBarLabelStyle: {
-                            fontSize: 12 * getScaleFactor(),
-                            fontWeight: 'bold',
-                        },
-                        tabBarShowLabel: true,
-                        tabBarInactiveTintColor: '#999',
-                        tabBarLabelPosition: 'below-icon'
-                    }}>
-                    <Tabs.Screen
-                        name="home/index"
-                        options={{
-                            title: 'Domů',
+        <SafeAreaView edges={['left', 'right', 'bottom']} className={`flex-1 ${isDark ? 'dark' : ''}`} style={{ flex: 1,  backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light }}>
+                <ModalProvider>
+                    <SettingsBar />
+                    <Tabs
+                        initialRouteName="home/index"
+                        screenOptions={{
+                            tabBarActiveTintColor: Colors.base.primary,
+                            headerShown: false,
+                            tabBarStyle: Platform.select({
+                                ios: {
+                                    backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light,
+                                    ...spacing.height(55),
+                                    borderTopWidth: 0,
+                                    paddingBottom: 0
+                                },
+                                android: {
+                                    backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light,
+                                    ...spacing.height(75),
+                                    borderTopWidth: 0,
+                                    paddingBottom: 5,
+                                    paddingTop: 5,
+                                },
+                                default: {
+                                    backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light,
+                                    ...spacing.height(75),
+                                    borderTopWidth: 0,
+                                    paddingBottom: 0 * getScaleFactor()
+                                },
+                            }),
                             tabBarLabelStyle: {
-                                fontSize: FontSizes["base"].size
+                                fontSize: 12 * getScaleFactor(),
+                                fontWeight: 'bold',
                             },
-                            tabBarIcon: ({ color }: { color: string }) => <Icon name="home" color={color} style={{ ...spacing.width(24), ...spacing.height(24) }} />,
-                        }}
-                    />
-                    <Tabs.Screen
-                        name="tank/index"
-                        options={{
-                            title: 'Tankování',
-                            tabBarLabelStyle: {
-                                fontSize: FontSizes["base"].size
-                            },
-                            tabBarIcon: ({ color }: { color: string }) => <Icon name="tank" color={color} style={{ ...spacing.width(24), ...spacing.height(24) }} />,
-                        }}
-                    />
-                    <Tabs.Screen
-                        name="tank/tabs/statistics"
-                        options={{
-                            href: null,
-                        }}
-                    />
-                    <Tabs.Screen
-                        name="service/index"
-                        options={{
-                            title: 'Servis',
-                            tabBarLabelStyle: {
-                                fontSize: FontSizes["base"].size
-                            },
-                            tabBarIcon: ({ color }: { color: string }) => <Icon name="car_repair" color={color} style={{ ...spacing.width(24), ...spacing.height(24) }} />,
-                        }}
-                    />
-                  
-                </Tabs>
-                <StatusBar style={isDark ? "light" : "dark"} />
-            </ModalProvider>
+                            tabBarShowLabel: true,
+                            tabBarInactiveTintColor: '#999',
+                            tabBarLabelPosition: 'below-icon'
+                        }}>
+                        <Tabs.Screen
+                            name="home/index"
+                            options={{
+                                title: 'Domů',
+                                tabBarLabelStyle: {
+                                    fontSize: FontSizes["base"].size
+                                },
+                                tabBarIcon: ({ color }: { color: string }) => <Icon name="home" color={color} style={{ ...spacing.width(24), ...spacing.height(24) }} />,
+                            }}
+                        />
+                        <Tabs.Screen
+                            name="tank/index"
+                            options={{
+                                title: 'Tankování',
+                                tabBarLabelStyle: {
+                                    fontSize: FontSizes["base"].size
+                                },
+                                tabBarIcon: ({ color }: { color: string }) => <Icon name="tank" color={color} style={{ ...spacing.width(24), ...spacing.height(24) }} />,
+                            }}
+                        />
+                        <Tabs.Screen
+                            name="tank/tabs/statistics"
+                            options={{
+                                href: null,
+                            }}
+                        />
+                        <Tabs.Screen
+                            name="service/index"
+                            options={{
+                                title: 'Servis',
+                                tabBarLabelStyle: {
+                                    fontSize: FontSizes["base"].size
+                                },
+                                tabBarIcon: ({ color }: { color: string }) => <Icon name="car_repair" color={color} style={{ ...spacing.width(24), ...spacing.height(24) }} />,
+                            }}
+                        />
+
+                    </Tabs>
+                    <StatusBar style={"light"} />
+                </ModalProvider>
         </SafeAreaView>
     );
 }

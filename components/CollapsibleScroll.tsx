@@ -10,6 +10,7 @@ type CollapsibleScrollProps<T> = {
     subHeader?: (scrollY: Animated.Value) => React.ReactNode;
     wrapper?: (content: React.ReactNode, scrollY: Animated.Value) => React.ReactNode;
     scrollComponent?: React.ComponentType<any>;
+    scrollYValue?: Animated.Value;
 };
 
 const CollapsibleScroll = <T,>({
@@ -19,8 +20,9 @@ const CollapsibleScroll = <T,>({
     subHeader,
     wrapper,
     scrollComponent: ScrollComponent = ScrollView,
+    scrollYValue
 }: CollapsibleScrollProps<T>) => {
-    const scrollY = useRef(new Animated.Value(0)).current;
+    const scrollY = scrollYValue ?? useRef(new Animated.Value(0)).current;
     const [headerHeight, setHeaderHeight] = useState(0);
     const [subHeaderHeight, setSubHeaderHeight] = useState(0);
     const { isDark } = useTheme();
@@ -40,6 +42,7 @@ const CollapsibleScroll = <T,>({
                 setHeaderHeight(height);
             });
         }
+
     }, []);
 
     const scrollContent = (
