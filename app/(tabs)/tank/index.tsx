@@ -1,7 +1,6 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Animated, RefreshControl, ScrollView, TouchableOpacity, View } from 'react-native';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { Animated, RefreshControl, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { TabView } from 'react-native-tab-view';
 import { useTheme } from '@/theme/ThemeProvider';
 import { ThemeColors as Colors } from '@/constants/Colors';
 import { spacing } from '@/utils/SizeScaling';
@@ -17,9 +16,11 @@ import { loadCarFromStorage } from '@/store/slices/car.slice';
 import { AppDispatch, RootState } from '@/store';
 import { tankingService } from '@/services/tankingService';
 import { TankingItem } from '@/components/tanking/TankingItem';
-import TankStatistics from './tabs/statistics';
 import { LinearGradient } from 'expo-linear-gradient';
 import darkenHexColor from '@/utils/colorDarken';
+import CollapsibleScroll from '@/components/CollapsibleScroll';
+import { router } from 'expo-router';
+import Card from '@/components/common/Card';
 
 export default function TankScreen() {
   const { isDark } = useTheme();
@@ -31,49 +32,13 @@ export default function TankScreen() {
   const [tanking, setTanking] = useState<any[]>([]);
   const [orderTankings, setOrderTankings] = useState<'DESC' | 'ASC'>('DESC');
 
-  const [index, setIndex] = useState(0);
-  const [routes] = useState([
-    { key: 'first', title: 'Záznamy' },
-    { key: 'second', title: 'Statistiky' },
-  ]);
-
-  const renderScene = useMemo(
-    () =>
-      ({ route }: { route: { key: string } }) => {
-        switch (route.key) {
-          case "first":
-            return renderTankingList();
-          case "second":
-            return renderTankstatistics();
-          default:
-            return null;
-        }
-      },
-    [orderTankings, isLoading, tanking, isDark]
-  );
-
   const scrollY = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     flatListRef.current?.scrollToOffset({ offset: 0, animated: true });
-    Animated.timing(scrollY, {
-      toValue: 0,
-      duration: 300,
-      useNativeDriver: false,
-    }).start();
-  }, [index, orderTankings]);
+  }, [orderTankings]);
 
   const flatListRef = useRef<Animated.FlatList>(null);
-
-  const H_MAX_HEIGHT = 280;
-  const H_MIN_HEIGHT = 95;
-  const H_SCROLL_DISTANCE = H_MAX_HEIGHT - H_MIN_HEIGHT;
-
-  const headerHeight = scrollY.interpolate({
-    inputRange: [0, H_SCROLL_DISTANCE],
-    outputRange: [H_MAX_HEIGHT, H_MIN_HEIGHT],
-    extrapolate: 'clamp',
-  });
 
   useEffect(() => {
     dispatch(loadCarFromStorage());
@@ -145,102 +110,155 @@ export default function TankScreen() {
     </>
   );
 
-  const renderTankstatistics = () => (
-    <Animated.ScrollView
-      showsVerticalScrollIndicator={false}
-      contentContainerStyle={{ paddingBottom: 180 }}
-      scrollEventThrottle={16}
-    >
-      <TankStatistics />
-    </Animated.ScrollView>
-  );
-
-  const renderTabBar = useCallback(
-    (props: any) => (
-      <View className="flex-row justify-center items-center" style={{ ...spacing.mt(12), ...spacing.gap(12) }}>
-        {props.navigationState.routes.map((route: any, i: number) => (
-          <TouchableOpacity
-            key={route.key}
-            style={{
-              width: '50%',
-              ...spacing.py(10),
-              borderTopLeftRadius: 8,
-              borderTopRightRadius: 8,
-              borderBottomWidth: 3,
-              borderBottomColor: Colors.base.primary,
-              backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light,
-            }}
-            onPress={() => setIndex(i)}
-          >
-            <ScaledText
-              size="base"
-              style={{ fontWeight: 'bold', textAlign: 'center', color: isDark ? Colors.text.primary_dark : Colors.text.primary }}
-            >
-              {route.title}
-            </ScaledText>
-          </TouchableOpacity>
-        ))}
-      </View>
-    ),
-    [isDark]
-  );
-
-
   return (
-    <View style={{ backgroundColor: isDark ? Colors.background.dark : Colors.background.light }}>
-      <View>
-        <LinearGradient
-          colors={[Colors.base.primary, darkenHexColor(Colors.base.primary, -15)]}
-          locations={[0, 1]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 0 }}
-          style={{
-            position: 'absolute',
-            height: '75%',
-            top: 0,
-            left: 0,
-            right: 0,
+    <>
+      <View
+        className='flex-1'
+        style={{
+          backgroundColor: isDark ? Colors.background.dark : Colors.background.light
+        }}
+      >
+        <CollapsibleScroll
+          header={(scrollY) =>
+            <View>
+              <LinearGradient
+                colors={[Colors.base.primary, darkenHexColor(Colors.base.primary, -15)]}
+                locations={[0, 1]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+                style={{
+                  position: 'absolute',
+                  height: '75%',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                }}
+              />
+
+              <View style={{ ...spacing.mx(20) }}>
+                <Dashboard scrollRefVal={scrollY} />
+              </View>
+            </View>
+          }
+          subHeader={() => (
+            <View style={{ ...spacing.py(12), ...spacing.mx(20) }} className='flex-row items-center justify-between'>
+              <ScaledText size='lg' className='font-bold' isThemed>Poslední záznamy</ScaledText>
+              <Dropdown
+                defaultIndex={0}
+                data={[
+                  { value: 'DESC', label: 'Nejnovější' },
+                  { value: 'ASC', label: 'Nejstarší' }
+                ]}
+                onChange={(item) => {
+                  if (item.value === "DESC" || item.value === "ASC") {
+                    setOrderTankings(item.value);
+                  } else {
+                    console.warn("Invalid value for order:", item.value);
+                  }
+                }}
+                dropdownStyle={{
+                  ...spacing.borderRadius(12),
+                  ...spacing.width(180),
+                  ...spacing.borderWidth(0.5),
+                  ...spacing.p(12),
+                  borderColor: Colors.base.transparent,
+                  backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light
+                }}
+              ></Dropdown>
+            </View>
+          )}
+          scrollComponent={Animated.FlatList}
+          scrollProps={{
+            data: tanking,
+            keyExtractor: (item, idx) => item.month ?? idx.toString(),
+            renderItem: ({ item }) => <TankingItem item={item} isDark={isDark} />,
+            refreshControl: <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />,
+            scrollEventThrottle: 16,
+            onScroll: Animated.event(
+              [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+              { useNativeDriver: false }
+            ),
+            showsVerticalScrollIndicator: false,
+            ListEmptyComponent: (
+              <ScaledText style={{ ...spacing.p(28) }} className="text-center font-bold" color={Colors.text.muted} size="base">
+                {isLoading ? 'Načítání' : 'Žádné další záznamy'}
+              </ScaledText>
+            ),
+            contentContainerStyle: { ...spacing.borderRadius(12), ...spacing.mx(20), ...spacing.pb(6), backgroundColor: isDark ? Colors.background.dark : Colors.background.light },
           }}
+          scrollYValue={scrollY}
         />
-        <View style={{ ...spacing.mx(20) }}>
-          <Dashboard scrollRefVal={scrollY} />
-        </View>
-      </View>
+      </View >
 
-      <View style={{ ...spacing.mx(20)}}>
-        <Animated.View style={{ height: "100%" }}>
-          <TabView
-            lazy
-            navigationState={{ index, routes }}
-            renderScene={renderScene}
-            renderTabBar={renderTabBar}
-            onIndexChange={setIndex}
+      <ActionButton scrollY={scrollY}>
+        <View onTouchEnd={
+          () => { showModal(AddTankRecordModal) }} style={{ ...spacing.right(10) }} className='flex-row items-center gap-3'>
+          <ScaledText size={'base'} color={isDark ? Colors.base.white : ''} className='font-bold'>Přidat tankování</ScaledText>
+          <CustomButton
+            labelClassName='aspect text-center'
+            style={{
+              ...spacing.borderRadius(90),
+              ...spacing.p(16),
+              ...spacing.width(60),
+              shadowColor: Colors.base.black,
+              shadowOffset: {
+                width: 0,
+                height: 5,
+              },
+              shadowOpacity: 0.34,
+              shadowRadius: 6.27,
+              elevation: 8,
+            }}
+            className={`flex shadow-md justify-center items-center aspect-square`}
+            label={
+              <Icon
+                name="tank"
+                color={Colors.base.primary}
+                style={{
+                  ...spacing.width(20),
+                  ...spacing.height(20),
+                }}
+              />
+            }
+            labelSize='xl'
+            backgroundColor={isDark ? Colors.background.surface.dark : Colors.background.surface.light}
+
           />
-        </Animated.View>
-
-      </View>
-
-      <ActionButton>
-        <AddActionButton label="Přidat tankování" icon="tank" onPress={() => showModal(AddTankRecordModal)} isDark={isDark} />
-        <AddActionButton label="Přidat stanici" icon="map_pin" onPress={() => showModal(AddStationRecordModal)} isDark={isDark} />
+        </View>
+        <View onTouchEnd={
+          () => { showModal(AddStationRecordModal) }} style={{ ...spacing.right(10) }} className='flex-row items-center gap-3'>
+          <ScaledText size={'base'} color={isDark ? Colors.base.white : ''} className='font-bold'>Přidat stanici</ScaledText>
+          <CustomButton
+            labelClassName='aspect-square text-center'
+            style={{
+              ...spacing.borderRadius(90),
+              ...spacing.p(16),
+              ...spacing.width(60),
+              shadowColor: Colors.base.black,
+              shadowOffset: {
+                width: 0,
+                height: 5,
+              },
+              shadowOpacity: 0.34,
+              shadowRadius: 6.27,
+              elevation: 8,
+            }}
+            className={`flex shadow-md justify-center items-center aspect-square`}
+            label={
+              <Icon
+                name="map_pin"
+                color={Colors.base.primary}
+                style={{
+                  ...spacing.width(20),
+                  ...spacing.height(20)
+                }}
+              />
+            }
+            labelSize='xl'
+            backgroundColor={isDark ? Colors.background.surface.dark : Colors.background.surface.light}
+          />
+        </View>
       </ActionButton>
-    </View>
+    </>
   );
 }
-
-const AddActionButton = ({ label, icon, onPress, isDark }: any) => (
-  <View onTouchEnd={onPress} className="flex-row items-center gap-3" style={{ ...spacing.right(10) }}>
-    <ScaledText size="base" color={isDark ? Colors.base.white : ''} className="font-bold">
-      {label}
-    </ScaledText>
-    <CustomButton
-      labelClassName="aspect-square text-center"
-      style={{ ...spacing.borderRadius(90), ...spacing.p(16), ...spacing.width(60) }}
-      className="flex shadow-md justify-center items-center aspect-square"
-      label={<Icon name={icon} color={Colors.base.primary} style={{ ...spacing.width(20), ...spacing.height(20) }} />}
-      labelSize="xl"
-      labelColor={isDark ? Colors.base.white : ''}
-      backgroundColor={isDark ? Colors.background.surface.dark : Colors.background.surface.light}
-    />
-  </View>
-);

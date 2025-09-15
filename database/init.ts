@@ -63,10 +63,6 @@ async function init(db: SQLiteDatabase) {
 async function seedData(db: SQLiteDatabase) {
     try {
         await db.runAsync("PRAGMA foreign_keys = ON;")
-        const tables = await db.getAllAsync<{ name: string }>(`
-        SELECT name FROM sqlite_master 
-        WHERE type='table' AND name IN ('station', 'tanking', 'fuel', 'station_fuel', 'badge_tanking', 'badge', 'car', 'part', 'servicing', 'autoservice', 'servicing_part');
-      `)
         await seed(db)
     } catch (error) {
         console.error("Failed to seed database:", error)

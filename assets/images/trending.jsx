@@ -5,8 +5,8 @@ function SvgComponent(props) {
   return (
     <Svg
       viewBox="0 0 10 10"
-      fill={props.color}
-      stroke="currentColor"
+      fill="transparent"
+      stroke={props.color}
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >

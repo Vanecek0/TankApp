@@ -1,7 +1,7 @@
 import Config from "react-native-config"
 import * as SQLite from "expo-sqlite"
 
-const DB_NAME = Config.DB_NAME ?? "database.db"
+const DB_NAME = Config.DB_NAME ?? "db.db"
 
 export default abstract class Database {
   private static dbInstance: SQLite.SQLiteDatabase | null = null
@@ -13,7 +13,7 @@ export default abstract class Database {
     }
 
     if (!this.dbOpeningPromise) {
-      console.log("Opening new DB connection...")
+      console.log("Opened new DB connection")
       this.dbOpeningPromise = SQLite.openDatabaseAsync(DB_NAME)
         .then((db) => {
           this.dbInstance = db

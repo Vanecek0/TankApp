@@ -77,11 +77,16 @@ export default function TabsLayout() {
                             }}
                         />
                         <Tabs.Screen
-                            name="tank/tabs/statistics"
+                            name="statistics/index"
                             options={{
-                                href: null,
+                                title: 'Statistiky',
+                                tabBarLabelStyle: {
+                                    fontSize: FontSizes["base"].size
+                                },
+                                tabBarIcon: ({ color }: { color: string }) => <Icon name="average" color={color} style={{ ...spacing.width(24), ...spacing.height(24) }} />,
                             }}
                         />
+                       
                         <Tabs.Screen
                             name="service/index"
                             options={{

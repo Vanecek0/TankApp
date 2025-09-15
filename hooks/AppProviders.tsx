@@ -10,7 +10,7 @@ import { DropdownProvider } from "./useDropdown";
 export const AppProviders: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     return (
         <ReduxProvider store={store}>
-            <SQLiteProvider databaseName="database.db">
+
                 <DatabaseProvider>
                     <ThemeProvider>
                         <DropdownProvider>
@@ -20,7 +20,6 @@ export const AppProviders: React.FC<{ children: React.ReactNode }> = ({ children
                         </DropdownProvider>
                     </ThemeProvider>
                 </DatabaseProvider>
-            </SQLiteProvider>
         </ReduxProvider>
     );
 };

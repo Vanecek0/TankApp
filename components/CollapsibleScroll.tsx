@@ -2,6 +2,7 @@ import { useTheme } from "@/theme/ThemeProvider";
 import React, { useEffect, useRef, useState } from "react";
 import { ThemeColors as Colors } from "@/constants/Colors";
 import { View, Animated, ScrollView, ScrollViewProps, FlatListProps } from "react-native";
+import { spacing } from "@/utils/SizeScaling";
 
 type CollapsibleScrollProps<T> = {
     header: (scrollY: Animated.Value) => React.ReactNode;
