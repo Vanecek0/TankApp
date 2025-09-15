@@ -1,4 +1,4 @@
-import { Animated, Dimensions, View } from 'react-native';
+import { Animated, View } from 'react-native';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useTheme } from '@/theme/ThemeProvider';
 import { ThemeColors as Colors } from '@/constants/Colors';
@@ -8,7 +8,6 @@ import getScaleFactor from '@/utils/SizeScaling';
 import { spacing } from '@/utils/SizeScaling';
 import { getDate } from '@/utils/getDate';
 import { Station } from '@/models/Station';
-import Dropdown from '@/components/common/Dropdown';
 import CustomButton, { ActionButton } from '@/components/common/Buttons';
 import Dashboard from '@/components/dashboards';
 import { useModal } from '@/hooks/useModal';
@@ -25,6 +24,7 @@ import { Badge } from '@/models/Badge';
 import CollapsibleScroll from '@/components/CollapsibleScroll';
 import { LinearGradient } from 'expo-linear-gradient';
 import darkenHexColor from '@/utils/colorDarken';
+import { router } from 'expo-router';
 
 export default function HomeScreen() {
   const { isDark } = useTheme();
@@ -32,7 +32,6 @@ export default function HomeScreen() {
   const dispatch = useDispatch<AppDispatch>();
   const { showModal } = useModal();
   const scrollY = useRef(new Animated.Value(0)).current;
-  const [orderTankings, setOrderTankings] = useState<'DESC' | 'ASC'>('DESC');
   const [tanking, setTanking] = useState<{
     month: string,
     tankings: (Tanking & {
@@ -47,10 +46,10 @@ export default function HomeScreen() {
     dispatch(loadCarFromStorage());
   }, [dispatch]);
 
-  const loadTankings = useCallback(async (orderTankings: 'DESC' | 'ASC', carId: number) => {
+  const loadTankings = useCallback(async (carId: number) => {
     setIsLoading(true);
     try {
-      const tankingsBadges = await tankingService.getGroupedTankingsByMonth(orderTankings, carId);
+      const tankingsBadges = await tankingService.getGroupedTankingsByMonth('DESC', carId, 3);
       setTanking(tankingsBadges);
     } catch (error) {
       console.error('Error while loading tankings:', error);
@@ -60,8 +59,8 @@ export default function HomeScreen() {
   }, [dispatch]);
 
   useEffect(() => {
-    loadTankings(orderTankings, car?.id ?? 2);
-  }, [loadTankings, car, orderTankings]);
+    loadTankings(car?.id ?? 2);
+  }, [loadTankings, car]);
 
   const TankingItem = React.memo(({ item }: {
     item: {
@@ -72,11 +71,11 @@ export default function HomeScreen() {
     }
   }) => {
     return (
-      <View>
-        <ScaledText size='xl' className='capitalize font-bold' style={{ color: isDark ? Colors.text.primary_dark : '', ...spacing.my(12) }}>{getDate(item.month).monthLong} {getDate(item.month).year}</ScaledText>
-        {item.tankings.map((item) => (
-          <Card key={item.id}>
-            <View style={{ ...spacing.gap(12) }} className='flex-row items-center'>
+      <View style={{ ...spacing.gap(12) }}>
+        <ScaledText size='xl' className='capitalize font-bold' style={{ color: isDark ? Colors.text.primary_dark : '' }}>{getDate(item.month).monthLong} {getDate(item.month).year}</ScaledText>
+        <View style={{...spacing.mb(12)}}>
+          {item.tankings.map((item, index) => (
+            <View key={index} style={{ ...spacing.gap(12), ...spacing.my(12) }} className='flex-row items-center'>
               <ScaledText className='rounded-full' style={{ backgroundColor: "lightgray", fontWeight: "bold", ...spacing.p(16) }} size='lg'>{item.station?.provider?.slice(0, 2).toUpperCase() ?? '-'}</ScaledText>
               <View className='flex-row justify-between flex-1'>
                 <View style={{ ...spacing.gap(4) }} className='flex items-start w-2/3'>
@@ -100,23 +99,12 @@ export default function HomeScreen() {
                 </View>
               </View>
             </View>
-          </Card >
-        ))}
+
+          ))}
+        </View>
       </View>
     )
   })
-
-  const renderItem = useCallback(
-    ({ item }: {
-      item: {
-        month: string,
-        tankings: (Tanking & {
-          station?: Station
-        })[]
-      }
-    }) => <TankingItem item={item} />,
-    [isDark]
-  );
 
   return (
     <>
@@ -129,7 +117,6 @@ export default function HomeScreen() {
         <CollapsibleScroll
           header={(scrollY) =>
             <View>
-
               <LinearGradient
                 colors={[Colors.base.primary, darkenHexColor(Colors.base.primary, -15)]}
                 locations={[0, 1]}
@@ -150,51 +137,30 @@ export default function HomeScreen() {
             </View>
           }
           scrollYValue={scrollY}
-          subHeader={() => (
-            <View style={{ ...spacing.py(12), ...spacing.mx(20) }} className='flex-row items-center justify-between'>
-              <ScaledText size='lg' className='font-bold' isThemed>Poslední záznamy</ScaledText>
-              <Dropdown
-                defaultIndex={0}
-                data={[
-                  { value: 'DESC', label: 'Nejnovější' },
-                  { value: 'ASC', label: 'Nejstarší' }
-                ]}
-                onChange={(item) => {
-                  if (item.value === "DESC" || item.value === "ASC") {
-                    setOrderTankings(item.value);
-                  } else {
-                    console.warn("Invalid value for order:", item.value);
-                  }
-                }}
-                dropdownStyle={{
-                  ...spacing.borderRadius(12),
-                  ...spacing.width(180),
-                  ...spacing.borderWidth(0.5),
-                  ...spacing.p(12),
-                  borderColor: Colors.base.transparent,
-                  backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light
-                }}
-              ></Dropdown>
-            </View>
-          )}
-          scrollComponent={Animated.FlatList}
-          scrollProps={{
-            initialNumToRender: 1,
-            maxToRenderPerBatch: 2,
-            windowSize: 2,
-            contentContainerStyle: { ...spacing.borderRadius(12), ...spacing.mx(20), ...spacing.pb(6), backgroundColor: isDark ? Colors.background.dark : Colors.background.light },
-            renderItem: renderItem,
-            horizontal: false,
-            data: tanking,
-            keyExtractor: (item, index) => tanking[index].month ?? index.toString(),
-            showsVerticalScrollIndicator: false,
-            ListEmptyComponent:
-              !isLoading ? (
-                <ScaledText style={{ ...spacing.p(28) }} className="text-center font-bold" color={Colors.text.muted} size="base">Žádné další záznamy</ScaledText>
-              ) : <ScaledText style={{ ...spacing.p(28) }} className="text-center font-bold" color={Colors.text.muted} size="base">Načítání</ScaledText>
 
-          }}
         >
+          <Animated.ScrollView style={{ ...spacing.mx(20), ...spacing.gap(12), ...spacing.mt(12) }}>
+            <View className='flex-row items-center justify-between'>
+              <View className='flex-row justify-center items-center' style={{ ...spacing.gap(8), ...spacing.borderRadius(8), ...spacing.py(12) }}>
+                <Icon name='tank' color={Colors.base.primary} size={getScaleFactor() * 20} />
+                <ScaledText size='xl' className='font-bold' isThemed>Poslední tankování</ScaledText>
+              </View>
+              <CustomButton
+                label="Zobrazit více"
+                labelSize='lg'
+                labelStyle={{ textDecorationLine: "underline" }}
+                backgroundColor='transparent'
+                onPress={() => router.navigate("/(tabs)/tank")}
+                isThemed={true}
+              />
+            </View>
+
+            <Card>
+              {tanking.map((item, index) => (
+                <TankingItem key={index} item={item} />
+              ))}
+            </Card>
+          </Animated.ScrollView>
         </CollapsibleScroll>
 
       </View >

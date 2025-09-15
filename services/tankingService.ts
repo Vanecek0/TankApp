@@ -38,11 +38,12 @@ export class TankingService {
         }, {});
     }
 
-    async getGroupedTankingsByMonth(order: "DESC" | "ASC" = "DESC", carId: number) {
+    async getGroupedTankingsByMonth(order: "DESC" | "ASC" = "DESC", carId: number, limit?: number) {
         const rows = await tankingRepository.select(
             { car_id: carId },
             ["id", "snapshot", "tank_date"],
-            { column: "tank_date", direction: order }
+            { column: "tank_date", direction: order },
+            limit
         );
 
         const badgesMap = await this.getBadgesByTanking(rows.map(r => r.id!));

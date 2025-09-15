@@ -2,17 +2,19 @@ import { ThemeColors as Colors } from '@/constants/Colors';
 import { FontSizes } from '@/utils/fontScaling';
 import { useTheme } from '@/theme/ThemeProvider';
 import getScaleFactor from '@/utils/SizeScaling';
-import { Text, TextProps } from 'react-native';
+import { Text, TextProps, TextStyle } from 'react-native';
 
 export type FontSizeKey = keyof typeof FontSizes;
 
 type ScaledTextProps = TextProps & {
   size: FontSizeKey;
-  color?: string ;
+  style?: TextStyle;
+  color?: string;
+  className?: string;
   isThemed?: boolean;
 };
 
-export default function ScaledText({ size, isThemed = false, color, style, children, ...props }: ScaledTextProps) {
+export default function ScaledText({ size, style, color, className, isThemed = false, children, ...props }: ScaledTextProps) {
   const { isDark } = useTheme();
   const fontStyle = FontSizes[size];
   const themedColor = isThemed
@@ -22,6 +24,7 @@ export default function ScaledText({ size, isThemed = false, color, style, child
   return (
     <Text
       style={[{ fontSize: fontStyle.size, lineHeight: fontStyle.lineHeight*getScaleFactor() }, themedColor, style]}
+      className={className}
       {...props}
     >
       {children}
