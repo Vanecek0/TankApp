@@ -150,15 +150,25 @@ export async function createTables(db: SQLite.SQLiteDatabase) {
 
     await db.execAsync(`
       CREATE VIEW IF NOT EXISTS "monthly_tanking_stats" AS
-      SELECT 
-        strftime('%Y-%m', datetime(tank_date / 1000, 'unixepoch')) AS period,
-        SUM(amount) AS total_amount,
-        SUM(mileage) AS total_mileage,
-        SUM(price) AS total_price,
-        MAX(tachometer) AS last_tachometer,
-        AVG(price_per_unit) AS avg_price_per_unit
-      FROM tanking
-      GROUP BY period;
+        SELECT 
+          car_id,
+          strftime('%Y-%m', datetime(tank_date / 1000, 'unixepoch')) AS period,
+
+          SUM(amount) AS total_amount,
+          SUM(mileage) AS total_mileage,
+          SUM(price) AS total_price,
+
+          AVG(price_per_unit) AS avg_price_per_unit,
+
+          MIN(amount) AS min_tanking,
+          MAX(amount) AS max_tanking,
+
+          MIN(price) AS min_price,
+          MAX(price) AS max_price,
+
+          MAX(tachometer) AS last_tachometer
+        FROM tanking
+        GROUP BY car_id, period;
     `);
 
   } catch (error) {

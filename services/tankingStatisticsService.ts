@@ -2,47 +2,74 @@ import { TankingStatistics } from "@/models/TankingStatistics";
 import { tankingRepository, TankingRepository } from "@/repositories/tankingRepository";
 
 export class TankingStatisticsService {
-    constructor(
-        private tankingRepository: TankingRepository
-    ) { }
 
-    async getSumOfMonthlyTankingStatsByDate(
-        fromDate?: Date,
-        toDate?: Date
+    async getMonthlyTankingStats(
+        carId: number,
+        fromDate?: string,
+        toDate?: string,
+        fuelId?: number
     ): Promise<Omit<TankingStatistics, 'period'>> {
         const db = await TankingRepository.getDb();
-
-        const from = fromDate?.getTime() ?? 0;
-        const to = toDate?.getTime() ?? Date.now();
 
         try {
             const rows = await db.getAllAsync<{
                 total_amount: number;
                 total_mileage: number;
                 total_price: number;
-                last_tachometer: number;
                 avg_price_per_unit: number;
+                min_tanking: number;
+                max_tanking: number;
+                min_price: number;
+                max_price: number;
+                last_tachometer: number;
             }>(`
-            SELECT 
-              SUM(amount) AS total_amount,
-              SUM(mileage) AS total_mileage,
-              SUM(price) AS total_price,
-              MAX(tachometer) AS last_tachometer,
-              AVG(price_per_unit) AS avg_price_per_unit
-            FROM tanking
-            WHERE 
-            car_id = 1
-            AND tank_date >= ?
-              AND tank_date < ?
-          `, [from, to]);
+            SELECT * 
+            FROM monthly_tanking_stats
+            WHERE car_id = ? AND period BETWEEN ? AND ?;
+          `, [carId, fromDate!, toDate!]);
 
-            return rows[0] ?? {
-                total_amount: 0,
-                total_mileage: 0,
-                total_price: 0,
-                last_tachometer: 0,
-                avg_price_per_unit: 0
-            };
+            return rows[0];
+        } catch (error) {
+            console.error("Failed to get sum of tanking stats:", error);
+            throw error;
+        }
+    }
+
+    async getLastMonthTankingStats(
+        carId: number,
+        fuelId?: number
+    ): Promise<Omit<TankingStatistics, 'period'>> {
+        const db = await TankingRepository.getDb();
+
+        const from = (() => {
+            const start = new Date(2021, 0);
+            return `${start.getFullYear()}-${String(start.getMonth() + 1).padStart(2, '0')}`;
+        })();
+
+        const to = (() => {
+            const now = new Date();
+            const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1);
+            return `${lastMonth.getFullYear()}-${String(lastMonth.getMonth() + 1).padStart(2, '0')}`;
+        })();
+
+        try {
+            const rows = await db.getAllAsync<{
+                total_amount: number;
+                total_mileage: number;
+                total_price: number;
+                avg_price_per_unit: number;
+                min_tanking: number;
+                max_tanking: number;
+                min_price: number;
+                max_price: number;
+                last_tachometer: number;
+            }>(`
+            SELECT * 
+            FROM monthly_tanking_stats
+            WHERE car_id = ? AND period BETWEEN ? AND ?
+        `, [carId, from, to]);
+
+            return rows[0];
         } catch (error) {
             console.error("Failed to get sum of tanking stats:", error);
             throw error;
@@ -51,4 +78,4 @@ export class TankingStatisticsService {
 
 }
 
-export const tankingStatisticService = new TankingStatisticsService(tankingRepository)
+export const tankingStatisticService = new TankingStatisticsService()
