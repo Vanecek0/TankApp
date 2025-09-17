@@ -25,6 +25,8 @@ import CollapsibleScroll from '@/components/CollapsibleScroll';
 import { LinearGradient } from 'expo-linear-gradient';
 import darkenHexColor from '@/utils/colorDarken';
 import { router } from 'expo-router';
+import { TankingStatistics } from '@/models/TankingStatistics';
+import { tankingStatisticService } from '@/services/tankingStatisticsService';
 
 export default function HomeScreen() {
   const { isDark } = useTheme();
@@ -40,10 +42,17 @@ export default function HomeScreen() {
       badges: Badge[];
     })[]
   }[]>([])
+  const [tankingStatistics, setTankingStatistics] = useState<Omit<TankingStatistics, 'period'>>()
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    const getTankingStatistics = async () => {
+      const tankingStatisticsDate = await tankingStatisticService.getLastMonthTankingStats(car?.id!);
+      setTankingStatistics(tankingStatisticsDate)
+    }
+
     dispatch(loadCarFromStorage());
+    getTankingStatistics();
   }, [dispatch]);
 
   const loadTankings = useCallback(async (carId: number) => {
@@ -73,7 +82,7 @@ export default function HomeScreen() {
     return (
       <View style={{ ...spacing.gap(12) }}>
         <ScaledText size='xl' className='capitalize font-bold' style={{ color: isDark ? Colors.text.primary_dark : '' }}>{getDate(item.month).monthLong} {getDate(item.month).year}</ScaledText>
-        <View style={{...spacing.mb(12)}}>
+        <View style={{ ...spacing.mb(12) }}>
           {item.tankings.map((item, index) => (
             <View key={index} style={{ ...spacing.gap(12), ...spacing.my(12) }} className='flex-row items-center'>
               <ScaledText className='rounded-full' style={{ backgroundColor: "lightgray", fontWeight: "bold", ...spacing.p(16) }} size='lg'>{item.station?.provider?.slice(0, 2).toUpperCase() ?? '-'}</ScaledText>
@@ -159,6 +168,30 @@ export default function HomeScreen() {
               {tanking.map((item, index) => (
                 <TankingItem key={index} item={item} />
               ))}
+            </Card>
+
+            <View className='flex-row items-center justify-between'>
+              <View className='flex-row justify-center items-center' style={{ ...spacing.gap(8), ...spacing.borderRadius(8), ...spacing.py(12) }}>
+                <Icon name='dollar' color={Colors.base.primary} size={getScaleFactor() * 20} />
+                <ScaledText size='xl' className='font-bold' isThemed>Náklady</ScaledText>
+              </View>
+              <CustomButton
+                label="Zobrazit více"
+                labelSize='lg'
+                labelStyle={{ textDecorationLine: "underline" }}
+                backgroundColor='transparent'
+                onPress={() => router.navigate("/(tabs)/statistics")}
+                isThemed={true}
+              />
+            </View>
+            <Card>
+              <View className='flex-row items-center' style={{ ...spacing.gap(8), ...spacing.py(12) }}>
+                <ScaledText size='lg' className='font-bold' isThemed>Tento měsíc</ScaledText>
+              </View>
+              <View className='flex-row items-center' style={{ ...spacing.gap(8) }}>
+                <Icon name="tank" color={Colors.base.primary} size={getScaleFactor() * 20} />
+                <ScaledText size='xl' className='font-bold' isThemed>{tankingStatistics?.total_price.toFixed(2) ?? "0"} kč</ScaledText>
+              </View>
             </Card>
           </Animated.ScrollView>
         </CollapsibleScroll>

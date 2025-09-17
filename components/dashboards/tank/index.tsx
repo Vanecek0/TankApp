@@ -37,7 +37,7 @@ export default function TankDashboard({ className, scrollRefVal }: {
         }
 
         const getTankingStatistics = async () => {
-            const tankingStatisticsDate = await tankingStatisticService.getSumOfMonthlyTankingStatsByDate();
+            const tankingStatisticsDate = await tankingStatisticService.getMonthlyTankingStats(car?.id!);
             setTankingStatistics(tankingStatisticsDate)
         }
 
@@ -86,11 +86,11 @@ export default function TankDashboard({ className, scrollRefVal }: {
                 <ScaledText size="lg" className="text-center font-bold" isThemed>Leden 2025 – Únor 2025</ScaledText>
                 <View style={{ ...spacing.my(4) }} className="flex-row justify-between w-full">
                     <View className="items-start">
-                        <ScaledText style={{ ...spacing.mb(0) }} size="xl" className="font-bold" isThemed>{tankingStatistics?.total_price.toFixed(2)} kč</ScaledText>
+                        <ScaledText style={{ ...spacing.mb(0) }} size="xl" className="font-bold" isThemed>{tankingStatistics?.total_price.toFixed(2) ?? "0"} kč</ScaledText>
                         <ScaledText size="lg" className="font-bold" isThemed>Výdaje za palivo</ScaledText>
                     </View>
                     <View className="items-end">
-                        <ScaledText style={{ ...spacing.mb(0) }} size="xl" className="font-bold" isThemed>{tankingStatistics?.total_mileage.toFixed(0)} km</ScaledText>
+                        <ScaledText style={{ ...spacing.mb(0) }} size="xl" className="font-bold" isThemed>{tankingStatistics?.total_mileage.toFixed(0) ?? "0"} km</ScaledText>
                         <ScaledText size="lg" className="font-bold" isThemed>Vzdálenost</ScaledText>
                     </View>
                 </View>
@@ -117,11 +117,11 @@ export default function TankDashboard({ className, scrollRefVal }: {
                     <ScaledText size="lg" className="text-center font-bold" isThemed>Leden 2025 – Únor 2025</ScaledText>
                     <View style={{ ...spacing.mt(12), ...spacing.mb(24) }} className="flex-row justify-between">
                         <View className="items-center">
-                            <ScaledText style={{ ...spacing.mb(4) }} size="3xl" className="font-bold" isThemed>{tankingStatistics?.total_price.toFixed(2)} kč</ScaledText>
+                            <ScaledText style={{ ...spacing.mb(4) }} size="3xl" className="font-bold" isThemed>{tankingStatistics?.total_price.toFixed(2) ?? "0"} kč</ScaledText>
                             <ScaledText size="lg" className="font-bold" isThemed>Výdaje za palivo</ScaledText>
                         </View>
                         <View className="items-center">
-                            <ScaledText style={{ ...spacing.mb(4) }} size="3xl" className="font-bold" isThemed>{tankingStatistics?.total_mileage.toFixed(0)} km</ScaledText>
+                            <ScaledText style={{ ...spacing.mb(4) }} size="3xl" className="font-bold" isThemed>{tankingStatistics?.total_mileage.toFixed(0) ?? "0"} km</ScaledText>
                             <ScaledText size="lg" className="font-bold" isThemed>Vzdálenost</ScaledText>
                         </View>
                     </View>
