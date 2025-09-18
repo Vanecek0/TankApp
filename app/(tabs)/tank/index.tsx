@@ -67,7 +67,7 @@ export default function TankScreen() {
   const renderTankingList = () => (
     <>
       <View style={{ ...spacing.mt(12), ...spacing.mb(12) }} className="flex-row items-center justify-between">
-        <ScaledText size="lg" className="font-bold" isThemed>
+        <ScaledText size="xl" className="font-bold" isThemed>
           Poslední záznamy
         </ScaledText>
 
@@ -142,7 +142,7 @@ export default function TankScreen() {
           }
           subHeader={() => (
             <View style={{ ...spacing.py(12), ...spacing.mx(20) }} className='flex-row items-center justify-between'>
-              <ScaledText size='lg' className='font-bold' isThemed>Poslední záznamy</ScaledText>
+              <ScaledText size='xl' className='font-bold' isThemed>Poslední záznamy</ScaledText>
               <Dropdown
                 defaultIndex={0}
                 data={[

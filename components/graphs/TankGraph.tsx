@@ -15,7 +15,8 @@ type TankGraphProps = {
     data?: any[];
 };
 
-const BAR_WIDTH = 32;
+const BAR_WIDTH = 32 * getScaleFactor();
+const BAR_SPACING = 12 * getScaleFactor();
 const BAR_COUNT = 1;
 
 export default function TankGraph({ className, data }: TankGraphProps) {
@@ -96,26 +97,23 @@ export default function TankGraph({ className, data }: TankGraphProps) {
 
 
     return (
-        <SafeAreaView
+        <View
             onLayout={handleLayout}
             style={{
-                ...spacing.height(120),
+                flex: 1,
             }}
-            className={`items-center justify-center ${className}`}
+            className={`justify-center items-center ${className}`}
         >
             <BarChart
                 data={barData}
                 parentWidth={parentWidth * getScaleFactor()}
-                width={parentWidth - 22 * getScaleFactor()}
                 height={parentHeight * getScaleFactor()}
-                spacing={12 * getScaleFactor()}
-                barWidth={BAR_WIDTH * BAR_COUNT * getScaleFactor()}
-                labelWidth={BAR_WIDTH * getScaleFactor()}
-                initialSpacing={20 * getScaleFactor()}
+                spacing={BAR_SPACING}
+                barWidth={BAR_WIDTH}
+                labelWidth={BAR_WIDTH}
+                initialSpacing={0 * getScaleFactor()}
                 overflowTop={1}
-                adjustToWidth
                 hideRules
-                noOfSections={4}
                 endSpacing={0}
                 frontColor={Colors.base.primary}
                 showGradient
@@ -129,15 +127,13 @@ export default function TankGraph({ className, data }: TankGraphProps) {
                     curvature: 0.2,
                     hideDataPoints: true,
                     shiftY: -30,
-                    initialSpacing: 20,
                     focusEnabled: false
                 }}
-                barBorderRadius={4}
+                barBorderRadius={8}
                 barBorderWidth={0}
                 xAxisLabelTextStyle={{
                     color: isDark ? Colors.text.primary_dark : Colors.text.primary,
                     fontSize: FontSizes.sm.size,
-                    ...spacing.height(25),
                 }}
                 hideYAxisText
                 trimYAxisAtTop
@@ -165,6 +161,6 @@ export default function TankGraph({ className, data }: TankGraphProps) {
                     </View>
                 )}
             />
-        </SafeAreaView>
+        </View>
     );
 }

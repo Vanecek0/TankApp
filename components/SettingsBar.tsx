@@ -42,8 +42,25 @@ export default function SettingsBar({ className }: {
                 }}
                 className={`${className} flex outline-none border-none flex-row items-center justify-between`}>
                 <View onTouchStart={() => { nav.dispatch(DrawerActions.openDrawer()) }} style={{ ...spacing.gap(12) }} className="flex-row items-center">
-                    <ScaledText className='rounded-full text-center flex justify-center items-center align-middle aspect-square' style={{ backgroundColor: "lightgray", fontWeight: "bold", ...spacing.width(40), ...spacing.height(40) }} size='sm'>{car?.car_nickname.slice(0, 2).toUpperCase()}</ScaledText>
-                    <ScaledText size="lg" className="font-bold" style={{ color: Colors.base.white }}>{car?.car_nickname}</ScaledText>
+                    <View
+                        className="rounded-full justify-center items-center aspect-square"
+                        style={{ backgroundColor: "lightgray", ...spacing.width(40) }}
+                    >
+                        <ScaledText
+                            className="font-bold text-center"
+                            size="sm"
+                        >
+                            {car?.car_nickname.slice(0, 2).toUpperCase()}
+                        </ScaledText>
+                    </View>
+
+                    <ScaledText
+                        size="lg"
+                        className="font-bold"
+                        style={{ color: Colors.base.white }}
+                    >
+                        {car?.car_nickname}
+                    </ScaledText>
                 </View>
                 <View style={{ ...spacing.gap(8) }} className="flex-row justify-center align-middle">
                     <Link href={"/tank"} className="flex items-center"><Icon name="bell" color={Colors.base.white} size={getScaleFactor() * 30} /></Link>
