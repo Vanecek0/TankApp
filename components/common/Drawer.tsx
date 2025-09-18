@@ -49,7 +49,17 @@ function DrawerContent() {
         <SafeAreaView>
             <View className="border-b-[1px] flex-row justify-between" style={{ borderColor: isDark ? Colors.text.primary : Colors.text.primary_dark, marginHorizontal: getScaleFactor() * 16, ...spacing.mb(16), ...spacing.py(16) }}>
                 <View style={{ ...spacing.gap(12) }} className="flex-row items-center">
-                    <ScaledText className='rounded-full text-center flex justify-center items-center align-middle aspect-square' style={{ backgroundColor: "lightgray", fontWeight: "bold", ...spacing.width(60), ...spacing.height(60) }} size='xl'>{car?.car_nickname.slice(0, 2).toUpperCase()}</ScaledText>
+                    <View
+                        className="rounded-full justify-center items-center aspect-square"
+                        style={{ backgroundColor: "lightgray", ...spacing.width(60) }}
+                    >
+                        <ScaledText
+                            className="font-bold text-center"
+                            size="xl"
+                        >
+                            {car?.car_nickname.slice(0, 2).toUpperCase()}
+                        </ScaledText>
+                    </View>
                     <View>
                         <ScaledText size="xl" className="font-bold" isThemed>{car?.car_nickname}</ScaledText>
                         <ScaledText size="base" className="font-medium" style={{ color: Colors.text.muted }}>{car?.manufacturer} {car?.model}</ScaledText>

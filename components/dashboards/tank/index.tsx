@@ -22,7 +22,7 @@ export default function TankDashboard({ className, scrollRefVal }: {
     const dispatch = useDispatch<AppDispatch>();
     const { isDark } = useTheme();
 
-    const H_MAX_HEIGHT = getScaleFactor() * 300;
+    const H_MAX_HEIGHT = getScaleFactor() * 310;
     const H_MIN_HEIGHT = getScaleFactor() * 110;
     const H_SCROLL_DISTANCE = H_MAX_HEIGHT - H_MIN_HEIGHT;
 

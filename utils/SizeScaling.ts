@@ -1,53 +1,49 @@
 import { Dimensions, PixelRatio } from 'react-native';
 
-const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
-const SCALE = SCREEN_WIDTH > SCREEN_HEIGHT ? SCREEN_HEIGHT : SCREEN_WIDTH;
+export const DEVICE_TYPES = {
+  PHONE_SMALL: 'phone-small',
+  PHONE_NORMAL: 'phone-normal',
+  PHONE_LARGE: 'phone-large',
+  TABLET: 'tablet',
+  TABLET_LARGE: 'tablet-large',
+} as const;
+
+const { width, height } = Dimensions.get('window');
 const BASE_WIDTH = 375;
 
-const scaleSize = {
-  phone: {
-    small: { min: 0.8, max: 1.0 },
-    medium: { min: 0.8, max: 0.9 },
-    large: { min: 1.0, max: 1.2 }
-  },
-  tablet: {
-    small: { min: 1.3, max: 1.4 },
-    medium: { min: 1.4, max: 1.5 },
-    large: { min: 1.0, max: 1.5 }
-  }
+export const getDeviceType = (): typeof DEVICE_TYPES[keyof typeof DEVICE_TYPES] => {
+
+  const shortest = Math.min(width, height);
+  const adjustedWidth = shortest * PixelRatio.get();
+
+  console.log(adjustedWidth);
+
+  if (adjustedWidth < 1080) return 'phone-small';
+  if (adjustedWidth < 1440) return 'phone-normal';
+  if (adjustedWidth < 1600) return 'phone-large';
+  if (adjustedWidth < 2560) return 'tablet';
+  return 'tablet-large';
 };
 
-export const getDeviceType = (): 'phone' | 'tablet' => {
-  const pixelDensity = PixelRatio.get();
-  const adjustedWidth = SCREEN_WIDTH * pixelDensity;
-  const adjustedHeight = SCREEN_HEIGHT * pixelDensity;
+console.log(getDeviceType())
 
-  if (pixelDensity < 2 && (adjustedWidth >= 1000 || adjustedHeight >= 1000)) {
-    return 'tablet';
-  } else if (pixelDensity === 2 && (adjustedWidth >= 1920 || adjustedHeight >= 1920)) {
-    return 'tablet';
-  } else {
-    return 'phone';
-  }
-};
-
-const getScreenSizeCategory = (): 'small' | 'medium' | 'large' => {
-  if (SCALE < 350) return 'small';
-  if (SCALE > 500) return 'large';
-  return 'medium';
+const SCALE_SIZE: Record<typeof DEVICE_TYPES[keyof typeof DEVICE_TYPES], { min: number; max: number }> = {
+  [DEVICE_TYPES.PHONE_SMALL]: { min: 0.75, max: 0.80 },
+  [DEVICE_TYPES.PHONE_NORMAL]: { min: 0.80, max: 0.85 },
+  [DEVICE_TYPES.PHONE_LARGE]: { min: 0.85, max: 0.9 },
+  [DEVICE_TYPES.TABLET]: { min: 1.00, max: 1.25 },
+  [DEVICE_TYPES.TABLET_LARGE]: { min: 1.5, max: 1.6 },
 };
 
 export const getScaleFactor = () => {
-  const deviceType = getDeviceType();
-  const screenCategory = getScreenSizeCategory();
-  const config = scaleSize[deviceType][screenCategory];
-  const scaleFactor = SCALE / BASE_WIDTH;
-  const clampedScaleFactor = Math.min(Math.max(scaleFactor, config.min), config.max);
-
-  return clampedScaleFactor;
+  const config = SCALE_SIZE[getDeviceType()];
+  const scaleFactor = width / BASE_WIDTH;
+  return Math.min(Math.max(scaleFactor, config.min), config.max);
 };
 
-export const scaled = (value: number) => value * getScaleFactor()
+console.log(getScaleFactor())
+
+export const scaled = (value: number) => value * getScaleFactor();
 
 export const spacing = {
   m: (v: number) => ({ margin: scaled(v) }),

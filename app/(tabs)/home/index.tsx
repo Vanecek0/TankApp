@@ -91,7 +91,7 @@ export default function HomeScreen() {
                   <ScaledText isThemed size="xl" className='font-bold'>{item.station?.name ?? 'Neznámá stanice'}</ScaledText>
                   <View style={{ ...spacing.gap(4) }} className='flex-row items-center justify-start'>
                     <Icon name="map_pin" color={Colors.text.muted} size={getScaleFactor() * 16} />
-                    <ScaledText numberOfLines={1} ellipsizeMode="tail" className='text-ellipsis overflow-visible' isThemed size="base">{item.station?.address ?? 'Bez adresy'}</ScaledText>
+                    <ScaledText numberOfLines={1} ellipsizeMode="tail" className='text-ellipsis overflow-visible' isThemed size="base" style={{width: "85%"}}>{item.station?.address ?? 'Bez adresy'}</ScaledText>
                   </View>
                   <View style={{ ...spacing.gap(12) }} className='flex-col'>
                     <View style={{ ...spacing.gap(4) }} className='flex-row items-center justify-start'>
@@ -156,7 +156,7 @@ export default function HomeScreen() {
               </View>
               <CustomButton
                 label="Zobrazit více"
-                labelSize='lg'
+                labelSize='base'
                 labelStyle={{ textDecorationLine: "underline" }}
                 backgroundColor='transparent'
                 onPress={() => router.navigate("/(tabs)/tank")}
@@ -177,7 +177,7 @@ export default function HomeScreen() {
               </View>
               <CustomButton
                 label="Zobrazit více"
-                labelSize='lg'
+                labelSize='base'
                 labelStyle={{ textDecorationLine: "underline" }}
                 backgroundColor='transparent'
                 onPress={() => router.navigate("/(tabs)/statistics")}
