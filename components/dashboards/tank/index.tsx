@@ -33,18 +33,20 @@ export default function TankDashboard({ className, scrollRefVal }: {
     useEffect(() => {
         const getTankingSums = async () => {
             const tankingSums = await tankingRepository.getPriceMileageSumByDate(car?.id!);
+            console.log(tankingSums)
             setTankingSumsDate(tankingSums)
         }
 
         const getTankingStatistics = async () => {
-            const tankingStatisticsDate = await tankingStatisticService.getMonthlyTankingStats(car?.id!);
+            const tankingStatisticsDate = await tankingStatisticService.getYearTankingStats(car?.id!);
             setTankingStatistics(tankingStatisticsDate)
         }
 
         getTankingStatistics();
         getTankingSums();
 
-    }, [dispatch, car])
+    }, [car])
+
 
     const scrollY = useRef(scrollRefVal!).current;
 
@@ -114,18 +116,18 @@ export default function TankDashboard({ className, scrollRefVal }: {
                 zIndex: 10
             }}
                 className={`${className} flex-col`} >
-                    <ScaledText size="lg" className="text-center font-bold" isThemed>Leden 2025 – Únor 2025</ScaledText>
-                    <View style={{ ...spacing.mt(12), ...spacing.mb(24) }} className="flex-row justify-between">
-                        <View className="items-center">
-                            <ScaledText style={{ ...spacing.mb(4) }} size="3xl" className="font-bold" isThemed>{tankingStatistics?.total_price.toFixed(2) ?? "0"} kč</ScaledText>
-                            <ScaledText size="lg" className="font-bold" isThemed>Výdaje za palivo</ScaledText>
-                        </View>
-                        <View className="items-center">
-                            <ScaledText style={{ ...spacing.mb(4) }} size="3xl" className="font-bold" isThemed>{tankingStatistics?.total_mileage.toFixed(0) ?? "0"} km</ScaledText>
-                            <ScaledText size="lg" className="font-bold" isThemed>Vzdálenost</ScaledText>
-                        </View>
+                <ScaledText size="lg" className="text-center font-bold" isThemed>Leden 2025 – Únor 2025</ScaledText>
+                <View style={{ ...spacing.mt(12), ...spacing.mb(24) }} className="flex-row justify-between">
+                    <View className="items-center">
+                        <ScaledText style={{ ...spacing.mb(4) }} size="3xl" className="font-bold" isThemed>{tankingStatistics?.total_price.toFixed(2) ?? "0"} kč</ScaledText>
+                        <ScaledText size="lg" className="font-bold" isThemed>Výdaje za palivo</ScaledText>
                     </View>
-                    <TankGraph data={tankingSumsDate} />
+                    <View className="items-center">
+                        <ScaledText style={{ ...spacing.mb(4) }} size="3xl" className="font-bold" isThemed>{tankingStatistics?.total_mileage.toFixed(0) ?? "0"} km</ScaledText>
+                        <ScaledText size="lg" className="font-bold" isThemed>Vzdálenost</ScaledText>
+                    </View>
+                </View>
+                <TankGraph data={tankingSumsDate} />
             </Animated.View>
         </>
     );

@@ -50,7 +50,7 @@ export const loadCarFromStorage = createAsyncThunk(
       if (!firstCar) {
         return null;
       }
-      const carObj = JSON.parse(JSON.stringify(firstCar)); // ✅ převede instanci třídy na čistý objekt
+      const carObj = JSON.parse(JSON.stringify(firstCar));
       await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(carObj));
       return carObj;
     }
@@ -63,7 +63,7 @@ export const setCarByIdAndPersist = createAsyncThunk(
     const car = await carRepository.getById(carId);
     if (!car) return null;
 
-    const carObj = JSON.parse(JSON.stringify(car)); // ✅ plain object
+    const carObj = JSON.parse(JSON.stringify(car));
     await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(carObj));
     return carObj;
   }

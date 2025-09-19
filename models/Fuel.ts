@@ -4,6 +4,7 @@ export interface IFuel {
     code: string;
     trademark: string;
     unit: string;
+    category: number;
 }
 
 export class Fuel implements IFuel {
@@ -12,6 +13,7 @@ export class Fuel implements IFuel {
     code!: string;
     trademark!: string;
     unit!: string;
+    category!: number;
 
     static tableName = "fuel";
 
@@ -20,6 +22,7 @@ export class Fuel implements IFuel {
         "name",
         "code",
         "trademark",
-        "unit"
+        "unit",
+        "category"
     ];
 }

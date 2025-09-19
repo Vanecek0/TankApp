@@ -16,16 +16,12 @@ export const getDeviceType = (): typeof DEVICE_TYPES[keyof typeof DEVICE_TYPES] 
   const shortest = Math.min(width, height);
   const adjustedWidth = shortest * PixelRatio.get();
 
-  console.log(adjustedWidth);
-
   if (adjustedWidth < 1080) return 'phone-small';
   if (adjustedWidth < 1440) return 'phone-normal';
   if (adjustedWidth < 1600) return 'phone-large';
   if (adjustedWidth < 2560) return 'tablet';
   return 'tablet-large';
 };
-
-console.log(getDeviceType())
 
 const SCALE_SIZE: Record<typeof DEVICE_TYPES[keyof typeof DEVICE_TYPES], { min: number; max: number }> = {
   [DEVICE_TYPES.PHONE_SMALL]: { min: 0.75, max: 0.80 },

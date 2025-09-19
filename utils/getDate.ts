@@ -22,7 +22,8 @@ export const getDate = (dateInput: Date | string) => {
     ];
 
     return {
-        year: date.getFullYear(),
+        monthIndex: monthIndex,
+        year: date.getFullYear(), 
         monthLong: fullMonthNames[monthIndex],
         monthShort: shortMonthNames[monthIndex],
         dayLong: fullDayNames[dayIndex],

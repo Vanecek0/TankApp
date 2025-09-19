@@ -5,6 +5,7 @@ export interface ITankingStatistics {
     total_price: number;
     last_tachometer: number;
     avg_price_per_unit: number;
+    avg_consumption: number;
 }
 
 export class TankingStatistics implements ITankingStatistics {
@@ -14,6 +15,7 @@ export class TankingStatistics implements ITankingStatistics {
     total_price!: number;
     last_tachometer!: number;
     avg_price_per_unit!: number;
+    avg_consumption!: number;
 
     static tableName = "monthly_tanking_stats";
 
@@ -23,6 +25,7 @@ export class TankingStatistics implements ITankingStatistics {
         "total_mileage",
         "total_price",
         "last_tachometer",
-        "avg_price_per_unit"
+        "avg_price_per_unit",
+        "avg_consumption"
     ];
 }
