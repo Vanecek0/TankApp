@@ -24,6 +24,7 @@ import FormDateTimeInput from '@/components/forms/FormDateTimeInput';
 import FormCheckboxItem from '@/components/forms/FormCheckboxItem';
 import FormToggleInput from '@/components/forms/FormToggleInput';
 import FormTextArea from '@/components/forms/FormTextArea';
+import { fuelService } from '@/services/fuelService';
 
 export default function AddTankRecordModal({ onSubmit }: any) {
   const { hideAllModals } = useModal();
@@ -49,18 +50,20 @@ export default function AddTankRecordModal({ onSubmit }: any) {
     setStations(allStations);
   };
 
-  const loadSelectedStationFuels = async (stationID: number) => {
-    const selectedStationFuels = await stationFuelRepository.getFuelsByStationId(stationID)
-    setFuels(selectedStationFuels);
-  }
-
   useEffect(() => {
     loadAllStationsFuels();
   }, []);
 
   useEffect(() => {
+    const loadSelectedStationFuels = async (stationID: number) => {
+      const selectedStationFuels = await fuelService.getRelevantFuelsByStationId(stationID, car?.fuel_category!)
+      setFuels(selectedStationFuels);
+    }
+
+    console.log(car?.fuel_category);
+
     loadSelectedStationFuels(selectedStation?.id ?? 0);
-  }, [selectedStation])
+  }, [selectedStation, car])
 
   useEffect(() => {
     const ppl = parseFloat(pricePerLtr);
@@ -208,53 +211,53 @@ export default function AddTankRecordModal({ onSubmit }: any) {
           </View>
 
 
-          <View style={{...spacing.gap(12), ...spacing.mt(6)}}>
+          <View style={{ ...spacing.gap(12), ...spacing.mt(6) }}>
             <View className='flex-row justify-between'>
-            <View className='w-[48%]' style={{ ...spacing.mb(3) }}>
-              <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(6) }}>
-                <Icon name='tank' color={isDark ? Colors.icon.primary_dark : Colors.icon.primary} size={getScaleFactor() * 16} />
-                <ScaledText size='base' style={{ color: isDark ? Colors.base.white : '' }}>Palivo</ScaledText>
+              <View className='w-[48%]' style={{ ...spacing.mb(3) }}>
+                <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(6) }}>
+                  <Icon name='tank' color={isDark ? Colors.icon.primary_dark : Colors.icon.primary} size={getScaleFactor() * 16} />
+                  <ScaledText size='base' style={{ color: isDark ? Colors.base.white : '' }}>Palivo</ScaledText>
+                </View>
+
+                <Dropdown<Fuel>
+                  placeholder='Typ paliva'
+                  data={fuels}
+                  onChange={console.log}
+                  getItemLabel={(fuel) => fuel.trademark}
+                  getItemValue={(fuel) => fuel.id?.toString() ?? ''}
+                ></Dropdown>
+
               </View>
 
-              <Dropdown<Fuel>
-                placeholder='Typ paliva'
-                data={fuels}
-                onChange={console.log}
-                getItemLabel={(fuel) => fuel.trademark}
-                getItemValue={(fuel) => fuel.id?.toString() ?? ''}
-              ></Dropdown>
+              <View className='w-[48%]' style={{ ...spacing.mb(3) }}>
+                <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(6) }}>
+                  <Icon name='droplet' color={isDark ? Colors.icon.primary_dark : Colors.icon.primary} size={getScaleFactor() * 16} />
+                  <ScaledText size='base' style={{ color: isDark ? Colors.base.white : '' }}>Počet jednotek (l)</ScaledText>
+                </View>
 
+                <FormNumberInput name="amount" placeholder="Počet jedn. (l)" control={control} style={{ padding: 8, color: isDark ? Colors.base.white : '' }}></FormNumberInput>
+              </View>
             </View>
 
-            <View className='w-[48%]' style={{ ...spacing.mb(3) }}>
-              <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(6) }}>
-                <Icon name='droplet' color={isDark ? Colors.icon.primary_dark : Colors.icon.primary} size={getScaleFactor() * 16} />
-                <ScaledText size='base' style={{ color: isDark ? Colors.base.white : '' }}>Počet jednotek (l)</ScaledText>
+            <View className='flex-row justify-between'>
+              <View className='w-[48%]' style={{ ...spacing.mb(6) }}>
+                <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(6) }}>
+                  <Icon name='calc' color={isDark ? Colors.icon.primary_dark : Colors.icon.primary} size={getScaleFactor() * 16} />
+                  <ScaledText size="base" style={{ color: isDark ? Colors.base.white : '' }}>Cena za jedn. (kč/l)</ScaledText>
+                </View>
+
+                <FormNumberInput name="price_per_litre" placeholder="Cena za jedn. (kč/l)" control={control} style={{ padding: 8, color: isDark ? Colors.base.white : '' }}></FormNumberInput>
               </View>
 
-              <FormNumberInput name="amount" placeholder="Počet jedn. (l)" control={control} style={{ padding: 8, color: isDark ? Colors.base.white : '' }}></FormNumberInput>
-            </View>
-          </View>
+              <View className='w-[48%]' style={{ ...spacing.mb(6) }}>
+                <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(6) }}>
+                  <Icon name='dollar' color={isDark ? Colors.icon.primary_dark : Colors.icon.primary} size={getScaleFactor() * 16} />
+                  <ScaledText size='base' style={{ color: isDark ? Colors.base.white : '' }}>Celková cena (kč)</ScaledText>
+                </View>
 
-          <View className='flex-row justify-between'>
-            <View className='w-[48%]' style={{ ...spacing.mb(6) }}>
-              <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(6) }}>
-                <Icon name='calc' color={isDark ? Colors.icon.primary_dark : Colors.icon.primary} size={getScaleFactor() * 16} />
-                <ScaledText size="base" style={{ color: isDark ? Colors.base.white : '' }}>Cena za jedn. (kč/l)</ScaledText>
+                <FormNumberInput name="price" placeholder="Celková cena (kč)" control={control} style={{ padding: 8, color: isDark ? Colors.base.white : '' }}></FormNumberInput>
               </View>
-
-              <FormNumberInput name="price_per_litre" placeholder="Cena za jedn. (kč/l)" control={control} style={{ padding: 8, color: isDark ? Colors.base.white : '' }}></FormNumberInput>
             </View>
-
-            <View className='w-[48%]' style={{ ...spacing.mb(6) }}>
-              <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(6) }}>
-                <Icon name='dollar' color={isDark ? Colors.icon.primary_dark : Colors.icon.primary} size={getScaleFactor() * 16} />
-                <ScaledText size='base' style={{ color: isDark ? Colors.base.white : '' }}>Celková cena (kč)</ScaledText>
-              </View>
-
-              <FormNumberInput name="price" placeholder="Celková cena (kč)" control={control} style={{ padding: 8, color: isDark ? Colors.base.white : '' }}></FormNumberInput>
-            </View>
-          </View>
           </View>
         </View>
         <View style={{ ...spacing.gap(12), ...spacing.borderBottomWidth(1), ...spacing.py(12), borderColor: isDark ? Colors.border.muted_dark : Colors.border.muted }}>
@@ -276,7 +279,7 @@ export default function AddTankRecordModal({ onSubmit }: any) {
           </View>
         </View>
         <View style={{ ...spacing.gap(12), ...spacing.borderBottomWidth(1), ...spacing.py(12), borderColor: isDark ? Colors.border.muted_dark : Colors.border.muted }}>
-          <ScaledText style={{...spacing.mb(6)}} className='font-bold' size='lg' isThemed>Doplňující</ScaledText>
+          <ScaledText style={{ ...spacing.mb(6) }} className='font-bold' size='lg' isThemed>Doplňující</ScaledText>
           <View className='flex-row items-center' style={{ ...spacing.gap(6) }}>
             <FormToggleInput
               name="test"
@@ -296,8 +299,8 @@ export default function AddTankRecordModal({ onSubmit }: any) {
             />
           </View>
         </View>
-        <View style={{...spacing.mt(12), ...spacing.mb(48)}}>
-          <ScaledText style={{...spacing.mb(6)}} className='font-bold' size='lg' isThemed>Volitelné</ScaledText>
+        <View style={{ ...spacing.mt(12), ...spacing.mb(48) }}>
+          <ScaledText style={{ ...spacing.mb(6) }} className='font-bold' size='lg' isThemed>Volitelné</ScaledText>
           <View>
             <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(6) }}>
               <Icon name="document" color={isDark ? Colors.icon.primary_dark : Colors.icon.primary} size={getScaleFactor() * 16} />
@@ -309,8 +312,8 @@ export default function AddTankRecordModal({ onSubmit }: any) {
 
       </ScrollView>
       <View style={{ ...spacing.p(20), ...spacing.gap(6), ...spacing.borderBottomRadius(12), backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light }} className='flex-row justify-between'>
-        <CustomButton className='w-[48%]' onPress={() => hideAllModals()} label="Zrušit" labelSize='base' labelClassName='text-center' labelStyle={{color: isDark ? Colors.base.white : ''}} style={{ ...spacing.p(12), ...spacing.borderWidth(1), borderColor: isDark ? Colors.text.primary_dark : Colors.text.muted, ...spacing.borderRadius(12) }} backgroundColor={isDark ? Colors.background.surface.dark : Colors.background.surface.light} />
-        <CustomButton className='w-[48%]' onPress={handleSubmit((data) => { onFormSubmit(data); hideAllModals() })} label="Přidat záznam" labelSize='base' labelClassName='text-center' labelStyle={{color: Colors.base.white}} style={{ ...spacing.p(12), ...spacing.borderRadius(12), ...spacing.borderWidth(1), borderColor: Colors.base.primary }} backgroundColor={Colors.base.primary} />
+        <CustomButton className='w-[48%]' onPress={() => hideAllModals()} label="Zrušit" labelSize='base' labelClassName='text-center' labelStyle={{ color: isDark ? Colors.base.white : '' }} style={{ ...spacing.p(12), ...spacing.borderWidth(1), borderColor: isDark ? Colors.text.primary_dark : Colors.text.muted, ...spacing.borderRadius(12) }} backgroundColor={isDark ? Colors.background.surface.dark : Colors.background.surface.light} />
+        <CustomButton className='w-[48%]' onPress={handleSubmit((data) => { onFormSubmit(data); hideAllModals() })} label="Přidat záznam" labelSize='base' labelClassName='text-center' labelStyle={{ color: Colors.base.white }} style={{ ...spacing.p(12), ...spacing.borderRadius(12), ...spacing.borderWidth(1), borderColor: Colors.base.primary }} backgroundColor={Colors.base.primary} />
       </View>
     </View>
   );

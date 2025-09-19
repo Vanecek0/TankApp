@@ -6,7 +6,7 @@ export interface ICar {
   registration_date: number
   license_plate: string
   vin: string
-  fuel_id: number
+  fuel_category: number
   car_nickname: string
   tank_capacity: number
   odometer: number
@@ -20,7 +20,7 @@ export class Car implements ICar {
   registration_date!: number
   license_plate!: string
   vin!: string
-  fuel_id!: number
+  fuel_category!: number
   car_nickname!: string
   tank_capacity!: number
   odometer!: number
@@ -35,7 +35,7 @@ export class Car implements ICar {
     "registration_date",
     "license_plate",
     "vin",
-    "fuel_id",
+    "fuel_category",
     "car_nickname",
     "tank_capacity",
     "odometer"

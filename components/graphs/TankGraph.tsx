@@ -107,6 +107,7 @@ export default function TankGraph({ className, data }: TankGraphProps) {
             <BarChart
                 data={barData}
                 parentWidth={parentWidth * getScaleFactor()}
+                width={parentWidth - 20 * getScaleFactor()}
                 height={parentHeight * getScaleFactor()}
                 spacing={BAR_SPACING}
                 barWidth={BAR_WIDTH}
@@ -118,17 +119,6 @@ export default function TankGraph({ className, data }: TankGraphProps) {
                 frontColor={Colors.base.primary}
                 showGradient
                 gradientColor={darkenHexColor(Colors.base.primary, -20)}
-                showLine
-                lineConfig={{
-                    color: darkenHexColor(Colors.base.primary, -80),
-                    thickness: 1,
-                    curved: true,
-                    curveType: CurveType.QUADRATIC,
-                    curvature: 0.2,
-                    hideDataPoints: true,
-                    shiftY: -30,
-                    focusEnabled: false
-                }}
                 barBorderRadius={8}
                 barBorderWidth={0}
                 xAxisLabelTextStyle={{
@@ -139,6 +129,13 @@ export default function TankGraph({ className, data }: TankGraphProps) {
                 trimYAxisAtTop
                 yAxisThickness={0}
                 xAxisThickness={0}
+                showReferenceLine1
+                referenceLine1Position={average}
+                referenceLine1Config={{
+                    color: darkenHexColor(Colors.base.primary, -80),
+                    dashWidth: 2 * getScaleFactor(),
+                    dashGap: 3 * getScaleFactor(),
+                }}
                 autoCenterTooltip
                 focusBarOnPress={false}
                 showScrollIndicator={false}

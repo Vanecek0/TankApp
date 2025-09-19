@@ -25,7 +25,8 @@ export async function createTables(db: SQLite.SQLiteDatabase) {
         "name"	TEXT,
         "code"	TEXT,
         "trademark"	TEXT,
-        "unit"	TEXT
+        "unit"	TEXT,
+        "category" INTEGER
       );
     `)
 
@@ -59,13 +60,12 @@ export async function createTables(db: SQLite.SQLiteDatabase) {
         "registration_date"	NUMERIC,
         "license_plate" TEXT,
         "vin" TEXT,
-        "fuel_id"	INTEGER,
+        "fuel_category"	INTEGER,
         "car_nickname"	TEXT,
         "odometer" INTEGER,
         "tank_capacity" NUMERIC,
         "created_at" NUMERIC,
-        "updated_at" NUMERIC,
-        FOREIGN KEY("fuel_id") REFERENCES "fuel"("id")
+        "updated_at" NUMERIC
       );
     `)
 
@@ -159,6 +159,7 @@ export async function createTables(db: SQLite.SQLiteDatabase) {
           SUM(price) AS total_price,
 
           AVG(price_per_unit) AS avg_price_per_unit,
+          ((SUM(amount) * 1.00 / SUM(mileage) * 1.00) * 100) AS avg_consumption,
 
           MIN(amount) AS min_tanking,
           MAX(amount) AS max_tanking,

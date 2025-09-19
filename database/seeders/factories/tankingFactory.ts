@@ -496,6 +496,36 @@ export async function getTankingSeeds(): Promise<Tanking[]> {
             "snapshot": "{\"id\": 33, \"car_id\": 1, \"station_fuel_id\": 6, \"price_per_unit\": 41.2, \"price\": 1815.7, \"amount\": 41, \"mileage\": 456, \"tachometer\": 49862, \"tank_date\": 1646995600000, \"full_tank\": false, \"note\": \"Vysoké ceny, jen nutné minimum\", \"created_at\": 1646995600000, \"updated_at\": 1646995600000, \"station\": {\"id\": 10, \"name\": \"Tank ONO\", \"address\": \"Domažlická 674/160, 318 00 Plzeň 3\", \"phone\": \"+420 607 111 000\", \"opening_hrs\": 1753855200000, \"closing_hrs\": 1753912800000, \"last_visit\": 1752184877259, \"provider\": \"ONO\", \"note\": \"Nejlevnější v okolí\", \"created_at\": 1753912877340, \"updated_at\": 1753912877340}, \"fuels\": [{\"id\": 1, \"name\": \"Benzín\", \"code\": \"BA 90\", \"trademark\": \"Natural 90\", \"unit\": \"l\"}, {\"id\": 3, \"name\": \"Benzín\", \"code\": \"BA 95\", \"trademark\": \"Natural 95\", \"unit\": \"l\"}, {\"id\": 7, \"name\": \"Nafta\", \"code\": \"NM\", \"trademark\": \"Diesel\", \"unit\": \"l\"}]}",
             "created_at": 1646995600000,
             "updated_at": 1646995600000
+        },
+        {
+            "car_id": 1,
+            "station_fuel_id": 6,
+            "price_per_unit": 41.2,
+            "price": 1815.8,
+            "amount": 41,
+            "mileage": 456,
+            "tachometer": 49862,
+            "tank_date": 1754038831000,
+            "full_tank": false,
+            "note": "Vysoké ceny, jen nutné minimum",
+            "snapshot": "{\"id\": 34, \"car_id\": 1, \"station_fuel_id\": 6, \"price_per_unit\": 41.2, \"price\": 1815.7, \"amount\": 41, \"mileage\": 456, \"tachometer\": 49862, \"tank_date\": 1754038831000, \"full_tank\": false, \"note\": \"Vysoké ceny, jen nutné minimum\", \"created_at\": 1754038831000, \"updated_at\": 1754038831000, \"station\": {\"id\": 10, \"name\": \"Tank ONO\", \"address\": \"Domažlická 674/160, 318 00 Plzeň 3\", \"phone\": \"+420 607 111 000\", \"opening_hrs\": 1753855200000, \"closing_hrs\": 1753912800000, \"last_visit\": 1752184877259, \"provider\": \"ONO\", \"note\": \"Nejlevnější v okolí\", \"created_at\": 1753912877340, \"updated_at\": 1753912877340}, \"fuels\": [{\"id\": 1, \"name\": \"Benzín\", \"code\": \"BA 90\", \"trademark\": \"Natural 90\", \"unit\": \"l\"}, {\"id\": 3, \"name\": \"Benzín\", \"code\": \"BA 95\", \"trademark\": \"Natural 95\", \"unit\": \"l\"}, {\"id\": 7, \"name\": \"Nafta\", \"code\": \"NM\", \"trademark\": \"Diesel\", \"unit\": \"l\"}]}",
+            "created_at": 1754038831000,
+            "updated_at": 1754038831000
+        },
+          {
+            "car_id": 1,
+            "station_fuel_id": 5,
+            "price_per_unit": 40.1,
+            "price": 1034.2,
+            "amount": 32,
+            "mileage": 256,
+            "tachometer": 50891,
+            "tank_date": 1756717231000,
+            "full_tank": false,
+            "note": "Vysoké ceny, jen nutné minimum",
+            "snapshot": "{\"id\": 35, \"car_id\": 1, \"station_fuel_id\": 5, \"price_per_unit\": 40.1, \"price\": 1034.2, \"amount\": 32, \"mileage\": 256, \"tachometer\": 50891, \"tank_date\": 1756717231000, \"full_tank\": false, \"note\": \"Vysoké ceny, jen nutné minimum\", \"created_at\": 1756717231000, \"updated_at\": 1756717231000, \"station\": {\"id\": 10, \"name\": \"Tank ONO\", \"address\": \"Domažlická 674/160, 318 00 Plzeň 3\", \"phone\": \"+420 607 111 000\", \"opening_hrs\": 1753855200000, \"closing_hrs\": 1753912800000, \"last_visit\": 1752184877259, \"provider\": \"ONO\", \"note\": \"Nejlevnější v okolí\", \"created_at\": 1753912877340, \"updated_at\": 1753912877340}, \"fuels\": [{\"id\": 1, \"name\": \"Benzín\", \"code\": \"BA 90\", \"trademark\": \"Natural 90\", \"unit\": \"l\"}, {\"id\": 3, \"name\": \"Benzín\", \"code\": \"BA 95\", \"trademark\": \"Natural 95\", \"unit\": \"l\"}, {\"id\": 7, \"name\": \"Nafta\", \"code\": \"NM\", \"trademark\": \"Diesel\", \"unit\": \"l\"}]}",
+            "created_at": 1756717231000,
+            "updated_at": 1756717231000
         }
 
     ];

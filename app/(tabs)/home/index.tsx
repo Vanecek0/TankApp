@@ -42,18 +42,28 @@ export default function HomeScreen() {
       badges: Badge[];
     })[]
   }[]>([])
-  const [tankingStatistics, setTankingStatistics] = useState<Omit<TankingStatistics, 'period'>>()
+  const [tankingStatisticsThisMonth, setTankingStatisticsThisMonth] = useState<Omit<TankingStatistics, 'period'>>()
+  const [tankingStatisticsLastMonth, setTankingStatisticsLastMonth] = useState<Omit<TankingStatistics, 'period'>>()
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const getTankingStatistics = async () => {
-      const tankingStatisticsDate = await tankingStatisticService.getLastMonthTankingStats(car?.id!);
-      setTankingStatistics(tankingStatisticsDate)
+    dispatch(loadCarFromStorage());
+  }, [dispatch]);
+
+  useEffect(() => {
+    const getTankingStatisticsThisMonth = async () => {
+      const tankingStatisticsThisMonth = await tankingStatisticService.getThisMonthTankingStats(car?.id!);
+      setTankingStatisticsThisMonth(tankingStatisticsThisMonth)
     }
 
-    dispatch(loadCarFromStorage());
-    getTankingStatistics();
-  }, [dispatch]);
+    const getTankingStatisticsLastMonth = async () => {
+      const tankingStatisticsLastMonth = await tankingStatisticService.getLastMonthTankingStats(car?.id!);
+      setTankingStatisticsLastMonth(tankingStatisticsLastMonth)
+    }
+
+    getTankingStatisticsThisMonth();
+    getTankingStatisticsLastMonth();
+  }, [car])
 
   const loadTankings = useCallback(async (carId: number) => {
     setIsLoading(true);
@@ -81,7 +91,7 @@ export default function HomeScreen() {
   }) => {
     return (
       <View style={{ ...spacing.gap(12) }}>
-        <ScaledText size='xl' className='capitalize font-bold' style={{ color: isDark ? Colors.text.primary_dark : '' }}>{getDate(item.month).monthLong} {getDate(item.month).year}</ScaledText>
+        <ScaledText size='xl' className='capitalize font-bold' style={{ color: isDark ? Colors.text.primary_dark : '' }}>{getDate(item.month).monthIndex == new Date().getMonth() ? "Tento měsíc" : `${getDate(item.month).monthLong} ${getDate(item.month).year}`}</ScaledText>
         <View style={{ ...spacing.mb(12) }}>
           {item.tankings.map((item, index) => (
             <View key={index} style={{ ...spacing.gap(12), ...spacing.my(12) }} className='flex-row items-center'>
@@ -91,7 +101,7 @@ export default function HomeScreen() {
                   <ScaledText isThemed size="xl" className='font-bold'>{item.station?.name ?? 'Neznámá stanice'}</ScaledText>
                   <View style={{ ...spacing.gap(4) }} className='flex-row items-center justify-start'>
                     <Icon name="map_pin" color={Colors.text.muted} size={getScaleFactor() * 16} />
-                    <ScaledText numberOfLines={1} ellipsizeMode="tail" className='text-ellipsis overflow-visible' isThemed size="base" style={{width: "85%"}}>{item.station?.address ?? 'Bez adresy'}</ScaledText>
+                    <ScaledText numberOfLines={1} ellipsizeMode="tail" className='text-ellipsis overflow-visible' isThemed size="base" style={{ width: "85%" }}>{item.station?.address ?? 'Bez adresy'}</ScaledText>
                   </View>
                   <View style={{ ...spacing.gap(12) }} className='flex-col'>
                     <View style={{ ...spacing.gap(4) }} className='flex-row items-center justify-start'>
@@ -184,13 +194,66 @@ export default function HomeScreen() {
                 isThemed={true}
               />
             </View>
-            <Card>
-              <View className='flex-row items-center' style={{ ...spacing.gap(8), ...spacing.py(12) }}>
-                <ScaledText size='lg' className='font-bold' isThemed>Tento měsíc</ScaledText>
+            <Card style={{ ...spacing.gap(8) }}>
+              <View style={{ ...spacing.gap(8) }}>
+                <View className='flex-row items-center' style={{ ...spacing.gap(8), ...spacing.py(12) }}>
+                  <ScaledText size='lg' className='font-bold' isThemed>Tento měsíc</ScaledText>
+                </View>
+                <View className='flex-row items-center justify-between'>
+                  <View className='flex-row items-center' style={{ ...spacing.gap(8) }}>
+                    <Icon name="tank" color={Colors.base.primary} size={getScaleFactor() * 20} />
+                    <ScaledText size='xl' className='font-bold' isThemed>{tankingStatisticsThisMonth?.total_amount.toFixed(2) ?? "0"} l</ScaledText>
+                  </View>
+                  <ScaledText size='base' className='font-bold' isThemed>{tankingStatisticsThisMonth?.total_amount.toFixed(2) ?? "0"} l</ScaledText>
+                </View>
+                <View className='flex-row items-center' style={{ ...spacing.gap(8) }}>
+                  <Icon name="dollar" color={Colors.base.primary} size={getScaleFactor() * 20} />
+                  <ScaledText size='xl' className='font-bold' isThemed>{tankingStatisticsThisMonth?.total_price.toFixed(2) ?? "0"} kč</ScaledText>
+                </View>
+                <View className='flex-row items-center' style={{ ...spacing.gap(8) }}>
+                  <Icon name="average" color={Colors.base.primary} size={getScaleFactor() * 20} />
+                  <ScaledText size='xl' className='font-bold' isThemed>{tankingStatisticsThisMonth?.avg_price_per_unit.toFixed(2) ?? "0"} kč/l</ScaledText>
+                </View>
               </View>
-              <View className='flex-row items-center' style={{ ...spacing.gap(8) }}>
-                <Icon name="tank" color={Colors.base.primary} size={getScaleFactor() * 20} />
-                <ScaledText size='xl' className='font-bold' isThemed>{tankingStatistics?.total_price.toFixed(2) ?? "0"} kč</ScaledText>
+              <View style={{ ...spacing.gap(8) }}>
+                <View className='flex-row items-center' style={{ ...spacing.gap(8), ...spacing.py(12) }}>
+                  <ScaledText size='lg' className='font-bold' isThemed>Tento měsíc</ScaledText>
+                </View>
+                <View className='flex-row items-center' style={{ ...spacing.gap(8) }}>
+                  <Icon name="tank" color={Colors.base.primary} size={getScaleFactor() * 20} />
+                  <ScaledText size='xl' className='font-bold' isThemed>{tankingStatisticsLastMonth?.total_amount.toFixed(2) ?? "0"} l</ScaledText>
+                </View>
+                <View className='flex-row items-center' style={{ ...spacing.gap(8) }}>
+                  <Icon name="dollar" color={Colors.base.primary} size={getScaleFactor() * 20} />
+                  <ScaledText size='xl' className='font-bold' isThemed>{tankingStatisticsLastMonth?.total_price.toFixed(2) ?? "0"} kč</ScaledText>
+                </View>
+                <View className='flex-row items-center' style={{ ...spacing.gap(8) }}>
+                  <Icon name="average" color={Colors.base.primary} size={getScaleFactor() * 20} />
+                  <ScaledText size='xl' className='font-bold' isThemed>{tankingStatisticsLastMonth?.avg_price_per_unit.toFixed(2) ?? "0"} kč/l</ScaledText>
+                </View>
+              </View>
+            </Card>
+
+            <View className='flex-row items-center justify-between'>
+              <View className='flex-row justify-center items-center' style={{ ...spacing.gap(8), ...spacing.borderRadius(8), ...spacing.py(12) }}>
+                <Icon name='tank' color={Colors.base.primary} size={getScaleFactor() * 20} />
+                <ScaledText size='xl' className='font-bold' isThemed>Palivo</ScaledText>
+              </View>
+              <CustomButton
+                label="Zobrazit více"
+                labelSize='base'
+                labelStyle={{ textDecorationLine: "underline" }}
+                backgroundColor='transparent'
+                onPress={() => router.navigate("/(tabs)/statistics")}
+                isThemed={true}
+              />
+            </View>
+            <Card style={{ ...spacing.gap(8) }}>
+              <View style={{ ...spacing.gap(8) }}>
+                <View className='flex-row items-center' style={{ ...spacing.gap(8) }}>
+                  <Icon name="droplet" color={Colors.base.primary} size={getScaleFactor() * 20} />
+                  <ScaledText size='xl' className='font-bold' isThemed>{tankingStatisticsThisMonth?.avg_consumption.toFixed(2) ?? "0"} l/100km</ScaledText>
+                </View>
               </View>
             </Card>
           </Animated.ScrollView>
