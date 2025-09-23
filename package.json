@@ -12,7 +12,13 @@
     "lint": "expo lint"
   },
   "jest": {
-    "preset": "jest-expo"
+    "preset": "jest-expo",
+    "setupFiles": [
+      "<rootDir>/jest.setup.js"
+    ],
+    "transformIgnorePatterns": [
+      "node_modules/(?!((jest-)?react-native|@react-native|@react-native-async-storage|expo(nent)?|@expo(nent)?|expo-modules-core|@expo/vector-icons|react-clone-referenced-element|react-navigation|@react-navigation/.*))"
+    ]
   },
   "dependencies": {
     "@expo/metro-runtime": "~6.1.2",
