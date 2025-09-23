@@ -2,7 +2,7 @@ import { ThemeColors as Colors } from "@/constants/Colors";
 import { FontSizes } from "@/utils/fontScaling";
 import { useTheme } from "@/theme/ThemeProvider";
 import getScaleFactor from "@/utils/SizeScaling";
-import { Text, TextProps, TextStyle } from "react-native";
+import { Text, TextProps, TextStyle, View } from "react-native";
 
 export type FontSizeKey = keyof typeof FontSizes;
 

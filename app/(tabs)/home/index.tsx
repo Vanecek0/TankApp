@@ -118,7 +118,6 @@ export default function HomeScreen() {
                 </View>
               </View>
             </View>
-
           ))}
         </View>
       </View>
@@ -130,7 +129,7 @@ export default function HomeScreen() {
       <View
         className='flex-1'
         style={{
-          backgroundColor: isDark ? Colors.background.dark : Colors.background.light
+          backgroundColor: isDark ? Colors.background.dark : Colors.background.light,
         }}
       >
         <CollapsibleScroll
@@ -158,7 +157,7 @@ export default function HomeScreen() {
           scrollYValue={scrollY}
 
         >
-          <Animated.ScrollView style={{ ...spacing.mx(20), ...spacing.gap(12), ...spacing.mt(12) }}>
+          <Animated.ScrollView style={{ ...spacing.mx(20), ...spacing.gap(12), ...spacing.mt(12), ...spacing.mb(96) }}>
             <View className='flex-row items-center justify-between'>
               <View className='flex-row justify-center items-center' style={{ ...spacing.gap(8), ...spacing.borderRadius(8), ...spacing.py(12) }}>
                 <Icon name='tank' color={Colors.base.primary} size={getScaleFactor() * 20} />
@@ -178,6 +177,33 @@ export default function HomeScreen() {
               {tanking.map((item, index) => (
                 <TankingItem key={index} item={item} />
               ))}
+              {
+                tanking.length > 0 ? (
+                  <View style={{
+                    position: "absolute",
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    ...spacing.height(80),
+                    backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light,
+                    opacity: 0.85
+                  }}
+                    className='flex justify-center items-center'
+                  >
+                    <CustomButton
+                      label={<View>
+                        <ScaledText size='lg' style={{fontWeight: "bold"}} isThemed>Zobrazit více</ScaledText>
+                        <Icon name="chevron_down" color={Colors.text.muted} size={getScaleFactor() * 16} />
+                      </View>}
+                      labelStyle={{ fontWeight: "bold" }}
+                      backgroundColor='transparent'
+                      onPress={() => router.navigate("/(tabs)/tank")}
+                      style={{}}
+                      isThemed={true}
+                    />
+                  </View>
+                ) : null
+              }
             </Card>
 
             <View className='flex-row items-center justify-between'>
@@ -194,42 +220,44 @@ export default function HomeScreen() {
                 isThemed={true}
               />
             </View>
-            <Card style={{ ...spacing.gap(8) }}>
+            <Card style={{ ...spacing.gap(12) }}>
               <View style={{ ...spacing.gap(8) }}>
-                <View className='flex-row items-center' style={{ ...spacing.gap(8), ...spacing.py(12) }}>
-                  <ScaledText size='lg' className='font-bold' isThemed>Tento měsíc</ScaledText>
+                <View className='flex-row items-center'>
+                  <ScaledText size='lg' isThemed>Tento měsíc</ScaledText>
+                </View>
+
+                <View className='flex-row items-center justify-between'>
+                  <View className='flex-row items-center' style={{ ...spacing.gap(8) }}>
+                    <Icon name="average" color={Colors.base.primary} size={getScaleFactor() * 20} />
+                    <ScaledText size='xl' className='font-bold' isThemed>{tankingStatisticsThisMonth?.avg_price_per_unit.toFixed(2) ?? "0"} kč/l</ScaledText>
+                  </View>
+                  <ScaledText size='base' style={{ color: isDark ? Colors.text.disabled_dark : Colors.text.disabled }}>Průměrná cena</ScaledText>
                 </View>
                 <View className='flex-row items-center justify-between'>
                   <View className='flex-row items-center' style={{ ...spacing.gap(8) }}>
-                    <Icon name="tank" color={Colors.base.primary} size={getScaleFactor() * 20} />
-                    <ScaledText size='xl' className='font-bold' isThemed>{tankingStatisticsThisMonth?.total_amount.toFixed(2) ?? "0"} l</ScaledText>
+                    <Icon name="dollar" color={Colors.base.primary} size={getScaleFactor() * 20} />
+                    <ScaledText size='xl' className='font-bold' isThemed>{tankingStatisticsThisMonth?.total_price.toFixed(2) ?? "0"} kč</ScaledText>
                   </View>
-                  <ScaledText size='base' className='font-bold' isThemed>{tankingStatisticsThisMonth?.total_amount.toFixed(2) ?? "0"} l</ScaledText>
-                </View>
-                <View className='flex-row items-center' style={{ ...spacing.gap(8) }}>
-                  <Icon name="dollar" color={Colors.base.primary} size={getScaleFactor() * 20} />
-                  <ScaledText size='xl' className='font-bold' isThemed>{tankingStatisticsThisMonth?.total_price.toFixed(2) ?? "0"} kč</ScaledText>
-                </View>
-                <View className='flex-row items-center' style={{ ...spacing.gap(8) }}>
-                  <Icon name="average" color={Colors.base.primary} size={getScaleFactor() * 20} />
-                  <ScaledText size='xl' className='font-bold' isThemed>{tankingStatisticsThisMonth?.avg_price_per_unit.toFixed(2) ?? "0"} kč/l</ScaledText>
+                  <ScaledText size='base' style={{ color: isDark ? Colors.text.disabled_dark : Colors.text.disabled }}>Cena za palivo</ScaledText>
                 </View>
               </View>
               <View style={{ ...spacing.gap(8) }}>
-                <View className='flex-row items-center' style={{ ...spacing.gap(8), ...spacing.py(12) }}>
-                  <ScaledText size='lg' className='font-bold' isThemed>Tento měsíc</ScaledText>
+                <View className='flex-row items-center'>
+                  <ScaledText size='lg' isThemed>Předchozí měsíc</ScaledText>
                 </View>
-                <View className='flex-row items-center' style={{ ...spacing.gap(8) }}>
-                  <Icon name="tank" color={Colors.base.primary} size={getScaleFactor() * 20} />
-                  <ScaledText size='xl' className='font-bold' isThemed>{tankingStatisticsLastMonth?.total_amount.toFixed(2) ?? "0"} l</ScaledText>
+                <View className='flex-row items-center justify-between'>
+                  <View className='flex-row items-center' style={{ ...spacing.gap(8) }}>
+                    <Icon name="average" color={Colors.base.primary} size={getScaleFactor() * 20} />
+                    <ScaledText size='xl' className='font-bold' isThemed>{tankingStatisticsLastMonth?.avg_price_per_unit.toFixed(2) ?? "0"} kč/l</ScaledText>
+                  </View>
+                  <ScaledText size='base' style={{ color: isDark ? Colors.text.disabled_dark : Colors.text.disabled }}>Průměrná cena</ScaledText>
                 </View>
-                <View className='flex-row items-center' style={{ ...spacing.gap(8) }}>
-                  <Icon name="dollar" color={Colors.base.primary} size={getScaleFactor() * 20} />
-                  <ScaledText size='xl' className='font-bold' isThemed>{tankingStatisticsLastMonth?.total_price.toFixed(2) ?? "0"} kč</ScaledText>
-                </View>
-                <View className='flex-row items-center' style={{ ...spacing.gap(8) }}>
-                  <Icon name="average" color={Colors.base.primary} size={getScaleFactor() * 20} />
-                  <ScaledText size='xl' className='font-bold' isThemed>{tankingStatisticsLastMonth?.avg_price_per_unit.toFixed(2) ?? "0"} kč/l</ScaledText>
+                <View className='flex-row items-center justify-between'>
+                  <View className='flex-row items-center' style={{ ...spacing.gap(8) }}>
+                    <Icon name="dollar" color={Colors.base.primary} size={getScaleFactor() * 20} />
+                    <ScaledText size='xl' className='font-bold' isThemed>{tankingStatisticsLastMonth?.total_price.toFixed(2) ?? "0"} kč</ScaledText>
+                  </View>
+                  <ScaledText size='base' style={{ color: isDark ? Colors.text.disabled_dark : Colors.text.disabled }}>Cena za palivo</ScaledText>
                 </View>
               </View>
             </Card>
@@ -248,11 +276,43 @@ export default function HomeScreen() {
                 isThemed={true}
               />
             </View>
-            <Card style={{ ...spacing.gap(8) }}>
+            <Card style={{ ...spacing.gap(12) }}>
               <View style={{ ...spacing.gap(8) }}>
-                <View className='flex-row items-center' style={{ ...spacing.gap(8) }}>
-                  <Icon name="droplet" color={Colors.base.primary} size={getScaleFactor() * 20} />
-                  <ScaledText size='xl' className='font-bold' isThemed>{tankingStatisticsThisMonth?.avg_consumption.toFixed(2) ?? "0"} l/100km</ScaledText>
+                <View className='flex-row items-center'>
+                  <ScaledText size='lg' isThemed>Tento měsíc</ScaledText>
+                </View>
+                <View className='flex-row items-center justify-between'>
+                  <View className='flex-row items-center' style={{ ...spacing.gap(8) }}>
+                    <Icon name="droplet" color={Colors.base.primary} size={getScaleFactor() * 20} />
+                    <ScaledText size='xl' className='font-bold' isThemed>{tankingStatisticsThisMonth?.avg_consumption.toFixed(2) ?? "0"} l/100km</ScaledText>
+                  </View>
+                  <ScaledText size='base' style={{ color: isDark ? Colors.text.disabled_dark : Colors.text.disabled }}>Průměrná spotřeba</ScaledText>
+                </View>
+                <View className='flex-row items-center justify-between'>
+                  <View className='flex-row items-center' style={{ ...spacing.gap(8) }}>
+                    <Icon name="tank" color={Colors.base.primary} size={getScaleFactor() * 20} />
+                    <ScaledText size='xl' className='font-bold' isThemed>{tankingStatisticsThisMonth?.total_amount.toFixed(2) ?? "0"} l</ScaledText>
+                  </View>
+                  <ScaledText size='base' style={{ color: isDark ? Colors.text.disabled_dark : Colors.text.disabled }}>Natankováno paliva</ScaledText>
+                </View>
+              </View>
+              <View style={{ ...spacing.gap(8) }}>
+                <View className='flex-row items-center'>
+                  <ScaledText size='lg' isThemed>Předchozí měsíc</ScaledText>
+                </View>
+                <View className='flex-row items-center justify-between'>
+                  <View className='flex-row items-center' style={{ ...spacing.gap(8) }}>
+                    <Icon name="droplet" color={Colors.base.primary} size={getScaleFactor() * 20} />
+                    <ScaledText size='xl' className='font-bold' isThemed>{tankingStatisticsLastMonth?.avg_consumption.toFixed(2) ?? "0"} l/100km</ScaledText>
+                  </View>
+                  <ScaledText size='base' style={{ color: isDark ? Colors.text.disabled_dark : Colors.text.disabled }}>Průměrná spotřeba</ScaledText>
+                </View>
+                <View className='flex-row items-center justify-between'>
+                  <View className='flex-row items-center' style={{ ...spacing.gap(8) }}>
+                    <Icon name="tank" color={Colors.base.primary} size={getScaleFactor() * 20} />
+                    <ScaledText size='xl' className='font-bold' isThemed>{tankingStatisticsLastMonth?.total_amount.toFixed(2) ?? "0"} l</ScaledText>
+                  </View>
+                  <ScaledText size='base' style={{ color: isDark ? Colors.text.disabled_dark : Colors.text.disabled }}>Natankováno paliva</ScaledText>
                 </View>
               </View>
             </Card>
