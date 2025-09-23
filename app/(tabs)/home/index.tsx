@@ -193,7 +193,7 @@ export default function HomeScreen() {
                     <CustomButton
                       label={<View>
                         <ScaledText size='lg' style={{fontWeight: "bold"}} isThemed>Zobrazit více</ScaledText>
-                        <Icon name="chevron_down" color={Colors.text.muted} size={getScaleFactor() * 16} />
+                        <Icon name="chevron_down" color={Colors.text.muted} size={getScaleFactor() * 22} />
                       </View>}
                       labelStyle={{ fontWeight: "bold" }}
                       backgroundColor='transparent'
