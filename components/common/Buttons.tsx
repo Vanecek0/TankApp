@@ -9,7 +9,7 @@ import { Colors } from '@/constants/Colors';
 
 export type CustomButtonProps = TouchableOpacityProps & {
     label: string | ReactNode;
-    labelSize: FontSizeKey;
+    labelSize?: FontSizeKey;
     onPress?: (event: GestureResponderEvent) => void;
     className?: string;
     labelStyle?: TextStyle;
@@ -25,7 +25,7 @@ export type CustomButtonProps = TouchableOpacityProps & {
 export default function CustomButton(
     {
         label,
-        labelSize,
+        labelSize = "base",
         onPress,
         className,
         labelStyle,
@@ -54,6 +54,7 @@ export function ActionButton({ children, scrollY }: ActionButtonProps) {
     const { isDark } = useTheme();
     const [isOpen, setIsOpen] = useState(false);
     const fadeAnim = useRef(new Animated.Value(1)).current;
+    const [disabled, setDisabled] = useState(false);
 
 
     useEffect(() => {
@@ -62,18 +63,22 @@ export function ActionButton({ children, scrollY }: ActionButtonProps) {
         let lastValue = 0;
 
         const id = scrollY.addListener(({ value }) => {
-            if (value > lastValue + 5) {
+            if (value > lastValue + 3) {
                 Animated.timing(fadeAnim, {
                     toValue: 0,
                     duration: 50,
                     useNativeDriver: true,
-                }).start();
-            } else if (value < lastValue - 5) {
+                }).start(() => {
+                    setDisabled(true);
+                });
+            } else if (value < lastValue - 3) {
                 Animated.timing(fadeAnim, {
                     toValue: 1,
                     duration: 50,
                     useNativeDriver: true,
-                }).start();
+                }).start(() => {
+                    setDisabled(false);
+                });
             }
             lastValue = value;
         });
@@ -107,8 +112,10 @@ export function ActionButton({ children, scrollY }: ActionButtonProps) {
             <Animated.View
                 style={{
                     zIndex: 20,
-                    opacity: fadeAnim
-                }}>
+                    opacity: fadeAnim,
+                }}
+                pointerEvents={disabled ? "none" : "auto"}
+                >
                 <CustomButton
                     labelClassName='aspect text-center'
                     onPress={() => setIsOpen(!isOpen)}
