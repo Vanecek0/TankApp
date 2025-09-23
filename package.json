@@ -12,11 +12,7 @@
     "lint": "expo lint"
   },
   "jest": {
-    "preset": "jest-expo",
-    "transformIgnorePatterns": [
-      "node_modules/(?!((jest-)?react-native|@react-native(-community)?|@react-native-async-storage/async-storage)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@sentry/react-native|native-base|react-native-svg)"
-    ],
-    "setupFiles": ["./jest.setup.js"]
+    "preset": "jest-expo"
   },
   "dependencies": {
     "@expo/metro-runtime": "~6.1.2",
