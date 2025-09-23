@@ -7,16 +7,16 @@ import getScaleFactor, { getDeviceType } from "@/utils/SizeScaling";
 describe("<ScaledText />", () => {
   it("renders given text", async () => {
     const { findByText } = render(
-      <ScaledText size="2xl">Testing the component</ScaledText>
+      <ScaledText size="2xl">Testing the component!</ScaledText>
     );
-    await findByText("Testing the component");
+    await findByText("Testing the component!");
   });
   it("applies correct font size and line height based on size prop", async () => {
     const { findByText } = render(
-      <ScaledText size="2xl">Testing the component</ScaledText>
+      <ScaledText size="2xl">Testing the component!</ScaledText>
     );
 
-    const text = await findByText("Testing the component");
+    const text = await findByText("Testing the component!");
     expect(text.props.style).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
