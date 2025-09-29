@@ -37,8 +37,6 @@ export const getScaleFactor = () => {
   return Math.min(Math.max(scaleFactor, config.min), config.max);
 };
 
-console.log(getScaleFactor())
-
 export const scaled = (value: number) => value * getScaleFactor();
 
 export const spacing = {

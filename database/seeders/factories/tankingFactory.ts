@@ -13,7 +13,6 @@ export async function getTankingSeeds(): Promise<Tanking[]> {
             tank_date: 1609545600000,
             full_tank: true,
             note: "Rychlé tankování, žádná fronta",
-            snapshot: "{\"id\":1,\"car_id\":1,\"station_fuel_id\":1,\"price_per_unit\":30.6,\"price\":1071,\"amount\":35,\"mileage\":315,\"tachometer\":35316,\"tank_date\":1609545600000,\"full_tank\":true,\"note\":\"Rychlé tankování, žádná fronta\",\"created_at\":1609545600000,\"updated_at\":1609545600000,\"station\":{\"id\":1,\"name\":\"Tank ONO\",\"address\":\"Domažlická 674/160, 318 00 Plzeň 3\",\"phone\":\"+420 607 111 111\",\"opening_hrs\":1753855200000,\"closing_hrs\":1753912800000,\"last_visit\":1752184877250,\"provider\":\"ONO\",\"note\":\"Nejlevnější v okolí\",\"created_at\":1753912877250,\"updated_at\":1753912877250},\"fuels\":[{\"id\":1,\"name\":\"Benzín\",\"code\":\"BA 90\",\"trademark\":\"Natural 90\",\"unit\":\"l\"},{\"id\":3,\"name\":\"Benzín\",\"code\":\"BA 95\",\"trademark\":\"Natural 95\",\"unit\":\"l\"},{\"id\":7,\"name\":\"Nafta\",\"code\":\"NM\",\"trademark\":\"Diesel\",\"unit\":\"l\"}]}",
             created_at: 1609545600000,
             updated_at: 1609545600000,
         },
@@ -28,7 +27,6 @@ export async function getTankingSeeds(): Promise<Tanking[]> {
             "tank_date": 1609558800000,
             "full_tank": false,
             "note": "Částečné dotankování před cestou",
-            "snapshot": "{\"id\":2,\"car_id\":1,\"station_fuel_id\":2,\"price_per_unit\":34.5,\"price\":1077.9,\"amount\":36,\"mileage\":320,\"tachometer\":35321,\"tank_date\":1609558800000,\"full_tank\":false,\"note\":\"Částečné dotankování před cestou\",\"created_at\":1609558800000,\"updated_at\":1609558800000,\"station\":{\"id\":2,\"name\":\"Tank ONO\",\"address\":\"Domažlická 674/160, 318 00 Plzeň 3\",\"phone\":\"+420 607 111 222\",\"opening_hrs\":1753855200000,\"closing_hrs\":1753912800000,\"last_visit\":1752184877251,\"provider\":\"ONO\",\"note\":\"Nejlevnější v okolí\",\"created_at\":1753912877260,\"updated_at\":1753912877260},\"fuels\":[{\"id\":1,\"name\":\"Benzín\",\"code\":\"BA 90\",\"trademark\":\"Natural 90\",\"unit\":\"l\"},{\"id\":3,\"name\":\"Benzín\",\"code\":\"BA 95\",\"trademark\":\"Natural 95\",\"unit\":\"l\"},{\"id\":7,\"name\":\"Nafta\",\"code\":\"NM\",\"trademark\":\"Diesel\",\"unit\":\"l\"}]}",
             "created_at": 1609558800000,
             "updated_at": 1609558800000
         },
@@ -43,7 +41,6 @@ export async function getTankingSeeds(): Promise<Tanking[]> {
             "tank_date": 1609562000000,
             "full_tank": true,
             "note": "Výhodná cena, akce na palivo",
-            "snapshot": "{\"id\":3,\"car_id\":1,\"station_fuel_id\":3,\"price_per_unit\":31.9,\"price\":1065.7,\"amount\":34,\"mileage\":325,\"tachometer\":35326,\"tank_date\":1609562000000,\"full_tank\":true,\"note\":\"Výhodná cena, akce na palivo\",\"created_at\":1609562000000,\"updated_at\":1609562000000,\"station\":{\"id\":3,\"name\":\"Tank ONO\",\"address\":\"Domažlická 674/160, 318 00 Plzeň 3\",\"phone\":\"+420 607 111 333\",\"opening_hrs\":1753855200000,\"closing_hrs\":1753912800000,\"last_visit\":1752184877252,\"provider\":\"ONO\",\"note\":\"Nejlevnější v okolí\",\"created_at\":1753912877270,\"updated_at\":1753912877270},\"fuels\":[{\"id\":1,\"name\":\"Benzín\",\"code\":\"BA 90\",\"trademark\":\"Natural 90\",\"unit\":\"l\"},{\"id\":3,\"name\":\"Benzín\",\"code\":\"BA 95\",\"trademark\":\"Natural 95\",\"unit\":\"l\"},{\"id\":7,\"name\":\"Nafta\",\"code\":\"NM\",\"trademark\":\"Diesel\",\"unit\":\"l\"}]}",
             "created_at": 1609562000000,
             "updated_at": 1609562000000
         },
@@ -58,7 +55,6 @@ export async function getTankingSeeds(): Promise<Tanking[]> {
             "tank_date": 1609565200000,
             "full_tank": false,
             "note": "Dlouhá fronta, pomalé tankování",
-            "snapshot": "{\"id\":4,\"car_id\":1,\"station_fuel_id\":4,\"price_per_unit\":32.5,\"price\":1067.1,\"amount\":35,\"mileage\":330,\"tachometer\":35331,\"tank_date\":1609565200000,\"full_tank\":false,\"note\":\"Dlouhá fronta, pomalé tankování\",\"created_at\":1609565200000,\"updated_at\":1609565200000,\"station\":{\"id\":4,\"name\":\"Tank ONO\",\"address\":\"Domažlická 674/160, 318 00 Plzeň 3\",\"phone\":\"+420 607 111 444\",\"opening_hrs\":1753855200000,\"closing_hrs\":1753912800000,\"last_visit\":1752184877253,\"provider\":\"ONO\",\"note\":\"Nejlevnější v okolí\",\"created_at\":1753912877280,\"updated_at\":1753912877280},\"fuels\":[{\"id\":1,\"name\":\"Benzín\",\"code\":\"BA 90\",\"trademark\":\"Natural 90\",\"unit\":\"l\"},{\"id\":3,\"name\":\"Benzín\",\"code\":\"BA 95\",\"trademark\":\"Natural 95\",\"unit\":\"l\"},{\"id\":7,\"name\":\"Nafta\",\"code\":\"NM\",\"trademark\":\"Diesel\",\"unit\":\"l\"}]}",
             "created_at": 1609565200000,
             "updated_at": 1609565200000
         },
@@ -73,7 +69,6 @@ export async function getTankingSeeds(): Promise<Tanking[]> {
             "tank_date": 1609568400000,
             "full_tank": true,
             "note": "Čistá pumpa, příjemná obsluha",
-            "snapshot": "{\"id\":5,\"car_id\":1,\"station_fuel_id\":5,\"price_per_unit\":33.2,\"price\":1074.6,\"amount\":36,\"mileage\":335,\"tachometer\":35336,\"tank_date\":1609568400000,\"full_tank\":true,\"note\":\"Čistá pumpa, příjemná obsluha\",\"created_at\":1609568400000,\"updated_at\":1609568400000,\"station\":{\"id\":5,\"name\":\"Tank ONO\",\"address\":\"Domažlická 674/160, 318 00 Plzeň 3\",\"phone\":\"+420 607 111 555\",\"opening_hrs\":1753855200000,\"closing_hrs\":1753912800000,\"last_visit\":1752184877254,\"provider\":\"ONO\",\"note\":\"Nejlevnější v okolí\",\"created_at\":1753912877290,\"updated_at\":1753912877290},\"fuels\":[{\"id\":1,\"name\":\"Benzín\",\"code\":\"BA 90\",\"trademark\":\"Natural 90\",\"unit\":\"l\"},{\"id\":3,\"name\":\"Benzín\",\"code\":\"BA 95\",\"trademark\":\"Natural 95\",\"unit\":\"l\"},{\"id\":7,\"name\":\"Nafta\",\"code\":\"NM\",\"trademark\":\"Diesel\",\"unit\":\"l\"}]}",
             "created_at": 1609568400000,
             "updated_at": 1609568400000
         },
@@ -88,7 +83,6 @@ export async function getTankingSeeds(): Promise<Tanking[]> {
             "tank_date": 1609571600000,
             "full_tank": true,
             "note": "Noční tankování, sleva 2%",
-            "snapshot": "{\"id\":6,\"car_id\":1,\"station_fuel_id\":5,\"price_per_unit\":34.8,\"price\":1082.4,\"amount\":37,\"mileage\":340,\"tachometer\":35341,\"tank_date\":1609571600000,\"full_tank\":true,\"note\":\"Noční tankování, sleva 2%\",\"created_at\":1609571600000,\"updated_at\":1609571600000,\"station\":{\"id\":6,\"name\":\"Tank ONO\",\"address\":\"Domažlická 674/160, 318 00 Plzeň 3\",\"phone\":\"+420 607 111 666\",\"opening_hrs\":1753855200000,\"closing_hrs\":1753912800000,\"last_visit\":1752184877255,\"provider\":\"ONO\",\"note\":\"Nejlevnější v okolí\",\"created_at\":1753912877300,\"updated_at\":1753912877300},\"fuels\":[{\"id\":1,\"name\":\"Benzín\",\"code\":\"BA 90\",\"trademark\":\"Natural 90\",\"unit\":\"l\"},{\"id\":3,\"name\":\"Benzín\",\"code\":\"BA 95\",\"trademark\":\"Natural 95\",\"unit\":\"l\"},{\"id\":7,\"name\":\"Nafta\",\"code\":\"NM\",\"trademark\":\"Diesel\",\"unit\":\"l\"}]}",
             "created_at": 1609571600000,
             "updated_at": 1609571600000
         },
@@ -103,7 +97,6 @@ export async function getTankingSeeds(): Promise<Tanking[]> {
             "tank_date": 1609574800000,
             "full_tank": false,
             "note": "Nouzové tankování na dálnici",
-            "snapshot": "{\"id\":7,\"car_id\":1,\"station_fuel_id\":4,\"price_per_unit\":36.4,\"price\":1090.2,\"amount\":38,\"mileage\":345,\"tachometer\":35346,\"tank_date\":1609574800000,\"full_tank\":false,\"note\":\"Nouzové tankování na dálnici\",\"created_at\":1609574800000,\"updated_at\":1609574800000,\"station\":{\"id\":7,\"name\":\"Tank ONO\",\"address\":\"Domažlická 674/160, 318 00 Plzeň 3\",\"phone\":\"+420 607 111 777\",\"opening_hrs\":1753855200000,\"closing_hrs\":1753912800000,\"last_visit\":1752184877256,\"provider\":\"ONO\",\"note\":\"Nejlevnější v okolí\",\"created_at\":1753912877310,\"updated_at\":1753912877310},\"fuels\":[{\"id\":1,\"name\":\"Benzín\",\"code\":\"BA 90\",\"trademark\":\"Natural 90\",\"unit\":\"l\"},{\"id\":3,\"name\":\"Benzín\",\"code\":\"BA 95\",\"trademark\":\"Natural 95\",\"unit\":\"l\"},{\"id\":7,\"name\":\"Nafta\",\"code\":\"NM\",\"trademark\":\"Diesel\",\"unit\":\"l\"}]}",
             "created_at": 1609574800000,
             "updated_at": 1609574800000
         },
@@ -118,7 +111,6 @@ export async function getTankingSeeds(): Promise<Tanking[]> {
             "tank_date": 1609578000000,
             "full_tank": true,
             "note": "Platba kartou, rychlá obsluha",
-            "snapshot": "{\"id\":8,\"car_id\":1,\"station_fuel_id\":5,\"price_per_unit\":38.0,\"price\":1099.2,\"amount\":39,\"mileage\":350,\"tachometer\":35351,\"tank_date\":1609578000000,\"full_tank\":true,\"note\":\"Platba kartou, rychlá obsluha\",\"created_at\":1609578000000,\"updated_at\":1609578000000,\"station\":{\"id\":8,\"name\":\"Tank ONO\",\"address\":\"Domažlická 674/160, 318 00 Plzeň 3\",\"phone\":\"+420 607 111 888\",\"opening_hrs\":1753855200000,\"closing_hrs\":1753912800000,\"last_visit\":1752184877257,\"provider\":\"ONO\",\"note\":\"Nejlevnější v okolí\",\"created_at\":1753912877320,\"updated_at\":1753912877320},\"fuels\":[{\"id\":1,\"name\":\"Benzín\",\"code\":\"BA 90\",\"trademark\":\"Natural 90\",\"unit\":\"l\"},{\"id\":3,\"name\":\"Benzín\",\"code\":\"BA 95\",\"trademark\":\"Natural 95\",\"unit\":\"l\"},{\"id\":7,\"name\":\"Nafta\",\"code\":\"NM\",\"trademark\":\"Diesel\",\"unit\":\"l\"}]}",
             "created_at": 1609578000000,
             "updated_at": 1609578000000
         },
@@ -133,7 +125,6 @@ export async function getTankingSeeds(): Promise<Tanking[]> {
             "tank_date": 1609581200000,
             "full_tank": true,
             "note": "Víkendová akce, extra body",
-            "snapshot": "{\"id\":9,\"car_id\":1,\"station_fuel_id\":4,\"price_per_unit\":39.6,\"price\":1107.4,\"amount\":40,\"mileage\":355,\"tachometer\":35356,\"tank_date\":1609581200000,\"full_tank\":true,\"note\":\"Víkendová akce, extra body\",\"created_at\":1609581200000,\"updated_at\":1609581200000,\"station\":{\"id\":9,\"name\":\"Tank ONO\",\"address\":\"Domažlická 674/160, 318 00 Plzeň 3\",\"phone\":\"+420 607 111 999\",\"opening_hrs\":1753855200000,\"closing_hrs\":1753912800000,\"last_visit\":1752184877258,\"provider\":\"ONO\",\"note\":\"Nejlevnější v okolí\",\"created_at\":1753912877330,\"updated_at\":1753912877330},\"fuels\":[{\"id\":1,\"name\":\"Benzín\",\"code\":\"BA 90\",\"trademark\":\"Natural 90\",\"unit\":\"l\"},{\"id\":3,\"name\":\"Benzín\",\"code\":\"BA 95\",\"trademark\":\"Natural 95\",\"unit\":\"l\"},{\"id\":7,\"name\":\"Nafta\",\"code\":\"NM\",\"trademark\":\"Diesel\",\"unit\":\"l\"}]}",
             "created_at": 1609581200000,
             "updated_at": 1609581200000
         },
@@ -148,7 +139,6 @@ export async function getTankingSeeds(): Promise<Tanking[]> {
             "tank_date": 1609584400000,
             "full_tank": false,
             "note": "Špinavá pumpa, problém s automatem",
-            "snapshot": "{\"id\":10,\"car_id\":1,\"station_fuel_id\":6,\"price_per_unit\":41.2,\"price\":1115.6,\"amount\":41,\"mileage\":360,\"tachometer\":35361,\"tank_date\":1609584400000,\"full_tank\":false,\"note\":\"Špinavá pumpa, problém s automatem\",\"created_at\":1609584400000,\"updated_at\":1609584400000,\"station\":{\"id\":10,\"name\":\"Tank ONO\",\"address\":\"Domažlická 674/160, 318 00 Plzeň 3\",\"phone\":\"+420 607 111 000\",\"opening_hrs\":1753855200000,\"closing_hrs\":1753912800000,\"last_visit\":1752184877259,\"provider\":\"ONO\",\"note\":\"Nejlevnější v okolí\",\"created_at\":1753912877340,\"updated_at\":1753912877340},\"fuels\":[{\"id\":1,\"name\":\"Benzín\",\"code\":\"BA 90\",\"trademark\":\"Natural 90\",\"unit\":\"l\"},{\"id\":3,\"name\":\"Benzín\",\"code\":\"BA 95\",\"trademark\":\"Natural 95\",\"unit\":\"l\"},{\"id\":7,\"name\":\"Nafta\",\"code\":\"NM\",\"trademark\":\"Diesel\",\"unit\":\"l\"}]}",
             "created_at": 1609584400000,
             "updated_at": 1609584400000
         },
@@ -163,7 +153,6 @@ export async function getTankingSeeds(): Promise<Tanking[]> {
             "tank_date": 1612262800000,
             "full_tank": true,
             "note": "Ranní tankování, žádné čekání",
-            "snapshot": "{\"id\":11,\"car_id\":1,\"station_fuel_id\":6,\"price_per_unit\":41.2,\"price\":1115.6,\"amount\":41,\"mileage\":360,\"tachometer\":35361,\"tank_date\":1612262800000,\"full_tank\":true,\"note\":\"Ranní tankování, žádné čekání\",\"created_at\":1612262800000,\"updated_at\":1612262800000,\"station\":{\"id\":10,\"name\":\"Tank ONO\",\"address\":\"Domažlická 674/160, 318 00 Plzeň 3\",\"phone\":\"+420 607 111 000\",\"opening_hrs\":1753855200000,\"closing_hrs\":1753912800000,\"last_visit\":1752184877259,\"provider\":\"ONO\",\"note\":\"Nejlevnější v okolí\",\"created_at\":1753912877340,\"updated_at\":1753912877340},\"fuels\":[{\"id\":1,\"name\":\"Benzín\",\"code\":\"BA 90\",\"trademark\":\"Natural 90\",\"unit\":\"l\"},{\"id\":3,\"name\":\"Benzín\",\"code\":\"BA 95\",\"trademark\":\"Natural 95\",\"unit\":\"l\"},{\"id\":7,\"name\":\"Nafta\",\"code\":\"NM\",\"trademark\":\"Diesel\",\"unit\":\"l\"}]}",
             "created_at": 1612262800000,
             "updated_at": 1612262800000
         },
@@ -178,7 +167,6 @@ export async function getTankingSeeds(): Promise<Tanking[]> {
             "tank_date": 1612435600000,
             "full_tank": false,
             "note": "Jen na cestu domů",
-            "snapshot": "{\"id\":12,\"car_id\":1,\"station_fuel_id\":6,\"price_per_unit\":41.2,\"price\":1115.6,\"amount\":41,\"mileage\":360,\"tachometer\":35361,\"tank_date\":1612435600000,\"full_tank\":false,\"note\":\"Jen na cestu domů\",\"created_at\":1612435600000,\"updated_at\":1612435600000,\"station\":{\"id\":10,\"name\":\"Tank ONO\",\"address\":\"Domažlická 674/160, 318 00 Plzeň 3\",\"phone\":\"+420 607 111 000\",\"opening_hrs\":1753855200000,\"closing_hrs\":1753912800000,\"last_visit\":1752184877259,\"provider\":\"ONO\",\"note\":\"Nejlevnější v okolí\",\"created_at\":1753912877340,\"updated_at\":1753912877340},\"fuels\":[{\"id\":1,\"name\":\"Benzín\",\"code\":\"BA 90\",\"trademark\":\"Natural 90\",\"unit\":\"l\"},{\"id\":3,\"name\":\"Benzín\",\"code\":\"BA 95\",\"trademark\":\"Natural 95\",\"unit\":\"l\"},{\"id\":7,\"name\":\"Nafta\",\"code\":\"NM\",\"trademark\":\"Diesel\",\"unit\":\"l\"}]}",
             "created_at": 1612435600000,
             "updated_at": 1612435600000
         },
@@ -193,7 +181,6 @@ export async function getTankingSeeds(): Promise<Tanking[]> {
             "tank_date": 1614163600000,
             "full_tank": true,
             "note": "Věrnostní karta, sleva 5 Kč/l",
-            "snapshot": "{\"id\": 13, \"car_id\": 1, \"station_fuel_id\": 6, \"price_per_unit\": 41.2, \"price\": 1115.6, \"amount\": 41, \"mileage\": 360, \"tachometer\": 35361, \"tank_date\": 1614163600000, \"full_tank\": true, \"note\": \"Věrnostní karta, sleva 5 Kč/l\", \"created_at\": 1614163600000, \"updated_at\": 1614163600000, \"station\": {\"id\": 10, \"name\": \"Tank ONO\", \"address\": \"Domažlická 674/160, 318 00 Plzeň 3\", \"phone\": \"+420 607 111 000\", \"opening_hrs\": 1753855200000, \"closing_hrs\": 1753912800000, \"last_visit\": 1752184877259, \"provider\": \"ONO\", \"note\": \"Nejlevnější v okolí\", \"created_at\": 1753912877340, \"updated_at\": 1753912877340}, \"fuels\": [{\"id\": 1, \"name\": \"Benzín\", \"code\": \"BA 90\", \"trademark\": \"Natural 90\", \"unit\": \"l\"}, {\"id\": 3, \"name\": \"Benzín\", \"code\": \"BA 95\", \"trademark\": \"Natural 95\", \"unit\": \"l\"}, {\"id\": 7, \"name\": \"Nafta\", \"code\": \"NM\", \"trademark\": \"Diesel\", \"unit\": \"l\"}]}",
             "created_at": 1614163600000,
             "updated_at": 1614163600000
         },
@@ -208,7 +195,6 @@ export async function getTankingSeeds(): Promise<Tanking[]> {
             "tank_date": 1615891600000,
             "full_tank": false,
             "note": "Tankování v dešti, rychle",
-            "snapshot": "{\"id\": 14, \"car_id\": 1, \"station_fuel_id\": 6, \"price_per_unit\": 41.2, \"price\": 1115.6, \"amount\": 41, \"mileage\": 360, \"tachometer\": 35361, \"tank_date\": 1615891600000, \"full_tank\": false, \"note\": \"Tankování v dešti, rychle\", \"created_at\": 1615891600000, \"updated_at\": 1615891600000, \"station\": {\"id\": 10, \"name\": \"Tank ONO\", \"address\": \"Domažlická 674/160, 318 00 Plzeň 3\", \"phone\": \"+420 607 111 000\", \"opening_hrs\": 1753855200000, \"closing_hrs\": 1753912800000, \"last_visit\": 1752184877259, \"provider\": \"ONO\", \"note\": \"Nejlevnější v okolí\", \"created_at\": 1753912877340, \"updated_at\": 1753912877340}, \"fuels\": [{\"id\": 1, \"name\": \"Benzín\", \"code\": \"BA 90\", \"trademark\": \"Natural 90\", \"unit\": \"l\"}, {\"id\": 3, \"name\": \"Benzín\", \"code\": \"BA 95\", \"trademark\": \"Natural 95\", \"unit\": \"l\"}, {\"id\": 7, \"name\": \"Nafta\", \"code\": \"NM\", \"trademark\": \"Diesel\", \"unit\": \"l\"}]}",
             "created_at": 1615891600000,
             "updated_at": 1615891600000
         },
@@ -223,7 +209,6 @@ export async function getTankingSeeds(): Promise<Tanking[]> {
             "tank_date": 1617619600000,
             "full_tank": true,
             "note": "Nová pumpa, moderní vybavení",
-            "snapshot": "{\"id\": 15, \"car_id\": 1, \"station_fuel_id\": 6, \"price_per_unit\": 41.2, \"price\": 1115.6, \"amount\": 41, \"mileage\": 360, \"tachometer\": 35361, \"tank_date\": 1617619600000, \"full_tank\": true, \"note\": \"Nová pumpa, moderní vybavení\", \"created_at\": 1617619600000, \"updated_at\": 1617619600000, \"station\": {\"id\": 10, \"name\": \"Tank ONO\", \"address\": \"Domažlická 674/160, 318 00 Plzeň 3\", \"phone\": \"+420 607 111 000\", \"opening_hrs\": 1753855200000, \"closing_hrs\": 1753912800000, \"last_visit\": 1752184877259, \"provider\": \"ONO\", \"note\": \"Nejlevnější v okolí\", \"created_at\": 1753912877340, \"updated_at\": 1753912877340}, \"fuels\": [{\"id\": 1, \"name\": \"Benzín\", \"code\": \"BA 90\", \"trademark\": \"Natural 90\", \"unit\": \"l\"}, {\"id\": 3, \"name\": \"Benzín\", \"code\": \"BA 95\", \"trademark\": \"Natural 95\", \"unit\": \"l\"}, {\"id\": 7, \"name\": \"Nafta\", \"code\": \"NM\", \"trademark\": \"Diesel\", \"unit\": \"l\"}]}",
             "created_at": 1617619600000,
             "updated_at": 1617619600000
         },
@@ -238,7 +223,6 @@ export async function getTankingSeeds(): Promise<Tanking[]> {
             "tank_date": 1619347600000,
             "full_tank": false,
             "note": "Jen co bylo potřeba",
-            "snapshot": "{\"id\": 16, \"car_id\": 1, \"station_fuel_id\": 6, \"price_per_unit\": 41.2, \"price\": 1115.6, \"amount\": 41, \"mileage\": 360, \"tachometer\": 35361, \"tank_date\": 1619347600000, \"full_tank\": false, \"note\": \"Jen co bylo potřeba\", \"created_at\": 1619347600000, \"updated_at\": 1619347600000, \"station\": {\"id\": 10, \"name\": \"Tank ONO\", \"address\": \"Domažlická 674/160, 318 00 Plzeň 3\", \"phone\": \"+420 607 111 000\", \"opening_hrs\": 1753855200000, \"closing_hrs\": 1753912800000, \"last_visit\": 1752184877259, \"provider\": \"ONO\", \"note\": \"Nejlevnější v okolí\", \"created_at\": 1753912877340, \"updated_at\": 1753912877340}, \"fuels\": [{\"id\": 1, \"name\": \"Benzín\", \"code\": \"BA 90\", \"trademark\": \"Natural 90\", \"unit\": \"l\"}, {\"id\": 3, \"name\": \"Benzín\", \"code\": \"BA 95\", \"trademark\": \"Natural 95\", \"unit\": \"l\"}, {\"id\": 7, \"name\": \"Nafta\", \"code\": \"NM\", \"trademark\": \"Diesel\", \"unit\": \"l\"}]}",
             "created_at": 1619347600000,
             "updated_at": 1619347600000
         },
@@ -253,7 +237,6 @@ export async function getTankingSeeds(): Promise<Tanking[]> {
             "tank_date": 1621075600000,
             "full_tank": true,
             "note": "Dovolená, plná nádrž na cestu",
-            "snapshot": "{\"id\": 17, \"car_id\": 1, \"station_fuel_id\": 6, \"price_per_unit\": 41.2, \"price\": 1115.6, \"amount\": 41, \"mileage\": 360, \"tachometer\": 35361, \"tank_date\": 1621075600000, \"full_tank\": true, \"note\": \"Dovolená, plná nádrž na cestu\", \"created_at\": 1621075600000, \"updated_at\": 1621075600000, \"station\": {\"id\": 10, \"name\": \"Tank ONO\", \"address\": \"Domažlická 674/160, 318 00 Plzeň 3\", \"phone\": \"+420 607 111 000\", \"opening_hrs\": 1753855200000, \"closing_hrs\": 1753912800000, \"last_visit\": 1752184877259, \"provider\": \"ONO\", \"note\": \"Nejlevnější v okolí\", \"created_at\": 1753912877340, \"updated_at\": 1753912877340}, \"fuels\": [{\"id\": 1, \"name\": \"Benzín\", \"code\": \"BA 90\", \"trademark\": \"Natural 90\", \"unit\": \"l\"}, {\"id\": 3, \"name\": \"Benzín\", \"code\": \"BA 95\", \"trademark\": \"Natural 95\", \"unit\": \"l\"}, {\"id\": 7, \"name\": \"Nafta\", \"code\": \"NM\", \"trademark\": \"Diesel\", \"unit\": \"l\"}]}",
             "created_at": 1621075600000,
             "updated_at": 1621075600000
         },
@@ -268,7 +251,6 @@ export async function getTankingSeeds(): Promise<Tanking[]> {
             "tank_date": 1622803600000,
             "full_tank": false,
             "note": "Spěch do práce, rychlé dotankování",
-            "snapshot": "{\"id\": 18, \"car_id\": 1, \"station_fuel_id\": 6, \"price_per_unit\": 41.2, \"price\": 1115.6, \"amount\": 41, \"mileage\": 360, \"tachometer\": 35361, \"tank_date\": 1622803600000, \"full_tank\": false, \"note\": \"Spěch do práce, rychlé dotankování\", \"created_at\": 1622803600000, \"updated_at\": 1622803600000, \"station\": {\"id\": 10, \"name\": \"Tank ONO\", \"address\": \"Domažlická 674/160, 318 00 Plzeň 3\", \"phone\": \"+420 607 111 000\", \"opening_hrs\": 1753855200000, \"closing_hrs\": 1753912800000, \"last_visit\": 1752184877259, \"provider\": \"ONO\", \"note\": \"Nejlevnější v okolí\", \"created_at\": 1753912877340, \"updated_at\": 1753912877340}, \"fuels\": [{\"id\": 1, \"name\": \"Benzín\", \"code\": \"BA 90\", \"trademark\": \"Natural 90\", \"unit\": \"l\"}, {\"id\": 3, \"name\": \"Benzín\", \"code\": \"BA 95\", \"trademark\": \"Natural 95\", \"unit\": \"l\"}, {\"id\": 7, \"name\": \"Nafta\", \"code\": \"NM\", \"trademark\": \"Diesel\", \"unit\": \"l\"}]}",
             "created_at": 1622803600000,
             "updated_at": 1622803600000
         },
@@ -283,7 +265,6 @@ export async function getTankingSeeds(): Promise<Tanking[]> {
             "tank_date": 1624531600000,
             "full_tank": true,
             "note": "Letní akce, káva zdarma",
-            "snapshot": "{\"id\": 19, \"car_id\": 1, \"station_fuel_id\": 6, \"price_per_unit\": 41.2, \"price\": 1115.6, \"amount\": 41, \"mileage\": 360, \"tachometer\": 35361, \"tank_date\": 1624531600000, \"full_tank\": true, \"note\": \"Letní akce, káva zdarma\", \"created_at\": 1624531600000, \"updated_at\": 1624531600000, \"station\": {\"id\": 10, \"name\": \"Tank ONO\", \"address\": \"Domažlická 674/160, 318 00 Plzeň 3\", \"phone\": \"+420 607 111 000\", \"opening_hrs\": 1753855200000, \"closing_hrs\": 1753912800000, \"last_visit\": 1752184877259, \"provider\": \"ONO\", \"note\": \"Nejlevnější v okolí\", \"created_at\": 1753912877340, \"updated_at\": 1753912877340}, \"fuels\": [{\"id\": 1, \"name\": \"Benzín\", \"code\": \"BA 90\", \"trademark\": \"Natural 90\", \"unit\": \"l\"}, {\"id\": 3, \"name\": \"Benzín\", \"code\": \"BA 95\", \"trademark\": \"Natural 95\", \"unit\": \"l\"}, {\"id\": 7, \"name\": \"Nafta\", \"code\": \"NM\", \"trademark\": \"Diesel\", \"unit\": \"l\"}]}",
             "created_at": 1624531600000,
             "updated_at": 1624531600000
         },
@@ -298,7 +279,6 @@ export async function getTankingSeeds(): Promise<Tanking[]> {
             "tank_date": 1626259600000,
             "full_tank": false,
             "note": "Porucha automatu, platba uvnitř",
-            "snapshot": "{\"id\": 20, \"car_id\": 1, \"station_fuel_id\": 6, \"price_per_unit\": 41.2, \"price\": 1115.6, \"amount\": 41, \"mileage\": 360, \"tachometer\": 35361, \"tank_date\": 1626259600000, \"full_tank\": false, \"note\": \"Porucha automatu, platba uvnitř\", \"created_at\": 1626259600000, \"updated_at\": 1626259600000, \"station\": {\"id\": 10, \"name\": \"Tank ONO\", \"address\": \"Domažlická 674/160, 318 00 Plzeň 3\", \"phone\": \"+420 607 111 000\", \"opening_hrs\": 1753855200000, \"closing_hrs\": 1753912800000, \"last_visit\": 1752184877259, \"provider\": \"ONO\", \"note\": \"Nejlevnější v okolí\", \"created_at\": 1753912877340, \"updated_at\": 1753912877340}, \"fuels\": [{\"id\": 1, \"name\": \"Benzín\", \"code\": \"BA 90\", \"trademark\": \"Natural 90\", \"unit\": \"l\"}, {\"id\": 3, \"name\": \"Benzín\", \"code\": \"BA 95\", \"trademark\": \"Natural 95\", \"unit\": \"l\"}, {\"id\": 7, \"name\": \"Nafta\", \"code\": \"NM\", \"trademark\": \"Diesel\", \"unit\": \"l\"}]}",
             "created_at": 1626259600000,
             "updated_at": 1626259600000
         },
@@ -313,7 +293,6 @@ export async function getTankingSeeds(): Promise<Tanking[]> {
             "tank_date": 1627987600000,
             "full_tank": true,
             "note": "Pravidelné týdenní tankování",
-            "snapshot": "{\"id\": 21, \"car_id\": 1, \"station_fuel_id\": 6, \"price_per_unit\": 41.2, \"price\": 1115.6, \"amount\": 41, \"mileage\": 360, \"tachometer\": 35361, \"tank_date\": 1627987600000, \"full_tank\": true, \"note\": \"Pravidelné týdenní tankování\", \"created_at\": 1627987600000, \"updated_at\": 1627987600000, \"station\": {\"id\": 10, \"name\": \"Tank ONO\", \"address\": \"Domažlická 674/160, 318 00 Plzeň 3\", \"phone\": \"+420 607 111 000\", \"opening_hrs\": 1753855200000, \"closing_hrs\": 1753912800000, \"last_visit\": 1752184877259, \"provider\": \"ONO\", \"note\": \"Nejlevnější v okolí\", \"created_at\": 1753912877340, \"updated_at\": 1753912877340}, \"fuels\": [{\"id\": 1, \"name\": \"Benzín\", \"code\": \"BA 90\", \"trademark\": \"Natural 90\", \"unit\": \"l\"}, {\"id\": 3, \"name\": \"Benzín\", \"code\": \"BA 95\", \"trademark\": \"Natural 95\", \"unit\": \"l\"}, {\"id\": 7, \"name\": \"Nafta\", \"code\": \"NM\", \"trademark\": \"Diesel\", \"unit\": \"l\"}]}",
             "created_at": 1627987600000,
             "updated_at": 1627987600000
         },
@@ -328,7 +307,6 @@ export async function getTankingSeeds(): Promise<Tanking[]> {
             "tank_date": 1629715600000,
             "full_tank": false,
             "note": "Málo peněz, jen na pár dní",
-            "snapshot": "{\"id\": 22, \"car_id\": 1, \"station_fuel_id\": 6, \"price_per_unit\": 41.2, \"price\": 1115.6, \"amount\": 41, \"mileage\": 360, \"tachometer\": 35361, \"tank_date\": 1629715600000, \"full_tank\": false, \"note\": \"Málo peněz, jen na pár dní\", \"created_at\": 1629715600000, \"updated_at\": 1629715600000, \"station\": {\"id\": 10, \"name\": \"Tank ONO\", \"address\": \"Domažlická 674/160, 318 00 Plzeň 3\", \"phone\": \"+420 607 111 000\", \"opening_hrs\": 1753855200000, \"closing_hrs\": 1753912800000, \"last_visit\": 1752184877259, \"provider\": \"ONO\", \"note\": \"Nejlevnější v okolí\", \"created_at\": 1753912877340, \"updated_at\": 1753912877340}, \"fuels\": [{\"id\": 1, \"name\": \"Benzín\", \"code\": \"BA 90\", \"trademark\": \"Natural 90\", \"unit\": \"l\"}, {\"id\": 3, \"name\": \"Benzín\", \"code\": \"BA 95\", \"trademark\": \"Natural 95\", \"unit\": \"l\"}, {\"id\": 7, \"name\": \"Nafta\", \"code\": \"NM\", \"trademark\": \"Diesel\", \"unit\": \"l\"}]}",
             "created_at": 1629715600000,
             "updated_at": 1629715600000
         },
@@ -343,7 +321,6 @@ export async function getTankingSeeds(): Promise<Tanking[]> {
             "tank_date": 1631443600000,
             "full_tank": true,
             "note": "Podzimní příprava na zimu",
-            "snapshot": "{\"id\": 23, \"car_id\": 1, \"station_fuel_id\": 6, \"price_per_unit\": 41.2, \"price\": 1115.6, \"amount\": 41, \"mileage\": 360, \"tachometer\": 35361, \"tank_date\": 1631443600000, \"full_tank\": true, \"note\": \"Podzimní příprava na zimu\", \"created_at\": 1631443600000, \"updated_at\": 1631443600000, \"station\": {\"id\": 10, \"name\": \"Tank ONO\", \"address\": \"Domažlická 674/160, 318 00 Plzeň 3\", \"phone\": \"+420 607 111 000\", \"opening_hrs\": 1753855200000, \"closing_hrs\": 1753912800000, \"last_visit\": 1752184877259, \"provider\": \"ONO\", \"note\": \"Nejlevnější v okolí\", \"created_at\": 1753912877340, \"updated_at\": 1753912877340}, \"fuels\": [{\"id\": 1, \"name\": \"Benzín\", \"code\": \"BA 90\", \"trademark\": \"Natural 90\", \"unit\": \"l\"}, {\"id\": 3, \"name\": \"Benzín\", \"code\": \"BA 95\", \"trademark\": \"Natural 95\", \"unit\": \"l\"}, {\"id\": 7, \"name\": \"Nafta\", \"code\": \"NM\", \"trademark\": \"Diesel\", \"unit\": \"l\"}]}",
             "created_at": 1631443600000,
             "updated_at": 1631443600000
         },
@@ -358,7 +335,6 @@ export async function getTankingSeeds(): Promise<Tanking[]> {
             "tank_date": 1633171600000,
             "full_tank": false,
             "note": "Studené ráno, motor se špatně startoval",
-            "snapshot": "{\"id\": 24, \"car_id\": 1, \"station_fuel_id\": 6, \"price_per_unit\": 41.2, \"price\": 1115.6, \"amount\": 41, \"mileage\": 360, \"tachometer\": 35361, \"tank_date\": 1633171600000, \"full_tank\": false, \"note\": \"Studené ráno, motor se špatně startoval\", \"created_at\": 1633171600000, \"updated_at\": 1633171600000, \"station\": {\"id\": 10, \"name\": \"Tank ONO\", \"address\": \"Domažlická 674/160, 318 00 Plzeň 3\", \"phone\": \"+420 607 111 000\", \"opening_hrs\": 1753855200000, \"closing_hrs\": 1753912800000, \"last_visit\": 1752184877259, \"provider\": \"ONO\", \"note\": \"Nejlevnější v okolí\", \"created_at\": 1753912877340, \"updated_at\": 1753912877340}, \"fuels\": [{\"id\": 1, \"name\": \"Benzín\", \"code\": \"BA 90\", \"trademark\": \"Natural 90\", \"unit\": \"l\"}, {\"id\": 3, \"name\": \"Benzín\", \"code\": \"BA 95\", \"trademark\": \"Natural 95\", \"unit\": \"l\"}, {\"id\": 7, \"name\": \"Nafta\", \"code\": \"NM\", \"trademark\": \"Diesel\", \"unit\": \"l\"}]}",
             "created_at": 1633171600000,
             "updated_at": 1633171600000
         },
@@ -373,7 +349,6 @@ export async function getTankingSeeds(): Promise<Tanking[]> {
             "tank_date": 1634899600000,
             "full_tank": true,
             "note": "Halloween akce, sladkosti zdarma",
-            "snapshot": "{\"id\": 25, \"car_id\": 1, \"station_fuel_id\": 6, \"price_per_unit\": 41.2, \"price\": 1115.6, \"amount\": 41, \"mileage\": 360, \"tachometer\": 35361, \"tank_date\": 1634899600000, \"full_tank\": true, \"note\": \"Halloween akce, sladkosti zdarma\", \"created_at\": 1634899600000, \"updated_at\": 1634899600000, \"station\": {\"id\": 10, \"name\": \"Tank ONO\", \"address\": \"Domažlická 674/160, 318 00 Plzeň 3\", \"phone\": \"+420 607 111 000\", \"opening_hrs\": 1753855200000, \"closing_hrs\": 1753912800000, \"last_visit\": 1752184877259, \"provider\": \"ONO\", \"note\": \"Nejlevnější v okolí\", \"created_at\": 1753912877340, \"updated_at\": 1753912877340}, \"fuels\": [{\"id\": 1, \"name\": \"Benzín\", \"code\": \"BA 90\", \"trademark\": \"Natural 90\", \"unit\": \"l\"}, {\"id\": 3, \"name\": \"Benzín\", \"code\": \"BA 95\", \"trademark\": \"Natural 95\", \"unit\": \"l\"}, {\"id\": 7, \"name\": \"Nafta\", \"code\": \"NM\", \"trademark\": \"Diesel\", \"unit\": \"l\"}]}",
             "created_at": 1634899600000,
             "updated_at": 1634899600000
         },
@@ -388,7 +363,6 @@ export async function getTankingSeeds(): Promise<Tanking[]> {
             "tank_date": 1636627600000,
             "full_tank": false,
             "note": "Jen na víkend k babičce",
-            "snapshot": "{\"id\": 26, \"car_id\": 1, \"station_fuel_id\": 6, \"price_per_unit\": 41.2, \"price\": 1115.6, \"amount\": 41, \"mileage\": 360, \"tachometer\": 35361, \"tank_date\": 1636627600000, \"full_tank\": false, \"note\": \"Jen na víkend k babičce\", \"created_at\": 1636627600000, \"updated_at\": 1636627600000, \"station\": {\"id\": 10, \"name\": \"Tank ONO\", \"address\": \"Domažlická 674/160, 318 00 Plzeň 3\", \"phone\": \"+420 607 111 000\", \"opening_hrs\": 1753855200000, \"closing_hrs\": 1753912800000, \"last_visit\": 1752184877259, \"provider\": \"ONO\", \"note\": \"Nejlevnější v okolí\", \"created_at\": 1753912877340, \"updated_at\": 1753912877340}, \"fuels\": [{\"id\": 1, \"name\": \"Benzín\", \"code\": \"BA 90\", \"trademark\": \"Natural 90\", \"unit\": \"l\"}, {\"id\": 3, \"name\": \"Benzín\", \"code\": \"BA 95\", \"trademark\": \"Natural 95\", \"unit\": \"l\"}, {\"id\": 7, \"name\": \"Nafta\", \"code\": \"NM\", \"trademark\": \"Diesel\", \"unit\": \"l\"}]}",
             "created_at": 1636627600000,
             "updated_at": 1636627600000
         },
@@ -403,7 +377,6 @@ export async function getTankingSeeds(): Promise<Tanking[]> {
             "tank_date": 1638355600000,
             "full_tank": true,
             "note": "Vánoční nákupy, plná nádrž",
-            "snapshot": "{\"id\": 27, \"car_id\": 1, \"station_fuel_id\": 6, \"price_per_unit\": 41.2, \"price\": 1115.6, \"amount\": 41, \"mileage\": 360, \"tachometer\": 35361, \"tank_date\": 1638355600000, \"full_tank\": true, \"note\": \"Vánoční nákupy, plná nádrž\", \"created_at\": 1638355600000, \"updated_at\": 1638355600000, \"station\": {\"id\": 10, \"name\": \"Tank ONO\", \"address\": \"Domažlická 674/160, 318 00 Plzeň 3\", \"phone\": \"+420 607 111 000\", \"opening_hrs\": 1753855200000, \"closing_hrs\": 1753912800000, \"last_visit\": 1752184877259, \"provider\": \"ONO\", \"note\": \"Nejlevnější v okolí\", \"created_at\": 1753912877340, \"updated_at\": 1753912877340}, \"fuels\": [{\"id\": 1, \"name\": \"Benzín\", \"code\": \"BA 90\", \"trademark\": \"Natural 90\", \"unit\": \"l\"}, {\"id\": 3, \"name\": \"Benzín\", \"code\": \"BA 95\", \"trademark\": \"Natural 95\", \"unit\": \"l\"}, {\"id\": 7, \"name\": \"Nafta\", \"code\": \"NM\", \"trademark\": \"Diesel\", \"unit\": \"l\"}]}",
             "created_at": 1638355600000,
             "updated_at": 1638355600000
         },
@@ -418,7 +391,6 @@ export async function getTankingSeeds(): Promise<Tanking[]> {
             "tank_date": 1640083600000,
             "full_tank": false,
             "note": "Silvestr, jen na oslavy",
-            "snapshot": "{\"id\": 28, \"car_id\": 1, \"station_fuel_id\": 6, \"price_per_unit\": 41.2, \"price\": 1115.6, \"amount\": 41, \"mileage\": 360, \"tachometer\": 35361, \"tank_date\": 1640083600000, \"full_tank\": false, \"note\": \"Silvestr, jen na oslavy\", \"created_at\": 1640083600000, \"updated_at\": 1640083600000, \"station\": {\"id\": 10, \"name\": \"Tank ONO\", \"address\": \"Domažlická 674/160, 318 00 Plzeň 3\", \"phone\": \"+420 607 111 000\", \"opening_hrs\": 1753855200000, \"closing_hrs\": 1753912800000, \"last_visit\": 1752184877259, \"provider\": \"ONO\", \"note\": \"Nejlevnější v okolí\", \"created_at\": 1753912877340, \"updated_at\": 1753912877340}, \"fuels\": [{\"id\": 1, \"name\": \"Benzín\", \"code\": \"BA 90\", \"trademark\": \"Natural 90\", \"unit\": \"l\"}, {\"id\": 3, \"name\": \"Benzín\", \"code\": \"BA 95\", \"trademark\": \"Natural 95\", \"unit\": \"l\"}, {\"id\": 7, \"name\": \"Nafta\", \"code\": \"NM\", \"trademark\": \"Diesel\", \"unit\": \"l\"}]}",
             "created_at": 1640083600000,
             "updated_at": 1640083600000
         },
@@ -433,7 +405,6 @@ export async function getTankingSeeds(): Promise<Tanking[]> {
             "tank_date": 1641811600000,
             "full_tank": true,
             "note": "Nový rok, nové předsevzetí šetřit",
-            "snapshot": "{\"id\": 29, \"car_id\": 1, \"station_fuel_id\": 6, \"price_per_unit\": 41.2, \"price\": 1115.6, \"amount\": 41, \"mileage\": 360, \"tachometer\": 35361, \"tank_date\": 1641811600000, \"full_tank\": true, \"note\": \"Nový rok, nové předsevzetí šetřit\", \"created_at\": 1641811600000, \"updated_at\": 1641811600000, \"station\": {\"id\": 10, \"name\": \"Tank ONO\", \"address\": \"Domažlická 674/160, 318 00 Plzeň 3\", \"phone\": \"+420 607 111 000\", \"opening_hrs\": 1753855200000, \"closing_hrs\": 1753912800000, \"last_visit\": 1752184877259, \"provider\": \"ONO\", \"note\": \"Nejlevnější v okolí\", \"created_at\": 1753912877340, \"updated_at\": 1753912877340}, \"fuels\": [{\"id\": 1, \"name\": \"Benzín\", \"code\": \"BA 90\", \"trademark\": \"Natural 90\", \"unit\": \"l\"}, {\"id\": 3, \"name\": \"Benzín\", \"code\": \"BA 95\", \"trademark\": \"Natural 95\", \"unit\": \"l\"}, {\"id\": 7, \"name\": \"Nafta\", \"code\": \"NM\", \"trademark\": \"Diesel\", \"unit\": \"l\"}]}",
             "created_at": 1641811600000,
             "updated_at": 1641811600000
         },
@@ -448,7 +419,6 @@ export async function getTankingSeeds(): Promise<Tanking[]> {
             "tank_date": 1643539600000,
             "full_tank": false,
             "note": "Únorové mrazy, auto se špatně startuje",
-            "snapshot": "{\"id\": 30, \"car_id\": 1, \"station_fuel_id\": 6, \"price_per_unit\": 41.2, \"price\": 1115.6, \"amount\": 41, \"mileage\": 360, \"tachometer\": 35361, \"tank_date\": 1643539600000, \"full_tank\": false, \"note\": \"Únorové mrazy, auto se špatně startuje\", \"created_at\": 1643539600000, \"updated_at\": 1643539600000, \"station\": {\"id\": 10, \"name\": \"Tank ONO\", \"address\": \"Domažlická 674/160, 318 00 Plzeň 3\", \"phone\": \"+420 607 111 000\", \"opening_hrs\": 1753855200000, \"closing_hrs\": 1753912800000, \"last_visit\": 1752184877259, \"provider\": \"ONO\", \"note\": \"Nejlevnější v okolí\", \"created_at\": 1753912877340, \"updated_at\": 1753912877340}, \"fuels\": [{\"id\": 1, \"name\": \"Benzín\", \"code\": \"BA 90\", \"trademark\": \"Natural 90\", \"unit\": \"l\"}, {\"id\": 3, \"name\": \"Benzín\", \"code\": \"BA 95\", \"trademark\": \"Natural 95\", \"unit\": \"l\"}, {\"id\": 7, \"name\": \"Nafta\", \"code\": \"NM\", \"trademark\": \"Diesel\", \"unit\": \"l\"}]}",
             "created_at": 1643539600000,
             "updated_at": 1643539600000
         },
@@ -463,7 +433,6 @@ export async function getTankingSeeds(): Promise<Tanking[]> {
             "tank_date": 1645267600000,
             "full_tank": true,
             "note": "Jarní výlet, krásné počasí",
-            "snapshot": "{\"id\": 31, \"car_id\": 1, \"station_fuel_id\": 6, \"price_per_unit\": 41.2, \"price\": 1184.2, \"amount\": 42, \"mileage\": 310, \"tachometer\": 48351, \"tank_date\": 1645267600000, \"full_tank\": true, \"note\": \"Jarní výlet, krásné počasí\", \"created_at\": 1645267600000, \"updated_at\": 1645267600000, \"station\": {\"id\": 10, \"name\": \"Tank ONO\", \"address\": \"Domažlická 674/160, 318 00 Plzeň 3\", \"phone\": \"+420 607 111 000\", \"opening_hrs\": 1753855200000, \"closing_hrs\": 1753912800000, \"last_visit\": 1752184877259, \"provider\": \"ONO\", \"note\": \"Nejlevnější v okolí\", \"created_at\": 1753912877340, \"updated_at\": 1753912877340}, \"fuels\": [{\"id\": 1, \"name\": \"Benzín\", \"code\": \"BA 90\", \"trademark\": \"Natural 90\", \"unit\": \"l\"}, {\"id\": 3, \"name\": \"Benzín\", \"code\": \"BA 95\", \"trademark\": \"Natural 95\", \"unit\": \"l\"}, {\"id\": 7, \"name\": \"Nafta\", \"code\": \"NM\", \"trademark\": \"Diesel\", \"unit\": \"l\"}]}",
             "created_at": 1645267600000,
             "updated_at": 1645267600000
         },
@@ -478,7 +447,6 @@ export async function getTankingSeeds(): Promise<Tanking[]> {
             "tank_date": 1646995600000,
             "full_tank": false,
             "note": "Vysoké ceny, jen nutné minimum",
-            "snapshot": "{\"id\": 32, \"car_id\": 1, \"station_fuel_id\": 6, \"price_per_unit\": 41.2, \"price\": 1815.7, \"amount\": 41, \"mileage\": 456, \"tachometer\": 49862, \"tank_date\": 1646995600000, \"full_tank\": false, \"note\": \"Vysoké ceny, jen nutné minimum\", \"created_at\": 1646995600000, \"updated_at\": 1646995600000, \"station\": {\"id\": 10, \"name\": \"Tank ONO\", \"address\": \"Domažlická 674/160, 318 00 Plzeň 3\", \"phone\": \"+420 607 111 000\", \"opening_hrs\": 1753855200000, \"closing_hrs\": 1753912800000, \"last_visit\": 1752184877259, \"provider\": \"ONO\", \"note\": \"Nejlevnější v okolí\", \"created_at\": 1753912877340, \"updated_at\": 1753912877340}, \"fuels\": [{\"id\": 1, \"name\": \"Benzín\", \"code\": \"BA 90\", \"trademark\": \"Natural 90\", \"unit\": \"l\"}, {\"id\": 3, \"name\": \"Benzín\", \"code\": \"BA 95\", \"trademark\": \"Natural 95\", \"unit\": \"l\"}, {\"id\": 7, \"name\": \"Nafta\", \"code\": \"NM\", \"trademark\": \"Diesel\", \"unit\": \"l\"}]}",
             "created_at": 1646995600000,
             "updated_at": 1646995600000
         },
@@ -493,7 +461,6 @@ export async function getTankingSeeds(): Promise<Tanking[]> {
             "tank_date": 1646995600000,
             "full_tank": false,
             "note": "Vysoké ceny, jen nutné minimum",
-            "snapshot": "{\"id\": 33, \"car_id\": 1, \"station_fuel_id\": 6, \"price_per_unit\": 41.2, \"price\": 1815.7, \"amount\": 41, \"mileage\": 456, \"tachometer\": 49862, \"tank_date\": 1646995600000, \"full_tank\": false, \"note\": \"Vysoké ceny, jen nutné minimum\", \"created_at\": 1646995600000, \"updated_at\": 1646995600000, \"station\": {\"id\": 10, \"name\": \"Tank ONO\", \"address\": \"Domažlická 674/160, 318 00 Plzeň 3\", \"phone\": \"+420 607 111 000\", \"opening_hrs\": 1753855200000, \"closing_hrs\": 1753912800000, \"last_visit\": 1752184877259, \"provider\": \"ONO\", \"note\": \"Nejlevnější v okolí\", \"created_at\": 1753912877340, \"updated_at\": 1753912877340}, \"fuels\": [{\"id\": 1, \"name\": \"Benzín\", \"code\": \"BA 90\", \"trademark\": \"Natural 90\", \"unit\": \"l\"}, {\"id\": 3, \"name\": \"Benzín\", \"code\": \"BA 95\", \"trademark\": \"Natural 95\", \"unit\": \"l\"}, {\"id\": 7, \"name\": \"Nafta\", \"code\": \"NM\", \"trademark\": \"Diesel\", \"unit\": \"l\"}]}",
             "created_at": 1646995600000,
             "updated_at": 1646995600000
         },
@@ -508,7 +475,6 @@ export async function getTankingSeeds(): Promise<Tanking[]> {
             "tank_date": 1754038831000,
             "full_tank": false,
             "note": "Vysoké ceny, jen nutné minimum",
-            "snapshot": "{\"id\": 34, \"car_id\": 1, \"station_fuel_id\": 6, \"price_per_unit\": 41.2, \"price\": 1815.7, \"amount\": 41, \"mileage\": 456, \"tachometer\": 49862, \"tank_date\": 1754038831000, \"full_tank\": false, \"note\": \"Vysoké ceny, jen nutné minimum\", \"created_at\": 1754038831000, \"updated_at\": 1754038831000, \"station\": {\"id\": 10, \"name\": \"Tank ONO\", \"address\": \"Domažlická 674/160, 318 00 Plzeň 3\", \"phone\": \"+420 607 111 000\", \"opening_hrs\": 1753855200000, \"closing_hrs\": 1753912800000, \"last_visit\": 1752184877259, \"provider\": \"ONO\", \"note\": \"Nejlevnější v okolí\", \"created_at\": 1753912877340, \"updated_at\": 1753912877340}, \"fuels\": [{\"id\": 1, \"name\": \"Benzín\", \"code\": \"BA 90\", \"trademark\": \"Natural 90\", \"unit\": \"l\"}, {\"id\": 3, \"name\": \"Benzín\", \"code\": \"BA 95\", \"trademark\": \"Natural 95\", \"unit\": \"l\"}, {\"id\": 7, \"name\": \"Nafta\", \"code\": \"NM\", \"trademark\": \"Diesel\", \"unit\": \"l\"}]}",
             "created_at": 1754038831000,
             "updated_at": 1754038831000
         },
@@ -523,7 +489,6 @@ export async function getTankingSeeds(): Promise<Tanking[]> {
             "tank_date": 1756717231000,
             "full_tank": false,
             "note": "Vysoké ceny, jen nutné minimum",
-            "snapshot": "{\"id\": 35, \"car_id\": 1, \"station_fuel_id\": 5, \"price_per_unit\": 40.1, \"price\": 1034.2, \"amount\": 32, \"mileage\": 256, \"tachometer\": 50891, \"tank_date\": 1756717231000, \"full_tank\": false, \"note\": \"Vysoké ceny, jen nutné minimum\", \"created_at\": 1756717231000, \"updated_at\": 1756717231000, \"station\": {\"id\": 10, \"name\": \"Tank ONO\", \"address\": \"Domažlická 674/160, 318 00 Plzeň 3\", \"phone\": \"+420 607 111 000\", \"opening_hrs\": 1753855200000, \"closing_hrs\": 1753912800000, \"last_visit\": 1752184877259, \"provider\": \"ONO\", \"note\": \"Nejlevnější v okolí\", \"created_at\": 1753912877340, \"updated_at\": 1753912877340}, \"fuels\": [{\"id\": 1, \"name\": \"Benzín\", \"code\": \"BA 90\", \"trademark\": \"Natural 90\", \"unit\": \"l\"}, {\"id\": 3, \"name\": \"Benzín\", \"code\": \"BA 95\", \"trademark\": \"Natural 95\", \"unit\": \"l\"}, {\"id\": 7, \"name\": \"Nafta\", \"code\": \"NM\", \"trademark\": \"Diesel\", \"unit\": \"l\"}]}",
             "created_at": 1756717231000,
             "updated_at": 1756717231000
         }

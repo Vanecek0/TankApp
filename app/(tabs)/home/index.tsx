@@ -95,6 +95,9 @@ export default function HomeScreen() {
         <View style={{ ...spacing.mb(12) }}>
           {item.tankings.map((item, index) => (
             <View key={index} style={{ ...spacing.gap(12), ...spacing.my(12) }} className='flex-row items-center'>
+              <>
+              {console.log(item)}
+              </>
               <ScaledText className='rounded-full' style={{ backgroundColor: "lightgray", fontWeight: "bold", ...spacing.p(16) }} size='lg'>{item.station?.provider?.slice(0, 2).toUpperCase() ?? '-'}</ScaledText>
               <View className='flex-row justify-between flex-1'>
                 <View style={{ ...spacing.gap(4) }} className='flex items-start w-2/3'>

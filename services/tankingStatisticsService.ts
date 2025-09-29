@@ -19,8 +19,6 @@ export class TankingStatisticsService {
             return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
         })();
 
-        console.log(from)
-
         try {
             const rows = await db.getAllAsync<{
                 total_amount: number;
