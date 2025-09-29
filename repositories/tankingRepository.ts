@@ -80,32 +80,25 @@ export class TankingRepository extends DatabaseRepository<Tanking> {
         const to = toDate?.getTime() ?? Date.now();
         const db = await TankingRepository.getDb();
 
-        const rows = await db.getAllAsync<{ tank_date: number; snapshot: string }>(
+        const rows = await db.getAllAsync<{ tank_date: number; price: number; mileage: number }>(
             `SELECT 
-            tank_date, 
-            snapshot 
-            FROM tanking 
-            WHERE car_id = ? AND tank_date BETWEEN ? AND ? ORDER BY tank_date DESC`,
+            tank_date,
+            price,
+            mileage
+         FROM tanking 
+         WHERE car_id = ? AND tank_date BETWEEN ? AND ? 
+         ORDER BY tank_date DESC`,
             [carId, from, to]
         );
 
         const monthly = new Map<string, { total_price: number; total_mileage: number }>();
 
-        for (const { tank_date, snapshot } of rows) {
-            let snap: { price?: number; mileage?: number };
-
-            try {
-                snap = JSON.parse(snapshot);
-            } catch {
-                console.warn('Invalid snapshot JSON:', snapshot);
-                continue;
-            }
-
+        for (const { tank_date, price, mileage } of rows) {
             const month = new Date(tank_date).toISOString().slice(0, 7);
             const data = monthly.get(month) ?? { total_price: 0, total_mileage: 0 };
 
-            data.total_price += snap.price ?? 0;
-            data.total_mileage += snap.mileage ?? 0;
+            data.total_price += price ?? 0;
+            data.total_mileage += mileage ?? 0;
 
             monthly.set(month, data);
         }
@@ -115,6 +108,7 @@ export class TankingRepository extends DatabaseRepository<Tanking> {
             .slice(0, limit)
             .map(([month, data]) => ({ month, ...data }));
     }
+
 
 }
 

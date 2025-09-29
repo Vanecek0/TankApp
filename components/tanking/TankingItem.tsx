@@ -30,13 +30,13 @@ export const TankingItem = React.memo(({ item, isDark }: TankingItemProps) => (
         {item.tankings.map((item) => (
             <Card key={item.id}>
                 <View style={{ ...spacing.gap(12), ...spacing.mb(12) }} className=' flex-row items-center w-full'>
-                    <ScaledText className='rounded-full' style={{ backgroundColor: "lightgray", fontWeight: "bold", ...spacing.p(16) }} size='lg'>{item.station?.provider.slice(0, 2).toUpperCase()}</ScaledText>
+                    <ScaledText className='rounded-full' style={{ backgroundColor: "lightgray", fontWeight: "bold", ...spacing.p(16) }} size='lg'>{item.station?.provider?.slice(0, 2).toUpperCase() ?? '-'}</ScaledText>
                     <View className='flex-row justify-between flex-1'>
                         <View style={{ ...spacing.gap(4) }} className='flex items-start w-2/4'>
                             <ScaledText isThemed={true} size="xl" className='font-bold'>{item.station?.name}</ScaledText>
                             <View style={{ ...spacing.gap(2) }} className='flex-row items-center'>
                                 <Icon name="map_pin" color={isDark ? Colors.icon.primary_dark : Colors.icon.primary} size={getScaleFactor() * 15} />
-                                <ScaledText numberOfLines={1} ellipsizeMode="tail" className='text-ellipsis overflow-visible' isThemed={true} size="base">{item.station?.address}</ScaledText>
+                                <ScaledText numberOfLines={1} ellipsizeMode="tail" className='text-ellipsis overflow-visible' isThemed={true} size="base">{item.station?.address}</ScaledText> 
                             </View>
                         </View>
                         <View style={{ ...spacing.gap(4) }} className='flex items-end'>
@@ -71,7 +71,7 @@ export const TankingItem = React.memo(({ item, isDark }: TankingItemProps) => (
                         </View>
                         <View className='basis-1/3'>
                             <ScaledText isThemed={true} size="sm" className='font-bold'>Spotřeba</ScaledText>
-                            <ScaledText isThemed={true} size="base" >{((item.amount / item.mileage) * 100).toFixed(2)} l/100km</ScaledText>
+                            <ScaledText isThemed={true} size="base" >{((item.amount! / item.mileage!) * 100).toFixed(2)} l/100km</ScaledText>
                         </View>
                     </View>
                 </View>

@@ -14,18 +14,15 @@ import { spacing } from "@/utils/SizeScaling";
 type FormToggleInputProps = {
     name: string;
     control: any;
-    value: string | number;
-    defaultValue?: (string | number)[];
     label?: string | React.ReactNode;
     labelPosition?: "left" | "right";
     style?: ViewStyle;
-    onChange?: (checked: boolean, newValues: (string | number)[]) => void;
+    onChange?: (checked: boolean) => void;
 };
 
 export default function FormToggleInput({
     name,
     control,
-    value,
     label,
     labelPosition,
     style,
@@ -36,10 +33,10 @@ export default function FormToggleInput({
     const { field } = useController({
         name,
         control,
-        defaultValue: [],
+        defaultValue: false, // už jen boolean
     });
 
-    const isChecked = field.value?.includes(value);
+    const isChecked = !!field.value;
     const translateX = useSharedValue(isChecked ? 18 : 0);
 
     useEffect(() => {
@@ -51,12 +48,9 @@ export default function FormToggleInput({
     }));
 
     const toggle = () => {
-        const newValue = isChecked
-            ? field.value.filter((v: any) => v !== value)
-            : [...field.value, value];
-
+        const newValue = !isChecked;
         field.onChange(newValue);
-        onChange?.(!isChecked, newValue);
+        onChange?.(newValue);
     };
 
     return (
@@ -118,8 +112,6 @@ export default function FormToggleInput({
                     </View>
                 )
             )}
-
-
         </Pressable>
     );
 }

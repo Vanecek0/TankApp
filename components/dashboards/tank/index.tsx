@@ -33,7 +33,6 @@ export default function TankDashboard({ className, scrollRefVal }: {
     useEffect(() => {
         const getTankingSums = async () => {
             const tankingSums = await tankingRepository.getPriceMileageSumByDate(car?.id!);
-            console.log(tankingSums)
             setTankingSumsDate(tankingSums)
         }
 

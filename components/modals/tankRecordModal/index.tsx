@@ -12,7 +12,6 @@ import Dropdown from '@/components/common/Dropdown';
 import Icon from '@/components/Icon';
 import FormNumberInput from '@/components/forms/FormNumberInput';
 import { Fuel } from '@/models/Fuel';
-import { stationFuelRepository } from '@/repositories/stationFuelRepository';
 import { Station } from '@/models/Station';
 import { stationRepository } from '@/repositories/stationRepository';
 import { Tanking } from '@/models/Tanking';
@@ -21,7 +20,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/store';
 import { loadCarFromStorage } from '@/store/slices/car.slice';
 import FormDateTimeInput from '@/components/forms/FormDateTimeInput';
-import FormCheckboxItem from '@/components/forms/FormCheckboxItem';
 import FormToggleInput from '@/components/forms/FormToggleInput';
 import FormTextArea from '@/components/forms/FormTextArea';
 import { fuelService } from '@/services/fuelService';
@@ -36,10 +34,6 @@ export default function AddTankRecordModal({ onSubmit }: any) {
   const dispatch = useDispatch<AppDispatch>();
 
   const [fuels, setFuels] = useState<Fuel[]>([]);
-
-  const price = useWatch({ control, name: 'price' });
-  const amount = useWatch({ control, name: 'amount' });
-  const pricePerLtr = useWatch({ control, name: 'price_per_litre' });
 
   useEffect(() => {
     dispatch(loadCarFromStorage());
@@ -65,21 +59,11 @@ export default function AddTankRecordModal({ onSubmit }: any) {
     loadSelectedStationFuels(selectedStation?.id ?? 0);
   }, [selectedStation, car])
 
-  useEffect(() => {
-    const ppl = parseFloat(pricePerLtr);
-    const p = parseFloat(price);
-    if (!isNaN(ppl) && !isNaN(p)) {
-      setValue('amount', (price / pricePerLtr).toFixed(3).toString());
-    } else {
-      setValue('amount', '');
-    }
-  }, [pricePerLtr, price, setValue]);
-
   const onFormSubmit = async (data: any) => {
     try {
       const myModel = DTO<Tanking, typeof data>(data);
+      console.log(myModel);
       const result = await tankingRepository.create(myModel);
-      //await tankingRepository.updateSnapshot(db,1);
       console.log('Záznam úspěšně uložen:', result);
       return result;
     } catch (error) {
@@ -153,7 +137,7 @@ export default function AddTankRecordModal({ onSubmit }: any) {
           ...spacing.p(24),
         }}
       >
-        <View className="flex-row items-center relative w-3/4" style={{ ...spacing.gap(8) }}>
+        <View className="flex-row items-center relative" style={{ ...spacing.gap(8) }}>
           <View
             style={{
               ...spacing.borderRadius(8),
@@ -165,7 +149,7 @@ export default function AddTankRecordModal({ onSubmit }: any) {
           >
             <Icon name="tank" color={Colors.base.white} size={getScaleFactor() * 20} />
           </View>
-          <View>
+          <View className='w-full'>
             <ScaledText size="xl" isThemed className="text-xl font-semibold">
               Přidat tankování
             </ScaledText>
@@ -246,7 +230,7 @@ export default function AddTankRecordModal({ onSubmit }: any) {
                   <ScaledText size="base" style={{ color: isDark ? Colors.base.white : '' }}>Cena za jedn. (kč/l)</ScaledText>
                 </View>
 
-                <FormNumberInput name="price_per_litre" placeholder="Cena za jedn. (kč/l)" control={control} style={{ padding: 8, color: isDark ? Colors.base.white : '' }}></FormNumberInput>
+                <FormNumberInput name="price_per_unit" placeholder="Cena za jedn. (kč/l)" control={control} style={{ padding: 8, color: isDark ? Colors.base.white : '' }}></FormNumberInput>
               </View>
 
               <View className='w-[48%]' style={{ ...spacing.mb(6) }}>
@@ -265,26 +249,19 @@ export default function AddTankRecordModal({ onSubmit }: any) {
             <View className='w-[48%]'>
               <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(6) }}>
                 <Icon name='calendar' color={isDark ? Colors.icon.primary_dark : Colors.icon.primary} size={getScaleFactor() * 16} />
-                <ScaledText size='base' style={{ color: isDark ? Colors.base.white : '' }}>Datum</ScaledText>
+                <ScaledText size='base' style={{ color: isDark ? Colors.base.white : '' }}>Datum a čas</ScaledText>
               </View>
-              <FormDateTimeInput mode="date" name="opening" defaultValue={new Date()} control={control} style={{ padding: 8, color: isDark ? Colors.base.white : '' }}></FormDateTimeInput>
-            </View>
-            <View className='w-[48%]'>
-              <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(6) }}>
-                <Icon name='clock' color={isDark ? Colors.icon.primary_dark : Colors.icon.primary} size={getScaleFactor() * 16} />
-                <ScaledText size='base' style={{ color: isDark ? Colors.base.white : '' }}>Čas</ScaledText>
-              </View>
-              <FormDateTimeInput name="closing" defaultValue={new Date()} control={control} style={{ padding: 8, color: isDark ? Colors.base.white : '' }}></FormDateTimeInput>
+              <FormDateTimeInput mode="datetime" name="tank_date" defaultValue={new Date()} control={control} style={{ padding: 8, color: isDark ? Colors.base.white : '' }}></FormDateTimeInput>
             </View>
           </View>
+
         </View>
         <View style={{ ...spacing.gap(12), ...spacing.borderBottomWidth(1), ...spacing.py(12), borderColor: isDark ? Colors.border.muted_dark : Colors.border.muted }}>
           <ScaledText style={{ ...spacing.mb(6) }} className='font-bold' size='lg' isThemed>Doplňující</ScaledText>
           <View className='flex-row items-center' style={{ ...spacing.gap(6) }}>
             <FormToggleInput
-              name="test"
+              name="full_tank"
               control={control}
-              value="yes"
               label={(
                 <View className='flex-row items-center' style={{ ...spacing.gap(6) }}>
                   <Icon name="tank" color={isDark ? Colors.icon.primary_dark : Colors.icon.primary} size={getScaleFactor() * 16} />

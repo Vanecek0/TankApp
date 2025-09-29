@@ -106,7 +106,7 @@ export default function Dropdown<T>({
                         elevation: 10,
                         ...spacing.maxHeight(280)
                     }]}>
-                        <ScrollView>
+                        <ScrollView nestedScrollEnabled={true}>
                             {data.length === 0 ? (
                                 <ScaledText
                                     size="base"

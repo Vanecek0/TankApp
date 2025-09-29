@@ -10,7 +10,6 @@ export class Tanking {
   tank_date: number = Date.now();
   full_tank: boolean = false;
   note!: string;
-  snapshot!: string;
   created_at: number = Date.now();
   updated_at: number = Date.now();
 
