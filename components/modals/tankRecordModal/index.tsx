@@ -23,8 +23,13 @@ import FormDateTimeInput from '@/components/forms/FormDateTimeInput';
 import FormToggleInput from '@/components/forms/FormToggleInput';
 import FormTextArea from '@/components/forms/FormTextArea';
 import { fuelService } from '@/services/fuelService';
+import FormSelectInput from '@/components/forms/FormSelectInput';
 
-export default function AddTankRecordModal({ onSubmit }: any) {
+type Props = {
+  onSubmitSuccess?: () => void;
+};
+
+export default function AddTankRecordModal({ onSubmitSuccess }: Props) {
   const { hideAllModals } = useModal();
   const { isDark } = useTheme();
   const { control, handleSubmit, setValue, getValues, formState: { errors } } = useForm();
@@ -54,22 +59,22 @@ export default function AddTankRecordModal({ onSubmit }: any) {
       setFuels(selectedStationFuels);
     }
 
-    console.log(car?.fuel_category);
-
     loadSelectedStationFuels(selectedStation?.id ?? 0);
   }, [selectedStation, car])
 
   const onFormSubmit = async (data: any) => {
-    try {
-      const myModel = DTO<Tanking, typeof data>(data);
-      console.log(myModel);
-      const result = await tankingRepository.create(myModel);
-      console.log('Záznam úspěšně uložen:', result);
-      return result;
-    } catch (error) {
-      console.error('Chyba při ukládání záznamu:', error);
-      throw error;
-    }
+    const myModel = DTO<Tanking, typeof data>({
+      ...data,
+      car_id: car?.id,
+      created_at: Date.now(),
+      updated_at: Date.now(),
+    });
+
+    await tankingRepository.create(myModel);
+
+    onSubmitSuccess?.();
+
+    hideAllModals();
   };
 
   type StationItemProps = {
@@ -203,13 +208,15 @@ export default function AddTankRecordModal({ onSubmit }: any) {
                   <ScaledText size='base' style={{ color: isDark ? Colors.base.white : '' }}>Palivo</ScaledText>
                 </View>
 
-                <Dropdown<Fuel>
-                  placeholder='Typ paliva'
+
+                <FormSelectInput
+                  name="station_fuel_id"
+                  control={control}
+                  placeholder="Typ paliva"
                   data={fuels}
-                  onChange={console.log}
                   getItemLabel={(fuel) => fuel.trademark}
                   getItemValue={(fuel) => fuel.id?.toString() ?? ''}
-                ></Dropdown>
+                />
 
               </View>
 
@@ -251,7 +258,7 @@ export default function AddTankRecordModal({ onSubmit }: any) {
                 <Icon name='calendar' color={isDark ? Colors.icon.primary_dark : Colors.icon.primary} size={getScaleFactor() * 16} />
                 <ScaledText size='base' style={{ color: isDark ? Colors.base.white : '' }}>Datum a čas</ScaledText>
               </View>
-              <FormDateTimeInput mode="datetime" name="tank_date" defaultValue={new Date()} control={control} style={{ padding: 8, color: isDark ? Colors.base.white : '' }}></FormDateTimeInput>
+              <FormDateTimeInput mode="datetime" name="tank_date" defaultValue={new Date().getTime()} control={control} style={{ padding: 8, color: isDark ? Colors.base.white : '' }}></FormDateTimeInput>
             </View>
           </View>
 
@@ -289,8 +296,8 @@ export default function AddTankRecordModal({ onSubmit }: any) {
 
       </ScrollView>
       <View style={{ ...spacing.p(20), ...spacing.gap(6), ...spacing.borderBottomRadius(12), backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light }} className='flex-row justify-between'>
-        <CustomButton className='w-[48%]' onPress={() => hideAllModals()} label="Zrušit" labelSize='base' labelClassName='text-center' labelStyle={{ color: isDark ? Colors.base.white : '' }} style={{ ...spacing.p(12), ...spacing.borderWidth(1), borderColor: isDark ? Colors.text.primary_dark : Colors.text.muted, ...spacing.borderRadius(12) }} backgroundColor={isDark ? Colors.background.surface.dark : Colors.background.surface.light} />
-        <CustomButton className='w-[48%]' onPress={handleSubmit((data) => { onFormSubmit(data); hideAllModals() })} label="Přidat záznam" labelSize='base' labelClassName='text-center' labelStyle={{ color: Colors.base.white }} style={{ ...spacing.p(12), ...spacing.borderRadius(12), ...spacing.borderWidth(1), borderColor: Colors.base.primary }} backgroundColor={Colors.base.primary} />
+        <CustomButton className='w-[48%]' onPress={() => hideAllModals()} label="Zrušit" labelSize='base' labelClassName='text-center' labelStyle={{ color: isDark ? Colors.base.white : '' }} style={{ ...spacing.p(12), ...spacing.borderWidth(1), borderColor: isDark ? Colors.text.secondary_dark : Colors.text.muted, ...spacing.borderRadius(12) }} backgroundColor={isDark ? Colors.background.surface.dark : Colors.background.surface.light} />
+        <CustomButton className='w-[48%]' onPress={handleSubmit(onFormSubmit)} label="Přidat záznam" labelSize='base' labelClassName='text-center' labelStyle={{ color: Colors.base.white }} style={{ ...spacing.p(12), ...spacing.borderRadius(12), ...spacing.borderWidth(1), borderColor: Colors.base.primary }} backgroundColor={Colors.base.primary} />
       </View>
     </View>
   );
