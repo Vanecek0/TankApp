@@ -19,8 +19,6 @@ import { TankingItem } from '@/components/tanking/TankingItem';
 import { LinearGradient } from 'expo-linear-gradient';
 import darkenHexColor from '@/utils/colorDarken';
 import CollapsibleScroll from '@/components/CollapsibleScroll';
-import { router } from 'expo-router';
-import Card from '@/components/common/Card';
 
 export default function TankScreen() {
   const { isDark } = useTheme();
@@ -57,58 +55,12 @@ export default function TankScreen() {
   }, []);
 
   useEffect(() => {
-    loadTankings(orderTankings, car?.id ?? 2);
+    loadTankings(orderTankings, car?.id ?? 1);
   }, [loadTankings, orderTankings, car]);
 
-  const onRefresh = useCallback(async () => {
-    await loadTankings(orderTankings, car?.id ?? 2);
-  }, [loadTankings, orderTankings, car]);
-
-  const renderTankingList = () => (
-    <>
-      <View style={{ ...spacing.mt(12), ...spacing.mb(12) }} className="flex-row items-center justify-between">
-        <ScaledText size="xl" className="font-bold" isThemed>
-          Poslední záznamy
-        </ScaledText>
-
-        <Dropdown
-          defaultIndex={orderTankings === 'DESC' ? 0 : 1}
-          data={[
-            { value: 'DESC', label: 'Nejnovější' },
-            { value: 'ASC', label: 'Nejstarší' },
-          ]}
-          onChange={(item) => setOrderTankings(item.value === 'DESC' || item.value === 'ASC' ? item.value : 'DESC')}
-          dropdownStyle={{
-            ...spacing.borderRadius(12),
-            ...spacing.width(150),
-            ...spacing.borderWidth(0.5),
-            ...spacing.px(12),
-            borderColor: Colors.base.transparent,
-            backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light,
-          }}
-        />
-      </View>
-
-      <Animated.FlatList
-        ref={flatListRef}
-        data={tanking}
-        keyExtractor={(item, idx) => item.month ?? idx.toString()}
-        renderItem={({ item }) => <TankingItem item={item} isDark={isDark} />}
-        refreshControl={<RefreshControl refreshing={isLoading} onRefresh={onRefresh} />}
-        scrollEventThrottle={16}
-        onScroll={Animated.event(
-          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-          { useNativeDriver: false }
-        )}
-        showsVerticalScrollIndicator={false}
-        ListEmptyComponent={
-          <ScaledText style={{ ...spacing.p(28) }} className="text-center font-bold" color={Colors.text.muted} size="base">
-            {isLoading ? 'Načítání' : 'Žádné další záznamy'}
-          </ScaledText>
-        }
-      />
-    </>
-  );
+  const handleTankAdded = async () => {
+    await loadTankings(orderTankings, car?.id ?? 1);
+  };
 
   return (
     <>
@@ -172,7 +124,7 @@ export default function TankScreen() {
             data: tanking,
             keyExtractor: (item, idx) => item.month ?? idx.toString(),
             renderItem: ({ item }) => <TankingItem item={item} isDark={isDark} />,
-            refreshControl: <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />,
+            refreshControl: <RefreshControl refreshing={isLoading} />,
             scrollEventThrottle: 16,
             onScroll: Animated.event(
               [{ nativeEvent: { contentOffset: { y: scrollY } } }],
@@ -191,8 +143,12 @@ export default function TankScreen() {
       </View >
 
       <ActionButton scrollY={scrollY}>
-        <View onTouchEnd={
-          () => { showModal(AddTankRecordModal) }} style={{ ...spacing.right(10) }} className='flex-row items-center gap-3'>
+        <View onTouchEnd={() => {
+          showModal(AddTankRecordModal, {
+            onSubmitSuccess: handleTankAdded,
+          });
+        }}
+          style={{ ...spacing.right(10) }} className='flex-row items-center gap-3'>
           <ScaledText size={'base'} color={isDark ? Colors.base.white : ''} className='font-bold'>Přidat tankování</ScaledText>
           <CustomButton
             labelClassName='aspect text-center'

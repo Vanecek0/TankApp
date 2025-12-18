@@ -62,6 +62,9 @@ export default function FormDateTimeInput({ name, control, fieldHeight = 46, mod
                     }}
                 >
                     {field.value !== undefined ? displayValue : defaultValue}
+                    {
+                        console.log(defaultValue)
+                    }
                 </ScaledText>
             </Pressable>
 
@@ -75,7 +78,7 @@ export default function FormDateTimeInput({ name, control, fieldHeight = 46, mod
                 onConfirm={(selectedDate) => {
                     setShow(false);
                     if (selectedDate) {
-                        field.onChange(selectedDate.toISOString());
+                        field.onChange(selectedDate.getTime());
                     }
                 }}
                 onCancel={() => setShow(false)}

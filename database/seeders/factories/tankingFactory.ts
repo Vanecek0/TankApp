@@ -478,7 +478,7 @@ export async function getTankingSeeds(): Promise<Tanking[]> {
             "created_at": 1754038831000,
             "updated_at": 1754038831000
         },
-          {
+        {
             "car_id": 1,
             "station_fuel_id": 5,
             "price_per_unit": 40.1,
@@ -491,6 +491,20 @@ export async function getTankingSeeds(): Promise<Tanking[]> {
             "note": "Vysoké ceny, jen nutné minimum",
             "created_at": 1756717231000,
             "updated_at": 1756717231000
+        },
+         {
+            "car_id": 1,
+            "station_fuel_id": 5,
+            "price_per_unit": 40.1,
+            "price": 600,
+            "amount": 32,
+            "mileage": 256,
+            "tachometer": 50891,
+            "tank_date": 1766050841000,
+            "full_tank": false,
+            "note": "Vysoké ceny, jen nutné minimum",
+            "created_at": 1766050841000,
+            "updated_at": 1766050841000
         }
 
     ];

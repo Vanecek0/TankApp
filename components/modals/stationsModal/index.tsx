@@ -215,7 +215,7 @@ export default function StationsModal() {
                     style={{ ...spacing.p(36), ...spacing.me(-12) }}
                     className="justify-center items-center absolute right-0"
                 >
-                    <Icon name="cross" color={Colors.icon.primary} size={getScaleFactor() * 20} />
+                    <Icon name="cross" color={isDark ? Colors.icon.primary_dark : Colors.icon.primary} size={getScaleFactor() * 20} />
                 </View>
             </View>
 
@@ -316,7 +316,7 @@ export function AddStationRecordModal({ station, previousModal }: { station: Sta
                 className="border-b-[1px] sticky flex-row justify-between items-center"
                 style={{
                     ...spacing.borderTopRadius(12),
-                    borderColor: isDark ? Colors.text.primary_dark : Colors.text.primary,
+                    borderColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light,
                     backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light,
                     ...spacing.p(24),
                 }}
@@ -331,7 +331,7 @@ export function AddStationRecordModal({ station, previousModal }: { station: Sta
                         }}
                         className="flex items-center justify-center"
                     >
-                        <Icon name="edit" color={Colors.icon.primary} size={getScaleFactor() * 20} />
+                        <Icon name="edit" color={Colors.base.white} size={getScaleFactor() * 20} />
                     </View>
                     <View>
                         <ScaledText size="xl" isThemed className="text-xl font-semibold">
@@ -347,7 +347,7 @@ export function AddStationRecordModal({ station, previousModal }: { station: Sta
                     style={{ ...spacing.p(36), ...spacing.me(-12) }}
                     className="justify-center items-center absolute right-0"
                 >
-                    <Icon name="cross" color={Colors.icon.primary} size={getScaleFactor() * 20} />
+                    <Icon name="cross" color={isDark ? Colors.icon.primary_dark : Colors.icon.primary} size={getScaleFactor() * 20} />
                 </View>
             </View>
 
@@ -362,7 +362,8 @@ export function AddStationRecordModal({ station, previousModal }: { station: Sta
                     </View>
 
                     <View>
-                        <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
+                        <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(6) }}>
+                            <Icon name='map_pin' color={isDark ? Colors.icon.primary_dark : Colors.icon.primary} size={getScaleFactor() * 16} />
                             <ScaledText size='base' style={{ color: isDark ? Colors.base.white : '' }}>Adresa</ScaledText>
                         </View>
 
@@ -370,7 +371,8 @@ export function AddStationRecordModal({ station, previousModal }: { station: Sta
                     </View>
 
                     <View>
-                        <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
+                        <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(6) }}>
+                            <Icon name='phone' color={isDark ? Colors.icon.primary_dark : Colors.icon.primary} size={getScaleFactor() * 16} />
                             <ScaledText size='base' style={{ color: isDark ? Colors.base.white : '' }}>Telefonní číslo</ScaledText>
                         </View>
 
@@ -378,7 +380,8 @@ export function AddStationRecordModal({ station, previousModal }: { station: Sta
                     </View>
 
                     <View>
-                        <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
+                        <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(6) }}>
+                            <Icon name='clock' color={isDark ? Colors.icon.primary_dark : Colors.icon.primary} size={getScaleFactor() * 16} />
                             <ScaledText size='base' style={{ color: isDark ? Colors.base.white : '' }}>Otevírací doba</ScaledText>
                         </View>
                         <View style={{ ...spacing.gap(8) }} className='flex-row justify-between'>
@@ -393,9 +396,11 @@ export function AddStationRecordModal({ station, previousModal }: { station: Sta
                     </View>
 
                     <View>
-                        <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
+                        <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(6) }}>
+                            <Icon name='tank' color={isDark ? Colors.icon.primary_dark : Colors.icon.primary} size={getScaleFactor() * 16} />
                             <ScaledText size='base' style={{ color: isDark ? Colors.base.white : '' }}>Typy paliv</ScaledText>
                         </View>
+
 
                         <View className="flex-row flex-wrap" style={{}}>
                             {
@@ -447,11 +452,11 @@ export function AddStationRecordModal({ station, previousModal }: { station: Sta
                     label="Zrušit"
                     labelSize='base'
                     labelClassName='text-center'
-                    labelColor={isDark ? Colors.base.white : ''}
+                    labelStyle={{ color: isDark ? Colors.base.white : '' }}
                     style={{
                         ...spacing.p(12),
                         ...spacing.borderWidth(1),
-                        borderColor: isDark ? Colors.text.primary_dark : Colors.text.muted,
+                        borderColor: isDark ? Colors.text.secondary_dark : Colors.text.muted,
                         ...spacing.borderRadius(12)
                     }}
                     backgroundColor={isDark ? Colors.background.surface.dark : Colors.background.surface.light}
@@ -460,7 +465,7 @@ export function AddStationRecordModal({ station, previousModal }: { station: Sta
                     await onFormSubmit(data);
                     hideModal();
                     showModal(StationsModal);
-                })} label={station ? "Uložit změny" : "Přidat stanici"} labelSize='base' labelClassName='text-center' labelColor={Colors.base.white} style={{ ...spacing.p(12), ...spacing.borderRadius(12), ...spacing.borderWidth(1), borderColor: Colors.base.primary }} backgroundColor={Colors.base.primary} />
+                })} label={station ? "Uložit změny" : "Přidat stanici"} labelSize='base' labelClassName='text-center' labelStyle={{ color: isDark ? Colors.base.white : '' }} style={{ ...spacing.p(12), ...spacing.borderRadius(12), ...spacing.borderWidth(1), borderColor: Colors.base.primary }} backgroundColor={Colors.base.primary} />
             </View>
         </View>
     );

@@ -39,5 +39,4 @@ export default abstract class Database {
       throw error;
     }
   }
-
 }

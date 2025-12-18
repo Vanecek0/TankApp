@@ -97,8 +97,8 @@ export async function createTables(db: SQLite.SQLiteDatabase) {
         "tank_date" NUMERIC,
         "full_tank" INTEGER NOT NULL DEFAULT 0 CHECK("full_tank" IN (0,1)),
         "note" TEXT,
-        "created_at"	NUMERIC,
-        "updated_at"	NUMERIC,
+        "created_at"	NUMERIC DEFAULT CURRENT_TIMESTAMP,
+        "updated_at"	NUMERIC DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY("car_id") REFERENCES "car"("id") ON DELETE SET NULL,
         FOREIGN KEY("station_fuel_id") REFERENCES "station_fuel"("id") ON DELETE SET NULL
       );

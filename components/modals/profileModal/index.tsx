@@ -163,14 +163,14 @@ export default function ProfileModal() {
                         }}
                         className="flex items-center justify-center"
                     >
-                        <Icon name="map_pin" color={Colors.text.primary} size={getScaleFactor() * 20} />
+                        <Icon name="car" color={Colors.base.white} size={getScaleFactor() * 20} />
                     </View>
                     <View>
                         <ScaledText size="xl" isThemed className="text-xl font-semibold">
-                            Čerpací a dobíjecí stanice
+                            Výběr vozidla
                         </ScaledText>
                         <ScaledText size="sm" isThemed>
-                            Spravujte své přidané stanice
+                            Spravujte svá přidaná vozidla
                         </ScaledText>
                     </View>
                 </View>
@@ -268,7 +268,7 @@ export function ProfileActionModal({ car, previousModal }: { car: Car, previousM
                         }}
                         className="flex items-center justify-center"
                     >
-                        <Icon name="edit" color={Colors.icon.primary} size={getScaleFactor() * 20} />
+                        <Icon name="edit" color={Colors.base.white} size={getScaleFactor() * 20} />
                     </View>
                     <View>
                         <ScaledText size="xl" isThemed className="text-xl font-semibold">
@@ -369,19 +369,13 @@ export function ProfileActionModal({ car, previousModal }: { car: Car, previousM
                     label="Zrušit"
                     labelSize='base'
                     labelClassName='text-center'
-                    labelColor={isDark ? Colors.base.white : ''}
-                    style={{
-                        ...spacing.p(12),
-                        ...spacing.borderWidth(1),
-                        borderColor: isDark ? Colors.text.primary_dark : Colors.text.muted,
-                        ...spacing.borderRadius(12)
-                    }}
-                    backgroundColor={isDark ? Colors.background.surface.dark : Colors.background.surface.light} />
+                    labelStyle={{ color: isDark ? Colors.base.white : '' }}
+                    style={{ ...spacing.p(12), ...spacing.borderWidth(1), borderColor: isDark ? Colors.text.secondary_dark : Colors.text.muted, ...spacing.borderRadius(12) }} backgroundColor={isDark ? Colors.background.surface.dark : Colors.background.surface.light} />
                 <CustomButton className='flex-1' onPress={handleSubmit(async (data) => {
                     await onFormSubmit(data);
                     hideModal();
                     showModal(ProfileModal);
-                })} label={car ? "Uložit změny" : "Přidat stanici"} labelSize='base' labelClassName='text-center' labelColor={Colors.base.white} style={{ ...spacing.p(12), ...spacing.borderRadius(12), ...spacing.borderWidth(1), borderColor: Colors.base.primary }} backgroundColor={Colors.base.primary} />
+                })} label={car ? "Uložit změny" : "Přidat vozidlo"} labelSize='base' labelClassName='text-center' labelStyle={{ color: Colors.base.white }} style={{ ...spacing.p(12), ...spacing.borderRadius(12), ...spacing.borderWidth(1), borderColor: Colors.base.primary }} backgroundColor={Colors.base.primary} />
             </View>
         </View>
     )

@@ -52,7 +52,7 @@ export default function DeleteConfirmationModal({
                         }}
                         className="flex items-center justify-center"
                     >
-                        <Icon name="bin" color={Colors.icon.primary} size={getScaleFactor() * 20} />
+                        <Icon name="bin" color={Colors.base.white} size={getScaleFactor() * 20} />
                     </View>
                     <View>
                         <ScaledText size="xl" isThemed className="text-xl font-semibold">
@@ -68,7 +68,7 @@ export default function DeleteConfirmationModal({
                     style={{ ...spacing.p(36), ...spacing.me(-12) }}
                     className="justify-center items-center absolute right-0"
                 >
-                    <Icon name="cross" color={Colors.icon.primary} size={getScaleFactor() * 20} />
+                    <Icon name="cross" color={isDark ? Colors.icon.primary_dark : Colors.icon.primary} size={getScaleFactor() * 20} />
                 </View>
             </View>
             <View style={{ ...spacing.p(24), }} className="flex justify-center items-center">
@@ -91,11 +91,11 @@ export default function DeleteConfirmationModal({
                     label={cancelLabel}
                     labelSize='base'
                     labelClassName='text-center'
-                    labelColor={isDark ? Colors.base.white : ''}
+                    labelStyle={{ color: isDark ? Colors.base.white : '' }}
                     style={{
                         ...spacing.p(12),
                         ...spacing.borderWidth(1),
-                        borderColor: isDark ? Colors.text.primary_dark : Colors.text.muted, ...spacing.borderRadius(12)
+                        borderColor: isDark ? Colors.text.secondary_dark : Colors.text.muted, ...spacing.borderRadius(12)
                     }}
                     backgroundColor={isDark ? Colors.background.dark : Colors.background.light}
                 />
@@ -105,7 +105,7 @@ export default function DeleteConfirmationModal({
                     label={confirmLabel}
                     labelSize='base'
                     labelClassName='text-center'
-                    labelColor={Colors.base.white}
+                    labelStyle={{ color: isDark ? Colors.base.white : '' }}
                     style={{
                         ...spacing.p(12),
                         ...spacing.borderRadius(12),

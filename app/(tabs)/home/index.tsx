@@ -77,8 +77,12 @@ export default function HomeScreen() {
     }
   }, [dispatch]);
 
+  const handleTankAdded = async () => {
+    await loadTankings(car?.id ?? 1);
+  };
+
   useEffect(() => {
-    loadTankings(car?.id ?? 2);
+    handleTankAdded()
   }, [loadTankings, car]);
 
   const TankingItem = React.memo(({ item }: {
@@ -95,9 +99,6 @@ export default function HomeScreen() {
         <View style={{ ...spacing.mb(12) }}>
           {item.tankings.map((item, index) => (
             <View key={index} style={{ ...spacing.gap(12), ...spacing.my(12) }} className='flex-row items-center'>
-              <>
-              {console.log(item)}
-              </>
               <ScaledText className='rounded-full' style={{ backgroundColor: "lightgray", fontWeight: "bold", ...spacing.p(16) }} size='lg'>{item.station?.provider?.slice(0, 2).toUpperCase() ?? '-'}</ScaledText>
               <View className='flex-row justify-between flex-1'>
                 <View style={{ ...spacing.gap(4) }} className='flex items-start w-2/3'>
@@ -180,36 +181,11 @@ export default function HomeScreen() {
               {tanking.map((item, index) => (
                 <TankingItem key={index} item={item} />
               ))}
-              {
-                tanking.length > 0 ? (
-                  <View style={{
-                    position: "absolute",
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    ...spacing.height(80),
-                    backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light,
-                    opacity: 0.85
-                  }}
-                    className='flex justify-center items-center'
-                  >
-                    <CustomButton
-                      label={<View>
-                        <ScaledText size='lg' style={{fontWeight: "bold"}} isThemed>Zobrazit více</ScaledText>
-                        <Icon name="chevron_down" color={Colors.text.muted} size={getScaleFactor() * 26} />
-                      </View>}
-                      labelStyle={{ fontWeight: "bold" }}
-                      backgroundColor='transparent'
-                      onPress={() => router.navigate("/(tabs)/tank")}
-                      style={{}}
-                      isThemed={true}
-                    />
-                  </View>
-                ) : null
-              }
+
             </Card>
 
-            <View className='flex-row items-center justify-between'>
+
+            < View className='flex-row items-center justify-between'>
               <View className='flex-row justify-center items-center' style={{ ...spacing.gap(8), ...spacing.borderRadius(8), ...spacing.py(12) }}>
                 <Icon name='dollar' color={Colors.base.primary} size={getScaleFactor() * 20} />
                 <ScaledText size='xl' className='font-bold' isThemed>Náklady</ScaledText>
@@ -325,7 +301,11 @@ export default function HomeScreen() {
       </View >
       <ActionButton scrollY={scrollY}>
         <View onTouchEnd={
-          () => { showModal(AddTankRecordModal) }} style={{ ...spacing.right(10) }} className='flex-row items-center gap-3'>
+          () => {
+            showModal(AddTankRecordModal, {
+              onSubmitSuccess: handleTankAdded,
+            });
+          }} style={{ ...spacing.right(10) }} className='flex-row items-center gap-3'>
           <ScaledText size={'base'} color={isDark ? Colors.base.white : ''} className='font-bold'>Přidat tankování</ScaledText>
           <CustomButton
             labelClassName='aspect text-center'
