@@ -8,7 +8,7 @@ import getScaleFactor from '@/utils/SizeScaling';
 import { spacing } from '@/utils/SizeScaling';
 import { getDate } from '@/utils/getDate';
 import { Station } from '@/models/Station';
-import CustomButton, { ActionButton } from '@/components/common/Buttons';
+import CustomButton from '@/components/common/Buttons';
 import Dashboard from '@/components/dashboards';
 import { useModal } from '@/hooks/useModal';
 import AddTankRecordModal from '@/components/modals/tankRecordModal';
@@ -27,6 +27,7 @@ import darkenHexColor from '@/utils/colorDarken';
 import { router } from 'expo-router';
 import { TankingStatistics } from '@/models/TankingStatistics';
 import { tankingStatisticService } from '@/services/tankingStatisticsService';
+import { ActionButton } from '@/components/buttons/ActionButton';
 
 export default function HomeScreen() {
   const { isDark } = useTheme();

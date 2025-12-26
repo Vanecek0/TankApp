@@ -10,7 +10,6 @@ export default function Card({ children, className, style }: { children: React.R
             style={[{
                 backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light,
                 ...spacing.p(20),
-                ...spacing.my(6),
                 ...spacing.borderRadius(8),
             }, style]}
             className={className}

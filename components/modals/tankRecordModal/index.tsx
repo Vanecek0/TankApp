@@ -297,7 +297,13 @@ export default function AddTankRecordModal({ onSubmitSuccess }: Props) {
       </ScrollView>
       <View style={{ ...spacing.p(20), ...spacing.gap(6), ...spacing.borderBottomRadius(12), backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light }} className='flex-row justify-between'>
         <CustomButton className='w-[48%]' onPress={() => hideAllModals()} label="Zrušit" labelSize='base' labelClassName='text-center' labelStyle={{ color: isDark ? Colors.base.white : '' }} style={{ ...spacing.p(12), ...spacing.borderWidth(1), borderColor: isDark ? Colors.text.secondary_dark : Colors.text.muted, ...spacing.borderRadius(12) }} backgroundColor={isDark ? Colors.background.surface.dark : Colors.background.surface.light} />
-        <CustomButton className='w-[48%]' onPress={handleSubmit(onFormSubmit)} label="Přidat záznam" labelSize='base' labelClassName='text-center' labelStyle={{ color: Colors.base.white }} style={{ ...spacing.p(12), ...spacing.borderRadius(12), ...spacing.borderWidth(1), borderColor: Colors.base.primary }} backgroundColor={Colors.base.primary} />
+        <CustomButton
+          className='w-[48%]'
+          onPress={handleSubmit(async (data) => {
+            await onFormSubmit(data)
+            hideAllModals()
+          })}
+          label="Přidat záznam" labelSize='base' labelClassName='text-center' labelStyle={{ color: Colors.base.white }} style={{ ...spacing.p(12), ...spacing.borderRadius(12), ...spacing.borderWidth(1), borderColor: Colors.base.primary }} backgroundColor={Colors.base.primary} />
       </View>
     </View>
   );
