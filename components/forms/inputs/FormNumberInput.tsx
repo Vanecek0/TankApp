@@ -4,20 +4,23 @@ import { spacing } from "@/utils/SizeScaling";
 import { useController } from "react-hook-form";
 import { TextInput } from "react-native";
 
-export default function FormNumberInput({ name, control, fieldHeight = 46, placeholder, defaultValue, onBlur }: any) {
+export default function FormNumberInput({ name, control, fieldHeight = 46, placeholder, onBlur }: any) {
     const { isDark } = useTheme();
 
     const { field } = useController({
         control,
-        defaultValue: defaultValue ?? '',
+        defaultValue: 0,
         name,
     })
 
     const handleChange = (text: string) => {
-        let cleaned = text.replace(',', '.');
+        const cleaned = text.replace(',', '.');
+        const num = parseFloat(cleaned);
 
-        if (/^\d*\.?\d*$/.test(cleaned)) {
-            field.onChange(cleaned);
+        if (!isNaN(num)) {
+            field.onChange(num);
+        } else if (cleaned === '') {
+            field.onChange(0);
         }
     };
 
@@ -36,7 +39,7 @@ export default function FormNumberInput({ name, control, fieldHeight = 46, place
                 backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light,
                 color: isDark ? Colors.text.primary_dark : Colors.text.primary
             }}
-            value={field.value !== undefined ? field.value : 0}
+            value={String(field.value)}
             onBlur={() => {
                 field.onBlur();
                 if (onBlur) onBlur();

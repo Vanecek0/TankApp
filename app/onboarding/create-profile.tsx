@@ -1,4 +1,4 @@
-import FormTextInput from '@/components/forms/FormTextInput';
+import FormTextInput from '@/components/forms/inputs/FormTextInput';
 import ScaledText from '@/components/common/ScaledText';
 import { Colors } from '@/constants/Colors';
 import { useTheme } from '@/theme/ThemeProvider';

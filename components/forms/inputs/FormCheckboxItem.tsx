@@ -3,8 +3,8 @@ import { Pressable, Text, View } from "react-native";
 import { ThemeColors as Colors } from "@/constants/Colors";
 import { useTheme } from "@/theme/ThemeProvider";
 import { useEffect } from "react";
-import ScaledText from "../common/ScaledText";
-import Icon from "../Icon";
+import ScaledText from "../../common/ScaledText";
+import Icon from "../../Icon";
 import getScaleFactor, { spacing } from "@/utils/SizeScaling";
 
 type FormCheckboxItemProps = {

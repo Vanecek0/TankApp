@@ -3,7 +3,7 @@ import { Pressable, View, ViewStyle } from "react-native";
 import { ThemeColors as Colors } from "@/constants/Colors";
 import { useTheme } from "@/theme/ThemeProvider";
 import { useEffect } from "react";
-import ScaledText from "../common/ScaledText";
+import ScaledText from "../../common/ScaledText";
 import Animated, {
     useSharedValue,
     useAnimatedStyle,
@@ -33,7 +33,7 @@ export default function FormToggleInput({
     const { field } = useController({
         name,
         control,
-        defaultValue: false, // už jen boolean
+        defaultValue: false,
     });
 
     const isChecked = !!field.value;

@@ -1,5 +1,5 @@
 import { useController } from "react-hook-form";
-import Dropdown from "../common/Dropdown";
+import Dropdown from "../../common/Dropdown";
 
 type FormSelectInputProps<T> = {
     name: string;

@@ -5,7 +5,7 @@ import { useTheme } from '@/theme/ThemeProvider';
 import { ThemeColors as Colors } from '@/constants/Colors';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { spacing } from '@/utils/SizeScaling';
-import ScaledText from '../common/ScaledText';
+import ScaledText from '../../common/ScaledText';
 
 export default function FormDateTimeInput({ name, control, fieldHeight = 46, mode = "time", defaultValue }: any) {
     const { field } = useController({ name, control, defaultValue: defaultValue ?? '' });
