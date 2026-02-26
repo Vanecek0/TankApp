@@ -1,5 +1,4 @@
 import { Tabs } from 'expo-router';
-import { Platform, Text, View } from 'react-native';
 import { useTheme } from '@/theme/ThemeProvider';
 import { ThemeColors as Colors } from '@/constants/Colors';
 import getScaleFactor, { spacing } from '@/utils/SizeScaling';

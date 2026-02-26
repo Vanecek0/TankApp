@@ -61,10 +61,6 @@ export default function FormDateTimeInput({ name, control, fieldHeight = 46, mod
                         color: isDark ? Colors.text.primary_dark : Colors.text.primary
                     }}
                 >
-                    {field.value !== undefined ? displayValue : defaultValue}
-                    {
-                        console.log(defaultValue)
-                    }
                 </ScaledText>
             </Pressable>
 

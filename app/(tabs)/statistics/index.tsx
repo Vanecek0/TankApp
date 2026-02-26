@@ -238,7 +238,6 @@ export default function TankStatistics() {
               <ScaledText style={{ ...spacing.mb(12) }} size='lg' className='font-bold' isThemed={true}>
                 Nejčastější čerpací stanice
               </ScaledText>
-              {/* TODO */}
               <View style={{ ...spacing.my(8) }}>
                 <View style={{ ...spacing.gap(12) }} className='flex-row items-center justify-between w-full'>
                   <View style={{ ...spacing.gap(12) }} className='flex-row items-center'>

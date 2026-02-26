@@ -12,32 +12,6 @@ export default function FormDateTimeInput({ name, control, fieldHeight = 46, mod
     const [show, setShow] = useState(false);
     const { isDark } = useTheme();
 
-    const formatters: Record<string, (value: Date) => string> = {
-        time: (value) =>
-            value.toLocaleTimeString("cs-CZ", {
-                hour: "2-digit",
-                minute: "2-digit",
-            }),
-        date: (value) =>
-            value.toLocaleDateString("cs-CZ", {
-                day: "2-digit",
-                month: "2-digit",
-                year: "numeric",
-            }),
-        datetime: (value) =>
-            value.toLocaleString("cs-CZ", {
-                day: "2-digit",
-                month: "2-digit",
-                year: "numeric",
-                hour: "2-digit",
-                minute: "2-digit",
-            }),
-    };
-
-    const displayValue = field.value
-        ? formatters[mode]?.(new Date(field.value)) ?? "Neznámý formát"
-        : "Vyber čas";
-
     return (
         <View
             style={{
@@ -61,10 +35,6 @@ export default function FormDateTimeInput({ name, control, fieldHeight = 46, mod
                         color: isDark ? Colors.text.primary_dark : Colors.text.primary
                     }}
                 >
-                    {field.value !== undefined ? displayValue : defaultValue}
-                    {
-                        console.log(defaultValue)
-                    }
                 </ScaledText>
             </Pressable>
 
@@ -78,7 +48,7 @@ export default function FormDateTimeInput({ name, control, fieldHeight = 46, mod
                 onConfirm={(selectedDate) => {
                     setShow(false);
                     if (selectedDate) {
-                        field.onChange(selectedDate.getTime());
+                        field.onChange(selectedDate);
                     }
                 }}
                 onCancel={() => setShow(false)}

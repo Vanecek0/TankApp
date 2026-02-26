@@ -27,7 +27,7 @@ export default function ServiceScreen() {
           { useNativeDriver: true }
         )}
         style={{ backgroundColor: isDark ? Colors.background.dark : Colors.background.light }}>
-        <View style={{ ...spacing.mx(20), ...spacing.mb(96), ...spacing.mt(12) }}>
+        <View style={{ ...spacing.mx(20), ...spacing.mb(96), ...spacing.mt(12), ...spacing.gap(12) }}>
           <Card>
             <View style={{ ...spacing.mb(8) }} className='flex-row justify-between'>
               <View>
@@ -42,36 +42,36 @@ export default function ServiceScreen() {
             <ResponsiveImage source={require('@/assets/images/car_image.png')} ratio={9 / 16} />
           </Card>
           <View className='flex-row flex-wrap justify-between'>
-            <Card className={`basis-[48.5%]`}>
+            <Card style={{...spacing.p(12), ...spacing.mb(12), ...spacing.borderRadius(8)}} className={`basis-[48.5%]`}>
               <View style={{ ...spacing.gap(4) }} className='flex-row items-center'>
-                <Icon name="speedometer" color={Colors.icon.primary} size={getScaleFactor() * 15} />
+                <Icon name="speedometer" color={Colors.base.primary} size={getScaleFactor() * 15} />
                 <ScaledText size='xs' className='font-bold' isThemed>Stav tachometru</ScaledText>
               </View>
               <View style={{ ...spacing.gap(12), ...spacing.mt(16) }} className='flex justify-between'>
                 <ScaledText size='lg' className='font-bold' isThemed>135 000 km</ScaledText>
               </View>
             </Card>
-            <Card className={`basis-[48.5%]`}>
+            <Card style={{...spacing.p(12), ...spacing.mb(12), ...spacing.borderRadius(8)}} className={`basis-[48.5%]`}>
               <View style={{ ...spacing.gap(4) }} className='flex-row items-center'>
-                <Icon name="calendar" color={Colors.icon.primary} style={{ ...spacing.width(15), ...spacing.height(15) }} />
+                <Icon name="calendar" color={Colors.base.primary} style={{ ...spacing.width(15), ...spacing.height(15) }} />
                 <ScaledText size='xs' className='font-bold' isThemed>Příští STK</ScaledText>
               </View>
               <View style={{ ...spacing.gap(12), ...spacing.mt(16) }} className='flex justify-between'>
                 <ScaledText size='lg' className='font-bold' isThemed>01.02.2027</ScaledText>
               </View>
             </Card>
-            <Card className={`basis-[48.5%]`}>
+            <Card style={{...spacing.p(12), ...spacing.borderRadius(8)}} className={`basis-[48.5%]`}>
               <View style={{ ...spacing.gap(4) }} className='flex-row items-center'>
-                <Icon name="average" color={Colors.icon.primary} style={{ ...spacing.width(15), ...spacing.height(15) }} />
+                <Icon name="average" color={Colors.base.primary} style={{ ...spacing.width(15), ...spacing.height(15) }} />
                 <ScaledText size='xs' className='font-bold' isThemed>Průměrné roční náklady</ScaledText>
               </View>
               <View style={{ ...spacing.gap(12), ...spacing.mt(16) }} className='flex justify-between'>
                 <ScaledText size='lg' className='font-bold' isThemed>30 500 Kč</ScaledText>
               </View>
             </Card>
-            <Card className={`basis-[48.5%]`}>
+            <Card style={{...spacing.p(12), ...spacing.borderRadius(8)}} className={`basis-[48.5%]`}>
               <View style={{ ...spacing.gap(4) }} className='flex-row items-center'>
-                <Icon name="dollar" color={Colors.icon.primary} style={{ ...spacing.width(15), ...spacing.height(15) }} />
+                <Icon name="dollar" color={Colors.base.primary} style={{ ...spacing.width(15), ...spacing.height(15) }} />
                 <ScaledText size='xs' className='font-bold' isThemed>Celkové náklady</ScaledText>
               </View>
               <View style={{ ...spacing.gap(12), ...spacing.mt(16) }} className='flex justify-between'>
@@ -96,12 +96,7 @@ export default function ServiceScreen() {
         </View>
       </Animated.ScrollView>
       <ActionButton scrollY={scrollY}>
-        <View onTouchEnd={
-          () => {
-            showModal(AddTankRecordModal, {
-              onSubmitSuccess: handleTankAdded,
-            });
-          }} style={{ ...spacing.right(10) }} className='flex-row items-center gap-3'>
+        <View style={{ ...spacing.right(10) }} className='flex-row items-center gap-3'>
           <ScaledText size={'base'} color={isDark ? Colors.base.white : ''} className='font-bold'>Přidat tankování</ScaledText>
           <CustomButton
             labelClassName='aspect text-center'

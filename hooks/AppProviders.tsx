@@ -1,6 +1,5 @@
 import React from "react";
 import { Provider as ReduxProvider } from "react-redux";
-import { SQLiteProvider } from "expo-sqlite";
 import { ThemeProvider } from "@/theme/ThemeProvider";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { store } from "@/store";

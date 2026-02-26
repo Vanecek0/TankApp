@@ -71,12 +71,6 @@ function DrawerContent() {
                     </View>
                 </View>
             </View>
-            <Button
-                title={`Změnit auto na ${car?.id === 1 ? 2 : 1}`}
-                onPress={() =>
-                    dispatch(setCarByIdAndPersist(car?.id === 1 ? 2 : 1))
-                }
-            />
             <View>
                 <View style={{ ...spacing.gap(8) }}>
                     <View>

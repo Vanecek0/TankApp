@@ -28,7 +28,7 @@ export const TankingItem = React.memo(({ item, isDark }: TankingItemProps) => (
         <ScaledText size='xl' className='flex flex-col font-bold capitalize' style={{ color: isDark ? Colors.text.primary_dark : Colors.text.primary, ...spacing.my(12) }}>{getDate(item.month).monthLong} {getDate(item.month).year}</ScaledText>
         <View className='flex' style={{ ...spacing.gap(6) }}>
             {item.tankings.map((item) => (
-                <TouchableHighlight key={item.id} onPress={() => console.log("tst")} style={{ ...spacing.borderRadius(8) }}>
+                <TouchableHighlight key={item.id} style={{ ...spacing.borderRadius(8) }}>
                     <Card>
                         <View style={{ ...spacing.gap(12), ...spacing.mb(12) }} className=' flex-row items-center w-full'>
                             <ScaledText className='rounded-full' style={{ backgroundColor: "lightgray", fontWeight: "bold", ...spacing.p(16) }} size='lg'>{item.station?.provider?.slice(0, 2).toUpperCase() ?? '-'}</ScaledText>

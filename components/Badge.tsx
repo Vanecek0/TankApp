@@ -2,7 +2,6 @@ import { TextStyle, View, ViewStyle } from "react-native";
 import ScaledText from "./common/ScaledText";
 import type { FontSizeKey } from "./common/ScaledText";
 import { spacing } from "@/utils/SizeScaling";
-import darkenHexColor from "@/utils/colorDarken";
 import contrastHexColor from "@/utils/colorContrast";
 import { useTheme } from "@/theme/ThemeProvider";
 import { ThemeColors as Colors } from "@/constants/Colors";

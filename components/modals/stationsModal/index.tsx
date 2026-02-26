@@ -7,7 +7,6 @@ import { ThemeColors as Colors } from '@/constants/Colors';
 import { useModal } from '@/hooks/useModal';
 import { useTheme } from '@/theme/ThemeProvider';
 import getScaleFactor, { spacing } from '@/utils/SizeScaling';
-import { DTO } from '@/DTO/mapper';
 import CustomButton from '@/components/common/Buttons';
 import { useForm, useWatch } from 'react-hook-form';
 import FormTextInput from '@/components/forms/inputs/FormTextInput';
@@ -265,51 +264,6 @@ export function AddStationRecordModal({ station, previousModal }: { station: Sta
         loadAllFuels();
     }, []);
 
-    const onFormSubmit = async (data: any) => {
-        try {
-            const stationDTO = DTO<Station, typeof data>(data);
-            if (station) {
-                const result = await stationRepository.update(stationDTO, { id: station.id! });
-
-                const existingFuels = await stationFuelRepository.getAll();
-                const existingFuelIds = existingFuels.map(sf => sf.id_fuel);
-
-                for (const fuelId of existingFuelIds) {
-                    await stationFuelRepository.deleteByFuelAndStation(station.id!, fuelId);
-                }
-
-                for (const fuelId of selectedFuels) {
-
-                    await stationFuelRepository.create({
-                        id_station: station.id!,
-                        id_fuel: fuelId,
-                        last_price_per_unit: 0,
-                    });
-                }
-                return result;
-            } else {
-
-                const stationDTO = DTO<Station, typeof data>(data);
-                const station = await stationRepository.insert(stationDTO);
-
-                for (const fuelId of selectedFuels) {
-
-                    await stationFuelRepository.create({
-                        id_station: station.lastInsertRowId,
-                        id_fuel: fuelId,
-                        last_price_per_unit: 0,
-                    });
-                }
-
-                return true;
-            }
-
-        } catch (error) {
-            console.error('Chyba při ukládání záznamu:', error);
-            throw error;
-        }
-    };
-
     return (
         <View className="max-h-full h-full" style={{ ...spacing.borderRadius(12) }}>
             <View
@@ -402,7 +356,6 @@ export function AddStationRecordModal({ station, previousModal }: { station: Sta
                             <ScaledText size='base' style={{ color: isDark ? Colors.base.white : '' }}>Typy paliv</ScaledText>
                         </View>
 
-
                         <View className="flex-row flex-wrap" style={{}}>
                             {
                                 fuels.map((fuel, index) => (
@@ -434,8 +387,6 @@ export function AddStationRecordModal({ station, previousModal }: { station: Sta
                                 ))
                             }
                         </View>
-
-
                     </View>
 
                     <View>
@@ -463,11 +414,7 @@ export function AddStationRecordModal({ station, previousModal }: { station: Sta
                     }}
                     backgroundColor={isDark ? Colors.background.surface.dark : Colors.background.surface.light}
                 />
-                <CustomButton className='flex-1' onPress={handleSubmit(async (data) => {
-                    await onFormSubmit(data);
-                    hideModal();
-                    showModal(StationsModal);
-                })} label={station ? "Uložit změny" : "Přidat stanici"} labelSize='base' labelClassName='text-center' labelStyle={{ color: isDark ? Colors.base.white : '' }} style={{ ...spacing.p(12), ...spacing.borderRadius(12), ...spacing.borderWidth(1), borderColor: Colors.base.primary }} backgroundColor={Colors.base.primary} />
+                <CustomButton className='flex-1' label={station ? "Uložit změny" : "Přidat stanici"} labelSize='base' labelClassName='text-center' labelStyle={{ color: isDark ? Colors.base.white : '' }} style={{ ...spacing.p(12), ...spacing.borderRadius(12), ...spacing.borderWidth(1), borderColor: Colors.base.primary }} backgroundColor={Colors.base.primary} />
             </View>
         </View>
     );
