@@ -1,50 +1,31 @@
-# Welcome to your Expo app 👋
+<h1>TankApp</h1>
+<p>Mobilní aplikace pro sledování tankování, technických zázamů a různých statistik. Lze zaznamenávat takování u více aut/profilů. Aplikace je stále ve vývoji, obsahuje testovací data.</p>
+<h2>Funkce</h2>
+<ul>
+	<li>Zobrazení záznamů o tankování</li>
+	<li>Filtrování seznamů od nejnovější po nejstarší záznamy</li>
+   <li>Zobrazení statistik o tankování v grafech</li>
+	<li>Nejčastěji navštěvované čerpací stanice</li>
+	<li>Výpočet měsíčních/ročních/průměrných nákladů za tankování</li>
+   <li>Správa profilů/aut</li>
+   <li>Sledování intervalu STK, průměrné/celkové servisní náklady, stav tachometru</li>
+   <li>Ukládání dokumentů vozidla</li>
+</ul>
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+<h2>Použité technologie</h2>
+<ul>
+	<li><a href="https://reactnative.dev/">React Native</a></li>
+   <li><a href="https://www.typescriptlang.org/">TypeScript</a></li>
+   <li><a href="https://expo.dev/go">Expo Go</a></li>
+   <li><a href="https://sqlite.org/">SQLite</a></li>
+</ul>
 
-## Get started
-
-1. Install dependencies
-
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-    npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+<h2>Instalace</h2>
+<ol>
+	<li>Stáhněte nebo naklonujte repozitář.</li>
+	<li>V terminálu spusťte příkaz <code>npm install</code> pro instalaci závislostí.</li>
+	<li>Spusťte aplikaci příkazem <code>npx expo start</code></li>
+	<li>Stáhněte Expo Go do mobilu pro <a href="https://expo.dev/go?sdkVersion=55&platform=android&device=true">Android</a> nebo <a href="https://expo.dev/go?sdkVersion=55&platform=ios&device=true">IOS</a></li>
+   <li>Nascanujte QR kód z terminálu (po příkazu npx expo start)</li>
+   <li>Aplikace se spustí :)</li>
+</ol>
