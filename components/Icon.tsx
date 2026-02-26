@@ -32,6 +32,7 @@ import Edit from "@/assets/images/edit";
 import Phone from "@/assets/images/phone";
 import More from "@/assets/images/more";
 import Check from "@/assets/images/check";
+import Type from "@/assets/images/type";
 
 const MAPPING = {
     car_repair: CarRepair,
@@ -66,7 +67,8 @@ const MAPPING = {
     github: Github,
     phone: Phone,
     more: More,
-    check: Check
+    check: Check,
+    type: Type
 } as const;
 
 export type IconSrc = keyof typeof MAPPING;

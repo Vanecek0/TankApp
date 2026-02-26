@@ -4,21 +4,29 @@ import Icon from '@/components/Icon';
 import { ThemeColors as Colors } from '@/constants/Colors';
 import { useTheme } from '@/theme/ThemeProvider';
 import getScaleFactor, { spacing } from '@/utils/SizeScaling';
-import { View, ScrollView } from 'react-native';
-import CustomButton, { ActionButton } from '@/components/common/Buttons';
+import { View, Animated } from 'react-native';
+import CustomButton from '@/components/common/Buttons';
 import { useModal } from '@/hooks/useModal';
 import ResponsiveImage from '@/components/common/ResponsiveImage';
 import { AddStationRecordModal } from '@/components/modals/stationsModal';
 import AddTankRecordModal from '@/components/modals/tankRecordModal';
 import Card from '@/components/common/Card';
+import { ActionButton } from '@/components/buttons/ActionButton';
+import { useRef } from 'react';
 
 export default function ServiceScreen() {
   const { isDark } = useTheme();
+  const scrollY = useRef(new Animated.Value(0)).current;
   const { showModal } = useModal();
 
   return (
     <>
-      <ScrollView style={{ backgroundColor: isDark ? Colors.background.dark : Colors.background.light }}>
+      <Animated.ScrollView
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+          { useNativeDriver: true }
+        )}
+        style={{ backgroundColor: isDark ? Colors.background.dark : Colors.background.light }}>
         <View style={{ ...spacing.mx(20), ...spacing.mb(96), ...spacing.mt(12) }}>
           <Card>
             <View style={{ ...spacing.mb(8) }} className='flex-row justify-between'>
@@ -74,7 +82,6 @@ export default function ServiceScreen() {
           <Card className={`basis-[48.5%]`}>
             <ScaledText style={{ ...spacing.mb(12) }} size='lg' className='font-bold' isThemed>Servisní záznam</ScaledText>
 
-            {/* Service item */}
             <View className='flex-row justify-between items-center'>
               <View style={{ ...spacing.mb(12), ...spacing.gap(8) }}>
                 <Badge size='sm' textClassName='font-bold' value='01.05.2025' badgeColor='#ddd'></Badge>
@@ -87,25 +94,44 @@ export default function ServiceScreen() {
             </View>
           </Card>
         </View>
-      </ScrollView>
-      <ActionButton>
+      </Animated.ScrollView>
+      <ActionButton scrollY={scrollY}>
         <View onTouchEnd={
-          () => { showModal(AddTankRecordModal) }} style={{ ...spacing.right(10) }} className='flex-row items-center gap-3'>
+          () => {
+            showModal(AddTankRecordModal, {
+              onSubmitSuccess: handleTankAdded,
+            });
+          }} style={{ ...spacing.right(10) }} className='flex-row items-center gap-3'>
           <ScaledText size={'base'} color={isDark ? Colors.base.white : ''} className='font-bold'>Přidat tankování</ScaledText>
           <CustomButton
             labelClassName='aspect text-center'
-            style={{ ...spacing.borderRadius(90), ...spacing.p(16), ...spacing.width(60) }}
+            style={{
+              ...spacing.borderRadius(90),
+              ...spacing.p(16),
+              ...spacing.width(60),
+              shadowColor: Colors.base.black,
+              shadowOffset: {
+                width: 0,
+                height: 5,
+              },
+              shadowOpacity: 0.34,
+              shadowRadius: 6.27,
+              elevation: 8,
+            }}
             className={`flex shadow-md justify-center items-center aspect-square`}
             label={
               <Icon
                 name="tank"
                 color={Colors.base.primary}
-                style={{ ...spacing.width(20), ...spacing.height(20) }}
+                style={{
+                  ...spacing.width(20),
+                  ...spacing.height(20),
+                }}
               />
             }
             labelSize='xl'
-            labelColor={isDark ? Colors.base.white : ''}
             backgroundColor={isDark ? Colors.background.surface.dark : Colors.background.surface.light}
+
           />
         </View>
         <View onTouchEnd={
@@ -116,18 +142,28 @@ export default function ServiceScreen() {
             style={{
               ...spacing.borderRadius(90),
               ...spacing.p(16),
-              ...spacing.width(60)
+              ...spacing.width(60),
+              shadowColor: Colors.base.black,
+              shadowOffset: {
+                width: 0,
+                height: 5,
+              },
+              shadowOpacity: 0.34,
+              shadowRadius: 6.27,
+              elevation: 8,
             }}
             className={`flex shadow-md justify-center items-center aspect-square`}
             label={
               <Icon
                 name="map_pin"
                 color={Colors.base.primary}
-                style={{ ...spacing.width(20), ...spacing.height(20) }}
+                style={{
+                  ...spacing.width(20),
+                  ...spacing.height(20)
+                }}
               />
             }
             labelSize='xl'
-            labelColor={isDark ? Colors.base.white : ''}
             backgroundColor={isDark ? Colors.background.surface.dark : Colors.background.surface.light}
           />
         </View>

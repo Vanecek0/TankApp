@@ -7,7 +7,7 @@ import { spacing } from '@/utils/SizeScaling';
 import ScaledText from '@/components/common/ScaledText';
 import Icon from '@/components/Icon';
 import Dropdown from '@/components/common/Dropdown';
-import CustomButton, { ActionButton } from '@/components/common/Buttons';
+import CustomButton from '@/components/common/Buttons';
 import Dashboard from '@/components/dashboards';
 import { useModal } from '@/hooks/useModal';
 import AddTankRecordModal from '@/components/modals/tankRecordModal';
@@ -19,6 +19,7 @@ import { TankingItem } from '@/components/tanking/TankingItem';
 import { LinearGradient } from 'expo-linear-gradient';
 import darkenHexColor from '@/utils/colorDarken';
 import CollapsibleScroll from '@/components/CollapsibleScroll';
+import { ActionButton } from '@/components/buttons/ActionButton';
 
 export default function TankScreen() {
   const { isDark } = useTheme();

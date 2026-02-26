@@ -73,9 +73,11 @@ export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
   }
 
   const hideAllModals = () => {
-    hideModal()
-    hidePlainModal()
-    hideSuperModal()
+    setTimeout(() => {
+      hideModal()
+      hidePlainModal()
+      hideSuperModal()
+    }, 0)
   }
 
   return (

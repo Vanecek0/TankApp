@@ -10,7 +10,6 @@ import { DropdownProvider } from "./useDropdown";
 export const AppProviders: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     return (
         <ReduxProvider store={store}>
-
                 <DatabaseProvider>
                     <ThemeProvider>
                         <DropdownProvider>

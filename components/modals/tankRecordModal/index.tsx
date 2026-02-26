@@ -10,7 +10,7 @@ import ScaledText from '@/components/common/ScaledText';
 import { DTO } from '@/DTO/mapper';
 import Dropdown from '@/components/common/Dropdown';
 import Icon from '@/components/Icon';
-import FormNumberInput from '@/components/forms/FormNumberInput';
+import FormNumberInput from '@/components/forms/components/FormNumberInput';
 import { Fuel } from '@/models/Fuel';
 import { Station } from '@/models/Station';
 import { stationRepository } from '@/repositories/stationRepository';
@@ -19,11 +19,12 @@ import { tankingRepository } from '@/repositories/tankingRepository';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/store';
 import { loadCarFromStorage } from '@/store/slices/car.slice';
-import FormDateTimeInput from '@/components/forms/FormDateTimeInput';
-import FormToggleInput from '@/components/forms/FormToggleInput';
-import FormTextArea from '@/components/forms/FormTextArea';
+import FormDateTimeInput from '@/components/forms/components/FormDateTimeInput';
+import FormToggleInput from '@/components/forms/components/FormToggleInput';
+import FormTextArea from '@/components/forms/components/FormTextArea';
 import { fuelService } from '@/services/fuelService';
-import FormSelectInput from '@/components/forms/FormSelectInput';
+import FormSelectInput from '@/components/forms/components/FormSelectInput';
+import TankForm from '@/components/forms/TankForm/TankForm';
 
 type Props = {
   onSubmitSuccess?: () => void;
@@ -171,7 +172,8 @@ export default function AddTankRecordModal({ onSubmitSuccess }: Props) {
           <Icon name="cross" color={isDark ? Colors.icon.primary_dark : Colors.icon.primary} size={getScaleFactor() * 20} />
         </View>
       </View>
-      <ScrollView style={{ ...spacing.p(24) }}>
+      <TankForm />
+      { /*<ScrollView style={{ ...spacing.p(24) }}>
         <View style={{ ...spacing.gap(12), ...spacing.borderBottomWidth(1), ...spacing.pb(12), borderColor: isDark ? Colors.border.muted_dark : Colors.border.muted }}>
           <View>
             <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(6) }}>
@@ -207,7 +209,6 @@ export default function AddTankRecordModal({ onSubmitSuccess }: Props) {
                   <Icon name='tank' color={isDark ? Colors.icon.primary_dark : Colors.icon.primary} size={getScaleFactor() * 16} />
                   <ScaledText size='base' style={{ color: isDark ? Colors.base.white : '' }}>Palivo</ScaledText>
                 </View>
-
 
                 <FormSelectInput
                   name="station_fuel_id"
@@ -294,11 +295,18 @@ export default function AddTankRecordModal({ onSubmitSuccess }: Props) {
           </View>
         </View>
 
-      </ScrollView>
-      <View style={{ ...spacing.p(20), ...spacing.gap(6), ...spacing.borderBottomRadius(12), backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light }} className='flex-row justify-between'>
+      </ScrollView> */}
+      
+      {/*<View style={{ ...spacing.p(20), ...spacing.gap(6), ...spacing.borderBottomRadius(12), backgroundColor: isDark ? Colors.background.surface.dark : Colors.background.surface.light }} className='flex-row justify-between'>
         <CustomButton className='w-[48%]' onPress={() => hideAllModals()} label="Zrušit" labelSize='base' labelClassName='text-center' labelStyle={{ color: isDark ? Colors.base.white : '' }} style={{ ...spacing.p(12), ...spacing.borderWidth(1), borderColor: isDark ? Colors.text.secondary_dark : Colors.text.muted, ...spacing.borderRadius(12) }} backgroundColor={isDark ? Colors.background.surface.dark : Colors.background.surface.light} />
-        <CustomButton className='w-[48%]' onPress={handleSubmit(onFormSubmit)} label="Přidat záznam" labelSize='base' labelClassName='text-center' labelStyle={{ color: Colors.base.white }} style={{ ...spacing.p(12), ...spacing.borderRadius(12), ...spacing.borderWidth(1), borderColor: Colors.base.primary }} backgroundColor={Colors.base.primary} />
-      </View>
+        <CustomButton
+          className='w-[48%]'
+          onPress={handleSubmit(async (data) => {
+            await onFormSubmit(data)
+            hideAllModals()
+          })}
+          label="Přidat záznam" labelSize='base' labelClassName='text-center' labelStyle={{ color: Colors.base.white }} style={{ ...spacing.p(12), ...spacing.borderRadius(12), ...spacing.borderWidth(1), borderColor: Colors.base.primary }} backgroundColor={Colors.base.primary} />
+      </View>*/}
     </View>
   );
 }

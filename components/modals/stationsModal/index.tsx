@@ -10,10 +10,10 @@ import getScaleFactor, { spacing } from '@/utils/SizeScaling';
 import { DTO } from '@/DTO/mapper';
 import CustomButton from '@/components/common/Buttons';
 import { useForm, useWatch } from 'react-hook-form';
-import FormTextInput from '@/components/forms/FormTextInput';
-import FormDateTimeInput from '@/components/forms/FormDateTimeInput';
-import FormTextAreaInput from '@/components/forms/FormTextArea';
-import FormCheckboxItem from '@/components/forms/FormCheckboxItem';
+import FormTextInput from '@/components/forms/inputs/FormTextInput';
+import FormDateTimeInput from '@/components/forms/inputs/FormDateTimeInput';
+import FormTextAreaInput from '@/components/forms/inputs/FormTextArea';
+import FormCheckboxItem from '@/components/forms/inputs/FormCheckboxItem';
 import DeleteConfirmationModal from '../superModals/deleteConfirmationModal';
 import { stationFuelRepository } from '@/repositories/stationFuelRepository';
 import { stationRepository } from '@/repositories/stationRepository';
@@ -355,6 +355,7 @@ export function AddStationRecordModal({ station, previousModal }: { station: Sta
                 <View style={{ ...spacing.gap(12), ...spacing.pb(52) }}>
                     <View>
                         <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
+                            <Icon name='type' color={isDark ? Colors.icon.primary_dark : Colors.icon.primary} size={getScaleFactor() * 16} />
                             <ScaledText size='base' style={{ color: isDark ? Colors.base.white : '' }}>Název stanice</ScaledText>
                         </View>
 
@@ -439,6 +440,7 @@ export function AddStationRecordModal({ station, previousModal }: { station: Sta
 
                     <View>
                         <View className='flex-row items-center' style={{ ...spacing.mb(6), ...spacing.gap(8) }}>
+                            <Icon name="document" color={isDark ? Colors.icon.primary_dark : Colors.icon.primary} size={getScaleFactor() * 16} />
                             <ScaledText size='base' style={{ color: isDark ? Colors.base.white : '' }}>Poznámka</ScaledText>
                         </View>
                         <FormTextAreaInput name="note" defaultValue={station?.note ?? ''} control={control} style={{ padding: 8, color: isDark ? Colors.base.white : '' }}></FormTextAreaInput>
