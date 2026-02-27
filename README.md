@@ -46,6 +46,7 @@
 <ol>
 	<li>Stáhněte nebo naklonujte repozitář.</li>
 	<li>V terminálu spusťte příkaz <code>npm ci</code> pro instalaci závislostí.</li>
+   <li>Změňte příponu souboru .env.example na .env</li>
 	<li>Spusťte aplikaci příkazem <code>npx expo start</code></li>
 	<li>Stáhněte Expo Go do mobilu pro <a href="https://expo.dev/go?sdkVersion=55&platform=android&device=true">Android</a> nebo <a href="https://expo.dev/go?sdkVersion=55&platform=ios&device=true">IOS</a></li>
    <li>Nascanujte QR kód z terminálu (po příkazu npx expo start)</li>
