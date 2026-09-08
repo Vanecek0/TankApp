@@ -5,7 +5,6 @@ import { Link, useNavigation } from "expo-router";
 import { useTheme } from "@/theme/ThemeProvider";
 import ScaledText from "./common/ScaledText";
 import getScaleFactor, { spacing } from "@/utils/SizeScaling";
-import { DrawerActions } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store";
 import { useEffect } from "react";
@@ -41,7 +40,7 @@ export default function SettingsBar({ className }: {
                     ...spacing.gap(8)
                 }}
                 className={`${className} flex outline-none border-none flex-row items-center justify-between`}>
-                <View onTouchStart={() => { nav.dispatch(DrawerActions.openDrawer()) }} style={{ ...spacing.gap(12) }} className="flex-row items-center">
+                <View onTouchStart={() => { (nav as unknown as { openDrawer: () => void }).openDrawer() }} style={{ ...spacing.gap(12) }} className="flex-row items-center">
                     <View
                         className="rounded-full justify-center items-center aspect-square"
                         style={{ backgroundColor: "lightgray", ...spacing.width(40) }}
